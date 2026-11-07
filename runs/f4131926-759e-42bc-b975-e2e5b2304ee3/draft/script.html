@@ -1,0 +1,106 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Launch video · script</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="script.md">Raw markdown</a></p><h1>Launch Video Script (template)</h1>
+<p><strong>Status:</strong> Template. Do not render a final cut until every <code>[BRACKET]</code> slot is filled.
+Upstream stages ran without a subject: research is blocked and the outline is a skeleton. Every claim below is a slot to fill, not product copy.</p>
+<p><strong>Runtime:</strong> about 60s (the low end of the outline&#39;s 60–90s range, because the brief is &quot;short and sharp&quot;)
+<strong>Rule:</strong> one idea per beat. Cut any line that repeats the core claim.</p>
+<h2>Slots</h2>
+<p>Fill these once. The slot names match the placeholder strings in the asset SVGs, so the copy and the cards change together.</p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Asset placeholder it replaces</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>[PRODUCT NAME]</code></td>
+<td>&quot;Product Name&quot; (<code>title-card.svg</code>, <code>end-card.svg</code>)</td>
+</tr>
+<tr>
+<td><code>[TAGLINE]</code></td>
+<td>&quot;One-line tagline goes here&quot; (<code>title-card.svg</code>)</td>
+</tr>
+<tr>
+<td><code>[SPEAKER NAME]</code></td>
+<td>&quot;Speaker Name&quot; (<code>lower-third.svg</code>)</td>
+</tr>
+<tr>
+<td><code>[CALLOUT]</code></td>
+<td>&quot;Role or feature callout&quot; (<code>lower-third.svg</code>)</td>
+</tr>
+<tr>
+<td><code>[CTA URL]</code></td>
+<td>&quot;Call to action: example.com&quot; (<code>end-card.svg</code>)</td>
+</tr>
+<tr>
+<td><code>[LAUNCH DATE]</code></td>
+<td>&quot;Launch date&quot; (<code>end-card.svg</code>)</td>
+</tr>
+<tr>
+<td><code>[PAIN]</code></td>
+<td>none. The problem, in the viewer&#39;s words</td>
+</tr>
+<tr>
+<td><code>[STEP 1–3]</code></td>
+<td>none. The core flow, three steps at most</td>
+</tr>
+<tr>
+<td><code>[PROOF]</code></td>
+<td>none. One fact, number or demo taken from the research notes</td>
+</tr>
+<tr>
+<td><code>[OUTCOME]</code></td>
+<td>none. What the viewer gets, not a list of features</td>
+</tr>
+</tbody></table>
+<h2>Script</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Time</th>
+<th>Visual</th>
+<th>Voiceover / on-screen text</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>0–6s</td>
+<td>Close-up of the problem moment. <strong>No asset.</strong> Needs footage.</td>
+<td>&quot;[PAIN].&quot;</td>
+</tr>
+<tr>
+<td>2</td>
+<td>6–12s</td>
+<td><code>title-card.svg</code></td>
+<td>&quot;Meet [PRODUCT NAME]. [TAGLINE].&quot;</td>
+</tr>
+<tr>
+<td>3</td>
+<td>12–40s</td>
+<td>Screen recording of the flow, with <code>lower-third.svg</code> over it ([SPEAKER NAME], [CALLOUT])</td>
+<td>&quot;[STEP 1]. [STEP 2]. [STEP 3].&quot; On screen: &quot;[PROOF]&quot;</td>
+</tr>
+<tr>
+<td>4</td>
+<td>40–50s</td>
+<td>Result shot. <strong>No asset.</strong> Needs footage.</td>
+<td>&quot;[OUTCOME].&quot;</td>
+</tr>
+<tr>
+<td>5</td>
+<td>50–60s</td>
+<td><code>end-card.svg</code></td>
+<td>&quot;[PRODUCT NAME]. Available [LAUNCH DATE]. [CTA URL].&quot;</td>
+</tr>
+</tbody></table>
+<h2>Notes for the Video stage</h2>
+<ul>
+<li><strong>Blocked:</strong> don&#39;t render a final cut while any slot is unfilled. Rendering a rough cut with the placeholders to check timing is fine.</li>
+<li>Beats 1 and 4 have no asset. They need footage or a new card.</li>
+<li><code>[PROOF]</code> must come from the research notes. If the notes don&#39;t support a claim, cut the claim; don&#39;t soften it.</li>
+<li>Colours and fonts come from <code>assets/brand.json</code>, which also holds placeholders until the real brand arrives.</li>
+<li><strong>Fix at the source:</strong> add a required <code>{{topic}}</code> variable to the pipeline and rerun from research.</li>
+</ul>
+</body></html>
