@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Game forge iterate (test) · Fri 6 Nov, 11:02</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Game forge iterate (test)</h1>
+  <p class="caption">A snappier Neon Kaiju with a quicker stomp</p>
+  <p class="summary">The feedback asked Game forge iterate to make the monster in Neon Kaiju less sluggish and the stomp land sooner. The result is a reworked Neon Kaiju with no screen shake, where the world reacts to hits instead.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T17:02:27.568Z">Fri 6 Nov, 11:02</time></span><span>Finished <time datetime="2026-11-06T17:19:01.110Z">Fri 6 Nov, 11:19</time></span><span>16 min 34 s</span><span>3.9M tokens</span><span class="id">505b884e-84be-4d77-9945-105b4a40e93b</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/run.json">http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/505b884e-84be-4d77-9945-105b4a40e93b.jpg" width="800" height="500" alt="Render of the primary output of Game forge iterate (test)"><figcaption>Hero from http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Source run</dt><dd>8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd</dd></div><div><dt>First feedback</dt><dd>The monster feels sluggish to move and the stomp lands late. Make it snappier.</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Deliver · game<span class="type">dir</span></h3><p class="desc">The final game, index.html at the root, a valid source for a later iterate run</p><iframe src="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html" title="Deliver game" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html">http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Deliver · report<span class="type">md</span></h3><p class="desc">The source, how to play, every round&#39;s changes and the user&#39;s words, the keep list, what is left</p></summary><div class="md"><h1>Neon Kaiju: delivery report</h1>
+<h2>The game</h2>
+<p>Neon Kaiju is a side-view neon night-city arcade game on a 640×360 canvas. You are a giant monster whose health drains at 4/s. Collapsing buildings and power towers, and killing tanks and helicopters, heal you. The army ramps up until it overwhelms you. Score is 100 per second survived plus destruction points × combo. Plain Canvas 2D, no build step.</p>
+<p>Source run: <code>8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd</code> (this run: <code>505b884e-84be-4d77-9945-105b4a40e93b</code>).</p>
+<p>Play: <a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html">http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html</a></p>
+<h2>How to play</h2>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A / ← , D / →</td>
+<td>Walk</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>Stomp (140 px radius, hits buildings and tanks)</td>
+</tr>
+<tr>
+<td>Left-click</td>
+<td>Swipe toward the cursor (hits buildings, tanks, helicopters)</td>
+</tr>
+<tr>
+<td>Right-click or F</td>
+<td>Breath beam toward the cursor (1.8 s cooldown)</td>
+</tr>
+<tr>
+<td>Esc / P</td>
+<td>Pause</td>
+</tr>
+<tr>
+<td>Click or Space</td>
+<td>Start / restart</td>
+</tr>
+<tr>
+<td>Touch</td>
+<td>Left walk pad, STOMP and BEAM buttons, tap to swipe</td>
+</tr>
+</tbody></table>
+<p>Health starts at 80 (max 100). A building heals +10, a power tower +20, a tank or helicopter +8. A building takes 3 hits.</p>
+<h2>Rounds</h2>
+<h3>Round 1: Stomp impact</h3>
+<ul>
+<li>User said: &quot;The monster feels sluggish to move and the stomp lands late. Make it snappier.&quot; Then: &quot;The stomps were shaking the screen too much, let&#39;s eliminate screen shake and just have the environment react&quot; (&quot;all of the above&quot;). They also said the health-drain tension was too hard for the first level.</li>
+<li>Changed: <code>stomp.windup</code> 0.14 → 0.07 s; <code>monster.speed</code> 90 → 135; <code>monster.stride</code> 0.5 → 0.34 s; <code>fx.shakeCap</code> 20 → 0; <code>beam.rumble</code> 2 → 0. Added a <code>quake</code> block: nearby buildings sway, antennas rattle and a cyan ground pulse runs out. Files: src/config.js, city.js, monster.js, render.js.</li>
+<li>Next the user said: easier early game, dying in the first 40 s, lever = slower damage ramp.</li>
+</ul>
+<h3>Round 2: Easier first 40 s</h3>
+<ul>
+<li>Changed: <code>army.tank.dmgStart</code> 4 → 2; <code>army.tank.dmgRamp</code> 75 → 90 s; <code>army.heli.dmgStart</code> 1.5 → 0.75; <code>army.heli.dmgRamp</code> 75 → 90 s. Only src/config.js.</li>
+<li>Next the user said: &quot;Done, the game is right.&quot;</li>
+</ul>
+<h2>Keep list</h2>
+<ul>
+<li>Snappier stomp and speed (stomp.windup 0.07 s, monster.speed 135, monster.stride 0.34 s)</li>
+<li>No screen shake (fx.shakeCap 0, beam.rumble 0); city sway and cyan ground pulse stay</li>
+<li>Hit-stop freezes (stomp 60 ms, collapse 80/100 ms, death 120 ms)</li>
+<li>Gentler army ramp (tank dmgStart 2, heli dmgStart 0.75, both dmgRamp 90 s)</li>
+</ul>
+<h2>Final verify</h2>
+<p>PASS: 60 fps (worst frame 16.8 ms), keyboard start inside the sandboxed frame, 0 console errors, 0 failed requests. Re-run on the delivered folder: PASS.</p>
+<h2>What is left</h2>
+<p>Out-of-scope wishes: none recorded.
+Notes left for the next round:</p>
+<ul>
+<li>Window-light flicker on impact is not built.</li>
+<li>The death-cause text says &quot;Starved&quot; even when army damage was the real cause.</li>
+<li>No bot harness (play.mjs) exists, so novice survival time is unmeasured.</li>
+</ul>
+<h2>How to continue</h2>
+<p>Start this pipeline again with <code>source-run</code> set to <code>505b884e-84be-4d77-9945-105b4a40e93b</code>.</p>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/report.md">http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/report.md</a></p></figure>
+<figure class="out"><details open><summary><h3>Deliver · play<span class="type">md</span></h3><p class="desc">Line one is the proved link to play the final build</p></summary><div class="md"><p><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html">Play Neon Kaiju</a>
+Be the giant monster that flattens a neon city to stay alive: your health drains and only destruction heals you.
+A/D or arrows walk, Space stomps, left-click swipes, right-click or F breathes a beam, Esc pauses.
+2 rounds played.</p>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/play.md">http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/play.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">First ask asked · answered · <time datetime="2026-11-06T17:04:04.945Z">Fri 6 Nov, 11:04</time></p>
+    <div class="q"><p class="question">You said: &quot;The monster feels sluggish to move and the stomp lands late. Make it snappier.&quot; Shall we start there? Play understand.game first (click inside the frame so keys reach the game): http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/stages/understand/outputs/game/index.html. Or pick another focus from the next-iteration list.</p><p class="options">Options: Start with snappier monster · Novice survival time · Clearer death cause · Bigger reward at high combo</p><p class="answer">Start with snappier monster</p></div>
+  </li><li>
+    <p class="who">First ask asked · answered · <time datetime="2026-11-06T17:04:38.784Z">Fri 6 Nov, 11:04</time></p>
+    <div class="q"><p class="question">Which moment felt worst? What were you trying to do when the monster felt sluggish or the stomp landed late?</p><p class="options">Options: Stomp a building · Dodge or reposition · Stomp a tank · Chaining stomps</p><p class="answer">The stomps were shaking the screen too much, let&#39;s eliminate screen shake and just have the environment react</p></div>
+  </li><li>
+    <p class="who">First ask asked · answered · <time datetime="2026-11-06T17:06:11.857Z">Fri 6 Nov, 11:06</time></p>
+    <div class="q"><p class="question">Understood: no screen shake at all (stomp, collapse, death), and the world reacts instead. What should the environment do on a stomp?</p><p class="options">Options: Ground ripple and debris · Buildings sway · Grid and lights pulse · You choose</p><p class="answer">all of the above</p></div>
+  </li><li>
+    <p class="who">First ask asked · error · <time datetime="2026-11-06T17:06:13.145Z">Fri 6 Nov, 11:06</time></p>
+    <div class="q"><p class="question">What do you like about the game right now that this round must not break?</p><p class="options">Options: Hit-stop crunch · Three verbs · Neon look and sound · Health-drain tension</p><p class="answer">(error)</p></div>
+  </li><li>
+    <p class="who">First ask asked · answered · <time datetime="2026-11-06T17:07:29.476Z">Fri 6 Nov, 11:07</time></p>
+    <div class="q"><p class="question">What do you like about the game right now that this round must not break?</p><p class="options">Options: Hit-stop crunch · Three verbs · Neon look and sound · Health-drain tension</p><p class="answer">the first three, the health-drain tension I think is currently too hard for the first level</p></div>
+  </li><li>
+    <p class="who">Ask asked · error · <time datetime="2026-11-06T17:13:34.638Z">Fri 6 Nov, 11:13</time></p>
+    <div class="q"><p class="question">Round 1 build is ready: merge.game
+http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/merge/outputs/game/index.html
+
+Changed: stomp windup 0.14 s → 0.07 s, monster.speed 90 → 135, stride 0.5 s → 0.34 s. Screen shake is off (shakeCap 20 → 0); nearby buildings sway and a cyan ground pulse runs out instead. Verification: PASS.
+Test first: click inside the frame so keys reach the game, then tap Space beside a building. Does the stomp land at once, and does the city reaction feel right?
+
+What should change next?</p><p class="options">Options: Easier early game · Clearer death cause · Bigger combo reward · Put the last round back · Done, the game is right</p><p class="answer">(error)</p></div>
+  </li><li>
+    <p class="who">Ask asked · answered · <time datetime="2026-11-06T17:13:37.779Z">Fri 6 Nov, 11:13</time></p>
+    <div class="q"><p class="question">Round 1 build is ready: merge.game
+http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/merge/outputs/game/index.html
+
+Changed: stomp windup 0.14 s → 0.07 s, monster.speed 90 → 135, stride 0.5 s → 0.34 s. Screen shake is off (shakeCap 20 → 0); nearby buildings sway and a cyan ground pulse runs out instead. Verification: PASS.
+Test first: click inside the frame so keys reach the game, then tap Space beside a building. Does the stomp land at once, and does the city reaction feel right?
+
+What should change next?</p><p class="options">Options: Easier early game · Clearer death cause · Put the last round back · Done, the game is right</p><p class="answer">Easier early game</p></div>
+  </li><li>
+    <p class="who">Ask asked · answered · <time datetime="2026-11-06T17:14:08.082Z">Fri 6 Nov, 11:14</time></p>
+    <div class="q"><p class="question">Easier early game: in which moment does it feel too hard?</p><p class="options">Options: Dying in the first 40 s · When I stop to idle · The first helicopter</p><p class="answer">Dying in the first 40 s</p></div>
+  </li><li>
+    <p class="who">Ask asked · answered · <time datetime="2026-11-06T17:14:36.093Z">Fri 6 Nov, 11:14</time></p>
+    <div class="q"><p class="question">Which lever should round 2 turn to ease the first 40 s?</p><p class="options">Options: Slower damage ramp · Later helicopters · Both</p><p class="answer">Slower damage ramp</p></div>
+  </li><li>
+    <p class="who">Ask asked · error · <time datetime="2026-11-06T17:14:37.075Z">Fri 6 Nov, 11:14</time></p>
+    <div class="q"><p class="question">What must the next round not break?</p><p class="options">Options: Snappier stomp and speed · No screen shake · Hit-stop freeze · Everything else</p><p class="answer">(error)</p></div>
+  </li><li>
+    <p class="who">Ask asked · answered · <time datetime="2026-11-06T17:14:56.897Z">Fri 6 Nov, 11:14</time></p>
+    <div class="q"><p class="question">What must the next round not break?</p><p class="options">Options: Snappier stomp and speed · No screen shake · Hit-stop freeze · Everything else</p><p class="answer">Snappier stomp and speed, No screen shake, Hit-stop freeze</p></div>
+  </li><li>
+    <p class="who">Ask asked · answered · <time datetime="2026-11-06T17:17:59.900Z">Fri 6 Nov, 11:17</time></p>
+    <div class="q"><p class="question">Round 2 build is ready: merge.game
+http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/merge/outputs/game/index.html
+
+Changed: army damage ramps in more gently. army.tank.dmgStart 4 → 2, army.heli.dmgStart 1.5 → 0.75, and both dmgRamp 75 s → 90 s. A tank shell at 20 s costs 2.9 (was 4.5) and a helicopter burst 3.1 (was 4.9). Full damage arrives at 90 s. Verification: PASS. The snappy stomp and still screen from round 1 are intact.
+Test first: click inside the frame so keys reach the game, then play loosely for 40 s. Are you still alive?
+
+What should change next?</p><p class="options">Options: Clearer death cause · Window-light flicker · Put the last round back · Done, the game is right</p><p class="answer">Done, the game is right</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/check-source/outputs/source.json">Check source · source.json</a> <span class="type">180B</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/toolkit/outputs/toolkit">Toolkit · toolkit.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/understand/outputs/game/index.html">Understand · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/understand/outputs/harness">Understand · harness.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/understand/outputs/digest.md">Understand · digest.md</a> <span class="type">17KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/first-ask/outputs/feedback.md">First ask · feedback.md</a> <span class="type">2.8KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/research/outputs/change-plan.md">Research · change-plan.md</a> <span class="type">5.3KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/research/outputs/plan.json">Research · plan.json</a> <span class="type">113B</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/code/outputs/game/index.html">Code · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/code/outputs/harness">Code · harness.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/code/outputs/code-report.md">Code · code-report.md</a> <span class="type">1.4KB</span></li><li><span class="absent">Art · assets.dir (absent)</span></li><li><span class="absent">Art · art-report.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/merge/outputs/game/index.html">Merge · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/merge/outputs/harness">Merge · harness.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/merge/outputs/screenshots">Merge · screenshots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/merge/outputs/changelog.md">Merge · changelog.md</a> <span class="type">5.7KB</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/verify/outputs/verdict.md">Verify · verdict.md</a> <span class="type">167B</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/ask/outputs/feedback.md">Ask · feedback.md</a> <span class="type">492B</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/ask/outputs/done.md">Ask · done.md</a> <span class="type">25B</span></li><li><a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/screenshots">Deliver · screenshots.dir</a> <span class="type">4.1KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Check source</td><td>check</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+<tr><td>Toolkit</td><td>check</td><td>done</td><td>script</td><td>1 s</td><td>0</td></tr>
+<tr><td>Understand</td><td>understand</td><td>done</td><td>sonnet</td><td>1 min 25 s</td><td>551K</td></tr>
+<tr><td>First ask</td><td>first</td><td>done</td><td>sonnet</td><td>4 min 37 s</td><td>278K</td></tr>
+<tr><td>Research</td><td>plan</td><td>done</td><td>opus</td><td>1 min 09 s</td><td>1.2M</td></tr>
+<tr><td>Code</td><td>build</td><td>done</td><td>opus</td><td>36 s</td><td>851K</td></tr>
+<tr><td>Art</td><td>build</td><td>skipped</td><td>opus</td><td>0 s</td><td>0</td></tr>
+<tr><td>Merge</td><td>merge-test</td><td>done</td><td>opus</td><td>35 s</td><td>375K</td></tr>
+<tr><td>Verify</td><td>check-build</td><td>done</td><td>script</td><td>8 s</td><td>0</td></tr>
+<tr><td>Ask</td><td>talk</td><td>done</td><td>sonnet</td><td>37 s</td><td>446K</td></tr>
+<tr><td>Deliver</td><td>ship</td><td>done</td><td>sonnet</td><td>32 s</td><td>192K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+Quiet indie folk ballad at 96 BPM in 4/4, D major. One fingerpicked steel-string acoustic guitar carries the verses; soft strumming, an upright bass on the roots and very quiet brushed snare come in for the first chorus, then thin out again. A faint brush patter like rain runs under the second verse and the bridge, then stops dead before the last chorus, which is guitar, soft bass and voice with no drums. One lead voice, low baritone to tenor range, close to the microphone, plain and unforced, almost spoken in the verses, opening out on the long held word "well" without vibrato. A soft second voice sings a third above on "you look well". Small room, short reverb, breaths and pick noise left in. Mood: polite on the surface and full underneath, warm rather than sad, two old friends being careful with each other. Sung in English.
+
+Create a 1.5-minute song with the following lyrics:
+
+[Verse 1]
+Rain on the shelter roof like pennies,
+you read the timetable, I read you.
+Twenty years, your collar's up,
+the left side only, like at school.
+
+[Chorus]
+You look well,
+and you say the same of me,
+then both of us say ten past three.
+You look well.
+
+[Verse 2]
+You turn a ring I've never seen.
+My last to you is one line long:
+Dear Ruth, it's raining here, then nothing.
+And neither of us mentions Tom.
+
+[Bridge]
+Nineteen pulls in and it waits. Neither moves.
+Rain on the roof, and a stamp in my coat.
+
+[Chorus]
+You look well,
+and you say the same of me,
+then I wave on the ten past three.
+You look well.

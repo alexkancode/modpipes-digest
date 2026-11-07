@@ -1,0 +1,128 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>pipeline builder · test-report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="test-report.md">Raw markdown</a></p><h1>Test report: ChatGPT ad plan</h1>
+<ul>
+<li>Pipeline id: <code>b9afa7ec-8375-40a9-bb31-cd7aefffa6cf</code>. Tested on the stored version from the plan stage (v0). Left at v2.</li>
+<li>Session: 10:53:56 to 11:22 on 2026-11-06, inside the 45-minute budget.</li>
+<li>Test copy <code>0ff58442-929f-43d4-b459-da869e926802</code>, &quot;ChatGPT ad plan (test)&quot;, polish loop cut to 2 rounds. Prompts and models unchanged. Deleted after both runs finished. Its runs stay in history.</li>
+</ul>
+<h2>What ran</h2>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Started</th>
+<th>Finished</th>
+<th>Wall clock</th>
+<th>Rounds</th>
+<th>Final gates</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>9f53bf42-1df3-4ebe-9f2c-82054ec321db</code></td>
+<td>repo-path <code>/home/alex/Desktop/dev/dirslides-correct</code>, other variables empty</td>
+<td>10:54:28</td>
+<td>11:21:05</td>
+<td>26m37s</td>
+<td>2</td>
+<td>check ok, critic ship 87</td>
+</tr>
+<tr>
+<td>Stress <code>f59b67ea-54db-4cfe-a8ba-a6397fd472ee</code></td>
+<td>repo-path <code>/home/alex/Desktop/dev/bookrender</code> (no root README, no live URL), monthly-budget <code>120</code> (under the 350 USD two-week minimum), positioning &quot;Turn any long PDF into a narrated audiobook you can play offline.&quot; (a feature the repo does not have)</td>
+<td>10:54:28</td>
+<td>11:17:17</td>
+<td>22m49s</td>
+<td>2</td>
+<td>check ok, critic ship 86</td>
+</tr>
+</tbody></table>
+<p>Stage timing, both runs alike:</p>
+<ul>
+<li>gather: 1 to 2.5 minutes</li>
+<li>fit: 1.5 minutes</li>
+<li>write: 2 to 3 minutes</li>
+<li>design: 1 minute</li>
+<li>render: seconds</li>
+<li>page (opus): 6 to 7 minutes a round</li>
+<li>check: under 1 minute</li>
+</ul>
+<p>The plan&#39;s estimate of 8 minutes a round holds.</p>
+<h2>What worked</h2>
+<p>Verified from files, not from stage summaries:</p>
+<ul>
+<li><code>facts.json</code> carries titleMax 50 and bodyMax 100 from developers.openai.com in both runs. The third-party 30 and 60 figures appear nowhere as caps.</li>
+<li>Product read found the live URL <code>https://instideck.com</code> with repo evidence (<code>server/wrangler.toml</code>, <code>CLAUDE.md</code>). Stress <code>profile.json</code> has no live URL.</li>
+<li>The stress plan handled all three edges with numbers and links: <code>~/.modpipes/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/stages/ad-plan/outputs/plan.md</code>.<ul>
+<li>The verdict is &quot;do not advertise yet&quot;.</li>
+<li>It names the positioning and repo mismatch.</li>
+<li>It says to deploy first.</li>
+<li>It shows 120 USD buys 4.8 days at the 25 USD official minimum.</li>
+<li>It predicts 0.1 to 0.2 signups.</li>
+</ul>
+</li>
+<li>The stress copywriter set every targetUrl to null. It flagged that the copy promises an unbuilt feature.</li>
+<li>render-creatives wrote five PNGs per run.</li>
+<li>The final reports have zero failed checks:<ul>
+<li>happy: 24 checks, 24 links, 0 dead</li>
+<li>stress: 23 checks, 26 links, 0 dead</li>
+</ul>
+</li>
+<li>The polish loop stop fired on ok plus ship in round 2 in both runs.</li>
+<li>The final happy page reads calm and clear. Evidence: a screenshot of step 3 with cards, copy buttons, cap counters and official badges at <code>kt6n75z/work/dbg/happy.png</code>.</li>
+<li>Both overviews state the right verdict, the creatives and the gate results.</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li>Round 1 failed page-check in both runs (2 of 2), for the same reasons. The cost was one extra opus round, about 7 minutes per run.<ul>
+<li>Evidence:<ul>
+<li><code>~/.modpipes/runs/9f53bf42-1df3-4ebe-9f2c-82054ec321db/stages/page-check/rounds/1/report.json</code></li>
+<li><code>~/.modpipes/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/stages/page-check/rounds/1/report.json</code></li>
+</ul>
+</li>
+<li>Cause: the shared page contract names no Next control and no screen identity, so check.cjs guessed.<ul>
+<li>The round-1 pages had no <code>[data-next]</code>, and every click timed out.</li>
+<li>No section label held &quot;setup&quot; or &quot;tracking&quot;.</li>
+<li>I reproduced the timeout with a Playwright probe on the stress round-1 page: zero visible <code>[data-next]</code>.</li>
+</ul>
+</li>
+<li>Second cause: a <code>navigator.clipboard</code> call inside the sandboxed frame logs a Permissions-policy console error.</li>
+<li>Fix v1: the contract now gives each section.step a <code>data-screen</code> (product, audience, creatives, budget, setup, tracking, review). It also requires a <code>data-next</code> and a <code>data-back</code> control. Framed pages skip the clipboard call. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>On the happy run, lazy images read <code>naturalWidth 0</code> on hidden screens in the round-1 sandbox check. Evidence: the happy round-1 report above, and <code>loading=&quot;lazy&quot;</code> in <code>stages/page/rounds/1/page/index.html</code>.<ul>
+<li>Fix v2: the page prompt now requires eager images. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>Copywriter and ad-plan both decided the tracking URL. They run side by side, so the two URLs disagreed.<ul>
+<li>The copywriter wrote <code>instideck.com/?…&amp;utm_content=c1&amp;utm_term={ad_id}</code>. Evidence: <code>stages/copywriter/outputs/creatives.json</code>.</li>
+<li>The plan wrote <code>/chatgpt?utm_term=A</code> plus a campaign <code>query_string_template</code>.</li>
+<li>The page chose the plan&#39;s URLs, so the conflict did not reach the user this time.</li>
+<li>Fix v1: targetUrl carries no query string, and ad-plan owns tracking. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>The happy overview says the sandboxed fallbacks were &quot;not tested&quot;, yet page-check ran framed mode and passed. Evidence: <code>~/.modpipes/runs/9f53bf42-1df3-4ebe-9f2c-82054ec321db/stages/overview/outputs/overview.md</code>. <strong>Not fixed.</strong> The todo row says what to try.</li>
+</ol>
+<p>The critic shipped round 1 in both runs (scores 84 and 82) while the checker failed. Requiring both gates in the loop stop is what caught the failures.</p>
+<h2>Versions</h2>
+<ul>
+<li><code>pipeline-versions/v1.json</code>: contract selectors, framed clipboard rule, copywriter targetUrl. Voice audit 0 long sentences. Stored copy verified equal, loop stop present.</li>
+<li><code>pipeline-versions/v2.json</code>: eager images. Same checks.</li>
+<li>The CLI warned that the server build (68ceb65) differs from the CLI build (ec248cb). The stored definition still matched the file after both updates.</li>
+<li>The plan stage&#39;s <code>gen.py</code> does not hold the v1 and v2 edits. Port them before you regenerate from the generator.</li>
+</ul>
+<h2>Lessons recorded</h2>
+<ul>
+<li>Real pipeline page table: the four round-1 failure causes.</li>
+<li>Real pipeline copywriter table: the tracking URL ownership.</li>
+<li>Tester table: stage timing and where the round-1 evidence lives.</li>
+<li><code>lessons__pipeline_builder_todos</code>: confirm v1 and v2, and fix the overview line.</li>
+<li>None of the seven earlier todo rows concerned this pipeline.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ul>
+<li>Run once on dirslides-correct with v2. Pass when round 1&#39;s page-check report says ok true and the run ends in one round, about 18 minutes.</li>
+<li>Grep the fresh <code>toolkit/outputs/tools/check.cjs</code> for <code>data-screen</code> and <code>data-next</code>. The toolkit should now match on the contract instead of h2 text.</li>
+<li>Read the overview for the framed-mode sentence.</li>
+</ul>
+</body></html>

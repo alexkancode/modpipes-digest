@@ -1,0 +1,33 @@
+X:1
+T:Canta até às cinco
+M:6/8
+L:1/8
+Q:3/8=60
+%%MIDI program 53
+K:Dm
+P:Verse 1
+"Dm"z D E F2 E|"Dm/C#"G2 F E2 D|"Dm/C"F2 G A3|"G/B"z =B A G2 F|
+w:O re-ló-gio so-bre~a por-ta dá-te~as três en-fer-mei-ra
+"Gm/Bb"z G A B2 A|"A7"A/B/A G E2 ^C|"Dm/A"z D E F2 E|"A7"A G F G2 E|
+w:a ja-ne-la não__ se a-bre a mor-fi-na pin-ga-lhe~as ho-ras
+P:Chorus
+M:4/4
+Q:1/4=90
+"Dm"A3 A d3 c|"Dm/C"A3 G z4|"Bb"A B/A/ d3 c A2|"A7"z ^c d ^c B A A2|
+w:Can-ta~a-té às cin-co fa-do do sal da mãe o vin-te~e oi-to vem
+"Dm"A3 A d3 c|"A7"A3 G z4|
+w:can-ta~a-té às cin-co
+P:Verse 2
+M:6/8
+Q:3/8=60
+"Dm"z E E F2 E/D/|"Dm/C#"G2 F/E/ F3|"Dm/C"F2 G A3|"G/B"z =B A G2 F|
+w:E-le~em-pres-ta-te~a ma-lha da mãe chei-ra~a sal de~Al-co-che-te
+"Gm/Bb"z G A B2 A|"A7"A/B/A G E2 ^C|"Dm/A"z D E F2 E/D/|"A7"G2 E z3|
+w:mal te~a-per-ta~a mão__ e pe-de e não sa-bes a le-tra
+P:Chorus
+M:4/4
+Q:1/4=90
+"Dm"A2 A A d3 c|"Dm/C"A3 G z3 A|"Bb"d2 c B d3 A|"A7"^c d e2 d ^c B A/G/|
+w:Can-tas a-té às cin-co sem le-tra sau-da-de to-ca~o si-no do~e-lé-tri-co
+"Dm"A3 A f4-|"Dm/C#"f6 e2|"Dm/C"d6 A2|
+w:can-ta~a-té _ às cin-co

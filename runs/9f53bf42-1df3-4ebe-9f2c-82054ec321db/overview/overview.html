@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ChatGPT ad plan (test) · overview</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="overview.md">Raw markdown</a></p><h1>Overview: Instideck ChatGPT ads run</h1>
+<p>Date: 2026-11-06 · Run 9f53bf42-1df3-4ebe-9f2c-82054ec321db</p>
+<h2>What was produced</h2>
+<ul>
+<li><strong>Guided page:</strong> <code>stages/page/outputs/page/index.html</code>, with creative cards <code>c1.png</code> to <code>c5.png</code> alongside it. Seven steps (<code>step-1</code> to <code>step-7</code>), copy buttons, source links and a checklist. Open the file directly for the unsandboxed version.</li>
+<li><strong>Ad plan:</strong> <code>stages/ad-plan/outputs/plan.md</code>. One channel (ChatGPT ads), two-week test, $25/day, $350 hard cap, United States, desktop_web only.</li>
+<li><strong>Creatives:</strong> <code>stages/copywriter/outputs/creatives.json</code>, five single-image ads (c1 to c5).</li>
+</ul>
+<h2>Fit verdict</h2>
+<p>Test small: run a capped two-week ChatGPT ads test at $25/day ($350 maximum), and get tracking working before the first dollar is spent.
+Expect weak conversion and a loss on the test, so judge it on cost per signup, not profit, and move the money to a public how-to page if the kill rule is hit.</p>
+<p>Positioning holds: the repo contains every promise the ads make (&quot;Any Drive folder, instantly a slideshow&quot;, HEIC support, Ken Burns, &quot;No AI ever sees your photos&quot;, photos streamed from Google to the browser). The positioning variable was empty, so product-read used the repo&#39;s own promise.</p>
+<h2>Creatives</h2>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>headline</th>
+<th>body</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c1</td>
+<td>Drive folder? Hit play.</td>
+<td>Any Drive folder becomes a fullscreen slideshow.</td>
+</tr>
+<tr>
+<td>c2</td>
+<td>Skip the Slides import</td>
+<td>Play photos straight from Drive. No deck needed.</td>
+</tr>
+<tr>
+<td>c3</td>
+<td>Party photos on the TV</td>
+<td>Loop the guests&#39; Drive folder fullscreen.</td>
+</tr>
+<tr>
+<td>c4</td>
+<td>Lobby screen, one folder</td>
+<td>Loop a private Drive folder on any screen.</td>
+</tr>
+<tr>
+<td>c5</td>
+<td>Photos stay in Drive</td>
+<td>They stream to your browser. No AI sees them.</td>
+</tr>
+</tbody></table>
+<h2>Check and critic results</h2>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>page-check</td>
+<td>ok: true. All 23 checks passed in direct and sandbox modes, plus links-alive (24 of 24 links alive; 403 answers are walled, not dead).</td>
+</tr>
+<tr>
+<td>page-critic</td>
+<td>ship: true, score: 87, blockers: none after round 2.</td>
+</tr>
+</tbody></table>
+<p>Left after the last round (non-blocking, from the critic):</p>
+<ul>
+<li>Step 1 holds the long rerun command in a code block. Collapse it so readers reach the product statement sooner.</li>
+<li>Step 4 keeps the cost table collapsed. Surface the expected cost per signup in one line.</li>
+<li>On mobile (390x844), a blank band sits above the step label because of the sticky header.</li>
+<li>Not tested: the sandboxed-frame fallbacks (localStorage, clipboard, target=_blank).</li>
+</ul>
+<p>Gaps the checks do not cover:</p>
+<ul>
+<li><strong>Two target-URL schemes disagree.</strong> <code>creatives.json</code> points each ad at <code>https://instideck.com/?utm_...&amp;utm_content=cN</code>. The plan&#39;s section 5 says to set <code>target_url</code> to <code>https://instideck.com/chatgpt</code>, with the UTM template set at campaign level. Pick one before upload.</li>
+<li><strong>c5 is tagged ad group F</strong> (privacy). The plan folds F into group A, so c5 belongs under A.</li>
+<li><strong>No tracking exists.</strong> The repo has no OpenAI pixel and no <code>oaiq</code> reference. The plan&#39;s pixel script URL answered 404 to a bare curl on 2026-11-06, so copy the exact snippet from Ads Manager instead of typing it.</li>
+<li><strong><code>facts.json</code> was not among the inputs.</strong> The page-check length checks passed against it, but this overview did not read it directly.</li>
+</ul>
+<h2>What to do next</h2>
+<ol>
+<li>Choose one target-URL scheme (the plan&#39;s <code>/chatgpt</code> path is the one that gives a clean count), then rebuild each ad&#39;s <code>targetUrl</code> to match before upload.</li>
+<li>Sign up at ads.openai.com and start verification (5 to 15 business days). While it runs, update the privacy copy and footer first, then add the Pixel and fire <code>registration_completed</code> on Google sign-in.</li>
+<li>Build the campaign <code>instideck-test-2026-11</code>: US, desktop_web, clicks bidding at a $0.50 max, $25/day. Launch groups A to C with c1 to c5 (c5 under A). Create groups D and E but leave them paused.</li>
+<li>Submit for review. Day 0 is the approval date. Check tracking on Day 3 and make the decision on Day 14.</li>
+<li>Test the sandbox fallbacks (localStorage, clipboard, target=_blank) in a real browser, since the critic did not test them.</li>
+</ol>
+<h2>How to rerun with a corrected positioning</h2>
+<pre><code>/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start b9afa7ec-8375-40a9-bb31-cd7aefffa6cf --var repo-path=/home/alex/Desktop/dev/dirslides-correct --var positioning=&quot;&lt;one sentence&gt;&quot;
+</code></pre>
+<p>Replace <code>&lt;one sentence&gt;</code> with your positioning, for example: <code>A private lobby-screen slideshow for small businesses that runs from a Google Drive folder</code>.</p>
+</body></html>

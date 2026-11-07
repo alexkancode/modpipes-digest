@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 10:35</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">The Game forge iterate pipeline, built and tested</p>
+  <p class="summary">The user asked the pipeline builder for a pipeline that understands a Game forge run and improves the game round by round from feedback. The result is Game forge iterate, tested and left at version 2.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T16:35:19.843Z">Fri 6 Nov, 10:35</time></span><span>Finished <time datetime="2026-11-06T17:35:11.901Z">Fri 6 Nov, 11:35</time></span><span>59 min 52 s</span><span>11.2M tokens</span><span class="id">dc0253b0-6e6f-433f-beeb-15ed66337654</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/run.json">http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/dc0253b0-6e6f-433f-beeb-15ed66337654.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/k8n7vfc/outputs/lessons-learned-site.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>Can you look at the Game forge pipeline and see if we could have another pipeline who&#39;s job it is to fully understand the outputs of a given game forge run, take feedback from the user related potentially to the art, the playstyle, specific mechanics, etc. and research solutions and provide an iteration, and when a playable iteration is reached, provide the user with a clickable rendered link as an output and then ask the user what they think and repeat as many times as it takes for the user to be happy or done?</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Test report: Game forge iterate</h1>
+<ul>
+<li>Pipeline: <code>e0e79c86-afa6-4b85-a772-95afd55544e3</code>, tested as built (v0). The real pipeline now stands at v2.</li>
+<li>Test copy: <code>016a1748-454b-4752-83e0-76de929c3424</code> &quot;Game forge iterate (test)&quot;. The loop cap was cut from 20 to 2. Prompts and models were unchanged. The copy is deleted, and its runs stay in history.</li>
+<li>Budget: 45 minutes from 11:01 CST. Both runs started at 11:02:27 and finished by 11:29:17. Nothing needed cancelling.</li>
+</ul>
+<h2>What ran</h2>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Answers given</th>
+<th>Wall clock</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>505b884e-84be-4d77-9945-105b4a40e93b</code></td>
+<td><code>source-run</code> 8f2a5b1a (Neon Kaiju); <code>first-feedback</code> &quot;The monster feels sluggish to move and the stomp lands late. Make it snappier.&quot;</td>
+<td>Start with snappier monster; round 1 ask: Easier early game, then a slower damage ramp; round 2 ask: Done</td>
+<td>16 min 34 s</td>
+<td>done, every stage passed</td>
+</tr>
+<tr>
+<td>Stress <code>00c4ad83-53fa-42e0-b623-e1b6af6a3821</code></td>
+<td><code>source-run</code> blank; <code>first-feedback</code> &quot;Add online multiplayer so a friend can play, redraw the kaiju as a cute pastel dinosaur, and switch movement to the mouse.&quot;</td>
+<td>Start with your three wishes, Seed challenge, Follow the cursor; round 1 ask: Seed challenge; round 2 ask: Easier first minute, so the cap ended the loop</td>
+<td>26 min 50 s</td>
+<td>done, every stage passed</td>
+</tr>
+</tbody></table>
+<p>A person also answered three happy-run follow-ups in the app: no screen shake, &quot;all of the above&quot; and the keep list. The transcript shows each one as a real tool result, so the pipeline did not fabricate them.</p>
+<p>Round timing, excluding time spent waiting on answers:</p>
+<ul>
+<li>Happy round 1, a knob change: research 2.5 min, code 1.6 min, merge 0.7 min, verify 9 s. About 5 min.</li>
+<li>Happy round 2, a knob change: about 3 min.</li>
+<li>Stress round 1, a full sprite restyle plus a controls change: research 2.7 min, art 5 min in parallel with code at 1 min, then merge and verify. About 9.5 min.</li>
+<li>Stress round 2, the seed challenge: about 6 min.</li>
+<li>Setup through understand took under 2 min. Each deliver took about 35 s.</li>
+</ul>
+<p>The understanding estimated 10 to 20 minutes a round. The measured range is 3 to 10 minutes.</p>
+<h2>What worked</h2>
+<ul>
+<li>check-source resolved a blank <code>source-run</code> to 8f2a5b1a and recorded the harness as absent. Evidence: <code>~/.modpipes/runs/00c4ad83-53fa-42e0-b623-e1b6af6a3821/stages/check-source/outputs/source.json</code>.</li>
+<li>The out-of-scope edge worked end to end. First-ask said a static folder cannot hold online play, offered seed challenge or same-screen co-op, and recorded the wish as out-of-scope. Round 2 built the seed challenge.</li>
+<li>A whole-style art round worked. plan.json set <code>art: true</code>, the art condition ran the art stage, and art regenerated all six monster strips under a Pillow contract check. Merge overlaid the strips: <code>monster_idle.png</code> in merge.game is byte-identical to art&#39;s copy. <code>stages/merge/outputs/screenshots/play.png</code> shows the mint dino in the neon city.</li>
+<li>The controls-change edge worked. plan.json set <code>controlsChanged: true</code>, and code added mouse follow with hysteresis while keeping A/D working. Code also tested the follow headlessly: x moved from 260 to 351.5 in 1 s, then held still.</li>
+<li>Every implementer ran verify.mjs: code twice and merge twice in the happy run. Every verify verdict in all four rounds reads PASS at 60 fps with 0 errors.</li>
+<li>Every round-end ask link returned 200. Each named <code>merge.game</code> so the card rendered the build, gave knob values before and after, and offered undo and done.</li>
+<li>Rounds stay on disk: <code>stages/merge/rounds/1/</code> and <code>stages/research/rounds/1/</code> exist in both runs.</li>
+<li>The done sentinel stopped the happy loop at round 2. The cap stopped the stress loop at round 2. Deliver ran in both cases.</li>
+<li>Deliver on cap exhaustion listed the unbuilt request under &quot;What is left&quot;, with the knobs to try. Both play.md files start with a link that returns 200 text/html. Deliver ran both curl and verify.mjs.</li>
+<li>The art stage stayed skipped on the rounds where <code>art: false</code>.</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li>The first-ask play link returned 404 in the happy run.<ul>
+<li>Evidence: <code>~/.modpipes/runs/505b884e-84be-4d77-9945-105b4a40e93b/stages/first-ask/transcript.jsonl</code>, the first AskUserQuestion. The link reads <code>/api/runs/&lt;id&gt;/stages/understand/...</code> without <code>/files/</code>. curl gave 404. The same URL with <code>/files/</code> gave 200. The stress run&#39;s first ask built the link correctly, so the slip is intermittent.</li>
+<li>Fix (v1): first-ask and ask now curl the link and confirm 200 before asking. Each prompt names the /files/ segment as the usual culprit.</li>
+<li>Status: unconfirmed. Live runs snapshot the definition, so neither test run used v1.</li>
+</ul>
+</li>
+<li>The keep list was dropped between rounds in the stress run.<ul>
+<li>Evidence: <code>~/.modpipes/runs/00c4ad83-53fa-42e0-b623-e1b6af6a3821/stages/ask/rounds/1/feedback.md</code> against <code>stages/first-ask/outputs/feedback.md</code>. The user&#39;s keep list was &quot;Stomp, swipe and beam verbs, Sound effects&quot;. The round-1 ask asked no keep question and rebuilt the list from the changelog, dropping Sound effects. Cause: the ask&#39;s inputs hold no earlier feedback, and the validator refuses <code>ask.feedback</code> as an input to itself.</li>
+<li>Fix (v2): the shared change-plan shape now carries the keep list whole. The ask reads <code>research.change-plan</code> and starts its keep list there. Research already reads both feedback files.</li>
+<li>Status: unconfirmed.</li>
+</ul>
+</li>
+</ol>
+<h2>Observations left alone</h2>
+<ul>
+<li>The happy first-ask sent two AskUserQuestion calls in one turn. The harness rejected the second, and the model re-asked it correctly. The prompt already says one call at a time.</li>
+<li>On the last capped round the ask offers &quot;more changes&quot; without saying the round is the last. With a cap of 20 this rarely matters, and deliver reports the unbuilt request.</li>
+<li>In the happy run, research answered &quot;the health drain is too hard&quot; with a gentler army damage ramp, not the drain. The user&#39;s follow-up answer chose that lever, so this follows the user.</li>
+<li>No source run has a harness, so the bot path through <code>play.mjs</code> never ran.</li>
+</ul>
+<h2>Versions</h2>
+<ul>
+<li><code>pipeline-versions/v1.json</code>: link curl in first-ask and ask.</li>
+<li><code>pipeline-versions/v2.json</code>: the keep list carried through the change plan into the ask.</li>
+<li><code>pipeline-versions/NOTES.md</code> holds the one-line note for each version.</li>
+<li>Voice audit: 0 sentences over 25 words on both versions. Validate: ok. <code>pipeline update</code>: exit 0 on both.</li>
+</ul>
+<h2>Lessons recorded</h2>
+<ul>
+<li>Real pipeline, stage <code>ask</code>: carry the keep list from the change plan.</li>
+<li>Real pipeline, stage <code>first-ask</code>: the /files/ link form, curled for 200.</li>
+<li>This tester&#39;s table: a person may answer in the app during a test, so read the transcript before you call answers fabricated.</li>
+<li><code>lessons__pipeline_builder_todos</code>: confirm v2&#39;s two fixes in one fresh run.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Confirm v2 in one run. Name two keep items at the first ask, then answer the round-1 ask without a keep follow-up. Check that both items survive in <code>stages/ask/outputs/feedback.md</code>, and grep the ask transcripts for the curl.</li>
+<li>Test the bot path with a source run that has <code>integrate/outputs/harness/play.mjs</code>, from the current Game forge definition. Make one round change the controls, and check that code updates <code>play.mjs</code> and merge runs the bots.</li>
+<li>Test the undo option (&quot;Put the last round back&quot;) and an iterate run whose source is an earlier iterate run. Neither ran here.</li>
+</ol>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/kt6n75z/outputs/test-report.md</a></p></figure>
+<figure class="out"><h3>Analyse the test · lessons-learned-site<span class="type">html</span></h3><p class="desc">A static site: which changes improved the pipeline, why, and the evidence behind each claim</p><iframe src="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/k8n7vfc/outputs/lessons-learned-site.html" title="Analyse the test lessons-learned-site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/k8n7vfc/outputs/lessons-learned-site.html">http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/k8n7vfc/outputs/lessons-learned-site.html</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:37:42.440Z">Fri 6 Nov, 10:37</time></p>
+    <div class="q"><p class="question">Each round starts from your feedback on the current build (art, feel, a mechanic, difficulty). A research stage then looks up how games solve that kind of thing. Should the pipeline show you the researched options before it builds, or build straight away and let you react to the result?</p><p class="options">Options: Build straight away (Recommended) · Ask only at a real fork · Always show options first</p><p class="answer">Build straight away (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:45:21.165Z">Fri 6 Nov, 10:45</time></p>
+    <div class="q"><p class="question">After each build, how much machine testing should run before the new version comes back to you? The source run&#39;s harness (scripted bots over several seeds) exists in newer Game forge runs; the three critics add about 10 minutes a round.</p><p class="options">Options: Smoke plus bots (Recommended) · Smoke only · Full Game forge play-test</p><p class="answer">Smoke plus bots (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:45:44.326Z">Fri 6 Nov, 10:45</time></p>
+    <div class="q"><p class="question">Here is my understanding of the new pipeline, Game forge iterate. Does this match what you want?
+
+Start: a variable names a finished Game forge run (or an earlier iterate run, since its final outputs keep the same shape). Blank means the latest finished Game forge run.
+
+Understand: one stage copies the delivered game into this run, reads report, GDD, art direction, asset plan, tech plan, play-test scores and screenshots, and writes a digest of what the game is, how it is built, and what the report said a next iteration should tackle.
+
+First ask: you see the playable game beside the question (inline, plus a clickable link that opens it as a page) and say what to change, with options drawn from the digest plus Other. Follow-up questions pin specifics, one question per call.
+
+Loop, up to a cap of 20 rounds, each round roughly 10 to 20 minutes:
+- research reads your feedback and looks up how games solve that kind of thing, then writes a change plan; no options come back to you
+- code and art change in parallel, keeping Game forge&#39;s contracts (asset-plan.json, window.__game, ?seed) so the harness still works
+- smoke every round, bots when the source run has a harness; the implementer fixes what the bots break
+- a script verifies the build loads, starts and runs clean
+- ask: you see the new build inline and by link with a short note of what changed, and say what next, or done. A build that failed verification is shown honestly with fix it as the first option.
+
+The loop ends when you say done. Deliver then packages the final game, a report with the per-round changelog, and a play link, all starred. Every round&#39;s build stays on disk under rounds/&lt;n&gt;.
+
+Models: opus for research, code and art; sonnet or haiku for digest, ask and deliver; scripts for verify and bots.</p><p class="options">Options: Yes, that is it · Mostly, with changes</p><p class="answer">Yes, that is it</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">9.2KB</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">393B</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">9.7KB</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">8.7KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">7.9KB</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">7.1KB</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">4.6KB</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/dc0253b0-6e6f-433f-beeb-15ed66337654/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">6.3KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>11 min 39 s</td><td>657K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>2 min 04 s</td><td>290K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>1 min 55 s</td><td>505K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 41 s</td><td>412K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>2 min 55 s</td><td>1000K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>11 min 57 s</td><td>2.1M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>28 min 55 s</td><td>4.5M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>4 min 26 s</td><td>1.6M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

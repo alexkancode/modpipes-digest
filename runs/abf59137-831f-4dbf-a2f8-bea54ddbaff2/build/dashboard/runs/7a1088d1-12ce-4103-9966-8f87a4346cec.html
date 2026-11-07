@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Game forge concierge · Thu 5 Nov, 20:53</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Game forge concierge</h1>
+  <p class="caption">A game bible for Neon Kaiju, found through conversation</p>
+  <p class="summary">Game forge concierge talked with the user about what game to build, starting from the mood they wanted. It produced the bible for Neon Kaiju, a neon city monster game where only destruction heals you.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T02:53:02.230Z">Thu 5 Nov, 20:53</time></span><span>Finished <time datetime="2026-11-06T04:47:14.302Z">Thu 5 Nov, 22:47</time></span><span>1 h 54 min</span><span>3.0M tokens</span><span class="id">7a1088d1-12ce-4103-9966-8f87a4346cec</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/run.json">http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/7a1088d1-12ce-4103-9966-8f87a4346cec.jpg" width="800" height="500" alt="Render of the primary output of Game forge concierge"><figcaption>Hero from bible.bible</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Game forge pipeline id</dt><dd>44c6a4d4-8000-40a6-b9a5-3b827827d9f7</dd></div><div><dt>Server URL</dt><dd>http://localhost:4810</dd></div><div><dt>modpipes CLI</dt><dd>/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js</dd></div><div><dt>Samples per round</dt><dd>4</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Bible · bible<span class="type">md</span></h3><p class="desc">The bible: the game in collegial prose, every decision, every sample linked, the Game forge values</p></summary><div class="md"><h1>Bible: Neon Kaiju (working title)</h1>
+<h2>The game in one paragraph</h2>
+<p>You are a giant monster stomping through a neon city at night, and the city fights back. You walk the street and stomp buildings into glowing rubble. You swipe with a long, animated reach and fire a ranged attack at targets across the screen. Meanwhile tanks roll in from the edges and helicopters circle overhead, firing. Your health drains all the time, and the only way to restore it is to wreck things: every collapsed building and every crushed tank heals you. The army keeps growing until it overwhelms you. The score is how long you lasted plus how much you broke. It&#39;s loud and chaotic, and destruction is how you survive.</p>
+<h2>The player fantasy</h2>
+<p>You are the disaster: an unstoppable giant whose hunger to wreck the city is also what keeps it alive.</p>
+<h2>The pillars</h2>
+<p>The user never confirmed these four; they are drawn from what the user chose. The first is that <strong>every hit lands heavy</strong>: a stomp should feel like the ground giving way, and since the user called the sketch stomp &quot;heavy and great&quot;, its numbers carry over. The second is that <strong>you reach the whole street</strong>. The monster dominates the screen, and long swipes plus a ranged attack mean you never feel too short to fight back; this comes straight from the user&#39;s main complaint about sketch 2. The third is <strong>wreck to survive</strong>: health drains and destruction heals, so smashing is the strategy rather than decoration. The fourth is that <strong>pressure builds</strong>. The army&#39;s spawn rate rises across the run, so every session ends in an overwhelmed last stand.</p>
+<h2>The loop and the verbs</h2>
+<p>Walk, stomp, swipe, blast, heal, survive. The player walks toward a building or a cluster of tanks. A stomp crushes what&#39;s underfoot and cracks the buildings within reach, a swipe hits tanks and helicopters at long reach, and the ranged attack picks off far targets. Each collapse and kill tops up the draining health bar, and then the player moves on to the next target before the army catches up. In MDA terms, drain plus heal-on-destroy is the mechanic; it produces constant aggressive movement as the dynamic, and that produces challenge and sensation as the aesthetics, with fantasy underneath.</p>
+<h2>The screens and the first thirty seconds</h2>
+<p>The screens are a title over the neon skyline, play, a pause, and a game-over screen showing survival time, destruction and score, with a restart. No screens beyond the Game forge default came up in conversation. In the first thirty seconds, no enemies spawn for 3 seconds, so the first stomp lands on an undefended building and teaches the heal. Tanks then arrive from the edges, and helicopters join after 12 seconds. The sketch&#39;s scripted player died in 12 to 16 seconds using only walk and stomp, and the user kept the army as-is, which makes swipe and ranged attacks essential from the first wave.</p>
+<h2>The look and the sound</h2>
+<p>The look is a neon night city (D9): glowing outlines on a dark ground with a perspective grid, and buildings that crack into bright shards. The palette comes from the mock: night #0b0720, grid #2a1b5e, cyan #19f0ff, magenta #ff2bd6, yellow #fff04a, lime #6dff6d. The monster is outlined in lime, because the mock showed it reads sharpest against the dark.</p>
+<p>The user asked for more animation (D5). The monster needs visible limb motion on walk, a wind-up and follow-through on the stomp, an arm or tail arc on the swipe, and a charge pose for the ranged attack. Feel comes from hit-stop, screen shake, dust, a shockwave ring and floating score numbers, as in the sketch. Shake is turned off under prefers-reduced-motion.</p>
+<p>Sound is synthesised in WebAudio and stays silent until the first gesture. It covers low thuds for stomps, noise-burst crumbles, a roar, a sizzle or whoosh for the ranged attack, and small pops for tank shells.</p>
+<h2>The controls</h2>
+<p>These follow the sketches, which the user played without objecting; no control question was asked. A and D, or the arrow keys, walk. Space stomps, and holding it repeats. A mouse click swipes toward the cursor. The ranged attack needs its own input, and the suggestion is right-click or the F key, fired toward the cursor. Touch is the Game forge default nice-to-have.</p>
+<h2>The audience</h2>
+<p>This wasn&#39;t discussed, so it&#39;s the Game forge default: general. The army difficulty is deliberately high (D7), so the game leans toward players who like pressure.</p>
+<h2>The scope and the cuts</h2>
+<p>A run is a single side-view city strip that refills as it&#39;s flattened. It&#39;s played to death, with a score from time survived plus destruction, and should fit the two-to-five-minute window once the reach upgrades are in. The cuts are the topple-chain physics and shove limits (D8), a campaign across several cities, monster customisation, multiplayer and persistence.</p>
+<h2>The decisions with their reasons</h2>
+<p>The user wants something loud and chaotic (D1). They loved smashing scenery in other games (D2) and wanted to be the huge monster (D3). Playing the sketches, they found the stomp &quot;heavy and great&quot;, so its numbers stay: stompRadius 140, shakeStrength 12, buildingHP 3 (D4). They liked the city in the army sketch but said &quot;the monster needs more range and animation&quot; (D5). Asked what kind of range they meant, they chose a longer swipe reach and a ranged attack, over a bigger monster or faster movement (D6). They kept the army as-is rather than easing it in, at armySpawnPerSec 0.6 ramping up, healthDrainPerSec 4, healPerBuilding 10 and kill heal 8 (D7); that puts the fix for the difficulty in the monster&#39;s reach rather than in a softer army. They dropped the topple sketch outright, because the game is continuous mayhem rather than planned setups (D8). They chose the neon night city over toy blocks and papercraft (D9). Then they asked for the bible rather than a further round, so the swipe reach and the ranged attack go to Game forge untuned (D10).</p>
+<h2>The edges still open</h2>
+<p>The user ended the conversation (D10), so these are Game forge&#39;s to settle, and each carries the question that would close it.</p>
+<p>The form of the ranged attack was never picked. The user wants one, but a breath beam and thrown debris were never compared. The concept names a breath beam, but no decision backs it; Game forge should pick one, and a short-cooldown breath beam fits the neon look best. <em>Breath beam or thrown debris for the ranged attack?</em></p>
+<p>The swipe reach and the ranged numbers were never tuned, and the swipe is the fix D6 depends on. Suggested starts are a swipe reach of about 220 px on the 640×360 canvas, twice the sketch, and a ranged attack reaching the full screen width with about a 1.5 s cooldown. <em>With a 220 px swipe and a 1.5 s beam, can you survive the army as it stands?</em></p>
+<p>Difficulty and run length are linked. The army stays at sketch values, which killed a scripted player in 12 to 16 s, and nothing yet shows a run reaching two to five minutes once reach is added. If playtests still end before 60 seconds, the first lever is healPerBuilding, not the army. <em>How long should a good run last before the army wins?</em></p>
+<p>The controls have no decision behind them: the mapping is the sketch default, and the ranged input (right-click or F) is unchosen. <em>Right-click or F for the ranged attack, and does it need to work on touch?</em></p>
+<p>The pillars weren&#39;t confirmed by the user. <em>Do these four promises describe your game?</em></p>
+<p>The audience is still the default &quot;general&quot;, which sits awkwardly with a difficulty the bible calls deliberately high. <em>Who is this for: general players, or players who want it hard?</em></p>
+<p>The ship-score is still the default 80 with no decision. <em>Is 80 the bar to ship?</em></p>
+<p>Screen readability is unresolved: at high stomp radius, and at the stompRadius 140 that D4 keeps, the score and combo text overlap, and no layout is decided. <em>Should combo and score popups be moved to the HUD, or kept on the action?</em></p>
+<h2>Wishes beyond what Game forge builds today</h2>
+<p>The user didn&#39;t name any. More cities, unlockable monsters and saved high scores were never asked about and appear only as cuts. <em>Would you want more cities, monsters or saved high scores later?</em></p>
+<h2>The samples</h2>
+<p>The <a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches/r1-stomp-sensation/index.html">stomp sensation sketch</a> was a 90-second stomp sandbox with no opposition, built around combos, hit-stop and collapsing buildings, with stompRadius 140, shakeStrength 12 and buildingHP 3 on screen. Its screenshots showed a x3 COMBO mid-play, and the score and combo text overlapping at high stomp radius. The user said the stomp felt &quot;heavy and great&quot;, and its numbers carry over.</p>
+<p>The <a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches/r1-army-challenge/index.html">army challenge sketch</a> added tanks and helicopters, draining health, and destruction that heals, at armySpawnPerSec 0.6, healthDrainPerSec 4 and healPerBuilding 10. A scripted walk-and-stomp run died in 12 to 16 s. This is the basis of the game. The user said &quot;I like the city but I felt like the monster needs more range and animation&quot;, and chose to keep the army as-is.</p>
+<p>The <a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches/r1-topple-discovery/index.html">topple discovery sketch</a> had three shoves per level and buildings toppling in chains, at shovesPerLevel 3, shoveForce 900 and gravity 1400. The user said &quot;Drop it&quot;.</p>
+<p>The <a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/mocks/outputs/mocks/r1-city-looks/index.html">city looks mock</a> drew one stomp frame three ways: as toy blocks, neon night and papercraft. The lime monster outline in the neon frame read sharpest. The user chose &quot;B. Neon night city&quot;.</p>
+<h2>The Game forge values</h2>
+<p><strong>concept:</strong> You are a giant monster in a side-view neon night city. Walk, stomp buildings, swipe with a long animated reach, and fire a ranged attack (a breath beam) as tanks and helicopters attack. Health drains constantly, and every collapsed building (+10) or destroyed unit (+8) heals you, so destruction is survival. The army spawns at 0.6/s and ramps up, with none in the first 3 s and helicopters from 12 s. Health drains at 4/s. The stomp has a 140 px radius with shake 12, and buildings take 3 hits. Swipe reach is about 220 px and the ranged attack has about a 1.5 s cooldown; these two are untuned. The score is survival time plus destruction. The monster animates visibly on walk, stomp, swipe and breath. Use hit-stop, shake, dust, shockwave rings, combo popups and synthesised thuds and roars.</p>
+<p><strong>scope:</strong> a small arcade game with one core loop, playable to a score in two to five minutes: one refilling city strip, played until death. A title screen and a game-over screen with restart. This is the Game forge default, narrowed to survive-until-death.</p>
+<p><strong>controls:</strong> keyboard and mouse on desktop. A/D walk, Space stomps, left-click swipes toward the cursor, and right-click or F fires the ranged attack toward the cursor. Touch is a nice-to-have. This is the default with the sketch mapping; the user wasn&#39;t asked.</p>
+<p><strong>audience:</strong> general. This is the Game forge default and wasn&#39;t discussed.</p>
+<p><strong>style:</strong> neon night city: glowing outlines on dark with a perspective grid. Palette #0b0720, #2a1b5e, #19f0ff, #ff2bd6, #fff04a, #6dff6d, with the monster outlined in lime #6dff6d.</p>
+<p><strong>ship-score:</strong> 80. This is the Game forge default and wasn&#39;t discussed.</p>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/bible/outputs/bible.md">http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/bible/outputs/bible.md</a></p></figure>
+<figure class="out"><details open><summary><h3>Start Game forge · handoff<span class="type">md</span></h3><p class="desc">The Game forge run id with the commands to watch and read the run</p></summary><div class="md"><h1>Handoff</h1>
+<p>Game forge run 8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd started from concierge run 7a1088d1-12ce-4103-9966-8f87a4346cec.</p>
+<ul>
+<li>Watch: /usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js watch 8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd</li>
+<li>Read: /usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js run 8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd --json</li>
+<li>Outputs: /home/alex/.modpipes/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/stages/</li>
+</ul>
+<p>Command used:</p>
+<pre><code>/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start 44c6a4d4-8000-40a6-b9a5-3b827827d9f7 --var &#39;concept=You are a giant monster in a side-view neon night city. Walk, stomp buildings, swipe with a long animated reach, and fire a ranged attack (a breath beam) as tanks and helicopters attack. Health drains constantly, and every collapsed building (+10) or destroyed unit (+8) heals you, so destruction is survival. The army spawns at 0.6/s and ramps up, with none in the first 3 s and helicopters from 12 s. Health drains at 4/s. The stomp has a 140 px radius with shake 12, and buildings take 3 hits. Swipe reach is about 220 px and the ranged attack has about a 1.5 s cooldown; these two are untuned. The score is survival time plus destruction. The monster animates visibly on walk, stomp, swipe and breath. Use hit-stop, shake, dust, shockwave rings, combo popups and synthesised thuds and roars. The full bible is at /home/alex/.modpipes/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/stages/bible/outputs/bible.md; read it first.&#39; --var &#39;scope=a small arcade game with one core loop, playable to a score in two to five minutes: one refilling city strip, played until death. A title screen and a game-over screen with restart.&#39; --var &#39;controls=keyboard and mouse on desktop. A/D walk, Space stomps, left-click swipes toward the cursor, and right-click or F fires the ranged attack toward the cursor. Touch is a nice-to-have.&#39; --var audience=general --var &#39;style=neon night city: glowing outlines on dark with a perspective grid. Palette #0b0720, #2a1b5e, #19f0ff, #ff2bd6, #fff04a, #6dff6d, with the monster outlined in lime #6dff6d.&#39; --var ship-score=80 --json
+</code></pre>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/launch/outputs/handoff.md">http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/launch/outputs/handoff.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T02:53:10.819Z">Thu 5 Nov, 20:53</time></p>
+    <div class="q"><p class="question">Let&#39;s find a small game worth building (2–5 minutes a session, plays in the browser). What are you in the mood to make?</p><p class="options">Options: Tense and twitchy · Calm and absorbing · Clever and puzzly · Loud and chaotic</p><p class="answer">Loud and chaotic</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T02:55:11.088Z">Thu 5 Nov, 20:55</time></p>
+    <div class="q"><p class="question">Loud and chaotic it is. Think of a game where you loved making a mess. What were you actually doing in that moment?</p><p class="options">Options: Setting up a chain · Wading through hordes · Smashing the scenery · Juggling too much</p><p class="answer">Smashing the scenery</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T02:55:48.774Z">Thu 5 Nov, 20:55</time></p>
+    <div class="q"><p class="question">Smashing scenery. When the smashing was best, who were you?</p><p class="options">Options: A huge monster · A wrecking ball / vehicle · A demolition expert · A tiny thing breaking big things</p><p class="answer">A huge monster</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T02:56:43.969Z">Thu 5 Nov, 20:56</time></p>
+    <div class="q"><p class="question">Next I&#39;ll build three playable monster sketches: stomping with no opposition (pure feel), the army fighting back (survive by smashing), and a few shoves that topple the skyline in chains. There&#39;s also one mock comparing three city looks. Each round takes a few minutes. How do you want to go on?</p><p class="options">Options: Build the samples (Recommended) · Write the bible now</p><p class="answer">Build the samples (Recommended)</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T03:05:03.830Z">Thu 5 Nov, 21:05</time></p>
+    <div class="q"><p class="question">Sketch 1, stomping with nothing fighting back (90-second timer, score by destruction). Open in a new tab: http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches/r1-stomp-sensation/index.html  (A/D walk, Space stomp, click swipe; keys 1-3 pick a tuning value, - and = change it.) How did the stomp feel?</p><p class="options">Options: Heavy and great · Feels good, gets dull · Too light · Too much</p><p class="answer">Heavy and great</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T04:00:56.693Z">Thu 5 Nov, 22:00</time></p>
+    <div class="q"><p class="question">Sketch 2, the city fights back: tanks and helicopters shoot, your health drains, and smashing heals you. Open in a new tab: http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches/r1-army-challenge/index.html  (Same controls. A test player who only walked and stomped died in 12-16 s.) Compared with sketch 1, how did that feel?</p><p class="options">Options: Better than sketch 1 · Good, but too hard · Worse than sketch 1 · Lighter touch</p><p class="answer">I like the city but I felt like the monster needs more range and animation</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T04:28:49.570Z">Thu 5 Nov, 22:28</time></p>
+    <div class="q"><p class="question">You said the monster needs more range and more animation. Which kind of range did you mean?</p><p class="options">Options: Longer swipe reach · A ranged attack · Bigger monster · Faster movement</p><p class="answer">longer swipe reach and a ranged attack</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T04:29:43.512Z">Thu 5 Nov, 22:29</time></p>
+    <div class="q"><p class="question">Should the army from sketch 2 stay, setting aside the monster&#39;s reach for now? (Sketch 2: http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches/r1-army-challenge/index.html )</p><p class="options">Options: Keep the army, ease in · Keep army as-is · No army, timer only</p><p class="answer">Keep army as-is</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T04:30:11.698Z">Thu 5 Nov, 22:30</time></p>
+    <div class="q"><p class="question">Sketch 3, topple chains: a slow monster gets 3 shoves per level, and buildings knock each other down. Open in a new tab: http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches/r1-topple-discovery/index.html  (Click to shove; the cursor sets direction and strength.) Should anything from it carry into the army game?</p><p class="options">Options: Drop it · Keep toppling physics · Keep as a finisher</p><p class="answer">Drop it</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T04:31:03.363Z">Thu 5 Nov, 22:31</time></p>
+    <div class="q"><p class="question">Which city do you want to wreck? The mock shows one stomp frame drawn three ways: http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/mocks/outputs/mocks/r1-city-looks/index.html</p><p class="options">Options: A. Toy blocks · B. Neon night city · C. Papercraft diorama</p><p class="answer">B. Neon night city</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-06T04:36:26.075Z">Thu 5 Nov, 22:36</time></p>
+    <div class="q"><p class="question">Here&#39;s where we are: the army game from sketch 2 at full pressure, the stomp from sketch 1 (it felt heavy and great), a neon night city, and no topple chains. Next I&#39;d build three neon sketches: a longer, animated swipe you tune by feel; a breath-beam ranged attack; a thrown-debris ranged attack. I&#39;d also mock the title, HUD and game-over screens in neon. What next?</p><p class="options">Options: Build those (Recommended) · Write the bible now</p><p class="answer">Write the bible now</p></div>
+  </li><li>
+    <p class="who">Confirm asked · answered · <time datetime="2026-11-06T04:39:38.888Z">Thu 5 Nov, 22:39</time></p>
+    <div class="q"><p class="question">Start the Game forge run now? Bible: http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/bible/outputs/bible.md
+
+Game forge values:
+concept: Giant monster in a side-view neon night city. Walk, stomp buildings, swipe (~220 px reach), breath beam (~1.5 s cooldown) against tanks and helicopters. Health drains 4/s; buildings (+10) and units (+8) heal. Army 0.6/s ramping, none for 3 s, helicopters from 12 s. Stomp 140 px, shake 12, buildings 3 hits. Score is survival time plus destruction.
+scope: small arcade game, one refilling city strip played until death, 2-5 minutes, title and game-over screens with restart
+controls: keyboard and mouse; A/D walk, Space stomps, left-click swipes toward cursor, right-click or F fires the beam; touch nice-to-have
+audience: general
+style: neon night city, glowing outlines on dark with a perspective grid; palette #0b0720, #2a1b5e, #19f0ff, #ff2bd6, #fff04a, #6dff6d; monster outlined in lime #6dff6d
+ship-score: 80</p><p class="options">Options: Start Game forge now · Not yet</p><p class="answer">Start Game forge now</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/conversation/outputs/requests.json">Conversation · requests.json</a> <span class="type">49B</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/conversation/outputs/bible-draft.md">Conversation · bible-draft.md</a> <span class="type">9.0KB</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/conversation/outputs/decisions.md">Conversation · decisions.md</a> <span class="type">3.9KB</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/mocks/outputs/mocks">Mocks · mocks.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/mocks/outputs/mocks-report.md">Mocks · mocks-report.md</a> <span class="type">1.7KB</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches">Sketches · sketches.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/sketches/outputs/sketches-report.md">Sketches · sketches-report.md</a> <span class="type">3.4KB</span></li><li><span class="absent">Diagrams · diagrams.dir (absent)</span></li><li><span class="absent">Diagrams · diagrams-report.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/critic/outputs/gaps.md">Critic · gaps.md</a> <span class="type">2.2KB</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/critic/outputs/done.md">Critic · done.md</a> <span class="type">135B</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/bible/outputs/forge-values.json">Bible · forge-values.json</a> <span class="type">1.6KB</span></li><li><a href="http://localhost:4810/api/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/files/stages/confirm/outputs/confirm.md">Confirm · confirm.md</a> <span class="type">26B</span></li><li><span class="absent">Park the handoff · handoff.md (absent)</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Conversation</td><td>talk</td><td>done</td><td>opus</td><td>1 h 33 min</td><td>943K</td></tr>
+<tr><td>Mocks</td><td>samples</td><td>skipped</td><td>sonnet</td><td>0 s</td><td>202K</td></tr>
+<tr><td>Sketches</td><td>samples</td><td>skipped</td><td>sonnet</td><td>0 s</td><td>1.2M</td></tr>
+<tr><td>Diagrams</td><td>samples</td><td>skipped</td><td>sonnet</td><td>0 s</td><td>0</td></tr>
+<tr><td>Critic</td><td>review</td><td>done</td><td>opus</td><td>40 s</td><td>344K</td></tr>
+<tr><td>Bible</td><td>write</td><td>done</td><td>opus</td><td>54 s</td><td>205K</td></tr>
+<tr><td>Confirm</td><td>confirm</td><td>done</td><td>sonnet</td><td>7 min 42 s</td><td>138K</td></tr>
+<tr><td>Start Game forge</td><td>launch</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+<tr><td>Park the handoff</td><td>launch</td><td>skipped</td><td>script</td><td>0 s</td><td>0</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

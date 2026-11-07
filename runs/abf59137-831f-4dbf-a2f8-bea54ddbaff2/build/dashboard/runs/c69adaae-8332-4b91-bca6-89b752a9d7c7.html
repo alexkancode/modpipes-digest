@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 10:56</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">A topic expert agent pipeline, Topic expert forge, tested to v3</p>
+  <p class="summary">The pipeline builder was asked for a pipeline whose final product is an agent with deep knowledge of a topic, including images when needed. It tested Topic expert forge on two topics and left it at v3.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T16:56:54.222Z">Fri 6 Nov, 10:56</time></span><span>Finished <time datetime="2026-11-06T17:45:12.014Z">Fri 6 Nov, 11:45</time></span><span>48 min 18 s</span><span>9.2M tokens</span><span class="id">c69adaae-8332-4b91-bca6-89b752a9d7c7</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/run.json">http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/c69adaae-8332-4b91-bca6-89b752a9d7c7.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/k8n7vfc/outputs/lessons-learned-site.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>Please build a pipeline that produces as its final product an agent that has baked into it deep knowledge on a topic, including full images if needed (like an agent that deeply understands what is distinctive about &quot;animation pioneer Max Fleischer and animator Grim Natwick&quot; and how to honor those styles in new art)</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Topic expert forge: test report</h1>
+<p>Date: 2026-11-06. Pipeline <code>328fade8-8af3-4f62-a73b-095801c58efa</code>, now at v3. The test copy was <code>7449621d-fdb7-4917-b5e1-2ec1af5aad1e</code>, &quot;Topic expert forge (test)&quot;, with the loop cap cut from 3 to 2. The test copy is deleted, and its runs stay in history. Both runs used v1 prompts and models unchanged. Wall clock used: about 17 minutes of the 45.</p>
+<h2>What ran</h2>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>40e0f87a-4575-4027-a5ac-308e60621942</code></td>
+<td>topic: the Fleischer and Natwick topic from the understanding; max-images 6</td>
+<td>14m07s</td>
+<td>done, 100/100 in round 1</td>
+</tr>
+<tr>
+<td>Stress <code>bbc7a730-be57-4b94-8aa4-6eac4caf97af</code></td>
+<td>topic: CMOS hyphenation vs AP, with a curly apostrophe, double quotes, a section sign, a slash, an em dash and an ampersand; pass-score 95</td>
+<td>8m38s</td>
+<td>done, 100/100 in round 1</td>
+</tr>
+</tbody></table>
+<p>The stress run pushed three edges from the understanding:</p>
+<ul>
+<li>a text-only topic, which must skip both image stages</li>
+<li>punctuation that could break slug derivation or shell quoting</li>
+<li>a pass score high enough to force the loop to its cap</li>
+</ul>
+<p>Stage timings in the happy run:</p>
+<ul>
+<li>triage: 20 s</li>
+<li>research: 2 to 3 min in parallel</li>
+<li>image-scout: 8 min, slowed by Wikimedia rate limits</li>
+<li>image-fetch: 1 s</li>
+<li>writer (opus): 3 min</li>
+<li>examiner (opus): 2.5 min</li>
+</ul>
+<p>The nested probes cost 0.08 to 0.20 USD each.</p>
+<h2>What worked</h2>
+<p>All evidence below comes from files and transcripts, not stage summaries.</p>
+<ul>
+<li>Triage wrote clean slugs for both topics: <code>fleischer-natwick-style</code> and <code>cmos-hyphenation-vs-ap</code>. The punctuation caused no harm. <code>needs_images</code> was true for the Fleischer topic and false for CMOS.</li>
+<li>The conditions work. In the stress run, image-scout was skipped by the command condition and image-fetch by the <code>exists</code> condition. Writer, lint, examiner and install all ran without images. <code>lint.json</code> showed <code>has_images: false</code>.</li>
+<li>Every researcher did real research. Each made 6 to 15 Bash or WebFetch calls and wrote a dossier file. The dossiers total 9,796 words for the happy run and 6,094 for the stress run.</li>
+<li>Image-scout searched Commons, built seek-frame URLs, and probed every URL with HTTP 200. Before writing captions, the scout opened a montage of the frames with Read. Image-fetch kept 6 verified files and wrote <code>index.md</code>, <code>images.json</code> and <code>index.html</code>. The fetch also mirrored the folder to <code>/home/alex/.claude/agents/fleischer-natwick-style-images/</code>.</li>
+<li>The six captions match what each frame shows. I checked a contact sheet against <code>index.md</code>.</li>
+<li>Each writer produced a valid agent of 4,345 and 5,079 words. Lint passed both.</li>
+<li>The examiner method worked as designed. In both runs it took these steps:<ul>
+<li>built <code>exam/.claude/agents/&lt;slug&gt;.md</code></li>
+<li>ran three nested <code>claude -p --agent</code> probes, with zero errors and 1 to 6 turns each</li>
+<li>wrote <code>quiz.md</code> with sourced answers and two contested questions</li>
+</ul>
+</li>
+<li>The happy drawing <code>exam/drawing.png</code> is a real 960x720 grayscale piece in the style:<ul>
+<li>rubber-hose limbs</li>
+<li>props with faces</li>
+<li>cast shadows</li>
+</ul>
+</li>
+<li>The stress examiner swapped in a described-work critique and a practitioner brief, as the prompt asks for text topics.</li>
+<li>The expert score is earned on the stress topic. I asked the same six quiz questions to bare sonnet with no agent and <code>--setting-sources &quot;&quot;</code>. Sonnet got about 2.5 of 6 and declined to give the CMOS 18 paragraph, the AP dates and the 2019 reversal. The agent answered all six with sources.</li>
+<li>Install copied the agent and the images and wrote <code>install.json</code> with <code>passed: true</code> and <code>rounds: 1</code>. Handoff wrote a correct <code>handoff.md</code> with scores, paths, invocation lines and a drawing link.</li>
+</ul>
+<h2>Defects</h2>
+<h3>1. The scout files frames that show no trait as trait evidence</h3>
+<ul>
+<li>Evidence: <code>/home/alex/.modpipes/runs/40e0f87a-4575-4027-a5ac-308e60621942/stages/image-fetch/outputs/images/index.md</code>.</li>
+<li>Image 04, the &quot;Betty Boop design&quot; slot, is the Dizzy Dishes title card. The scout&#39;s seek=10 frame landed on the opening credits.</li>
+<li>Image 05, the &quot;Natwick&#39;s sensuous line&quot; slot, shows Bimbo at a counter.</li>
+<li>The kept set has no image of Betty Boop at all. The cause: image-fetch keeps the first candidate per trait, and the scout ordered guessed seek frames first.</li>
+<li>Fix in v2: the scout opens every frame and still with Read before listing it. The scout lists a candidate under a trait only when the image shows the trait. The scout leaves out title cards, credit frames and blank pages, and puts the clearest image per trait first.</li>
+<li>Status: unconfirmed.</li>
+</ul>
+<h3>2. The examiner gives full marks while naming a flaw, and the expert anchor has no measurement</h3>
+<ul>
+<li>Evidence: <code>/home/alex/.modpipes/runs/40e0f87a-4575-4027-a5ac-308e60621942/stages/examiner/outputs/scores.json</code>.</li>
+<li>The <code>round_note</code> reads &quot;Minor: drawn line is uniform weight, not visibly thick-and-thin&quot;, yet making scored 20/20.</li>
+<li>Both runs scored 100/100 in round 1, including the stress run at pass-score 95. The &quot;15: generic knowledge a model has without the file&quot; anchor has nothing to compare against.</li>
+<li>Fix in v3, in three parts:<ul>
+<li>The examiner asks the same quiz to a no-agent control and saves the answer as <code>exam/control.json</code>.</li>
+<li>An expert score above 28 needs the agent to beat the control by at least two answers.</li>
+<li>A flaw the examiner names costs the criterion points.</li>
+</ul>
+</li>
+<li>Status: unconfirmed. My manual control suggests the stress score would still pass, so v3 sharpens the gate rather than reversing a wrong verdict.</li>
+</ul>
+<h3>3. Minor, not fixed</h3>
+<ul>
+<li>The trait &quot;Music-synchronized performance&quot; got no image. Triage set <code>image_target</code> 6 against 7 traits, so the first-per-trait fetch ran out. One fix: triage sets the target to at least the trait count, capped by max-images.</li>
+<li>The scout wrote its scratch files under <code>/tmp/s</code> and <code>/tmp/f</code> instead of its work folder. The scratch files are harmless but leak outside the run.</li>
+<li>The handoff links use <code>../../examiner/outputs/...</code>. The links resolve on disk. Lesson 23 says such links may 404 in the web app. Not checked.</li>
+</ul>
+<h2>Versions</h2>
+<ul>
+<li><code>pipeline-versions/v1.json</code>: as built, and the version both runs used.</li>
+<li><code>pipeline-versions/v2.json</code>: the scout trait-fit fix.</li>
+<li><code>pipeline-versions/v3.json</code>: the examiner control probe and the deduction rule. Live now.</li>
+</ul>
+<p>Before each update, the voice audit reported 0 sentences over 25 words. <code>pipeline validate</code> answered ok. A fresh <code>pipeline show</code> matched the file for both v2 and v3.</p>
+<h2>Side effects on this machine</h2>
+<ul>
+<li><code>/home/alex/.claude/agents/fleischer-natwick-style.md</code> and <code>fleischer-natwick-style-images/</code> are installed. That agent is the product the user asked for, so I left both in place.</li>
+<li>I removed <code>/home/alex/.claude/agents/cmos-hyphenation-vs-ap.md</code>, which the stress run installed. Before removing it I confirmed the file was byte-identical to the starred copy at <code>bbc7a730.../stages/writer/outputs/agent.md</code>.</li>
+<li>The server build differs from the CLI build: the server runs 68ceb65 and the CLI runs b947484. Nothing failed because of the mismatch.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>The revision round has never run. In round 2 the writer resumes with <code>examiner.report</code>. Both runs passed round 1, so that path, and install and handoff on a failing agent, are untested.<ul>
+<li>To force round 2, use a test copy with pass-score 101 and cap 2.</li>
+<li>Then read <code>stages/writer/transcript.jsonl</code> for round 2 and <code>stages/examiner/rounds/1/</code>.</li>
+</ul>
+</li>
+<li>Confirm v2. Run the Fleischer topic with max-images 8. Open <code>image-fetch/outputs/images/</code> and check that no title card is kept and that a Betty Boop frame appears.</li>
+<li>Confirm v3. Check that <code>exam/control.json</code> exists. Check that <code>scores.json</code> names the control&#39;s count, and that any flaw named in the report costs points.</li>
+</ol>
+<p>Lessons recorded:</p>
+<ul>
+<li>one row in the real pipeline&#39;s <code>image-scout</code> table</li>
+<li>one row in the real pipeline&#39;s <code>examiner</code> table</li>
+<li>one timing row in this stage&#39;s table</li>
+<li>todo row 14 in <code>lessons__pipeline_builder_todos</code>, covering the open items above</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/kt6n75z/outputs/test-report.md</a></p></figure>
+<figure class="out"><h3>Analyse the test · lessons-learned-site<span class="type">html</span></h3><p class="desc">A static site: which changes improved the pipeline, why, and the evidence behind each claim</p><iframe src="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/k8n7vfc/outputs/lessons-learned-site.html" title="Analyse the test lessons-learned-site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/k8n7vfc/outputs/lessons-learned-site.html">http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/k8n7vfc/outputs/lessons-learned-site.html</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:58:46.784Z">Fri 6 Nov, 10:58</time></p>
+    <div class="q"><p class="question">What should the finished &quot;agent&quot; be, as files on disk? Facts in hand: a Claude Code skill is a folder (SKILL.md plus references/ and assets/) and can carry images inside; a subagent is one markdown file in ~/.claude/agents and cannot hold images itself, though modpipes can run a stage as any agent found there.</p><p class="options">Options: Skill folder + thin subagent (Recommended) · Skill folder only · Subagent only</p><p class="answer">Subagent only</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:01:24.584Z">Fri 6 Nov, 11:01</time></p>
+    <div class="q"><p class="question">When someone uses the finished agent, what should the agent do? This machine has Pillow and python3 but no image-generation model, ffmpeg or ImageMagick.</p><p class="options">Options: Advise, critique and brief (Recommended) · Advise and also draw · Advise only</p><p class="answer">The advise and also draw option with also asking the user to install certain things as necessary</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:02:44.576Z">Fri 6 Nov, 11:02</time></p>
+    <div class="q"><p class="question">Which images may the pipeline download into the agent&#39;s sidecar image folder? Facts in hand: Wikimedia Commons marks Fleischer stills whose copyright lapsed as public domain, the Internet Archive hosts about 22 public-domain Betty Boop shorts, the earliest Betty Boop entered the US public domain on 2026-01-01, and Fleischer Studios disputes the character&#39;s status.</p><p class="options">Options: Free licence only (Recommended) · Any image on the web · No downloads</p><p class="answer">Any image on the web</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:03:49.423Z">Fri 6 Nov, 11:03</time></p>
+    <div class="q"><p class="question">Where should the finished agent land when a run ends?</p><p class="options">Options: Install into ~/.claude/agents (Recommended) · Starred output only · Install, and a flag to skip</p><p class="answer">Install into ~/.claude/agents (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:04:42.201Z">Fri 6 Nov, 11:04</time></p>
+    <div class="q"><p class="question">How should a run prove the agent &quot;deeply understands&quot; before installing? A fresh-eyes examiner is a stage that runs the draft agent in a nested claude session with no pipeline context, quizzes it on the topic and on a new-art brief, and scores the answers; the loop rewrites the agent until the score passes or the round cap hits.</p><p class="options">Options: Examiner loop, unattended (Recommended) · Examiner loop + one checkpoint · No examiner</p><p class="answer">Examiner loop, unattended (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:05:27.914Z">Fri 6 Nov, 11:05</time></p>
+    <div class="q"><p class="question">Here is the picture. Result: one subagent file ~/.claude/agents/&lt;slug&gt;.md with the topic knowledge inline, plus a sidecar folder ~/.claude/agents/&lt;slug&gt;-images/ holding downloaded reference images (any web source, each with URL and caption in an index) and the agent pointing at them by absolute path. The agent advises, critiques new art against the style with the images open, writes briefs for artists and image generators, and draws new art itself as SVG or Pillow PNG, asking its user to install tools such as ImageMagick, ffmpeg or an image generator when a job needs them. Pipeline: topic is a required variable; a triage stage decides whether the topic needs images; parallel researchers build a sourced dossier; an image hunter downloads and annotates; a writer drafts the agent; a fresh-eyes examiner runs the draft in a nested claude with no pipeline context, quizzes it and asks it to draw once, and scores; the loop rewrites until the score passes or the round cap hits; the last stage installs and leaves starred copies. Test topic: Max Fleischer and Grim Natwick. No questions to you during a run. Is this right?</p><p class="options">Options: Yes, write it up · Mostly, with a change</p><p class="answer">Yes, write it up</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">7.5KB</span></li><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">473B</span></li><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">9.4KB</span></li><li><span class="absent">Research front-end approaches · frontend.md (absent)</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">7.1KB</span></li><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">7.7KB</span></li><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">3.0KB</span></li><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/c69adaae-8332-4b91-bca6-89b752a9d7c7/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">7.5KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>12 min 04 s</td><td>696K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>2 min 14 s</td><td>549K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>2 min 36 s</td><td>429K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>1 min 50 s</td><td>576K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>10 min 04 s</td><td>1.4M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>16 min 59 s</td><td>2.5M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>6 min 35 s</td><td>3.1M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

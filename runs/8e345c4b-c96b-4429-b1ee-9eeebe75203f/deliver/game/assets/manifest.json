@@ -1,0 +1,179 @@
+{
+  "sprites": [
+    {
+      "name": "frog",
+      "file": "frog.png",
+      "w": 20,
+      "h": 20,
+      "frames": 14,
+      "set": "entities",
+      "description": "Top-down frog, drawn at 2x (40x40 logical). Frames 0-6 face north (up), frames 7-13 are the same poses facing north-east; code gets all 8 directions by rotating these in 90-degree steps only (crisp). Pose order in each half: 0 sit (rounded-triangle body, splayed legs, belly highlight), 1 crouch (body 1-2 px wider and shorter, legs tucked), 2 air (legs trailing straight back, body slightly longer), 3 land (legs splayed wide, body flattened), 4 frosting (body half ice-tinted with white facet specks), 5 frozen (whole body ice/ice_edge, still ink-outlined, eyes closed), 6 dawn (arms/front legs raised, belly showing). Colours: frog body, frog_belly belly/throat, frog_shade on the back, ink 1 px outline on every frame including frozen. Pivot = frame centre (10,10). Mouth anchor for the tongue: (10,3) in north frames, (16,4) in north-east frames, rotated with the frame. Eyes are 2 bumps at the head with ink pupils."
+    },
+    {
+      "name": "pad",
+      "file": "pad.png",
+      "w": 32,
+      "h": 32,
+      "frames": 3,
+      "set": "entities",
+      "description": "Lily pad, a full circle filling the frame with a 60-degree wedge notch pointing east (+x); code scales it to 2r x 2r logical and rotates it so the notch points away from the pond centre. Frames: 0 open (pad fill, pad_shade vein lines radiating from centre, 1 px pad_rim on the outer edge), 1 cracked (open pad with ice_edge hairline cracks and a frost crust on the notch side, used as the warning overlay that code reveals in proportion to margin), 2 frozen (frozen_pad fill, straight-edged ice_edge facet lines, no pad_rim, angular crust on the edge). Each frame has a 1 px ink outline. Anything outside the circle is transparent."
+    },
+    {
+      "name": "firefly",
+      "file": "firefly.png",
+      "w": 9,
+      "h": 9,
+      "frames": 2,
+      "set": "entities",
+      "description": "Normal firefly, drawn at 2x (18x18 logical); the halo is the separate glow sprite. Centre pixel (4,4). Frames: 0 lit (3x3 firefly_core centre, firefly body pixels around it, 2 tiny wing pixels in wing colour up), 1 dim (core swapped to firefly, wings down). 1 px ink outline around the body. Code alternates frames for the irregular blink and the last-2-s blinking state."
+    },
+    {
+      "name": "golden",
+      "file": "golden.png",
+      "w": 11,
+      "h": 11,
+      "frames": 2,
+      "set": "entities",
+      "description": "Golden firefly, drawn at 2x (22x22 logical). Bigger than the normal one so it differs by size, not tint alone: 5x5 firefly_core centre at (5,5), golden body ring, 4 wing pixels. Frames: 0 lit wings up, 1 lit wings down (it never dims, it shimmers). 1 px ink outline. Code adds the orbiting sparkle trail."
+    },
+    {
+      "name": "ice_crystal",
+      "file": "ice_crystal.png",
+      "w": 8,
+      "h": 12,
+      "frames": 3,
+      "set": "entities",
+      "description": "One jagged ice spike for the inner edge of the ice ring, drawn at 2x (16x24 logical). Tip at the top centre (4,0), base along the bottom row. Three variants left to right: 0 narrow single spike, 1 double spike, 2 wide faceted wedge. Straight edges and 60-degree facets only, ice fill with an ice_edge lip on the tip side, no outline. Code places these around the ring with the base on radius R and the tip pointing at the pond centre, rotated per angle."
+    },
+    {
+      "name": "reeds",
+      "file": "reeds.png",
+      "w": 16,
+      "h": 32,
+      "frames": 3,
+      "set": "entities",
+      "description": "Reed and cattail silhouettes for the pond rim backdrop (J17), drawn at 2x. Three variants: 0 three thin reeds, 1 cattail with two reeds, 2 bent reed clump. Single flat colour reed, base on the bottom row, no outline. Low contrast by design; never brighter than a pad."
+    },
+    {
+      "name": "glow",
+      "file": "glow.png",
+      "w": 32,
+      "h": 32,
+      "frames": 3,
+      "set": "ui",
+      "description": "Soft radial glow for additive drawing (globalCompositeOperation 'lighter'), smooth gradient, not pixel art; code scales it to any radius. Alpha 1 at the centre falling to 0 at radius 16. Frames: 0 firefly tint (firefly at the centre, fading), 1 golden tint, 2 thaw tint (thaw colour) for catch bursts and the thaw band. Pre-baked so the hot loop never builds gradients."
+    },
+    {
+      "name": "sparkle",
+      "file": "sparkle.png",
+      "w": 7,
+      "h": 7,
+      "frames": 4,
+      "set": "ui",
+      "description": "Four-point twinkle, drawn at 2x. Frames: 0 gold large (plus shape, firefly_core centre, golden arms), 1 gold small (3 px cross), 2 frost large (ice_edge centre, ice arms), 3 frost small. Used for the golden trail (0-1), pad freeze and thaw-drip sparkles (2-3), and frog frosting."
+    },
+    {
+      "name": "ice_shard",
+      "file": "ice_shard.png",
+      "w": 6,
+      "h": 6,
+      "frames": 3,
+      "set": "ui",
+      "description": "Small angular ice fragment for the dawn shatter (J14) and the freeze rush (J13), drawn at 2x. Three variants: 0 triangle, 1 thin sliver, 2 rhombus. Ice fill, ice_edge on one face, no outline."
+    },
+    {
+      "name": "moon",
+      "file": "moon.png",
+      "w": 12,
+      "h": 12,
+      "frames": 1,
+      "set": "ui",
+      "description": "Moon for the sky-strip arc, drawn at 2x (24x24 logical). Round disc in moon with two moon_shade craters and a 1 px darker rim on the lower-left. No outline."
+    },
+    {
+      "name": "combo_badge",
+      "file": "combo_badge.png",
+      "w": 20,
+      "h": 12,
+      "frames": 4,
+      "set": "ui",
+      "description": "Combo badge next to the score, drawn at 2x (40x24 logical). Rounded rectangle (2 px corner) in hud_panel with a 1 px border, pixel-font text centred. Frames: 0 'x2', 1 'x3', 2 'x4', 3 'x5' (use a proper multiplication sign glyph). Border and text colour climb with the step: x2 hud_text, x3 firefly, x4 golden, x5 golden with firefly_core text. Hidden at x1. Code draws the 2 s drain ring under it."
+    },
+    {
+      "name": "btn_pause",
+      "file": "btn_pause.png",
+      "w": 20,
+      "h": 20,
+      "frames": 2,
+      "set": "ui",
+      "description": "Pause button, drawn at 2x (40x40 logical) at the top-right. Rounded square in hud_panel with a 1 px hud_text border. Frames: 0 pause glyph (two bars), 1 play glyph (triangle), both hud_text."
+    },
+    {
+      "name": "btn_mute",
+      "file": "btn_mute.png",
+      "w": 20,
+      "h": 20,
+      "frames": 2,
+      "set": "ui",
+      "description": "Mute toggle, drawn at 2x (40x40 logical) left of the pause button. Same frame as btn_pause. Frames: 0 sound on (speaker with two arcs), 1 muted (speaker with an x), both hud_text."
+    },
+    {
+      "name": "icon_snowflake",
+      "file": "icon_snowflake.png",
+      "w": 9,
+      "h": 9,
+      "frames": 1,
+      "set": "ui",
+      "description": "Six-armed snowflake warning icon, drawn at 2x (18x18 logical), shown above the frog while its pad is in warning. ice_edge arms with ink 1 px outline; code puts it on a warn-bordered round ink badge and pulses it at 1 Hz."
+    }
+  ],
+  "sfx": [
+    { "name": "hop", "description": "Take-off. Square duty 0.25, 520 -> 780 Hz exponential over 90 ms, attack 2 ms, decay 120 ms. Springy, light." },
+    { "name": "land", "description": "Plop on a pad. Triangle 180 -> 120 Hz over 60 ms plus a 40 ms band-passed noise plip at 900 Hz, gain 0.6 of hop." },
+    { "name": "snap", "description": "Tongue flick. Very short noise burst through a band-pass sweeping 2500 -> 1200 Hz over 50 ms, plus a 30 ms triangle tick at 1600 Hz. Quiet; it plays on every snap, hit or miss." },
+    { "name": "catch", "description": "Firefly chime. Square duty 0.5, 1050 Hz for 60 ms then up a fourth to 1400 Hz, punch from 1.4x gain to 1x in 10 ms, decay 180 ms. Code passes a rate of 2^(step/12) for combo step 0-4 (J5)." },
+    { "name": "golden", "description": "Golden catch arpeggio. Square duty 0.5, 784, 988, 1175, 1568 Hz at 50 ms each with a 250 ms tail on the last note, plus a triangle an octave down. About five times the catch in length and brightness." },
+    { "name": "combo", "description": "Combo-up at x3 and x5. Two quick triangle blips 1320 Hz then 1760 Hz, 45 ms each, layered under the catch." },
+    { "name": "thaw", "description": "Warm crackle when the thaw wave reaches the ice. Highpassed noise at 3 kHz with a fast random gain stutter over 120 ms, plus a sine 330 -> 440 Hz swell over 150 ms. Brighter than creak: warm means reward." },
+    { "name": "creak", "description": "One ice creak, 90 ms: triangle 110 Hz with slight pitch wobble plus a 50 ms highpassed noise crackle at 5 kHz, gain 0.25. Code repeats it while the frog's pad warns, every 0.6 s at 3 s margin down to every 0.2 s near 0, with rate rising from 1 to 1.5." },
+    { "name": "freeze", "description": "Any pad freezing (J11). Three descending triangle blips 880, 660, 440 Hz at 50 ms each plus a crackle. Quiet; pads freeze often." },
+    { "name": "unfreeze", "description": "A frozen pad thawing. Two rising sine drips 600 -> 900 Hz and 800 -> 1200 Hz, 60 ms each, 70 ms apart, soft." },
+    { "name": "frozen", "description": "Lose. Triangle arpeggio 523, 392, 330, 262 Hz at 140 ms each through a lowpass closing 4000 -> 800 Hz, with a soft noise wash under it. Falling minor." },
+    { "name": "dawn", "description": "Win. Square arpeggio 523, 659, 784, 1047 Hz at 90 ms each, then all four held as a major chord with triangle doubling, decay 600 ms." },
+    { "name": "nope", "description": "Refused hop or click. Low croak: square duty 0.5 at 140 Hz with a 30 Hz vibrato, two 60 ms pulses 40 ms apart, lowpass 900 Hz." },
+    { "name": "expire", "description": "A firefly fades out uncaught. Sine 1318 -> 660 Hz over 250 ms, 10 ms attack, 280 ms decay, gain 0.05; goldens get code rate 0.8." },
+    { "name": "spawn", "description": "Quiet ting for tame firefly #1 and goldens. Sine 2093 Hz, 8 ms attack, 300 ms decay, gain 0.15; goldens get code rate 1.26." },
+    { "name": "click", "description": "UI select (start, restart, pause, mute). Square 1200 Hz, 40 ms, highpass 300 Hz." }
+  ],
+  "palette": {
+    "deep": "#060D18",
+    "water": "#0E2236",
+    "water_ripple": "#1D3B57",
+    "reed": "#13283A",
+    "sky": "#0B1026",
+    "sky_dawn": "#3A2A4A",
+    "dawn": "#F6A76B",
+    "moon": "#F1EBD0",
+    "moon_shade": "#C9C2A4",
+    "pad": "#3F7F4C",
+    "pad_shade": "#2F6340",
+    "pad_rim": "#86C46E",
+    "frozen_pad": "#6E9FB4",
+    "frog": "#7EE05C",
+    "frog_shade": "#58B846",
+    "frog_belly": "#CDE69A",
+    "ink": "#0A1220",
+    "tongue": "#FF7AA8",
+    "firefly": "#FFC23D",
+    "firefly_core": "#FFF8D6",
+    "wing": "#9FB7C9",
+    "golden": "#FFB02E",
+    "ice": "#9FD3EC",
+    "ice_edge": "#E4F6FF",
+    "thaw": "#FFD27A",
+    "warn": "#FF8A5C",
+    "invalid": "#B07A86",
+    "hud_text": "#F4F1E4",
+    "hud_panel": "#0A1220"
+  }
+}

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 11:23</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">A stage-splitting analysis pipeline, Stage splitter, built and tested to v4</p>
+  <p class="summary">The pipeline builder was asked for a pipeline that reads a past run and finds stages that could split into parallel stages. The user chose an analysis report as the deliverable, and the builder tested Stage splitter and left it at v4.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T17:23:13.432Z">Fri 6 Nov, 11:23</time></span><span>Finished <time datetime="2026-11-06T18:29:10.707Z">Fri 6 Nov, 12:29</time></span><span>1 h 05 min</span><span>11.2M tokens</span><span class="id">a683caae-813e-4ed4-9c69-e30400cf7137</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/run.json">http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/a683caae-813e-4ed4-9c69-e30400cf7137.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/k8n7vfc/outputs/lessons-learned-site.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>Please build a pipeline that can read a previous pipeline run and analyze where a single stage can be split into two or more parallel stages conceptually</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Test report: Stage splitter</h1>
+<ul>
+<li>Pipeline: <code>752f54e9-31fe-4982-ad7c-8337eafba6b3</code>. It was tested at v1 and left at v4.</li>
+<li>Test copy: <code>8d627fbe-7995-4407-a3d9-9e0fed18720e</code>, &quot;Stage splitter (test)&quot;, with the judge-loop cap cut from 3 to 2. The copy is now deleted.</li>
+<li>Date: 2026-11-06, 12:01 to about 12:22 CST. Two runs, started together at 18:02:06Z.</li>
+<li>Versions: <code>pipeline-versions/v1.json</code> to <code>v4.json</code>, with one note per version in <code>pipeline-versions/NOTES.md</code>.</li>
+<li>Builder todos: none of the 16 open rows concerned Stage splitter, so none was closed.</li>
+</ul>
+<h2>What ran</h2>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Input</th>
+<th>Floors</th>
+<th>Took</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>happy <code>07ed9536-b380-4444-9524-1f5540cb6114</code></td>
+<td>Game forge run <code>8f2a5b1a</code> (14 stages, 2 loop rounds, 1 restarted stage)</td>
+<td>default 60 s, 15 %</td>
+<td>4m55s</td>
+<td>No split endorsed. Build skipped. Report says nothing saved.</td>
+</tr>
+<tr>
+<td>stress <code>b411a216-f366-45e8-8918-aba092880b4b</code></td>
+<td>Credit repair run <code>02e98ac7</code> (4-round loop, interactive interviewer)</td>
+<td>10 s, 3 %</td>
+<td>7m53s</td>
+<td><code>playbook</code> split into three. Skeptic passed in round 1. The build saved <code>ca9e8735</code>, which I deleted after the read.</td>
+</tr>
+</tbody></table>
+<p>The stress run pushes four edges the understanding names: a looped span with a 4-round stage, a split whose consumers sit inside that loop, the build path with rewiring, and low floors.</p>
+<p>Stage times, from the <code>result</code> lines in each transcript:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>happy</th>
+<th>stress</th>
+<th>Tool calls (happy / stress)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>gather (script)</td>
+<td>0.6 s</td>
+<td>0.3 s</td>
+<td>none</td>
+</tr>
+<tr>
+<td>prompt-lens</td>
+<td>59 s</td>
+<td>43 s</td>
+<td>Bash 3 + Write 1 / Bash 3 + Write 1</td>
+</tr>
+<tr>
+<td>transcript-lens</td>
+<td>158 s</td>
+<td>137 s</td>
+<td>Bash 12 + Write 1 / Bash 8 + Write 1</td>
+</tr>
+<tr>
+<td>output-lens</td>
+<td>91 s</td>
+<td>62 s</td>
+<td>Bash 6 + Write 1 / Bash 5</td>
+</tr>
+<tr>
+<td>judge (opus)</td>
+<td>90 s</td>
+<td>112 s</td>
+<td>Bash 7 / Bash 6, Read 1, Write 1</td>
+</tr>
+<tr>
+<td>skeptic</td>
+<td>14 s</td>
+<td>88 s</td>
+<td>Bash 2 / Bash 9</td>
+</tr>
+<tr>
+<td>build-split (opus)</td>
+<td>skipped</td>
+<td>about 2 min</td>
+<td>none / 11 Bash, including 2 validates and 1 create</td>
+</tr>
+<tr>
+<td>report</td>
+<td>30 s</td>
+<td>about 30 s</td>
+<td>Bash 2 / Bash</td>
+</tr>
+</tbody></table>
+<h2>What worked</h2>
+<ul>
+<li>Gather is fast and complete. It produces 14 and 11 timelines, the critical path and the candidates in under a second.</li>
+<li>The lenses read evidence, not prose. The stress transcript-lens named cluster times (c10 93.6 s, synthesis 147 s) and caught the interviewer&#39;s human chain. The happy prompt-lens flagged that <code>art</code>&#39;s 919 s was mostly stopped time.</li>
+<li>The judge shows every term of the saving arithmetic. It multiplies looped stages by their launches and keeps interactive and looped stages for the right reasons.</li>
+<li>The skeptic did real work on the stress split. It ran 9 Bash calls over the raw transcript and found a missed wave-2 fetch (c14). It halved the saving to about 55 s and still passed, because 55 s clears the floor. The report shows both figures.</li>
+<li>The build applies the split to the run&#39;s definition, rewires six consumers and leaves the interview loop intact. It validates, fixes its own <code>invalid_format</code> codes, validates again and saves with <code>pipeline create</code>. It copied 13 lesson rows. The original Credit repair pipeline <code>46bea631</code> is untouched: its <code>updatedAt</code> is still 2026-11-03.</li>
+<li>The empty-endorsed path works end to end. The skeptic writes <code>SKEPTIC-PASS</code> in 14 s, the build condition skips the build, and the report says nothing was saved.</li>
+<li>The new stage prompts in the saved split pass the voice audit. All 30 long sentences in the audit of <code>ca9e8735</code> come from the source Credit repair prompts.</li>
+</ul>
+<h2>Defects and fixes</h2>
+<h3>1. The percent floor made the known answer impossible (v3, unconfirmed)</h3>
+<ul>
+<li>Evidence: <code>~/.modpipes/runs/07ed9536-b380-4444-9524-1f5540cb6114/stages/judge/outputs/verdicts.md</code>, lines 4 and 29 to 37.</li>
+<li>The floor is 15 % of the sum of group wall-clocks. On Game forge that sum is 4232 s, so the floor is 634.8 s. The lead of <code>game</code> is 632 s, so no split of <code>game</code> could pass. The plan names that split as the known answer.</li>
+<li>Fix: <code>min-saving-percent</code> now defaults to 5. The variable description warns that above 10 % a long run can endorse nothing.</li>
+<li>Status: unconfirmed. No run used the new default. The judge&#39;s 422 s saving for <code>game</code> is 10 %, which clears 5 %. The judge also called the seam &quot;not unanimous&quot;, so the outcome under v3 is still open.</li>
+</ul>
+<h3>2. Gather ranked a restarted stage by elapsed time (v2, verified offline, unconfirmed in a run)</h3>
+<ul>
+<li>Evidence: <code>~/.modpipes/runs/07ed9536-b380-4444-9524-1f5540cb6114/stages/gather/outputs/summary.json</code>. <code>art</code> shows <code>lastSeconds</code> 919 and <code>workSeconds</code> 278, yet <code>leadSeconds</code> 622 and <code>candidate</code> true. <code>perf</code> (296 s of work) was marked slack.</li>
+<li>Fix: <code>gather.mjs</code> adds <code>busySeconds</code>. The field is the last launch for looped stages and the summed work for others. Lead, slack, the group wall and the critical path now use <code>busySeconds</code>.</li>
+<li>Offline check: I ran the stored command through bash on both source runs, with exit 0 each time. <code>art</code> drops to lead −18 and <code>perf</code> becomes the Understand candidate. The Credit repair candidates are unchanged.</li>
+<li>Status: unconfirmed in a run. The judge in v1 had already worked around the problem by reading the elapsed note, so the run&#39;s verdict was not wrong.</li>
+</ul>
+<h3>3. The judge wrote output names the validator rejects (v4, unconfirmed)</h3>
+<ul>
+<li>Evidence: <code>~/.modpipes/runs/b411a216-f366-45e8-8918-aba092880b4b/stages/build-split/outputs/build-notes.md</code>, section Validator codes. There were 15 <code>invalid_format</code> codes for <code>playbook_scoring</code> and similar names.</li>
+<li>Fix: the judge prompt asks for a kebab-case output name.</li>
+<li>Status: unconfirmed. The build recovered by itself, so the defect cost one validate round, not a failure.</li>
+</ul>
+<h3>4. Consumer prompts still named the old output (v4, unconfirmed)</h3>
+<ul>
+<li>Evidence: the same <code>build-notes.md</code>, section Prompt edits. Six consumers say &quot;the playbook&quot; but now receive two or three files.</li>
+<li>Fix: the judge adds a consumer edit for each consumer whose prompt names the old output. The edit is one sentence that names the replacement outputs, and it goes in <code>promptEdits</code>, which the build stage already applies.</li>
+<li>Status: unconfirmed.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Start v4 on Game forge run <code>8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd</code> with default floors. Read <code>judge/outputs/splits.json</code>. If <code>game</code> is kept only because of the seam leak, the rule that all three lenses must agree may be too strict. Compare with the hand-made Game forge v2 split, <code>ed5d719e-f049-4874-bdeb-5352aa6a888f</code>.</li>
+<li>In the same run, confirm that <code>summary.json</code> names <code>perf</code>, not <code>art</code>, as the Understand candidate.</li>
+<li>Rerun the stress input on v4 and confirm that the build validates on its first try and that <code>promptEdits</code> holds consumer sentences.</li>
+<li>Delete any &quot;(split)&quot; pipeline a test saves. The build also copies lesson rows into the new pipeline&#39;s tables.</li>
+</ol>
+<p>These steps are recorded as a row in <code>lessons__pipeline_builder_todos</code>. Two judge lessons went to the real pipeline&#39;s judge table, and one timing lesson went to this stage&#39;s table.</p>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/kt6n75z/outputs/test-report.md</a></p></figure>
+<figure class="out"><h3>Analyse the test · lessons-learned-site<span class="type">html</span></h3><p class="desc">A static site: which changes improved the pipeline, why, and the evidence behind each claim</p><iframe src="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/k8n7vfc/outputs/lessons-learned-site.html" title="Analyse the test lessons-learned-site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/k8n7vfc/outputs/lessons-learned-site.html">http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/k8n7vfc/outputs/lessons-learned-site.html</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:25:17.847Z">Fri 6 Nov, 11:25</time></p>
+    <div class="q"><p class="question">When a run of the new pipeline finishes, what should it hand you? The input is a past run id; the pipeline reads that run&#39;s definition, prompts, stage timings, token usage, outputs and transcripts, then judges each stage for a parallel split.</p><p class="options">Options: Analysis report only (Recommended) · Report plus a draft pipeline JSON · Report plus the split pipeline saved · Report, saved split, and a timed comparison run</p><p class="answer">Report plus the split pipeline saved</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:28:52.312Z">Fri 6 Nov, 11:28</time></p>
+    <div class="q"><p class="question">When the report finds more than one stage worth splitting, which splits go into the saved pipeline?</p><p class="options">Options: Every split the report endorses (Recommended) · Only the single best split</p><p class="answer">Every split the report endorses (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:35:29.656Z">Fri 6 Nov, 11:35</time></p>
+    <div class="q"><p class="question">Does this match what you want? You start the pipeline with a past run id. It reads that run from ~/.modpipes/runs/&lt;id&gt;: the pipeline definition and prompts in run.json, each stage&#39;s wall-clock and token usage in status.json, each stage&#39;s context.md, outputs and transcript.jsonl (tool calls with timestamps). For every model stage it judges whether the work splits into two or more independent parallel stages: evidence from the prompt (independent asks), the transcript (tool-call clusters that never read each other&#39;s writes), the outputs (independent sections or files) and the timeline (how long each cluster took). It writes one report ranking stages by expected wall-clock saving, each with a verdict, the proposed stages with inputs, outputs and merge, the evidence, and the risks, including the extra context cost of more stages. Then it builds the split pipeline with every endorsed split applied, validates it, and saves it to modpipes as a new pipeline named &#39;&lt;original&gt; (split)&#39;; the original stays untouched. Script stages are reported but never split. If no stage is worth splitting, the report says so and nothing is saved. No comparison run.</p><p class="options">Options: Yes, build that · Yes, with a change</p><p class="answer">Yes, build that</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">6.9KB</span></li><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">551B</span></li><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">9.0KB</span></li><li><span class="absent">Research front-end approaches · frontend.md (absent)</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">5.7KB</span></li><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">8.4KB</span></li><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">3.6KB</span></li><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/a683caae-813e-4ed4-9c69-e30400cf7137/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">9.6KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>24 min 16 s</td><td>575K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>1 min 25 s</td><td>457K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 11 s</td><td>338K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>1 min 49 s</td><td>704K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>12 min 00 s</td><td>1.9M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>19 min 40 s</td><td>3.6M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>8 min 12 s</td><td>3.6M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

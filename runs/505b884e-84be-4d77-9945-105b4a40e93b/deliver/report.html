@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Game forge iterate (test) · report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="report.md">Raw markdown</a></p><h1>Neon Kaiju: delivery report</h1>
+<h2>The game</h2>
+<p>Neon Kaiju is a side-view neon night-city arcade game on a 640×360 canvas. You are a giant monster whose health drains at 4/s. Collapsing buildings and power towers, and killing tanks and helicopters, heal you. The army ramps up until it overwhelms you. Score is 100 per second survived plus destruction points × combo. Plain Canvas 2D, no build step.</p>
+<p>Source run: <code>8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd</code> (this run: <code>505b884e-84be-4d77-9945-105b4a40e93b</code>).</p>
+<p>Play: <a href="http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html">http://localhost:4810/api/runs/505b884e-84be-4d77-9945-105b4a40e93b/files/stages/deliver/outputs/game/index.html</a></p>
+<h2>How to play</h2>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A / ← , D / →</td>
+<td>Walk</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>Stomp (140 px radius, hits buildings and tanks)</td>
+</tr>
+<tr>
+<td>Left-click</td>
+<td>Swipe toward the cursor (hits buildings, tanks, helicopters)</td>
+</tr>
+<tr>
+<td>Right-click or F</td>
+<td>Breath beam toward the cursor (1.8 s cooldown)</td>
+</tr>
+<tr>
+<td>Esc / P</td>
+<td>Pause</td>
+</tr>
+<tr>
+<td>Click or Space</td>
+<td>Start / restart</td>
+</tr>
+<tr>
+<td>Touch</td>
+<td>Left walk pad, STOMP and BEAM buttons, tap to swipe</td>
+</tr>
+</tbody></table>
+<p>Health starts at 80 (max 100). A building heals +10, a power tower +20, a tank or helicopter +8. A building takes 3 hits.</p>
+<h2>Rounds</h2>
+<h3>Round 1: Stomp impact</h3>
+<ul>
+<li>User said: &quot;The monster feels sluggish to move and the stomp lands late. Make it snappier.&quot; Then: &quot;The stomps were shaking the screen too much, let&#39;s eliminate screen shake and just have the environment react&quot; (&quot;all of the above&quot;). They also said the health-drain tension was too hard for the first level.</li>
+<li>Changed: <code>stomp.windup</code> 0.14 → 0.07 s; <code>monster.speed</code> 90 → 135; <code>monster.stride</code> 0.5 → 0.34 s; <code>fx.shakeCap</code> 20 → 0; <code>beam.rumble</code> 2 → 0. Added a <code>quake</code> block: nearby buildings sway, antennas rattle and a cyan ground pulse runs out. Files: src/config.js, city.js, monster.js, render.js.</li>
+<li>Next the user said: easier early game, dying in the first 40 s, lever = slower damage ramp.</li>
+</ul>
+<h3>Round 2: Easier first 40 s</h3>
+<ul>
+<li>Changed: <code>army.tank.dmgStart</code> 4 → 2; <code>army.tank.dmgRamp</code> 75 → 90 s; <code>army.heli.dmgStart</code> 1.5 → 0.75; <code>army.heli.dmgRamp</code> 75 → 90 s. Only src/config.js.</li>
+<li>Next the user said: &quot;Done, the game is right.&quot;</li>
+</ul>
+<h2>Keep list</h2>
+<ul>
+<li>Snappier stomp and speed (stomp.windup 0.07 s, monster.speed 135, monster.stride 0.34 s)</li>
+<li>No screen shake (fx.shakeCap 0, beam.rumble 0); city sway and cyan ground pulse stay</li>
+<li>Hit-stop freezes (stomp 60 ms, collapse 80/100 ms, death 120 ms)</li>
+<li>Gentler army ramp (tank dmgStart 2, heli dmgStart 0.75, both dmgRamp 90 s)</li>
+</ul>
+<h2>Final verify</h2>
+<p>PASS: 60 fps (worst frame 16.8 ms), keyboard start inside the sandboxed frame, 0 console errors, 0 failed requests. Re-run on the delivered folder: PASS.</p>
+<h2>What is left</h2>
+<p>Out-of-scope wishes: none recorded.
+Notes left for the next round:</p>
+<ul>
+<li>Window-light flicker on impact is not built.</li>
+<li>The death-cause text says &quot;Starved&quot; even when army damage was the real cause.</li>
+<li>No bot harness (play.mjs) exists, so novice survival time is unmeasured.</li>
+</ul>
+<h2>How to continue</h2>
+<p>Start this pipeline again with <code>source-run</code> set to <code>505b884e-84be-4d77-9945-105b4a40e93b</code>.</p>
+</body></html>

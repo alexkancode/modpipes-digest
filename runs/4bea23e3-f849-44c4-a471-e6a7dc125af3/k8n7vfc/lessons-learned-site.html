@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChatGPT ad plan: what improved the pipeline, and why</title>
+<style>
+:root{--bg:#0f1115;--fg:#e7e9ee;--mut:#9aa1ad;--line:#262a33;--card:#161a21;--ok:#5fd39a;--warn:#f2c14e;--bad:#ff7a7a;--acc:#8ab4ff}
+@media (prefers-color-scheme:light){:root{--bg:#fbfbfc;--fg:#16181d;--mut:#5b6270;--line:#e2e4e9;--card:#fff;--ok:#11804b;--warn:#8a6100;--bad:#b42318;--acc:#2456c9}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:52rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+h1{font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;margin:0 0 .5rem}
+h2{font-size:1.25rem;margin:2.75rem 0 .75rem;padding-top:.5rem;border-top:1px solid var(--line)}
+h3{font-size:1.05rem;margin:1.5rem 0 .4rem}
+p,li{max-width:46rem}
+.lede{color:var(--mut);margin:0 0 1.5rem}
+nav.toc{display:flex;flex-wrap:wrap;gap:.4rem .9rem;font-size:.9rem;margin:1rem 0 0}
+a{color:var(--acc)}
+code{font:.86em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 .3em;word-break:break-all}
+table{width:100%;border-collapse:collapse;margin:.75rem 0 1rem;font-size:.92rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--line)}
+th{color:var(--mut);font-weight:600}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.15rem;margin:1rem 0}
+.tag{display:inline-block;font-size:.75rem;font-weight:600;border-radius:999px;padding:.05rem .55rem;border:1px solid currentColor;white-space:nowrap}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}.mut{color:var(--mut)}
+ul.ev{font-size:.88rem;color:var(--mut);margin:.4rem 0 0;padding-left:1.1rem}
+.wrap{overflow-x:auto}
+</style>
+</head>
+<body>
+<main>
+<h1>ChatGPT ad plan: what improved the pipeline, and why</h1>
+<p class="lede">Analysis of tester stage <code>kt6n75z</code> in run <code>4bea23e3</code>, 2026-11-06. Pipeline <code>b9afa7ec-8375-40a9-bb31-cd7aefffa6cf</code>, stored at v2. Every claim below was checked against the test runs' own files, not the test report.</p>
+
+<div class="card">
+<strong>In short.</strong>
+<ul>
+<li>The result that improved was round 2 of the polish loop. Round 1 failed page-check in both runs; round 2 passed every check in both.</li>
+<li>The loop stop that requires both gates caused the improvement. The critic alone would have shipped both broken round-1 pages.</li>
+<li>The Tester's v1 and v2 edits move three of round 2's fixes into the prompts. No run has used v1 or v2 yet, so their effect is predicted, not measured.</li>
+<li>Round 1 had two more causes the Tester missed: a reload that kept the URL hash, and Copied shown only in a live region. v1 and v2 cover neither one, so a v2 run will likely still fail round 1. Todo 8 now asks for a v3 that covers both.</li>
+</ul>
+</div>
+
+<nav class="toc" aria-label="Sections">
+<a href="#runs">The runs</a><a href="#improved">What improved, and why</a><a href="#causes">Round-1 causes</a><a href="#versions">The versions</a><a href="#tester">Tester claims, checked</a><a href="#time">Where the time went</a><a href="#saved">Lessons and todos</a>
+</nav>
+
+<h2 id="runs">The runs</h2>
+<p>Both runs ran on test copy <code>0ff58442</code>, with the polish loop capped at 2 rounds. Prompts and models matched v0.</p>
+<div class="wrap"><table>
+<tr><th>Run</th><th>Input</th><th>Wall clock</th><th>Round 1</th><th>Round 2 (final)</th></tr>
+<tr><td>Happy <code>9f53bf42</code></td><td>dirslides-correct, defaults</td><td class="n">26m37s</td><td><span class="bad">check 11 of 24 failed</span>; critic ship 84</td><td><span class="ok">check 24 of 24</span>; critic ship 87</td></tr>
+<tr><td>Stress <code>f59b67ea</code></td><td>bookrender, budget 120 USD, a positioning the repo does not build</td><td class="n">22m49s</td><td><span class="bad">check 14 of 23 failed</span>; critic ship 82</td><td><span class="ok">check 23 of 23</span>; critic ship 86</td></tr>
+</table></div>
+<ul class="ev">
+<li>Round reports: <code>~/.modpipes/runs/&lt;run&gt;/stages/page-check/rounds/1/report.json</code> and <code>outputs/report.json</code>. Verdicts: <code>stages/page-critic/rounds/1/verdict.json</code> and <code>outputs/verdict.json</code>.</li>
+<li>Output tokens: happy 151,659, stress 132,613. Usage comes from <code>modpipes runs --json</code>.</li>
+<li>The v1 note says the stress run failed 13 checks. Its round-1 report holds 14 failures.</li>
+</ul>
+
+<h2 id="improved">What improved, and why</h2>
+
+<h3>1. The two-gate loop stop <span class="tag ok">confirmed, 2 of 2</span></h3>
+<p>The polish loop stops only when <code>report.json</code> says ok and <code>verdict.json</code> says ship. In round 1 the critic shipped both pages, at 84 and 82, with zero blockers. The checker failed 11 and 14 checks on those same pages. The stop condition forced round 2, and round 2 fixed every failure from the report.</p>
+<p><strong>Why it works:</strong> the critic reads screenshots and cannot click through a frame. The checker clicks, reloads and frames the page. Each gate catches failures the other cannot see.</p>
+
+<h3>2. Round 2 reading the report <span class="tag ok">confirmed, 2 of 2</span></h3>
+<p>The page prompt says to fix every failed check first when a report is present. Diffing each run's round-1 page against its final page shows a fix for every failure:</p>
+<ul>
+<li>Stress: the Next links gained <code>data-next</code>, and each screen gained <code>data-screen</code>.</li>
+<li>Happy: the h2 text was renamed to "Setup at ads.openai.com" and "Tracking". No <code>data-screen</code> was added. The page now opens step 1 on a reload. It now writes Copied on the button and skips the clipboard call in the frame. Images load eagerly.</li>
+</ul>
+<p>The two pages fixed the same check in two ways, matching whichever guess that run's checker made. That points to the root cause below.</p>
+
+<h3>3. v1 contract hooks: <code>data-screen</code>, <code>data-next</code>, <code>data-back</code> <span class="tag warn">predicted, likely</span></h3>
+<p>No run has used v1. Both generated checkers already query <code>[data-next]</code> first and include <code>dataset.screen</code> in their screen label. A v1 page that follows the contract should therefore satisfy any checker built the way these two were. The v1 toolkit prompt still describes checks as "clicking Next" and "the creatives, setup and tracking screens". It never names the selectors, so a future checker could still guess differently.</p>
+<ul class="ev"><li><code>check.cjs:80</code> in happy and <code>check.cjs:59</code> in stress, under <code>stages/toolkit/outputs/tools/</code>, hold the locators. <code>check.cjs:178</code> and <code>:177</code> build the screen labels.</li></ul>
+
+<h3>4. v1 framed clipboard rule <span class="tag warn">predicted, likely</span></h3>
+<p>Both round-1 pages called <code>navigator.clipboard</code> inside the sandboxed frame. The browser logged a Permissions-policy console error, and the no-errors check failed in framed mode in both runs. The happy round-2 page skipped the call when sandboxed and passed. v1 states the same rule in the shared prompt.</p>
+
+<h3>5. v1 copywriter <code>targetUrl</code> without a query string <span class="tag warn">predicted</span></h3>
+<p>The happy copywriter wrote <code>https://instideck.com/?utm_source=chatgpt&amp;…&amp;utm_term={ad_id}</code>. The ad plan wrote <code>/chatgpt?utm_term=A</code>. The page used the plan's URLs, so the user never saw the conflict. The stress copywriter wrote null, which was correct because there is no live URL. v1 gives tracking to ad-plan alone. That removes one of the two sources of truth.</p>
+
+<h3>6. v2 eager images <span class="tag warn">predicted, likely</span></h3>
+<p>The happy round-1 page had five <code>loading="lazy"</code> images. In framed mode all five read <code>naturalWidth 0</code> on hidden screens. The final page dropped the attribute and passed. v2 forbids lazy loading in the page prompt.</p>
+
+<h2 id="causes">Round-1 causes, and what covers each one</h2>
+<div class="wrap"><table>
+<tr><th>Cause</th><th>Runs</th><th>Evidence</th><th>Covered by</th></tr>
+<tr><td>Next control not findable: <code>&lt;a class="btn"&gt;Next: audience&lt;/a&gt;</code>, no <code>data-next</code>, and the checker's text fallback only matched buttons</td><td>stress</td><td>Every walk failed with <code>locator.click: Timeout 3000ms</code>. The Tester's Playwright probe found 0 visible <code>[data-next]</code>.</td><td><span class="ok">v1</span></td></tr>
+<tr><td>Reload kept <code>#step-7</code>, so every walk after the first began on step 7</td><td>happy</td><td>The click walk passed. Each later walk failed with "step-1 not reachable via keys/click (after step 0)". Navigation code was identical in both rounds. The only new round-2 block was commented "a reload starts over at step 1".</td><td><span class="bad">nothing yet</span>, todo 8</td></tr>
+<tr><td>Copied shown only in an aria-live region; both checkers read the button's own text</td><td>both</td><td>The page prompt says "Confirm with the word Copied in an aria-live region". Round-1 stress <code>copy()</code> calls only <code>say()</code>. Both final pages set <code>btn.textContent = 'Copied'</code>.</td><td><span class="bad">nothing yet</span>, todo 8</td></tr>
+<tr><td>No screen labelled setup or tracking (h2 text was "Set up, in this order" and "Count every paid visit")</td><td>both</td><td>"no setup screen found; no tracking screen found". Stress also reported "no creative screen".</td><td><span class="ok">v1</span></td></tr>
+<tr><td>Clipboard API called inside the frame</td><td>both</td><td>Framed console error: "Permissions policy violation: The Clipboard API has been blocked".</td><td><span class="ok">v1</span></td></tr>
+<tr><td>Lazy images on hidden screens</td><td>happy</td><td>Framed: "./c1.png: naturalWidth 0 != 1024" for all five.</td><td><span class="ok">v2</span></td></tr>
+</table></div>
+<p><strong>Root cause behind all six:</strong> the toolkit stage writes <code>check.cjs</code> fresh in each run, and a different model stage writes the page. Any hook the shared contract leaves unnamed gets guessed twice, once by each stage. The two runs' checkers even named their checks differently: 24 checks in one, 23 in the other. The durable fix is a contract that names every selector and state the checker tests, repeated line by line in the toolkit prompt.</p>
+
+<h2 id="versions">The versions</h2>
+<div class="wrap"><table>
+<tr><th>Version</th><th>Change</th><th>Diffed against</th><th>Status</th></tr>
+<tr><td>v0</td><td>Plan stage output</td><td><code>kt6n75z/work/v0-real.json</code></td><td>Tested in both runs, on a copy with rounds 3 → 2. That cap is the copy's only difference from v0.</td></tr>
+<tr><td>v1</td><td>Contract adds <code>data-screen</code> order, <code>data-next</code>, <code>data-back</code>, and the framed clipboard skip. Copywriter <code>targetUrl</code> has no query string.</td><td>v0</td><td>Saved 17:14:42, before the Tester read the happy round-1 report at 17:20:35.</td></tr>
+<tr><td>v2</td><td>Page prompt: images load eagerly, with the reason.</td><td>v1</td><td>Stored copy equals v2. No run since.</td></tr>
+</table></div>
+<ul class="ev">
+<li>The <code>plan/work/gen.py</code> generator holds neither edit. Grep for <code>data-screen</code> and <code>loading=lazy</code> returns 0. Regenerating from <code>gen.py</code> would silently revert v1 and v2.</li>
+<li>The v1 toolkit and overview prompts are unchanged from v0. The contract changed in the shared prompt, but the toolkit's check lines do not use the new names.</li>
+</ul>
+
+<h2 id="tester">Tester claims, checked</h2>
+<div class="wrap"><table>
+<tr><th>Claim</th><th>Grade</th><th>Note</th></tr>
+<tr><td>facts.json caps are 50 and 100 from developers.openai.com</td><td><span class="ok">confirmed</span></td><td>Both runs.</td></tr>
+<tr><td>The stress plan handled all three edges</td><td><span class="ok">confirmed</span></td><td>The plan says "do not advertise yet", that 120 USD buys 4.8 days, and that the copywriter's targetUrl is null.</td></tr>
+<tr><td>Round 1 failed "for the same reasons" in both runs</td><td><span class="bad">half right</span></td><td>True for screen labels and the clipboard error. Wrong for Next: the happy Next button worked, and its failure was the reload hash. The Tester probed only the stress page. Thinking line 2824 generalised from that one probe.</td></tr>
+<tr><td>Copywriter and plan disagreed on tracking URLs</td><td><span class="ok">confirmed</span></td><td>The happy <code>creatives.json</code> holds the full utm URL, while <code>plan.md</code> and the page use <code>/chatgpt?utm_term=A</code>.</td></tr>
+<tr><td>The happy overview contradicts itself on sandbox testing</td><td><span class="ok">confirmed</span></td><td>Line 32 reports passes "in direct and sandbox modes", yet line 39 says "Not tested: the sandboxed-frame fallbacks". The same overview also says 23 checks; report.json holds 24.</td></tr>
+<tr><td>"Page about 6 to 7 minutes a round"; one round "about 18 minutes"</td><td><span class="warn">close</span></td><td>Round 2 took 5m42s (happy) and 6m25s (stress) for page plus check. Round 1 ran 12.6 and 9.0 minutes from render end to the start of round 2. A single-round run projects to 16 to 21 minutes.</td></tr>
+</table></div>
+<p class="mut">Transcript: 4,515 lines, 43 tool calls, 38 thinking blocks of which 8 held text. Reasons above come from those 8 blocks and the text blocks.</p>
+
+<h2 id="time">Where the time went</h2>
+<div class="wrap"><table>
+<tr><th>Span</th><th>Happy</th><th>Stress</th></tr>
+<tr><td>Gather (toolkit is the long pole)</td><td class="n">2m28s</td><td class="n">2m21s</td></tr>
+<tr><td>Fit and write</td><td class="n">4m06s</td><td class="n">3m13s</td></tr>
+<tr><td>Design and render</td><td class="n">0m42s</td><td class="n">1m06s</td></tr>
+<tr><td>Round 1: page, check, critic</td><td class="n">12m39s</td><td class="n">9m00s</td></tr>
+<tr><td>Round 2: page, check, critic</td><td class="n">5m42s</td><td class="n">6m25s</td></tr>
+<tr><td>Overview (haiku)</td><td class="n">0m45s</td><td class="n">0m33s</td></tr>
+</table></div>
+<p>The round-1 gaps cost one extra round of about 6 minutes per run. Round 1 itself ran 3 to 7 minutes longer than round 2. The split between page, check and critic inside round 1 is unknown, because <code>status.json</code> keeps only the last round.</p>
+<ul class="ev"><li>Source: <code>stages/*/status.json</code> in each run. Round-1 page timings are inferred from the render finish and round-2 start, because <code>status.json</code> keeps only the last round.</li></ul>
+
+<h2 id="saved">Lessons and todos written</h2>
+<h3>Real pipeline stage tables (<code>b9afa7ec</code>)</h3>
+<ul>
+<li><strong>page</strong>: replaced lesson 1. The old text said both runs lacked <code>data-next</code>. The new text gives each run's own causes and four rules for round 1.</li>
+<li><strong>toolkit</strong>: lesson 1 covers the reload hash and using contract selectors. Lesson 2 says where Copied may appear.</li>
+<li><strong>overview</strong>: lesson 1 says framed mode is tested and to count checks from <code>report.json</code>.</li>
+<li><strong>copywriter</strong>: lesson 1 from the Tester holds and is unchanged.</li>
+</ul>
+<h3>Meta pipeline tables (<code>ec49473c</code>)</h3>
+<ul>
+<li><strong>builder k73m6ng</strong> 27: name every hook a generated checker tests. 28: stop polish loops on both gates.</li>
+<li><strong>tester kt6n75z</strong> 36: probe each run's failure before calling a cause shared.</li>
+<li><strong>analyst k8n7vfc</strong> 19: diff round-1 against final artifacts to find the real fix. 20: grade unconfirmed edits against the generated tools.</li>
+</ul>
+<h3><code>lessons__pipeline_builder_todos</code></h3>
+<ul>
+<li>Removed the old row 8 ("confirm v1 and v2"). Its pass criterion would likely fail, because the reload-hash and Copied causes remain.</li>
+<li>Added a new row 8: make v3 with the two missing contract lines, toolkit selectors and the overview line. Port everything into <code>gen.py</code>, then run once on dirslides-correct.</li>
+</ul>
+</main>
+</body>
+</html>

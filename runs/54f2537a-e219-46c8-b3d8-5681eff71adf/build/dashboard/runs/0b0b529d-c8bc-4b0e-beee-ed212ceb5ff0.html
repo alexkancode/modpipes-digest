@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Pinterest board capture (test) · Fri 6 Nov, 11:43</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Pinterest board capture (test)</h1>
+  <p class="caption">Five Pinterest pins captured from two boards</p>
+  <p class="summary">This test run of Pinterest board capture was pointed at the user&#39;s Pinterest account. It captured five pins from two boards into a local folder after several rounds of ClamAV setup questions.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T17:43:32.937Z">Fri 6 Nov, 11:43</time></span><span>Finished <time datetime="2026-11-06T17:57:13.465Z">Fri 6 Nov, 11:57</time></span><span>13 min 41 s</span><span>614K tokens</span><span class="id">0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/run.json">http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0.jpg" width="800" height="500" alt="Render of the primary output of Pinterest board capture (test)"><figcaption>Hero from report.report</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Pinterest username</dt><dd>alexandrakancewick</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Report · report<span class="type">md</span></h3><p class="desc">What was captured, skipped, quarantined and deleted, and how to search the catalogue</p></summary><div class="md"><h1>Pinterest capture report</h1>
+<h2>Summary</h2>
+<ul>
+<li>Account: alexandrakancewick</li>
+<li>Pins in the manifest: 5</li>
+<li>Captured: 5</li>
+<li>Skipped: 0</li>
+<li>Deleted: 4</li>
+<li>Boards complete: no, the board cap or pin cap cut the run short</li>
+<li>Folder: /home/alex/Documents/Pinterest</li>
+</ul>
+<h2>Boards</h2>
+<ul>
+<li>Clay (clay)</li>
+<li>Diy gift (diy-gift)</li>
+</ul>
+<h2>Captured</h2>
+<table>
+<thead>
+<tr>
+<th>Board</th>
+<th>Pin</th>
+<th>Kind</th>
+<th>Path</th>
+<th>Tags</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Clay</td>
+<td>1064749537426523875</td>
+<td>image</td>
+<td>/home/alex/Documents/Pinterest/clay/1064749537426523875.png</td>
+<td>ceramic, brush holder, blue and white, porcelain, face sculpture, paintbrushes, pink, artist desk, handmade, Clay, the c</td>
+</tr>
+<tr>
+<td>Clay</td>
+<td>1064749537426523843</td>
+<td>image</td>
+<td>/home/alex/Documents/Pinterest/clay/1064749537426523843.jpg</td>
+<td>ceramic, phone stand, amplifier, horn, rust red, glazed, cozy living room, wood table, handmade, Clay, a cell phone is p</td>
+</tr>
+<tr>
+<td>Clay</td>
+<td>1064749537426523809</td>
+<td>video</td>
+<td>/home/alex/Documents/Pinterest/clay/1064749537426523809.mp4</td>
+<td>polymer clay, switch plate, light switch cover, blue and white, floral, scalloped, diy tutorial, home decor, handmade, v</td>
+</tr>
+<tr>
+<td>Diy gift</td>
+<td>1064749537426523794</td>
+<td>image</td>
+<td>/home/alex/Documents/Pinterest/diy-gift/1064749537426523794.png</td>
+<td>clay, sunglasses holder, flower, sage green, wearable, lapel, black denim, mustard knit, diy gift, accessory, Diy gift,</td>
+</tr>
+<tr>
+<td>Diy gift</td>
+<td>1064749537426523784</td>
+<td>image</td>
+<td>/home/alex/Documents/Pinterest/diy-gift/1064749537426523784.jpg</td>
+<td>ceramic buttons, wearable ceramics, fruit, fig, apple, pomegranate, white linen shirt, handmade, red and cream, typewrit</td>
+</tr>
+</tbody></table>
+<h2>Skipped</h2>
+<p>(none)</p>
+<h2>Deleted</h2>
+<p>Rejected files, each removed by one guarded os.remove inside the Pinterest folder:</p>
+<p>(none)</p>
+<p>Staging copies replaced by their clean re-encode: 4</p>
+<h2>Driver notes</h2>
+<ul>
+<li>Skipped pin 1064749537426523828 (diy-gift): helper resolved it via requests and reported &#39;page source did not mention the pin id&#39;, so the media source may belong to another pin.</li>
+<li>Boards stopped at the 3-pin limit (max 3) and did not reach their end, so complete is false. Helper returned 16 pins per board; only the first 3 of each were used.</li>
+</ul>
+<h2>Catalogue</h2>
+<ul>
+<li>Table: lessons__pinterest_media</li>
+<li>Rows added: 5</li>
+<li>Rows failed: 0</li>
+<li>Search: lessons find lessons__pinterest_media <words></li>
+</ul>
+<h2>Limits</h2>
+<ul>
+<li>Images were decoded and re-encoded, so no foreign bytes survive.</li>
+<li>Videos were scanned by ClamAV and checked by GStreamer, not re-encoded.</li>
+<li>No Pinterest or [removed] link is stored in the folder, the table or this report.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/report/outputs/report.md">http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/report/outputs/report.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Preflight asked · answered · <time datetime="2026-11-06T17:43:42.257Z">Fri 6 Nov, 11:43</time></p>
+    <div class="q"><p class="question">Blocker &quot;clamscan&quot;: clamscan missing. Fix: run `sudo apt install clamav`</p><p class="options">Options: Done, check again · Skip this run</p><p class="answer">Done, check again</p></div><div class="q"><p class="question">Blocker &quot;clamav-db&quot;: ClamAV signatures missing in /var/lib/clamav. Fix: wait for the clamav-freshclam service to finish its first download, then check again.</p><p class="options">Options: Done, check again · Skip this run</p><p class="answer">(empty answer)</p></div>
+  </li><li>
+    <p class="who">Preflight asked · answered · <time datetime="2026-11-06T17:53:13.422Z">Fri 6 Nov, 11:53</time></p>
+    <div class="q"><p class="question">Blocker &quot;clamav-db&quot;: ClamAV signatures missing in /var/lib/clamav. Fix: wait for the clamav-freshclam service to finish its first download, then check again.</p><p class="options">Options: Done, check again · Skip this run</p><p class="answer">can you give me an install command for this?</p></div>
+  </li><li>
+    <p class="who">Preflight asked · answered · <time datetime="2026-11-06T17:53:30.154Z">Fri 6 Nov, 11:53</time></p>
+    <div class="q"><p class="question">Blocker &quot;clamav-db&quot;: ClamAV signatures missing in /var/lib/clamav. To download them now, run: `sudo systemctl stop clamav-freshclam &amp;&amp; sudo freshclam &amp;&amp; sudo systemctl start clamav-freshclam`. (Or just wait for the clamav-freshclam service to finish its first download. Check progress with `systemctl status clamav-freshclam`.) Ready to check again?</p><p class="options">Options: Done, check again · Skip this run</p><p class="answer">Done, check again</p></div>
+  </li><li>
+    <p class="who">Driver asked · answered · <time datetime="2026-11-06T17:53:46.768Z">Fri 6 Nov, 11:53</time></p>
+    <div class="q"><p class="question">Firefox is about to be driven, keep hands off the keyboard and mouse until this stage finishes.</p><p class="options">Options: Go · Stop</p><p class="answer">Go</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/toolkit/outputs/toolkit">Toolkit · toolkit.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/preflight/outputs/status.json">Preflight · status.json</a> <span class="type">2.6KB</span></li><li><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/driver/outputs/manifest.json">Driver · manifest.json</a> <span class="type">2.4KB</span></li><li><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/fetch-clean/outputs/clean.json">Fetch and clean · clean.json</a> <span class="type">3.4KB</span></li><li><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/fetch-clean/outputs/deletions.csv">Fetch and clean · deletions.csv</a> <span class="type">574B</span></li><li><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/fetch-clean/outputs/frames">Fetch and clean · frames.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/describe/outputs/descriptions.json">Describe · descriptions.json</a> <span class="type">2.7KB</span></li><li><a href="http://localhost:4810/api/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/files/stages/catalogue/outputs/rows.json">Catalogue · rows.json</a> <span class="type">2.1KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Toolkit</td><td>toolkit</td><td>done</td><td>script</td><td>1 s</td><td>0</td></tr>
+<tr><td>Preflight</td><td>preflight</td><td>done</td><td>sonnet</td><td>10 min 07 s</td><td>219K</td></tr>
+<tr><td>Driver</td><td>drive</td><td>done</td><td>sonnet</td><td>2 min 41 s</td><td>252K</td></tr>
+<tr><td>Fetch and clean</td><td>fetch</td><td>done</td><td>script</td><td>20 s</td><td>0</td></tr>
+<tr><td>Describe</td><td>describe</td><td>done</td><td>sonnet</td><td>31 s</td><td>143K</td></tr>
+<tr><td>Catalogue</td><td>catalogue</td><td>done</td><td>script</td><td>1 s</td><td>0</td></tr>
+<tr><td>Report</td><td>report</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

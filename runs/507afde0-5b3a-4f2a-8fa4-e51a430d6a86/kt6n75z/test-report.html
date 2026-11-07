@@ -1,0 +1,124 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>pipeline builder · test-report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="test-report.md">Raw markdown</a></p><h1>Stripe billing desk: test report</h1>
+<p>Date: 2026-11-06, 11:08 to 11:30 CST. Pipeline <code>1f4d4bee-e2df-4df7-b616-43a64d0f630a</code>, tested at v1, left at v2.</p>
+<h2>What ran</h2>
+<p>Both runs used a throwaway copy, &quot;Stripe billing desk (test)&quot; (<code>7df05be5-7767-4436-9bc5-f65dce6580c6</code>). The polish loop was cut from 3 rounds to 2. Prompts and models were unchanged. The copy is deleted, and its runs stay in history.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Answers given</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>da8b00ba-5fb4-4b35-b602-0386a1bd635c</code></td>
+<td>repo-path <code>/home/alex/Desktop/dev/dirslides-correct</code>, default question</td>
+<td>preflight &quot;Done, retry&quot;; checkpoint &quot;Required tasks only&quot;. Neither answer registered, see defect 3.</td>
+<td>17:08:46 to 17:27:52 UTC, 19.1 min</td>
+</tr>
+<tr>
+<td>Stress <code>3b113848-0685-4c30-a040-d9bd42dafcf4</code></td>
+<td>repo-path <code>/tmp/sbd-stress-repo</code>, question &quot;Which steps remain before real customers can pay, and in what order?&quot;</td>
+<td>preflight &quot;Continue without account access&quot;; checkpoint &quot;Pick from the list&quot;, then t1+t3, t8, t9</td>
+<td>17:08:47 to 17:27:51 UTC, 19.1 min</td>
+</tr>
+</tbody></table>
+<p>The stress repo holds one commit with these files:</p>
+<ul>
+<li>A README that claims &quot;Stripe billing is live in production&quot;.</li>
+<li>An <code>.env.example</code> with a fake <code>sk_live_</code> value and an empty <code>PAYPAL_CLIENT_ID</code>.</li>
+<li><code>src/app.js</code> saying payments are planned.</li>
+<li>No Stripe code at all.</li>
+</ul>
+<p>The Stripe CLI login had expired in both modes, so the account-inspector stage was skipped in both runs, as the condition intends.</p>
+<p>Both runs ran into a site-check defect (defect 1). The tester fixed the command in the real pipeline and verified the fix offline. The tester then patched the two test runs&#39; stored definition in <code>~/.modpipes/modpipes.sqlite</code> with the fixed command and restarted site-check. Every stage after site-check therefore ran on a patched snapshot.</p>
+<p>Timing per group, from the stress run:</p>
+<ul>
+<li>Intake: under 1 min plus the question wait.</li>
+<li>Dossier: 1 min.</li>
+<li>Experts: 1.5 min.</li>
+<li>Lead: 1.2 min.</li>
+<li>Checkpoint: 1 min across four questions.</li>
+<li>Writer: 2 min.</li>
+<li>Site round 1: 2 min.</li>
+<li>Critics: 1 min.</li>
+<li>Site and critics in round 2: 1.5 min.</li>
+<li>Handoff: 0.5 min.</li>
+</ul>
+<h2>What worked</h2>
+<p>Each item below was checked against files or transcripts, not stage summaries.</p>
+<ul>
+<li><strong>Dossier.</strong> <code>facts.json</code> set <code>newestApiVersion</code> to <code>2026-10-28.endive</code>, a GA version, not the preview. It lists three 2026-09-30.endive breaking changes with changelog URLs. The <code>docsRead</code> list has fetch dates.</li>
+<li><strong>Happy verdict.</strong> <code>da8b00ba…/stages/lead/outputs/verdict.md</code> matches the known answer:<ul>
+<li>Checkout, subscriptions, webhooks, portal, entitlements and revenue recovery are each cited to file and line.</li>
+<li><code>price_1UGiKT…B3S5</code> is cited from <code>wrangler.toml:30</code>.</li>
+<li>The repo&#39;s live-mode claims are named and correctly not trusted.</li>
+<li>Every state is <code>not-verifiable</code> because the login expired, never <code>missing</code>, as the shared rules require.</li>
+<li>It also caught that the only account id in the repo is the sandbox account.</li>
+</ul>
+</li>
+<li><strong>Stress verdict.</strong> <code>3b113848…/stages/lead/outputs/verdict.md</code> judged integration <code>missing</code> despite <code>README.md:3</code>. It flagged the committed <code>sk_live_</code> value as <code>sk_live_…AbCd</code>. It noted that rotating does not remove the key from git history. It warned that a hidden billing service could double-charge.</li>
+<li><strong>Redaction.</strong> Zero unredacted key-like strings appear across all outputs of both runs, by regex over <code>stages/*/outputs</code>.</li>
+<li><strong>Read-only Stripe.</strong> The transcripts show 80 <code>stripe</code> mentions inside Bash commands. Every write verb among them (<code>login</code>, <code>listen</code>, <code>config</code>) sits in prose inside heredoc file writes. Not one was run as a command.</li>
+<li><strong>Checkpoint pick flow.</strong> The stress checkpoint asked one question per tool call, which avoids the parallel-ask server crash. It asked four questions: mode, t1-t4, t5-t8, t9. It wrote <code>{&quot;chosen&quot;:[&quot;t1&quot;,&quot;t3&quot;,&quot;t8&quot;,&quot;t9&quot;],&quot;mode&quot;:&quot;pick&quot;}</code>. It warned that five required tasks had been skipped. The t9 answer was not sent by the tester; someone in the app may have answered it.</li>
+<li><strong>Polish loop.</strong> The loop ran both rounds in both runs:<ul>
+<li>In round 1, the UX critic raised one blocker in each run (border contrast, and on stress also task grouping).</li>
+<li>The site rerendered from its script in round 2 and cleared both blockers.</li>
+<li>In round 2 both critics passed, with UX scores of 86 and 84.</li>
+<li>Stress site-check ended <code>ok: true</code> with 3 screenshots.</li>
+</ul>
+</li>
+<li><strong>Handoff.</strong> Both runs wrote <code>handoff.md</code>. The stress handoff has a &quot;Not verifiable in this run&quot; section and a &quot;Quality gate&quot; section.</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li><strong>site-check failed in 0.2 s in every run.</strong> Confirmed fix, offline.<ul>
+<li>Evidence: <code>~/.modpipes/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/stages/site-check/status.json</code> failureReason reads &quot;here-document at line 1 delimited by end-of-file (wanted `PY&#39;)&quot;, followed by a python SyntaxError.</li>
+<li>Cause: the closing line read <code>PY 2&gt;check.err; code=$?; ...</code>. A heredoc only ends on a line that is exactly <code>PY</code>.</li>
+<li>Fix in v2: <code>2&gt;check.err</code> moves to the opening line, and <code>code=$?</code> gets its own line.</li>
+<li>Verification: the v2 command, run with bash against both sites, exited 0 with 3 screenshots. The patched runs then completed both loop rounds. The fix ran in both runs through the patched snapshot, but no run started from v2.</li>
+</ul>
+</li>
+<li><strong>site-check rejected hyphenated badges and repo sources.</strong> Unconfirmed in a run, confirmed offline.<ul>
+<li>Evidence: the offline report on the round-1 sites failed &quot;badge words state&quot; on every <code>not-verifiable</code> card. It also failed &quot;steps well formed&quot; on <code>file:///…/DOCS.md</code> sources.</li>
+<li>Cause, badges: the checker turned <code>not-verifiable</code> into &quot;not verifiable&quot; and then looked for those words in the badge text &quot;? not-verifiable&quot;.</li>
+<li>Cause, sources: the writer prompt asks for repo-file sources, but the checker allowed only <code>http</code> and <code>../</code> hrefs.</li>
+<li>Fix in v2: the checker compares with hyphens normalised on both sides and accepts <code>file://</code> hrefs whose text equals the href. The page contract now says a repo source uses <code>file://</code> plus the absolute path.</li>
+<li>Verification: the stress site went from 2 failed checks to <code>ok: true</code>.</li>
+</ul>
+</li>
+<li><strong>An unanswered checkpoint gave <code>chosen: []</code>, and the writer ignored that list.</strong> Unconfirmed.<ul>
+<li>Evidence: <code>da8b00ba…/stages/checkpoint/transcript.jsonl</code> shows the tool result &quot;The user did not answer the questions.&quot; The output <code>tasks.json</code> has <code>chosen []</code>, while <code>writer/outputs/steps.json</code> holds t1 to t9.</li>
+<li>Root cause: the question text held <code>=</code>, and the CLI answer verb splits on the first <code>=</code>, so the answer was dropped with exit 0. The preflight answer was lost the same way, so the &quot;Done, retry&quot; path never ran.</li>
+<li>Fixes in v2:<ul>
+<li>The checkpoint picks every task when the dialog comes back unanswered and says so in the note.</li>
+<li>The writer writes steps only for chosen ids.</li>
+<li>Preflight and checkpoint keep <code>=</code> out of question text.</li>
+</ul>
+</li>
+<li>The happy site kept t1 to t9 against the empty list, so its site-check stayed red through both rounds. The billing critic passed the page anyway and called the mismatch deliberate.</li>
+</ul>
+</li>
+</ol>
+<p>The voice audit on v2 reports 0 sentences over 25 words. After <code>pipeline update</code>, <code>pipeline show</code> matches the file exactly.</p>
+<h2>Versions</h2>
+<ul>
+<li><code>pipeline-versions/v1.json</code>: as built by the plan stage, before testing.</li>
+<li><code>pipeline-versions/v2.json</code>: fixes defects 1 to 3 above.</li>
+</ul>
+<h2>Lessons and todos written</h2>
+<ul>
+<li>Pipeline tables: <code>checkpoint</code> (= in question text, the unanswered fallback) and <code>site-check</code> (heredoc delimiter, test the stored command string with bash).</li>
+<li>Tester table: rescuing a run by patching <code>runs.definition</code>, and the <code>=</code> answer trap.</li>
+<li><code>lessons__pipeline_builder_todos</code>: &quot;stripe billing desk v2 unconfirmed, account inspector never ran&quot; and &quot;modpipes answer verb splits on =&quot;.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Run <code>stripe login</code> first. The account inspector has never run. Its read-only behaviour and the live versus sandbox-only verdict are the core of the ask, and both are untested.</li>
+<li>Answer the questions in the app, or check each question text for <code>=</code> before answering from the CLI.</li>
+<li>Start one v2 run on dirslides-correct. Confirm that site-check passes and that <code>tasks.json</code> and the site&#39;s task sections agree.</li>
+<li>Watch whether the billing critic still passes a page that contradicts <code>tasks.json</code>. Round 2 showed the critic accepting a page that site-check failed.</li>
+</ol>
+</body></html>

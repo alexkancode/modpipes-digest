@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 15:29</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">The Song forge pipeline, built and tested</p>
+  <p class="summary">The user asked the pipeline builder for a pipeline that writes a world-class song from a theme, motifs and a genre. The result is Song forge, a writer-and-judge loop that was tested on two songs and left at version 2.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T21:29:35.555Z">Fri 6 Nov, 15:29</time></span><span>Finished <time datetime="2026-11-06T22:54:23.411Z">Fri 6 Nov, 16:54</time></span><span>1 h 24 min</span><span>12.1M tokens</span><span class="id">a65ca56a-709d-470d-ab0e-1d586e408a65</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/run.json">http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/a65ca56a-709d-470d-ab0e-1d586e408a65.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/k8n7vfc/outputs/lessons-learned-site.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>please build a pipeline capable of producing a song with a given theme/general story, given motifs, given genere and come out world class</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Song forge: test report</h1>
+<p>Date: 2026-11-06, 16:04 to 16:50 CST. Pipeline <code>2b6a02f9-4629-44cd-a1f2-b1b938e4a81e</code>, tested at v0 and left at v2.</p>
+<h2>What ran</h2>
+<p>Test copy &quot;Song forge (test)&quot; (<code>cd97737c-b8ee-4e88-87e9-7a3fbd202342</code>), loop cap 2, prompts and models unchanged. Both runs started at 16:05:11. The copy is deleted, and both runs stay in history.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Time</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>ded9f511-3a82-42d3-a4a2-588e018149a4</code></td>
+<td>indie folk; two friends meet at a bus stop after twenty years; motifs: timetable, rain on the shelter roof, rising fourth on the title; 1.5 min; no key</td>
+<td>29.1 min</td>
+<td>shipped round 2 (68, then 70); page-check ok</td>
+</tr>
+<tr>
+<td>Stress <code>53fa4c7f-1492-41bf-a31e-ca546b898584</code></td>
+<td>Portuguese; &quot;90s trip hop crossed with fado&quot;; nurse in Lisbon; ten motifs including 6/8 verses against 4/4 chorus; second person countertenor; three references; 1 min; invalid Gemini key</td>
+<td>40.6 min</td>
+<td>shipped round 2 (63, then 69); page-check failed 3 of 11 checks</td>
+</tr>
+</tbody></table>
+<p>Stage times: research 1-2 min. Toolkit 11.5 and 15.5 min, the long pole. Writers 6-8 min. Judge about 4 min. Polish rounds 3-5 min each. Assets, page and overview about 1 min.</p>
+<h2>What worked</h2>
+<p>Each item below was checked against files and transcripts, not stage summaries.</p>
+<ul>
+<li>Every writer ran <code>check-abc.mjs</code> on its own song, and all six songs passed (writer transcripts). The loop spent rounds on craft only.</li>
+<li>The stress writers wrote Portuguese lyrics and inline meter changes, <code>M:6/8</code> to <code>M:4/4</code>. The checker accepted both: 29 bars, 66.7 s.</li>
+<li>The two gates disagreed usefully. In stress round 1 the checker passed, but fresh-eyes said agree false, because the reader missed the nurse. The critic made that a brief-fit blocker. In round 2 the reader named &quot;a nurse working the night shift&quot; and agreed.</li>
+<li>The critic was not lenient. It blocked round 1 in both runs with quoted lines, and <code>history</code> carried both rounds.</li>
+<li>The judge&#39;s <code>pick.json</code> names a winner and a concrete borrow list.</li>
+<li>The invalid key degraded cleanly. Render returned HTTP 400 API_KEY_INVALID, <code>render-failed.md</code> was written, and the page and overview showed the reason. A grep for the key in render-status.json, index.html and overview.md found zero hits. The Interactions endpoint answered 400, not 404, so the URL exists.</li>
+<li>No artist name from the references reached <code>lyria-prompt.txt</code>.</li>
+<li>The happy page passed all 11 checks. The synth started with no remote requests, and axe was clean (<code>page-check/outputs/report.json</code>, <code>shots/page-390.png</code>).</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li>Stress page has no scorecard.<ul>
+<li>Evidence: <code>runs/53fa4c7f-.../stages/page-check/outputs/report.json</code> reports still-frame scorecard table false.</li>
+<li>Cause: that run&#39;s toolkit invented a <code>criteria</code> array in <code>fixtures/sample-scores.json</code>. Its build-page reads only arrays (<code>toolkit/outputs/toolkit/build-page.mjs:117</code>), so the critic&#39;s object keyed by criterion rendered &quot;No scorecard was supplied&quot;. Rounds showed no totals either.</li>
+<li>Fix v2: the toolkit prompt pins the scores.json and history shape in the scorecard bullet. The fixture bullet now points at that shape. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>Stress demo playback fails.<ul>
+<li>Evidence: the same report shows running-frame <code>Can&#39;t load sound at sf/voice_oohs-mp3/D4.mp3 status=404</code>, plus console errors.</li>
+<li>Cause: the song sets <code>%%MIDI program 53</code>, and only the piano soundfont is vendored. The happy toolkit happened to rewrite programs to 0. The stress toolkit did not.</li>
+<li>Fix v2: the build-page spec now rewrites every <code>%%MIDI program</code>, <code>chordprog</code> and <code>bassprog</code> number to 0 in the demo ABC. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>Overview names the wrong gate.<ul>
+<li>Evidence: both overviews say &quot;The cap of 4 was not reached&quot; on a cap-2 copy (<code>stages/overview/outputs/overview.md</code>). The prompt hard-coded &quot;the cap of 4&quot;.</li>
+<li>Fix v1: the overview infers the gate from the last round&#39;s three flags. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>Toolkit is slow and lost time to a hung probe.<ul>
+<li>Evidence: the stress toolkit transcript at 22:11:59. A hand-written fake server never closed on its 500 branch, and the Bash call timed out at 120 s. Both runs also wrote scratch under fixed /tmp paths: /tmp/tk, /tmp/ck, /tmp/ly and /tmp/st.</li>
+<li>Fix v1: keep scratch in the stage work directory and wrap probe servers in <code>timeout 60</code>. <strong>Unconfirmed.</strong> This fix trims the hang only, not the 11-15 min rebuild.</li>
+</ul>
+</li>
+</ol>
+<p>Versions are saved under <code>pipeline-versions/</code>, with <code>notes.md</code> beside them. After each update, <code>pipeline show</code> matched the generated file, the voice audit found 0 sentences over 25 words, and validate returned ok.</p>
+<h2>Not resolved</h2>
+<ul>
+<li>The toolkit rebuilds the same five scripts every run, in 11-15 min. Each run therefore carries a different checker and page builder. Defects 1 and 2 hit one run and not the other because of this drift.</li>
+<li>A toolkit cache would remove both the time and the drift. The cache would be a script stage that reuses a toolkit whose selftest passes. That is a design change, so it is logged in <code>lessons__pipeline_builder_todos</code> as row 19.</li>
+<li>The 390 px scorecard table squeezes long quotes into a narrow column (happy <code>shots/page-390.png</code>). The table stays readable, but it is long.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Run a cap-2 copy of v2 with the stress inputs above. Read <code>page-check/outputs/report.json</code> for a scorecard table and a running synth. Read <code>overview.md</code> for the gate sentence.</li>
+<li>Read <code>toolkit/outputs/toolkit/build-page.mjs</code> for the MIDI program rewrite and the <code>scores</code> object read.</li>
+<li>Decide on the toolkit cache, per todo row 19.</li>
+</ol>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/kt6n75z/outputs/test-report.md</a></p></figure>
+<figure class="out"><h3>Analyse the test · lessons-learned-site<span class="type">html</span></h3><p class="desc">A static site: which changes improved the pipeline, why, and the evidence behind each claim</p><iframe src="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/k8n7vfc/outputs/lessons-learned-site.html" title="Analyse the test lessons-learned-site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/k8n7vfc/outputs/lessons-learned-site.html">http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/k8n7vfc/outputs/lessons-learned-site.html</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T21:30:51.342Z">Fri 6 Nov, 15:30</time></p>
+    <div class="q"><p class="question">What should the finished &#39;song&#39; be? This machine has no ffmpeg, no audio Python packages and no music API keys, so a sung audio track needs a key you supply. Vocal-capable APIs today: ElevenLabs Music (about $0.15 per minute, paid plan) and Google Lyria 3 through a Gemini API key (about $0.08 per song). On the machine alone the pipeline can write lyrics, melody and chords as ABC notation plus MIDI, and build a browser page that renders the score and plays a synth demo.</p><p class="options">Options: Package plus audio when a key exists (Recommended) · Sung audio track is the point · Songwriter package only</p><p class="answer">Package plus audio when a key exists (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T21:35:57.080Z">Fri 6 Nov, 15:35</time></p>
+    <div class="q"><p class="question">Which music API should the audio stage call when its key is set? Both sing supplied lyrics. ElevenLabs Music takes a style prompt plus lyrics and returns an mp3; Lyria 3 goes through the Gemini API with a &#39;Lyrics:&#39; block in the prompt. Pricing above is from vendor pages and the planner&#39;s researchers will verify the exact request shapes.</p><p class="options">Options: Either, whichever key is present (Recommended) · ElevenLabs Music only · Google Lyria 3 only</p><p class="answer">Google Lyria 3 only</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T21:36:35.188Z">Fri 6 Nov, 15:36</time></p>
+    <div class="q"><p class="question">How should the pipeline reach &#39;world class&#39;? The cheap and proven shape here is a loop: writers draft, a critic scores against a rubric the researchers derive from hit songwriting craft for the given genre, and the loop ends when the critic ships or the round cap hits. The choice is how many competing drafts exist and who judges.</p><p class="options">Options: Three writers compete, critic picks and polishes (Recommended) · One writer, longer polish loop · Three writers, you pick</p><p class="answer">Three writers compete, critic picks and polishes (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T21:37:17.265Z">Fri 6 Nov, 15:37</time></p>
+    <div class="q"><p class="question">Beyond theme or story, motifs and genre, which inputs should the pipeline take as variables at start? Anything not chosen is decided by the writers from the genre.</p><p class="options">Options: Language, length, voice, references (Recommended) · Just the three givens · The three givens plus a free &#39;notes&#39; field</p><p class="answer">Language, length, voice, references (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T21:38:19.666Z">Fri 6 Nov, 15:38</time></p>
+    <div class="q"><p class="question">Should the run pause for you anywhere, or run unattended end to end? A pause costs nothing but your attention; the paid Lyria render is about $0.08 per song, so money is not the reason to pause.</p><p class="options">Options: Unattended end to end (Recommended) · One pause before the audio render · One pause after the three drafts</p><p class="answer">Unattended end to end (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T21:38:55.427Z">Fri 6 Nov, 15:38</time></p>
+    <div class="q"><p class="question">&#39;Given motifs&#39; can mean two things. Which should the motifs variable carry, so writers and critic read the word the same way?</p><p class="options">Options: Both, in one free-text field (Recommended) · Lyrical motifs only · Musical motifs only</p><p class="answer">Both, in one free-text field (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T21:39:14.846Z">Fri 6 Nov, 15:39</time></p>
+    <div class="q"><p class="question">Here is the picture. Variables: theme or story, motifs (lyrical and musical in one field), genre, plus optional language, length in minutes, voice or perspective, up to three references, and an optional GEMINI_API_KEY. Research stages derive a genre craft brief and a scoring rubric. Three songwriter stages draft in parallel on different angles, each writing lyrics, melody and chords in ABC notation, structure and a motif map. A critic ranks the three with reasons and picks one. A polish loop (cap 4 rounds) rewrites the winner against the rubric, with a fresh-eyes nested reader as a second gate. Then: a script turns the ABC into MIDI, a Lyria 3 render stage runs only when the key is set, and a build stage makes the starred page: lyrics, rendered score with abcjs, synth demo playback, production brief, the sung track when present. Unattended end to end. Is that right?</p><p class="options">Options: Yes, write it up · Mostly, with a change</p><p class="answer">Yes, write it up</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">8.1KB</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">651B</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">9.8KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">7.4KB</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">8.9KB</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">4.2KB</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/a65ca56a-709d-470d-ab0e-1d586e408a65/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">6.7KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>12 min 24 s</td><td>842K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>2 min 26 s</td><td>469K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>3 min 55 s</td><td>779K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>2 min 15 s</td><td>549K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>2 min 45 s</td><td>1.2M</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>18 min 43 s</td><td>1.5M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>42 min 56 s</td><td>3.1M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>6 min 49 s</td><td>3.6M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

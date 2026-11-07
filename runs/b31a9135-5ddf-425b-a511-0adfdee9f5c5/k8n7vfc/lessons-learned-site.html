@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User bible test: lessons learned</title>
+<style>
+:root { color-scheme: light dark; --fg:#1d2128; --muted:#4d535c; --bg:#fff; --card:#f5f6f8; --line:#d6d9de; --ok:#185c2e; --okbg:#e3f3e8; --warn:#6b4a00; --warnbg:#fff3d1; --bad:#8a1c1c; --badbg:#fbe4e4; --accent:#1f4fa3; }
+@media (prefers-color-scheme: dark) { :root { --fg:#e6e8eb; --muted:#a9afb8; --bg:#14171b; --card:#1d2126; --line:#353a42; --ok:#8fdba6; --okbg:#173322; --warn:#f0cd7a; --warnbg:#352a10; --bad:#f4a5a5; --badbg:#3a1a1a; --accent:#8fb3ff; } }
+* { box-sizing: border-box; }
+body { margin:0; font:16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--fg); background:var(--bg); }
+main { max-width:72ch; margin:0 auto; padding:1.5rem 1rem 4rem; }
+h1 { font-size:1.6rem; line-height:1.25; margin:0 0 .25rem; }
+h2 { font-size:1.2rem; margin:2.5rem 0 .6rem; padding-top:.6rem; border-top:1px solid var(--line); }
+h3 { font-size:1.02rem; margin:1.4rem 0 .4rem; }
+p, li { margin:.4rem 0; }
+.sub { color:var(--muted); margin:0 0 1rem; }
+nav ol { padding-left:1.2rem; columns:2; column-gap:2rem; }
+code { font:0.88em ui-monospace, SFMono-Regular, Menlo, monospace; background:var(--card); padding:0 .25em; border-radius:3px; }
+.scroll { overflow-x:auto; margin:.6rem 0; }
+table { border-collapse:collapse; min-width:36rem; width:100%; font-size:.92rem; }
+th, td { text-align:left; vertical-align:top; padding:.4rem .5rem; border-bottom:1px solid var(--line); overflow-wrap:normal; }
+th { background:var(--card); }
+td.n { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:.8rem 1rem; margin:.8rem 0; }
+.tag { display:inline-block; font-size:.78rem; font-weight:600; padding:.05rem .45rem; border-radius:999px; white-space:nowrap; }
+.ok { color:var(--ok); background:var(--okbg); }
+.warn { color:var(--warn); background:var(--warnbg); }
+.bad { color:var(--bad); background:var(--badbg); }
+.ev { font-size:.88rem; color:var(--muted); }
+p code, li code { overflow-wrap:anywhere; }
+.bar { display:inline-block; height:.7rem; background:var(--accent); border-radius:2px; vertical-align:middle; }
+details { margin:.5rem 0; }
+summary { cursor:pointer; font-weight:600; }
+@media print { details { display:block; } details > * { display:block; } }
+</style>
+</head>
+<body>
+<main>
+<h1>User bible test: what improved, what did not, and why</h1>
+<p class="sub">Analysis of tester stage kt6n75z in run b31a9135, written 2026-11-06. Pipeline <code>184c7aff-d637-4879-be19-10eedb04ff61</code>, now stored at v3.</p>
+
+<nav aria-label="Contents"><ol>
+<li><a href="#bottom-line">Bottom line</a></li>
+<li><a href="#ledger">Change ledger</a></li>
+<li><a href="#baseline">What v1 already did well</a></li>
+<li><a href="#corrections">Corrections to the test report</a></li>
+<li><a href="#timing">Where the time went</a></li>
+<li><a href="#tester">Tester craft</a></li>
+<li><a href="#filed">Where the knowledge went</a></li>
+<li><a href="#method">Method</a></li>
+</ol></nav>
+
+<section id="bottom-line">
+<h2>Bottom line</h2>
+<ul>
+<li>No run used v2 or v3. The tester made every edit during or after the two v1 runs, so every change is graded by projecting it onto v1 evidence.</li>
+<li>v1 already worked end to end. Both runs published the correct version into the correct folder, in one commit of two files, with every coverage check passing.</li>
+<li>The v3 banner fix and the v2 table-cell rule target real, observed causes, and should help.</li>
+<li>The v2 critic fix does not reach its stated goal. It removes the stress run's only blocker, but the stress scores were 72 and 74 against a ship bar of 80. Its own "take points off" clause keeps ship false.</li>
+<li>The largest improvement on offer is not in v2 or v3. Freezing the toolkit would cut about 3 minutes from a 10-minute run and stop per-run code drift.</li>
+</ul>
+</section>
+
+<section id="ledger">
+<h2>Change ledger</h2>
+<p>One card per edit. Each grade rests on the evidence under the card.</p>
+
+<div class="card" id="c-critic">
+<h3>v2 critic: rendering defects become <code>render:</code> notes <span class="tag bad">does not reach its goal</span></h3>
+<p>The intent: stop the loop wasting a round on CSS that only the toolkit can change. The cause is real. The toolkit runs before the polish loop, and the loop reruns only personas, paths, assemble, coverage and critic.</p>
+<p>The fix removes the blocker but keeps the penalty. "Take points off the score for each one" holds a login site under the bar:</p>
+<div class="scroll"><table>
+<thead><tr><th>Stress round</th><th>Score</th><th>Blockers</th><th>Ship under v1</th><th>Ship projected under v2</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="n">72</td><td>sitemap table wraps mid-word at 390 px</td><td>false</td><td>false: no blocker, but 72 is under 80, and v2 deducts more</td></tr>
+<tr><td>2</td><td class="n">74</td><td>same table, "no better since round 1"</td><td>false</td><td>false, for the same reason</td></tr>
+</tbody></table></div>
+<p>The remaining notes that held the score down were also outside the loop's reach. Seven identical login screenshots came from the crawl, the banner's overstated count came from the toolkit, and the cramped summary tables came from build.mjs.</p>
+<p>The better rule: score only what personas and paths own, list <code>render:</code> notes without deducting points, and let the handoff route them. Builder todo 22 carries this fix.</p>
+<p>A small defect too: the new paragraph sits on the line after the last blocker bullet with no blank line, so markdown folds it into that bullet.</p>
+<p class="ev">Evidence: <code>runs/15735487-…/stages/critic/rounds/1/verdict.json</code> (72) and <code>stages/critic/outputs/verdict.json</code> (74). Stop command in the polish loop: coverage ok and critic ship. Critic prompt diff v1 to v2 in <code>kt6n75z/outputs/pipeline-versions/</code>.</p>
+</div>
+
+<div class="card" id="c-css">
+<h3>v2 toolkit: table cells never break inside a word, and the file column moves into the route article <span class="tag ok">targets the cause</span></h3>
+<p>Both independently written toolkits used <code>overflow-wrap: anywhere</code> on cells, so the cells shrank and the scroll wrapper never scrolled. The rule names that exact behaviour.</p>
+<p>I checked for a conflict with the coverage check "no horizontal overflow at 390 by 844". Both check.mjs files measure <code>document.documentElement.scrollWidth</code>, so a wide table inside an <code>overflow-x: auto</code> wrapper still passes. The rule only helps while the toolkit is regenerated per run. A frozen toolkit would carry the fix permanently.</p>
+<p class="ev">Evidence: <code>bible.css</code> line 48 (stress) and lines 38 and 51 (happy) under <code>stages/toolkit/outputs/tools/</code>. Check lines 59 and 81 (happy) and 67 and 94 (stress) in check.mjs.</p>
+</div>
+
+<div class="card" id="c-tmp">
+<h3>v2 shared rule: scratch files stay in the stage work directory, never /tmp <span class="tag warn">reasonable, low stakes</span></h3>
+<p>The tester saw two crawls in its first, killed attempt write the same <code>/tmp/ub-gs-before.txt</code>. It also saw the happy personas stage write <code>/tmp/mkp.py</code> while the stress personas stage ran. No clobber was observed. The rule is cheap and removes a real race between parallel runs. Expect no visible change in output.</p>
+<p class="ev">Evidence: tester transcript at 19:14:46Z (grep of the crawl transcript for <code>/tmp/ub-</code>) and the happy personas transcript.</p>
+</div>
+
+<div class="card" id="c-banner">
+<h3>v3 toolkit: count screenshots before markup, one screenshot per dynamic value <span class="tag ok">targets the cause</span> <span class="tag warn">leaves a gap</span></h3>
+<p>The happy build.mjs bumped <code>shotCount</code> inside the article renderer (lines 60-70). The banner rendered first (line 138), so it read "0 of 6". A <code>crawlBySlug</code> map kept one of three <code>viz/:technique</code> shots, so the bible held 6 img elements for 8 captured shots. The v3 rule names both causes.</p>
+<p>Two gaps remain:</p>
+<ul>
+<li>The denominator is undefined. Counting from crawl.json gives 8 shots against 6 screen routes, so a literal build prints "8 of 6". Name both numbers instead, such as "8 pages captured across 6 screens".</li>
+<li>The smoke fixture has one dynamic segment with one crawled value, so the per-value rule goes untested. The "1 of 3" assertion checks the counter only.</li>
+</ul>
+<p class="ev">Evidence: <code>runs/48a1e50b-…/stages/toolkit/outputs/tools/build.mjs</code>. The happy crawl.json lists 8 screens, and routes.json lists 6 screen routes. <code>grep -c '&lt;img' latest.html</code> gives 6. Toolkit prompt v3: "a crawl with one real JPEG and one missing screenshot".</p>
+</div>
+
+<div class="card" id="c-smoke">
+<h3>v3 smoke test reads the banner <span class="tag ok">good pattern</span></h3>
+<p>Asserting a rendered string the critic would read is the right instinct. It turns a defect found by eye into a self-check that runs inside the toolkit stage. Extend the assertion to the two-value route, as builder todo 22 says.</p>
+</div>
+</section>
+
+<section id="baseline">
+<h2>What v1 already did well</h2>
+<ul>
+<li>Code-read found all 10 artist-invest-shop routes and all 11 itinerary routes, with guards and the three <code>viz/:technique</code> values. It took 71 s and 103 s.</li>
+<li>The crawl started and removed a throwaway Postgres container for the happy run. On the stress run, it ran <code>npm ci</code> with placeholder env vars, and left <code>git status</code> clean in both runs.</li>
+<li>version.mjs picked <code>docs/</code> over <code>documentation/</code> and returned v3 after a seeded v2. Publish staged exactly two files in one commit, with no push.</li>
+<li>All 12 coverage checks passed in both runs: no script, no external URL, no overflow at 390 px, axe clean, size under 5 MB.</li>
+<li>Round 2 of the stress loop acted on round 1's notes. It folded the phone persona into the visitor, added a plan-maintainer persona with three paths and added participant invite paths. The score rose from 72 to 74.</li>
+<li>The critic spot-checked three code claims each round, and both handoffs reported the gate truthfully.</li>
+</ul>
+<p>The design choice behind most of this: model stages write four JSON files, and script stages render, check and publish them. The loop never writes HTML, so every round renders the same way.</p>
+</section>
+
+<section id="corrections">
+<h2>Corrections to the test report</h2>
+<div class="scroll"><table>
+<thead><tr><th>Report says</th><th>Evidence shows</th></tr></thead>
+<tbody>
+<tr><td>Round 2 burned a full round for nothing.</td><td>Round 2 changed personas and paths and raised the score by 2. The round was useful. The bar of 80 was out of the loop's reach.</td></tr>
+<tr><td>Next tester: check that the loop stops in round 1 when the content is sound.</td><td>On a login site with no credentials, v2 still scores under 80, so the loop will not stop in round 1. That check only makes sense after the scoring fix in todo 22.</td></tr>
+<tr><td>Fixing repeated login screenshots needs a <code>finalUrl</code> field in crawl, build.mjs and paths.</td><td>All 7 stress shots share md5 <code>63b02514</code>. A hash dedupe in build.mjs alone fixes the images and the banner. <code>finalUrl</code> is still the right fix for the observed flag.</td></tr>
+<tr><td>observed is false on a path the crawl saw.</td><td>The paths prompt sets observed true only for a crawl.json link, and a redirect is not a link. The paths stage followed its rule, so the gap is in the contract. crawl.json already notes each redirect as "Redirected to /login.".</td></tr>
+<tr><td>The stress toolkit counted correctly.</td><td>It did, but the stress site had no dynamic route with several values. The stress run could not show the <code>crawlBySlug</code> bug either way.</td></tr>
+</tbody></table></div>
+<p>The report held up elsewhere. I confirmed that critic round 2 launched with <code>resume: true</code> and a short "Round 2 of 2" feedback turn, so the snapshot patch could not reach the critic.</p>
+</section>
+
+<section id="timing">
+<h2>Where the time went</h2>
+<p>Stage durations from each stage's <code>status.json</code>. The bars are scaled to the longest stage.</p>
+<div class="scroll"><table>
+<thead><tr><th>Stage</th><th>Model</th><th>Happy 48a1e50b</th><th>Stress 15735487</th><th>Output tokens (happy)</th><th></th></tr></thead>
+<tbody>
+<tr><td>code-read</td><td>sonnet</td><td class="n">71 s</td><td class="n">103 s</td><td class="n">9,634</td><td><span class="bar" style="width:3.5rem"></span></td></tr>
+<tr><td>crawl</td><td>sonnet</td><td class="n">88 s</td><td class="n">87 s</td><td class="n">6,270</td><td><span class="bar" style="width:4.3rem"></span></td></tr>
+<tr><td>toolkit</td><td>opus</td><td class="n">283 s</td><td class="n">290 s</td><td class="n">28,501</td><td><span class="bar" style="width:14rem"></span></td></tr>
+<tr><td>personas</td><td>sonnet</td><td class="n">21 s</td><td class="n">23 s (r2)</td><td class="n">2,678</td><td><span class="bar" style="width:1rem"></span></td></tr>
+<tr><td>paths</td><td>opus</td><td class="n">182 s</td><td class="n">99 s (r2)</td><td class="n">18,954</td><td><span class="bar" style="width:9rem"></span></td></tr>
+<tr><td>assemble + coverage</td><td>script</td><td class="n">5 s</td><td class="n">6 s</td><td class="n">0</td><td><span class="bar" style="width:.3rem"></span></td></tr>
+<tr><td>critic</td><td>sonnet</td><td class="n">37 s</td><td class="n">35 s (r2)</td><td class="n">4,432</td><td><span class="bar" style="width:1.8rem"></span></td></tr>
+<tr><td>publish + handoff</td><td>script, haiku</td><td class="n">19 s</td><td class="n">17 s</td><td class="n">3,923</td><td><span class="bar" style="width:.9rem"></span></td></tr>
+<tr><th>Run total</th><td></td><td class="n">10m17s</td><td class="n">12m42s</td><td></td><td></td></tr>
+</tbody></table></div>
+<ul>
+<li>The plan assumed an 8-10 minute crawl would hide the toolkit. The crawl took 88 s, so the toolkit ran about 195 s past the crawl, on the critical path in both runs.</li>
+<li>The toolkit takes no inputs and writes the same three scripts every run. Builder lesson 37 says to freeze a toolkit like that once it passes a real run. Lesson 37 was written at 22:51Z, after User bible was built at 19:09Z, so the builder could not have applied it.</li>
+<li>Freezing the toolkit would bring the happy run to about 7 minutes. Each run would also get the same build.mjs, which ends defects like the banner counter that hit one run and not another. Builder todo 23 carries the steps.</li>
+</ul>
+</section>
+
+<section id="tester">
+<h2>Tester craft</h2>
+<ul>
+<li>The tester ended at 18m38s of a 45-minute budget with v2 and v3 unconfirmed. One fresh stress run takes about 13 minutes, so a confirmation run fit. Next time, start the run as soon as the last version is stored, and write the report while the run goes.</li>
+<li>The tester wrote straight to <code>modpipes.sqlite runs.definition</code> to retarget a live run. The write bypassed the server and had no effect, because a resumed round never rereads the prompt. Store a version and start a fresh run instead.</li>
+<li>Good practice worth keeping:
+  <ul>
+  <li>The runs used git clones in <code>/tmp/ub-test</code> with symlinked node_modules, instead of an 827 MB <code>cp -a</code>.</li>
+  <li>The tester recovered from the first attempt, which a server restart killed at 19:17Z: it cancelled two dead runs, deleted the stale test copy and removed the leaked container.</li>
+  <li>The tester kept v1.json as the real pipeline, not the test copy, so the version diffs show only real edits.</li>
+  </ul></li>
+<li>The leaked Postgres container is a pipeline defect, not only housekeeping. A killed crawl never runs <code>docker rm</code>. The crawl's new lesson tells a crawl to sweep containers left by runs that are no longer running.</li>
+</ul>
+</section>
+
+<section id="filed">
+<h2>Where the knowledge went</h2>
+<details open><summary>Real pipeline stage tables (184c7aff)</summary>
+<ul>
+<li>critic, lesson 2: with no credentials, a login site shows one /login image everywhere. That is a crawl limit, so score the content from the code.</li>
+<li>toolkit, lesson 3: name both banner numbers, dedupe images by hash, and give the fixture a dynamic route with two crawled values.</li>
+<li>paths, lesson 1: a redirect is not a link. Quote the crawl's "Redirected to" note in the step's evidence.</li>
+<li>crawl, lesson 1: sweep <code>ub-*-pg</code> containers whose run is no longer running.</li>
+</ul></details>
+<details open><summary>Builder, tester and analysis tables</summary>
+<ul>
+<li>Builder (k73m6ng), lesson 38: time a stage before hiding a model toolkit behind it.</li>
+<li>Builder (k73m6ng), lesson 39: a loop gate should score only what the loop owns.</li>
+<li>Tester (kt6n75z), lesson 56: start a confirmation run when budget remains.</li>
+<li>Tester (kt6n75z), lesson 57: never patch modpipes.sqlite.</li>
+<li>Tester (kt6n75z), lesson 58: project a gate fix onto the old score before claiming the loop stops in round 1.</li>
+<li>Analysis (k8n7vfc), lessons 33-36:
+  <ul>
+  <li>Recompute the stop condition from the old verdicts.</li>
+  <li>md5 the screenshots.</li>
+  <li>Compare a lesson's createdAt with the pipeline build time.</li>
+  <li>Test any "wasted round" claim against that round's outputs.</li>
+  </ul></li>
+</ul></details>
+<details open><summary>Builder todos (lessons__pipeline_builder_todos)</summary>
+<ul>
+<li>Removed row 21. Row 22 replaces it and carries all of row 21's content plus the corrections above.</li>
+<li>Added row 22, User bible v4: score only loop-owned content, name both banner numbers, dedupe images by hash, and extend the smoke fixture. Then confirm v2 to v4 in one stress run, and add <code>finalUrl</code> last.</li>
+<li>Added row 23: freeze the User bible toolkit into a script stage after v4 passes.</li>
+</ul></details>
+</section>
+
+<section id="method">
+<h2>Method</h2>
+<ul>
+<li>I diffed v1, v2 and v3 stage prompts line by line with difflib. Only the toolkit, critic and shared prompts changed, and the loop cap stayed at 3.</li>
+<li>I condensed the 3.9 MB tester transcript to 644 lines of text, tool calls and results. I then pulled the full input of each edit, patch and lesson command.</li>
+<li>I read every critic verdict, including <code>rounds/1</code>, and recomputed the stop condition under v2.</li>
+<li>I grepped both toolkits' check.mjs and bible.css, hashed the crawl screenshots, and counted img elements in the published bibles.</li>
+<li>I read the stress critic transcript's modpipes markers for the round 2 launch, which showed <code>resume: true</code>.</li>
+<li>I took stage times and output tokens from each stage's status.json.</li>
+</ul>
+</section>
+</main>
+</body>
+</html>

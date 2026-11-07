@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>ChatGPT ad plan (test) · Fri 6 Nov, 10:54</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>ChatGPT ad plan (test)</h1>
+  <p class="caption">A ChatGPT ads plan for a PDF-to-audiobook app</p>
+  <p class="summary">This test run of ChatGPT ad plan was pointed at the bookrender repo with a $120 monthly budget and an offline-audiobook positioning line. It produced a seven-step guided page with five creative cards.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T16:54:28.090Z">Fri 6 Nov, 10:54</time></span><span>Finished <time datetime="2026-11-06T17:17:07.042Z">Fri 6 Nov, 11:17</time></span><span>22 min 39 s</span><span>8.9M tokens</span><span class="id">f59b67ea-54db-4cfe-a8ba-a6397fd472ee</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/run.json">http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/f59b67ea-54db-4cfe-a8ba-a6397fd472ee.jpg" width="800" height="500" alt="Render of the primary output of ChatGPT ad plan (test)"><figcaption>Hero from http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/page/outputs/page/index.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Repo path</dt><dd>/home/alex/Desktop/dev/bookrender</dd></div><div><dt>Monthly budget in USD</dt><dd>120</dd></div><div><dt>Positioning override</dt><dd>Turn any long PDF into a narrated audiobook you can play offline.</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Page · page<span class="type">dir</span></h3><p class="desc">The guided ad-plan page: index.html plus the creative PNGs</p><iframe src="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/page/outputs/page/index.html" title="Page page" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/page/outputs/page/index.html">http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/page/outputs/page/index.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Overview · overview<span class="type">md</span></h3><p class="desc">What was produced, the verdict, the creatives, the check results, and what to do next</p></summary><div class="md"><h1>bookrender ChatGPT ads: run overview</h1>
+<p>Date: 2026-11-06. Positioning used: &quot;Turn any long PDF into a narrated audiobook you can play offline.&quot; Repo: <code>/home/alex/Desktop/dev/bookrender</code>.</p>
+<h2>What was produced</h2>
+<ol>
+<li><strong>Guided page: <code>stages/page/outputs/page/index.html</code></strong> (7 steps, with the five creative cards <code>c1.png</code> to <code>c5.png</code> alongside it). It is a checklist-style guide to the ChatGPT ads test, with copy buttons and sources. It is not an ad and does not spend anything.</li>
+<li><strong>Ad plan: <code>stages/ad-plan/outputs/plan.md</code></strong>, with budget, tracking, setup and kill criteria.</li>
+<li><strong>Creatives: <code>stages/copywriter/outputs/creatives.json</code></strong> (c1 to c5, with image briefs).</li>
+</ol>
+<h2>Fit verdict</h2>
+<ul>
+<li><strong>Do not advertise yet.</strong> The repo is a 3D book-club web app (Lap Book Viewer). It has no PDF, text-to-speech, audio or offline code, and no live URL, so the promise in the positioning is not in the product.</li>
+<li><strong>Spend nothing until</strong> the feature ships, the site has a public HTTPS URL with a <code>/listen</code> route, and tracking fires. Then run the two-ad-group test (A and C) at 25 USD/day for 4 days, capped at 120 USD.</li>
+</ul>
+<h2>Creatives</h2>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>headline</th>
+<th>body</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c1</td>
+<td>Your PDF, read aloud</td>
+<td>Turn a 300-page PDF into one audiobook file.</td>
+</tr>
+<tr>
+<td>c2</td>
+<td>Read on your commute</td>
+<td>Hear long papers and reports with hands busy.</td>
+</tr>
+<tr>
+<td>c3</td>
+<td>PDF audio, no wifi</td>
+<td>Download narrated PDFs for flights and tunnels.</td>
+</tr>
+<tr>
+<td>c4</td>
+<td>Rest your eyes, keep up</td>
+<td>Listen to your study PDFs as narrated audio.</td>
+</tr>
+<tr>
+<td>c5</td>
+<td>Long PDFs, as audiobooks</td>
+<td>An offline audiobook option for your own PDFs.</td>
+</tr>
+</tbody></table>
+<p>Only c1 (ad group A) and c3 (ad group C) run in the 120 USD test. c2, c4 and c5 are parked with their groups. All five have <code>targetUrl: null</code>, so none can be submitted until a live URL exists. Every creative describes the PDF-to-audio feature that the repo does not yet have.</p>
+<h2>Check and critic results</h2>
+<p><strong>page-check: ok = true.</strong> All checks passed at 390x844 and 1440x900, in both direct and framed modes:</p>
+<ul>
+<li>Steps navigate (next button and arrow keys), reaching all 7 steps.</li>
+<li>20 copy buttons present.</li>
+<li>Five images at 1024 px.</li>
+<li>Headline and body lengths within the checker&#39;s limits.</li>
+<li>No horizontal overflow.</li>
+<li>Zero axe violations.</li>
+<li>Official sources cited for creatives, setup and tracking.</li>
+<li>Checklist state survives reload.</li>
+<li>No page, console or failed-request errors.</li>
+</ul>
+<p>Links: 26 checked, 0 dead. 19 returned 200 and 7 returned 403 (walled but alive: openai.com/index/testing-ads-in-chatgpt, searchengineland, alternativeto, mediapost, help.openai.com daily-budgets, openai.com 26-countries, help.openai.com creating-campaigns).</p>
+<p><strong>page-critic: ship = true, score = 86, blockers = none</strong> after round 2. Open notes, none blocking:</p>
+<ul>
+<li>Each step fades in over 0.35 s, so a screenshot taken at load can catch near-invisible text. Honouring <code>prefers-reduced-motion</code> or starting at opacity 1 would fix it.</li>
+<li>Step 5 is one long checklist. A visible done-count would help.</li>
+<li>The sandboxed-viewer fallbacks (no localStorage, no clipboard, blocked <code>target=_blank</code>) were not separately tested in round 2. Page-check&#39;s framed-mode run passed, but that run did not exercise these three fallbacks in isolation.</li>
+</ul>
+<p><code>ship = true</code> applies to the page. It does not clear the ad copy, which the plan blocks until the product ships.</p>
+<h2>What to do next</h2>
+<ol>
+<li><strong>Settle the positioning.</strong> Either build and deploy the PDF-to-audio feature (in this repo, or in the repo that holds it), or rerun with a positioning that matches what the repo ships.</li>
+<li><strong>Deploy.</strong> Build <code>web/Dockerfile</code> and <code>api/Dockerfile</code> with Postgres, set the Google OAuth variables to the public domain, and put TLS in front. Confirm <code>/listen</code> resolves.</li>
+<li><strong>Add tracking.</strong> Install the oaiq Pixel on every page, fire the sign-up event with a shared <code>event_id</code>, post the same event from the server, and record UTMs.</li>
+<li><strong>Set up ads.openai.com.</strong> Start verification as soon as the domain is live (5 to 15 business days). Fill <code>targetUrl</code> for c1 and c3, use the copy as written, and submit for review. Record the approval date as day 0.</li>
+<li><strong>Fund the test.</strong> 25 USD/day for 4 days, 120 USD total, cap-pause at 110 USD. Review on day 14 with the kill criteria in plan section 7.</li>
+</ol>
+<h2>Rerun with corrected positioning</h2>
+<p>If the product read is wrong (for example, the PDF feature lives in another repo), run:</p>
+<pre><code>/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start b9afa7ec-8375-40a9-bb31-cd7aefffa6cf --var repo-path=/home/alex/Desktop/dev/bookrender --var positioning=&quot;&lt;one sentence describing what the product does&gt;&quot;
+</code></pre>
+<p>Replace <code>&lt;one sentence describing what the product does&gt;</code> with one sentence that matches the shipped feature. Use <code>--var repo-path=&lt;path&gt;</code> to point at a different repo.</p>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/overview/outputs/overview.md">http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/overview/outputs/overview.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><p class="desc">No stage asked the user a question.</p></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/product-read/outputs/product.md">Product read · product.md</a> <span class="type">3.7KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/product-read/outputs/profile.json">Product read · profile.json</a> <span class="type">545B</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/dossier-refresh/outputs/dossier.md">Dossier refresh · dossier.md</a> <span class="type">7.6KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/dossier-refresh/outputs/facts.json">Dossier refresh · facts.json</a> <span class="type">639B</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/toolkit/outputs/tools">Toolkit · tools.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/conversations/outputs/conversations.md">Conversations · conversations.md</a> <span class="type">8.5KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/comparables/outputs/comparables.md">Comparables · comparables.md</a> <span class="type">14KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/ad-plan/outputs/plan.md">Ad plan · plan.md</a> <span class="type">23KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/copywriter/outputs/creatives.json">Copywriter · creatives.json</a> <span class="type">4.7KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/card-designer/outputs/cards">Card designer · cards.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/render-creatives/outputs/pngs">Render creatives · pngs.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/page-check/outputs/report.json">Page check · report.json</a> <span class="type">6.5KB</span></li><li><a href="http://localhost:4810/api/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/files/stages/page-critic/outputs/verdict.json">Page critic · verdict.json</a> <span class="type">1.0KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Product read</td><td>gather</td><td>done</td><td>sonnet</td><td>32 s</td><td>245K</td></tr>
+<tr><td>Dossier refresh</td><td>gather</td><td>done</td><td>sonnet</td><td>44 s</td><td>240K</td></tr>
+<tr><td>Toolkit</td><td>gather</td><td>done</td><td>sonnet</td><td>2 min 21 s</td><td>305K</td></tr>
+<tr><td>Conversations</td><td>fit</td><td>done</td><td>sonnet</td><td>55 s</td><td>190K</td></tr>
+<tr><td>Comparables</td><td>fit</td><td>done</td><td>sonnet</td><td>1 min 05 s</td><td>158K</td></tr>
+<tr><td>Ad plan</td><td>write</td><td>done</td><td>opus</td><td>2 min 08 s</td><td>241K</td></tr>
+<tr><td>Copywriter</td><td>write</td><td>done</td><td>opus</td><td>36 s</td><td>160K</td></tr>
+<tr><td>Card designer</td><td>design</td><td>done</td><td>sonnet</td><td>1 min 03 s</td><td>327K</td></tr>
+<tr><td>Render creatives</td><td>render</td><td>done</td><td>script</td><td>3 s</td><td>0</td></tr>
+<tr><td>Page</td><td>build</td><td>done</td><td>opus</td><td>5 min 50 s</td><td>6.2M</td></tr>
+<tr><td>Page check</td><td>check</td><td>done</td><td>script</td><td>35 s</td><td>0</td></tr>
+<tr><td>Page critic</td><td>check</td><td>done</td><td>sonnet</td><td>30 s</td><td>661K</td></tr>
+<tr><td>Overview</td><td>deliver</td><td>done</td><td>haiku</td><td>33 s</td><td>236K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

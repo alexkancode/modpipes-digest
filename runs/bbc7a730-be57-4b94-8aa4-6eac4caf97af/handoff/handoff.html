@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Topic expert forge (test) · handoff</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="handoff.md">Raw markdown</a></p><h1>Handoff: cmos-hyphenation-vs-ap</h1>
+<p>Topic: Chicago Manual of Style hyphenation (CMOS 17th/18th ed., §7.89 table) and where CMOS and AP disagree.</p>
+<h2>The agent</h2>
+<ul>
+<li>Name: <code>cmos-hyphenation-vs-ap</code></li>
+<li>File: <code>/home/alex/.claude/agents/cmos-hyphenation-vs-ap.md</code> (installed 2026-11-06T11:30:20)</li>
+</ul>
+<h2>How to use it</h2>
+<ul>
+<li>In Claude Code, inside a session: <code>use the cmos-hyphenation-vs-ap subagent to check this paragraph</code></li>
+<li>For a whole session: <code>claude --agent cmos-hyphenation-vs-ap</code></li>
+<li>On a modpipes stage: set <code>&quot;agent&quot;: &quot;cmos-hyphenation-vs-ap&quot;</code> in the stage definition.</li>
+</ul>
+<h2>Images</h2>
+<p>None. The plan set <code>needs_images: false</code> and <code>image_target: 0</code>, so there is no image folder and no gallery. The topic is a rule set, not something to look at.</p>
+<h2>Examiner result</h2>
+<p>Passed in round 1 of 1, with 100/100 (pass mark 95).</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expert (quiz, 6/6 correct)</td>
+<td>40/40</td>
+</tr>
+<tr>
+<td>Critique (12 planted errors, all caught)</td>
+<td>20/20</td>
+</tr>
+<tr>
+<td>Making (copyeditor brief)</td>
+<td>20/20</td>
+</tr>
+<tr>
+<td>Usable (lint, loading, paths, tools)</td>
+<td>20/20</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Full report: <a href="../../examiner/outputs/report.md">report.md</a></li>
+<li>Quiz: <a href="../../examiner/outputs/exam/quiz.md">quiz.md</a>, probe: <a href="../../examiner/outputs/exam/probe-1.json">probe-1.json</a></li>
+<li>Critique probe: <a href="../../examiner/outputs/exam/probe-2.json">probe-2.json</a></li>
+<li>Making probe (probe-3): <a href="../../examiner/outputs/exam/probe-3.json">probe-3.json</a>, the brief it produced: <a href="../../examiner/outputs/exam/brief.md">brief.md</a></li>
+</ul>
+<h2>The drawing</h2>
+<p>The agent made no drawing during the exam. The topic is textual, and the &quot;making&quot; task was a written copyeditor brief, linked above. The exam folder holds no image file.</p>
+<h2>What the examiner still wants</h2>
+<p>Nothing blocks the pass. The examiner listed two optional fixes for the agent file, if you edit it by hand or rerun:</p>
+<ol>
+<li><strong>Inconsistent ¶7.92 claim.</strong> Section 2.2 says the 18th edition&#39;s ¶7.92 &quot;names more always-hyphenated after-noun compounds&quot;. Section 2.5 says how many the 17th listed is unverified. Pick one status: if no source compares the two lists, mark the §2.2 statement [unverified] too. The agent had already turned this into a flat &quot;the 18th widened the list&quot;.</li>
+<li><strong>Overstated AP vs. CMOS philosophy.</strong> The brief says &quot;Don&#39;t drop hyphens just because the meaning seems clear&quot;. Both guides leave familiar open compounds open. Add one line in §2.12 or §4.2 saying the difference is pattern-first (CMOS) versus judgment-first (AP).</li>
+</ol>
+<p>Keep as is: the edition-by-edition paragraph table (§2.2), the 5-step decision procedure (§2.4), the [unverified]/CONTESTED markers, the &quot;never cite 7.89 for the 18th&quot; rule, and the per-item report format (§4.1).</p>
+</body></html>

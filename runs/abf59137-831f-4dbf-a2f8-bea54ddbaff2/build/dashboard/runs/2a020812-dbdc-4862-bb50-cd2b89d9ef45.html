@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Thu 5 Nov, 12:22</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">A looping pixel animation pipeline, Pixel loop forge, tested to v3</p>
+  <p class="summary">The pipeline builder was asked to adapt Pixel sprite forge into a pipeline that makes infinitely looping pixel animation GIFs. It tested Pixel loop forge on two briefs and left it at v3.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-05T18:22:54.704Z">Thu 5 Nov, 12:22</time></span><span>Finished <time datetime="2026-11-05T19:38:59.789Z">Thu 5 Nov, 13:38</time></span><span>1 h 16 min</span><span>12.4M tokens</span><span class="id">2a020812-dbdc-4862-bb50-cd2b89d9ef45</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/run.json">http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/2a020812-dbdc-4862-bb50-cd2b89d9ef45.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from kt6n75z.test-report</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>how could we adapt the pixel sprite forge pipeline to a new pipeline that creates pixel sprites and uses them to produce running infinite loop gifs with transparent backgrounds, art school graduate level style, professional clean feeling?</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Pixel loop forge: test report</h1>
+<ul>
+<li>Pipeline: <code>fc00e9f0-efb4-40e0-97a3-8ec5aa06bf3e</code>, tested as v1 on the copy &quot;Pixel loop forge (test)&quot; (<code>3ae072ee-1baa-48f5-8a43-ad20dbbadd4d</code>, now deleted). Both loop caps were cut to 2.</li>
+<li>Window: 2026-11-05, 12:48 to 13:31 CST. Two runs, started together.</li>
+<li>The real pipeline now sits at v3. Versions and notes are in <code>pipeline-versions/</code> (<code>NOTES.md</code> explains each version).</li>
+</ul>
+<h2>What ran</h2>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Result</th>
+<th>Wall time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>8a85ac29-c623-46a2-8f02-74e426638262</code></td>
+<td>&quot;a red mushroom with legs&quot;, action <code>bob</code>, 32x32, 8 frames, 12 fps, ship-score 40</td>
+<td>done, all 30 stages, gallery delivered</td>
+<td>31.6 min</td>
+</tr>
+<tr>
+<td>Stress <code>865dd2d0-f8fe-4c6a-860d-16cc2b75d281</code></td>
+<td>&quot;a fox knight with a long flowing cape and a bushy tail&quot;, action &quot;overhead sword attack with a long wind-up hold&quot;, 40x32, 6 frames, 24 fps, 8 colours, three-quarter view facing left, ship-score 40, fresh-eyes haiku</td>
+<td>cancelled at the budget, inside key-painter</td>
+<td>42.7 min</td>
+</tr>
+</tbody></table>
+<p>Run outputs live under <code>~/.modpipes/runs/&lt;runId&gt;/stages/&lt;stageKey&gt;/outputs/</code>. Below, <code>H</code> is the happy run directory and <code>S</code> the stress run directory.</p>
+<h2>What worked</h2>
+<p>The evidence below comes from files and commands, not from stage summaries.</p>
+<ul>
+<li>Toolkit: <code>selftest.py</code> exited 0 in both runs. <code>H/toolkit/outputs/pixkit/README.md</code> lists <code>onion</code>, <code>strip</code>, <code>cycle2</code>, <code>delta</code>, <code>sheet</code>, <code>gif</code> and <code>assemble</code>.</li>
+<li>I ran <code>pixkit assemble</code> on a synthetic stress set: 40x32, six frames, holds of 30, 4, 4, 4, 8 and 4 cs, a <code>#000000</code> key, and a locked box moving 1 px per frame. It exited 0. Both GIFs round-tripped with the exact holds, and the locked check showed 0 changed pixels.</li>
+<li>Hero half, happy: three painters linted clean, using 13 to 14 of 16 colours with no orphans. The scorer shipped round 1 at 70.0.</li>
+<li>Hero half, stress: the painters stayed inside 8 colours. The scorer shipped round 1 at 67.9.</li>
+<li>Animator, happy: <code>H/animator/outputs/timing.json</code> has 8 frames, a painter on each, and three locked regions with 8 dy values each.</li>
+<li>Key painter and tweens: frame 1 is byte-identical to <code>H/reviser/outputs/grid.txt</code>. All eight frames lint ok with 14 colours. The sonnet tweens held palette and proportions. The consistency critic scored 79 in round 1 and 86 in round 2, so tweens can stay on sonnet.</li>
+<li>Assemble, happy: <code>H/assemble/outputs/lint.json</code> shows 8 frames, <code>loop</code> 0, transparency index 0, holds 120/60/80/100/60/60/80/100 ms read back exactly, no identical neighbours, and 0 locked-region drift.</li>
+<li>Motion loop: it ran two rounds. The reviser applied the fixes, and the total rose from 70.5 to 73.65. The loop stopped at the cap.</li>
+<li>Gallery: <code>H/gallery/outputs/gallery/index.html</code> uses relative paths only, copies every asset, and shows both verdicts.</li>
+<li>Stress motion-theory: it produced a 42 cs wind-up hold, 46% of the cycle, plus a smear frame and planted feet. The animator carried both into timing.json.</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li>The Medium run-cycle link returns HTTP 403 in both runs.<ul>
+<li>Evidence: <code>H/motion-theory/outputs/motion-brief.md</code> line 149, and the sources table in <code>S/motion-theory/outputs/motion-brief.md</code>.</li>
+<li>Fix (v2): drop the link. Add Wikipedia&#39;s twelve principles of animation, which returned 200 from this machine, because the walk-only sources left attacks uncovered.</li>
+<li>Status: unconfirmed. No run used v2.</li>
+</ul>
+</li>
+<li>Locked regions accept only a vertical shift.<ul>
+<li>Evidence: <code>S/motion-theory/outputs/motion-brief.md</code> lines 54-55 move the head dx 0, +1, +1, -1, -2, -1. <code>S/animator/outputs/timing.json</code> locks <code>face</code> and <code>near-ear</code> with dy only.</li>
+<li>Consequence: the locked check would report the lean as drift, and critics would ask for fixes against correct frames.</li>
+<li>Fix (v3): locked entries take an optional <code>dx</code> list. The change touches the pipeline prompt and the toolkit, animator, key-painter and consistency-critic prompts.</li>
+<li>Status: unconfirmed. The stress run was cancelled before assembly.</li>
+</ul>
+</li>
+<li>The happy motion loop ended at its cap with &quot;Verdict: revise&quot;.<ul>
+<li>Evidence: <code>H/motion-fresh-eyes/outputs/report.md</code>. Both readers called the bob &quot;a walk cycle in place&quot; because the leg stance changes.</li>
+<li>Scores: fresh eyes 40, then 45, against a floor of 50. Seam 88, consistency 86.</li>
+<li>No fix made. A 2-round cap may simply be too short, since round 2 gained 5 points. Recorded as a todo.</li>
+</ul>
+</li>
+<li>The stress animator took 816 s, against 163 s in the happy run.<ul>
+<li>Evidence: <code>S/animator/transcript.jsonl</code>, with 44k thinking tokens before the first write.</li>
+<li>No fix made. A lesson was added to the animator table.</li>
+</ul>
+</li>
+</ol>
+<h2>Fixes</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Change</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v2</td>
+<td>motion-theory link swap</td>
+<td>unconfirmed</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>optional dx on locked regions</td>
+<td>unconfirmed</td>
+</tr>
+</tbody></table>
+<p>Voice audit: 0 sentences over 25 words on both files. <code>pipeline validate</code> returned ok before each update.</p>
+<h2>Lessons and todos recorded</h2>
+<ul>
+<li>Real pipeline tables:<ul>
+<li><code>animator</code>: slow attack plans.</li>
+<li><code>animator</code>: fill dx for a lean.</li>
+<li><code>motion-fresh-eyes</code>: a bob with changing legs reads as a walk.</li>
+</ul>
+</li>
+<li>Tester table: timing of this pipeline, and using <code>--from</code> and <code>--take</code> to reach the motion half.</li>
+<li><code>lessons__pipeline_builder_todos</code>:<ul>
+<li>The stress motion half and the v3 dx fix are untested.</li>
+<li>The bob reads as a walk and fails the fresh-eyes floor.</li>
+</ul>
+</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Start v3 on a copy with <code>--from 865dd2d0-f8fe-4c6a-860d-16cc2b75d281</code> and take the hero-half outputs, so the stress attack reaches the animator within minutes. Rerun the toolkit, because v3 changes <code>delta</code>.</li>
+<li>On that run, check three things:<ul>
+<li>timing.json carries <code>dx</code> for the face.</li>
+<li><code>lint.json</code> shows zero locked drift.</li>
+<li>The 42 cs hold round-trips.</li>
+</ul>
+</li>
+<li>Run the happy bob at the full motion cap of 4 and see whether fresh eyes clears 50 without a prompt change.</li>
+</ol>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/kt6n75z/outputs/test-report.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:24:10.727Z">Thu 5 Nov, 12:24</time></p>
+    <div class="q"><p class="question">The ask says &quot;running infinite loop gifs&quot;. Does &quot;running&quot; mean the character performs a run cycle (legs pumping, running in place), or does it mean any seamlessly looping animation (idle breathing, walk, run, attack) chosen per run?</p><p class="options">Options: Run cycle only (Recommended) · Any loop, chosen per run · Run cycle plus idle</p><p class="answer">I just meant that the gifs repeat infinitely instead of running once and stoppping</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:27:17.220Z">Thu 5 Nov, 12:27</time></p>
+    <div class="q"><p class="question">Which animation should each looping GIF show? The sprite forge v2 paints one still pose from a subject brief; the new pipeline needs to know what motion to add.</p><p class="options">Options: Action named per run (Recommended) · Idle loop always · Pipeline chooses from the brief</p><p class="answer">Action named per run (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:28:55.647Z">Thu 5 Nov, 12:28</time></p>
+    <div class="q"><p class="question">What size and frame count should the GIFs default to? The v2 forge shipped a 16x16 mushroom and a 32x32 dwarf; animation at 16x16 leaves little room for clean motion.</p><p class="options">Options: 32x32, 8 frames, 12 fps (Recommended) · 48x48, 8 frames, 12 fps · 64x64, 12 frames, 12 fps</p><p class="answer">64x64, 12 frames, 12 fps</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:29:17.780Z">Thu 5 Nov, 12:29</time></p>
+    <div class="q"><p class="question">Beyond the looping GIF at 1x, what else should a run deliver? Pixel art at 64x64 is tiny on a modern screen, and most uses want the frames too.</p><p class="options">Options: GIF at 1x and 4x, sprite sheet, frames, gallery page (Recommended) · GIF at 1x and 4x only · GIF, sprite sheet and frames, no gallery</p><p class="answer">GIF at 1x and 4x, sprite sheet, frames, gallery page (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:29:46.438Z">Thu 5 Nov, 12:29</time></p>
+    <div class="q"><p class="question">How should the new pipeline build on sprite forge v2? v2 already takes a brief through identity kit, pose, palette, three painters, a jury, and a scored critic/reviser loop until one still sprite ships.</p><p class="options">Options: Key frame first, then animate (Recommended) · Animate from the start</p><p class="answer">Key frame first, then animate (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:30:11.264Z">Thu 5 Nov, 12:30</time></p>
+    <div class="q"><p class="question">Here is my understanding. A new pipeline, Pixel loop forge, adapts sprite forge v2. Variables: brief (required), action (required, such as idle, walk, run, attack), canvas default 64x64, frames default 12, fps default 12, max-colors, style defaulting to &#39;art school graduate level, professional and clean&#39;. Stage 1 keeps v2&#39;s pipeline through to one shipped hero frame. Stage 2 adds: an animation plan (timing chart, per-frame pose notes, which parts move, arcs, loop-closure rule), parallel frame painters working from the hero frame and plan, a script stage that assembles transparent looping GIFs at 1x and 4x plus a sprite sheet with Pillow, then a motion critic loop (seamless loop, timing and spacing, consistency with the hero frame, pixel craft) with a reviser until a score ships or the round cap hits. Delivery: GIF 1x and 4x, sprite sheet PNG, per-frame PNGs, index.html gallery. Everything runs offline on python3 and Pillow. Is that right?</p><p class="options">Options: Yes, write it up · Yes, with changes · No, let&#39;s go back</p><p class="answer">Yes, write it up</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">8.6KB</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">411B</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">8.1KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">7.1KB</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">13KB</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">9.4KB</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">4.5KB</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/k8n7vfc/outputs/lessons-learned-site.html">Analyse the test · lessons-learned-site.html</a> <span class="type">18KB</span></li><li><a href="http://localhost:4810/api/runs/2a020812-dbdc-4862-bb50-cd2b89d9ef45/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">10KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>8 min 48 s</td><td>812K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>2 min 15 s</td><td>371K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>2 min 31 s</td><td>764K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 45 s</td><td>515K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>1 min 45 s</td><td>733K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>13 min 45 s</td><td>2.2M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>44 min 30 s</td><td>4.1M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>6 min 32 s</td><td>3.0M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

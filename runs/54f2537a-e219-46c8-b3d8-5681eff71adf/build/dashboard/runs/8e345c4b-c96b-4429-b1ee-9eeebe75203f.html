@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Game forge v2 · Fri 6 Nov, 10:35</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Game forge v2</h1>
+  <p class="caption">A night-pond frog game racing the ice for fireflies</p>
+  <p class="summary">The concept asked Game forge v2 for a frog hopping between lily pads to catch fireflies before the pond freezes. The result is Last Light Pond, a single-screen arcade survival game where firefly warmth holds back the ice.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T16:35:56.960Z">Fri 6 Nov, 10:35</time></span><span>Finished <time datetime="2026-11-06T18:12:56.531Z">Fri 6 Nov, 12:12</time></span><span>1 h 37 min</span><span>37.0M tokens</span><span class="id">8e345c4b-c96b-4429-b1ee-9eeebe75203f</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/run.json">http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/8e345c4b-c96b-4429-b1ee-9eeebe75203f.jpg" width="800" height="500" alt="Render of the primary output of Game forge v2"><figcaption>Hero from http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/deliver/outputs/game/index.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Concept</dt><dd>a frog hopping between lily pads to catch fireflies before the pond freezes over</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Deliver · game<span class="type">dir</span></h3><p class="desc">The finished game; open index.html</p><iframe src="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/deliver/outputs/game/index.html" title="Deliver game" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/deliver/outputs/game/index.html">http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/deliver/outputs/game/index.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Deliver · report<span class="type">md</span></h3><p class="desc">What was built, how the science was applied, scores per round, next steps</p></summary><div class="md"><h1>Last Light Pond: delivery report</h1>
+<h2>Concept and pitch</h2>
+<p>Concept: a frog hopping between lily pads to catch fireflies before the pond freezes over.</p>
+<p><strong>Pitch:</strong> A frog hops between drifting lily pads on a night pond, snapping up fireflies whose warmth holds back the ice until dawn.</p>
+<p>It is a single-screen, top-down arcade survival game with a score chase. One run is one night of 180 s. Catch fireflies to push back a ring of ice that is closing in. If you are still on an open pad at dawn you win and get a bonus for the open water left. If your pad freezes under you, you lose. It uses plain Canvas 2D with no library, and every sound is synthesised in WebAudio.</p>
+<h2>How to play</h2>
+<ul>
+<li><strong>Goal:</strong> survive to dawn (the moon crossing the top strip shows how much night is left), or score as high as you can before you freeze.</li>
+<li><strong>Hop:</strong> click or tap an open pad within range, or press the arrow keys / WASD to hop to the nearest open pad in that direction. Hops never land in the water. A pad that is out of range or frozen gets a &quot;nope&quot; croak.</li>
+<li><strong>Snap:</strong> click or tap a firefly, or press Space to snap the nearest firefly in reach. You can snap during a hop.</li>
+<li><strong>Warmth:</strong> each firefly pushes the ice back (+3 px, a golden firefly +10). Pads thaw again when the ice recedes past them. When your own pad starts to frost and creak, hop inward.</li>
+<li><strong>Score:</strong> a firefly is worth 10 and a golden one 50. A catch made mid-hop scores double. Catches less than 2 s apart build a combo up to ×5. Reaching dawn adds 500 + 2 × the open-water radius. Your best score is saved in localStorage.</li>
+<li><strong>Other keys:</strong> P / Esc pauses, M mutes, V toggles reduced motion, and R / Enter / Space or a click restarts from the game-over screen.</li>
+</ul>
+<h2>How to host</h2>
+<p><code>game/</code> is a self-contained static folder (228 kB) with no CDN dependencies and no build step. To host it, copy the folder to any static host (GitHub Pages, Netlify, S3, itch.io as an HTML zip) and open <code>index.html</code>. It also runs straight from disk over <code>file://</code>. Add <code>?seed=N</code> to the URL to replay a fixed layout.</p>
+<p>Delivery check: I loaded <code>game/index.html?seed=1</code> from <code>file://</code> in headless Chrome. It reached <code>title</code>, <code>__game.start()</code> moved it to <code>play</code>, and Space caught firefly #1 (score 10, caught 1). There were no console errors and no failed requests, and it ran at 59.9 fps. The title frame is saved as <code>screenshots/deliver-check-title.png</code>.</p>
+<h2>The science applied</h2>
+<p>The brief set the numbers and the fun brief (<code>stages/fun/outputs/fun-brief.md</code>) set the principles. The fun brief draws on Flow, MDA, SDT (Ryan, Rigby and Przybylski), Hopson&#39;s reward schedules, Swink and Cook on game feel and skill atoms, Juul on failure, and Lazzaro&#39;s four keys. Before fixing any numbers, the GDD ran a balance sim over 24 seeds per strategy. That sim drove most of its decisions:</p>
+<table>
+<thead>
+<tr>
+<th>GDD decision</th>
+<th>Principle it serves</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>The ice ring is the only threat and grows linearly, v(t) = 0.8 + 0.012·t, with no spikes</td>
+<td>Flow channel, and MDA&#39;s &quot;constant rate tax&quot; fix. Hopson: sudden spikes drive players away</td>
+<td>Idle play freezes at 141 s, exactly as predicted</td>
+</tr>
+<tr>
+<td>Thaw per catch cut from +6 to +3 (golden +10)</td>
+<td>Juul: the &quot;fail some, then complete&quot; group rated games highest</td>
+<td>At +6 the sim&#39;s novice bot won almost every run. At +3 it sits at the fail-then-win edge</td>
+</tr>
+<tr>
+<td>Fireflies spawn at least 120 px from the frog and are shy within 130 px</td>
+<td>Fun brief §0 (camping must fail) and Cook (keep the hop atom in use all game)</td>
+<td>Camping on the centre pad freezes at 146–157 s</td>
+</tr>
+<tr>
+<td>Frozen pads thaw again when R recedes, and catches add the same warmth at any combo</td>
+<td>MDA&#39;s no-death-spiral rule: subsidise the losing player and reward the leader only with score</td>
+<td>Pads were seen re-opening in the bots&#39; probes (<code>padsOpen</code> 11 → 9 → up again)</td>
+</tr>
+<tr>
+<td>Golden firefly at a seeded 15–25 s jitter, worth about 5× in every channel</td>
+<td>Hopson: variable-ratio rewards on top of an avoidance schedule, so players don&#39;t clock-watch</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Rigid pad rotation, and every pad has a neighbour 70–135 px further in</td>
+<td>SDT competence (β = .41 for continued play): a death should never be stranding the player can&#39;t control</td>
+<td>The sim showed stranding deaths at 51–75 s with differential drift, and none with rigid rotation</td>
+</tr>
+<tr>
+<td>Hops can&#39;t miss, the range ring wobbles on a refused click, and snap hit-testing is lenient</td>
+<td>SDT: intuitive controls lead to competence</td>
+<td>Every bot hop and snap verb worked in all 4 rounds</td>
+</tr>
+<tr>
+<td>The first firefly is tame and within reach. Fireflies stay unshy until 3 catches. The hop hint appears only when needed</td>
+<td>Cook&#39;s skill atoms and teaching within 30 s without a tutorial</td>
+<td>Every bot made its first catch by about 15 s</td>
+</tr>
+<tr>
+<td>Pad frost warning 3 s ahead with a creak, and a death card that names the gap (&quot;27 fireflies short of dawn&quot;, &quot;Your pad iced over: hop inward…&quot;)</td>
+<td>Juul: players who blame themselves come back. Lazzaro: fiero after frustration</td>
+<td>Death card verified on screen in round 4</td>
+</tr>
+<tr>
+<td>Squash, landing ripple, 40–60 ms hit-pause, a combo chime rising a whole tone per step, no shake on normal catches</td>
+<td>Swink: polish sells physicality, with restraint</td>
+<td>Audio scored 9 in rounds 2–4</td>
+</tr>
+<tr>
+<td>Warm amber fireflies against cool ice; frog is the highest-contrast object</td>
+<td>Art brief: warm means reward, cool means danger. Reads as the concept at a glance</td>
+<td>Reads-as-concept went from 7 to 9</td>
+</tr>
+</tbody></table>
+<p>Polish added one deliberate deviation. The thaw cap falls from 260 to 215 across the night (<code>CAP_FALL</code>), so skilled players still feel the ice in Act 2. Their R at 120 s dropped from 200–250 to 200–230. A novice assist (a bright firefly one hop away every 10 s) was tried and then reverted, because over 24 seeds it cut novice dawns from 11/24 to 7/24.</p>
+<h2>Play-test scores per round</h2>
+<p>Each criterion is scored out of 10 and the total out of 100. Ship requires 80 or more with no blockers. Rounds 1–3 come from <code>stages/verdict/rounds/&lt;n&gt;/scores.json</code> and round 4 from <code>stages/verdict/outputs/scores.json</code>. The polish changelog (12:05) predates the round 4 scores (12:11), and the verdict re-read build <code>a5e8001b</code>, so the delivered build is the one that was scored.</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>R1</th>
+<th>R2</th>
+<th>R3</th>
+<th>R4 (final)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reads as concept</td>
+<td>7</td>
+<td>8</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Core loop and flow</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Game feel</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Onboarding</td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Art readability</td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Audio feedback</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Acceptance checklist</td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>70</strong></td>
+<td><strong>78</strong></td>
+<td><strong>78</strong></td>
+<td><strong>81</strong></td>
+</tr>
+<tr>
+<td>Blockers</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Verdict</td>
+<td>ITERATE</td>
+<td>ITERATE</td>
+<td>ITERATE</td>
+<td><strong>SHIP</strong></td>
+</tr>
+</tbody></table>
+<p>What moved each round:</p>
+<ul>
+<li><strong>Round 1 (70):</strong> blocked because the game-over screen never showed in the bots&#39; captures. The frog also blended into the same-green pads.</li>
+<li><strong>Round 2 (78):</strong> the over card and the frog outline were fixed and the blocker was cleared. Notes: shrink the over panel, dim the pond behind it, and make the fireflies warmer.</li>
+<li><strong>Round 3 (78):</strong> the frozen frog spotlight, the smaller card, the title plate, the falling thaw cap and the gentler early rim were added. The total held at 78, because fireflies still read cold and there was no death or dawn sample.</li>
+<li><strong>Round 4 (81):</strong> amber fireflies, a faceted ice sheet, a legible score/best plate and a combo chime on every step. A death card was finally captured (novice-1, frozen at 1:18).</li>
+</ul>
+<p>Final round bot results at t = 120 s: skilled bots reached R 228/210 with 3380 and 1870 points (68 and 51 catches), casual bots R 207/203 (1110 and 1140), and novice-2 R 125 with one pad open (210 points). Novice-1 froze at 79.1 s. Performance was 60 fps, worst frame 16.8 ms, 0 long frames and 0 errors.</p>
+<h2>Final verdict</h2>
+<p><strong>SHIP at 81/100 with no blockers.</strong> The whole loop (title, play, freeze, game over, restart) reads as the concept, runs at a locked 60 fps, and scales by skill in the right order. The weakest areas are core loop and flow (7) and the acceptance checklist (7). In all four rounds the harness stopped at 120 s, so dawn, the win card and the dawn bonus were only verified by the polish stage&#39;s own runs. Those runs report greedy bots reaching dawn 24/24, novices 11/24, and a median novice death at 148 s.</p>
+<h2>Next iteration</h2>
+<ol>
+<li><strong>Sample the full night.</strong> Run the bots for at least 185 s so dawn, the bonus and the win card are seen by the harness (checklist items 4, 14 and 15). Also add a device-scale-2 run and a heap-trend run.</li>
+<li><strong>Prevent early rim deaths.</strong> The one early loss (79 s, R 187, 9 pads still open) was a novice dying on a single outer pad. When the frog&#39;s pad has under 5 s left, pulse a ring on the best inward pad and raise the creak&#39;s pitch, so a first-timer can save themselves.</li>
+<li><strong>Move the game-over card.</strong> It still overlaps the top of the pond and the score plate. Shrink it or place it clear of both, so the frozen pond stays visible behind it.</li>
+<li><strong>Give novices more agency.</strong> Novices end at R about 125 with one pad open. The tried assist made things worse, so look at the pacing of <code>PAD_EDGE</code> and the warning instead of adding firefly supply.</li>
+<li><strong>Frame the pond.</strong> The pond is a disc in empty black margins. Fill them with reeds or a shore to give late play, which happens in a small dark core, more to look at.</li>
+</ol>
+<h2>Contents</h2>
+<ul>
+<li><code>game/</code>: the shipped build (index.html, js/, assets/ with sfx.js and manifest.json).</li>
+<li><code>screenshots/</code>: the final round&#39;s bot captures (novice, casual and skilled, two seeds each, at title, 5 s, 30 s, 60 s and over), plus <code>deliver-check-title.png</code> from the delivery load check.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/deliver/outputs/report.md">http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/deliver/outputs/report.md</a></p></figure>
+<figure class="out"><details open><summary><h3>Play link · play<span class="type">md</span></h3><p class="desc">One click to play: a link to the delivered game served by modpipes, with the pitch, controls, and final score</p></summary><div class="md"><p><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/deliver/outputs/game/index.html">Play Last Light Pond</a>
+A frog hops between drifting lily pads on a night pond, snapping up fireflies whose warmth holds back the ice until dawn.
+Controls: click or tap a pad to hop and click a firefly to snap it (or arrows/WASD to hop, Space to snap); P pauses and M mutes.
+Final play-test score: 81/100, SHIP, no blockers.</p>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/play/outputs/play.md">http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/play/outputs/play.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><p class="desc">No stage asked the user a question.</p></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/brief/outputs/brief.md">Design brief · brief.md</a> <span class="type">7.4KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/fun/outputs/fun-brief.md">Fun and engagement science · fun-brief.md</a> <span class="type">15KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/perf/outputs/perf-brief.md">Performance science · perf-brief.md</a> <span class="type">19KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/art/outputs/art-brief.md">Art and audio science · art-brief.md</a> <span class="type">19KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/gdd/outputs/gdd.md">Game design document · gdd.md</a> <span class="type">24KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/tech/outputs/tech-plan.md">Tech plan · tech-plan.md</a> <span class="type">51KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/artdir/outputs/art-direction.md">Art direction · art-direction.md</a> <span class="type">16KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/artdir/outputs/asset-plan.json">Art direction · asset-plan.json</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/sprites-entities/outputs/sprites">Sprites: entities · sprites.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/sprites-ui/outputs/sprites">Sprites: ui · sprites.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/sfx/outputs/sfx">Sound effects · sfx.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/game-logic/outputs/game/index.html">Game logic · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/game-render/outputs/game">Game render · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/harness/outputs/harness">Play-test harness · harness.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/integrate/outputs/game/index.html">Integrate · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/integrate/outputs/harness">Integrate · harness.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/integrate/outputs/screenshots">Integrate · screenshots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/integrate/outputs/smoke.md">Integrate · smoke.md</a> <span class="type">5.8KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/polish/outputs/game/index.html">Polish · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/polish/outputs/changelog.md">Polish · changelog.md</a> <span class="type">17KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/bots/outputs/results.json">Bots · results.json</a> <span class="type">231KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/bots/outputs/screenshots">Bots · screenshots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/critic-play/outputs/findings.json">Play critic · findings.json</a> <span class="type">5.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/critic-look/outputs/findings.json">Look critic · findings.json</a> <span class="type">2.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/critic-tech/outputs/findings.json">Tech critic · findings.json</a> <span class="type">1.9KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/verdict/outputs/scores.json">Verdict · scores.json</a> <span class="type">7.3KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/verdict/outputs/notes.md">Verdict · notes.md</a> <span class="type">2.1KB</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/verdict/outputs/verdict.md">Verdict · verdict.md</a> <span class="type">650B</span></li><li><a href="http://localhost:4810/api/runs/8e345c4b-c96b-4429-b1ee-9eeebe75203f/files/stages/deliver/outputs/screenshots">Deliver · screenshots.dir</a> <span class="type">4.1KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Design brief</td><td>understand</td><td>done</td><td>opus</td><td>1 min 13 s</td><td>201K</td></tr>
+<tr><td>Fun and engagement science</td><td>understand</td><td>done</td><td>opus</td><td>3 min 14 s</td><td>577K</td></tr>
+<tr><td>Performance science</td><td>understand</td><td>done</td><td>opus</td><td>3 min 38 s</td><td>597K</td></tr>
+<tr><td>Art and audio science</td><td>understand</td><td>done</td><td>opus</td><td>3 min 20 s</td><td>366K</td></tr>
+<tr><td>Game design document</td><td>design</td><td>done</td><td>opus</td><td>10 min 00 s</td><td>755K</td></tr>
+<tr><td>Tech plan</td><td>plan</td><td>done</td><td>opus</td><td>8 min 01 s</td><td>1.0M</td></tr>
+<tr><td>Art direction</td><td>plan</td><td>done</td><td>opus</td><td>4 min 07 s</td><td>624K</td></tr>
+<tr><td>Sprites: entities</td><td>build</td><td>done</td><td>default</td><td>3 min 55 s</td><td>1.1M</td></tr>
+<tr><td>Sprites: ui</td><td>build</td><td>done</td><td>default</td><td>2 min 09 s</td><td>646K</td></tr>
+<tr><td>Sound effects</td><td>build</td><td>done</td><td>default</td><td>2 min 53 s</td><td>461K</td></tr>
+<tr><td>Game logic</td><td>build</td><td>done</td><td>default</td><td>8 min 57 s</td><td>2.3M</td></tr>
+<tr><td>Game render</td><td>build</td><td>done</td><td>default</td><td>10 min 59 s</td><td>3.6M</td></tr>
+<tr><td>Play-test harness</td><td>build</td><td>done</td><td>default</td><td>4 min 22 s</td><td>551K</td></tr>
+<tr><td>Integrate</td><td>integrate</td><td>done</td><td>opus</td><td>3 min 31 s</td><td>1.0M</td></tr>
+<tr><td>Polish</td><td>polish</td><td>done</td><td>opus</td><td>5 min 37 s</td><td>18.8M</td></tr>
+<tr><td>Bots</td><td>bots</td><td>done</td><td>script</td><td>4 min 29 s</td><td>0</td></tr>
+<tr><td>Play critic</td><td>critics</td><td>done</td><td>sonnet</td><td>28 s</td><td>1.6M</td></tr>
+<tr><td>Look critic</td><td>critics</td><td>done</td><td>sonnet</td><td>18 s</td><td>941K</td></tr>
+<tr><td>Tech critic</td><td>critics</td><td>done</td><td>sonnet</td><td>19 s</td><td>966K</td></tr>
+<tr><td>Verdict</td><td>verdict</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+<tr><td>Deliver</td><td>deliver</td><td>done</td><td>opus</td><td>1 min 28 s</td><td>636K</td></tr>
+<tr><td>Play link</td><td>play</td><td>done</td><td>haiku</td><td>25 s</td><td>230K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

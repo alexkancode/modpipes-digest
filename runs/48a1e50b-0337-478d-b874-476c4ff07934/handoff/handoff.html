@@ -1,0 +1,59 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>User bible (test) · handoff</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="handoff.md">Raw markdown</a></p><h1>User bible handoff</h1>
+<h2>Where the bible is</h2>
+<ul>
+<li>Version: 1</li>
+<li>File: <code>docs/user-bible/user-bible-v1.html</code> (repo-relative; 516,415 bytes)</li>
+<li>Latest alias: <code>docs/user-bible/latest.html</code></li>
+<li>Absolute path: <code>/tmp/ub-test/happy/docs/user-bible/user-bible-v1.html</code></li>
+<li>Commit: <code>094e9f4</code>, branch <code>liquid-eq</code></li>
+<li>Nothing was pushed.</li>
+</ul>
+<h2>How to open it</h2>
+<ul>
+<li>Open the HTML file directly in a browser from disk. It is self-contained: no scripts, no external URLs.</li>
+<li>Or copy the file to any static host.</li>
+<li>GitHub&#39;s raw view shows the HTML source, not the rendered page.</li>
+</ul>
+<h2>What the crawl captured</h2>
+<ul>
+<li>Crawl ran against a throwaway Postgres container and the dev server on port 5173.</li>
+<li>8 screens captured, all HTTP 200: <code>/</code>, <code>/fonts</code>, <code>/viz</code>, <code>/viz/mesh</code>, <code>/viz/raymarch</code>, <code>/viz/metaballs2d</code>, <code>/gallery</code>, <code>/upload</code>.</li>
+<li>The three <code>/viz/&lt;technique&gt;</code> canvases rendered black under headless WebGL, so they are marked blank.</li>
+<li>No extra pages were found beyond the seed list.</li>
+<li>Cleanup: the container, <code>.env</code> and gallery dir were removed. <code>git status</code> in the repo shows <code>?? node_modules</code>, which existed before the crawl.</li>
+</ul>
+<h2>Gate results</h2>
+<ul>
+<li>Coverage: <code>ok: true</code>. All 12 checks passed (no script, no external URL, no horizontal overflow at 390 px, no serious axe violations, and so on).</li>
+<li>Critic: ship <code>true</code>, score 82, blockers none.</li>
+<li>Critic notes to act on:<ul>
+<li>The banner says &quot;screenshots captured: 0 of 6&quot;, which contradicts the page. Fix the counter.</li>
+<li>Add a short intro on which persona to read first.</li>
+<li>Identifiers break mid-word in narrow tables at 390 px.</li>
+<li>The guest &quot;shared link&quot; arrival is a guess and should be marked as a hypothesis.</li>
+</ul>
+</li>
+</ul>
+<h2>Open questions (from paths.json)</h2>
+<ol>
+<li>Is the open, unauthenticated upload intended? Who removes an unwanted photo?</li>
+<li>After uploading, does the contributor know to click &#39;Gallery&#39; in the nav?</li>
+<li>Which screen is meant to be the landing page: home or gallery?</li>
+<li>What does a person see when saving a pick fails?</li>
+<li>Should a search outage look different from &#39;No results&#39;?</li>
+<li>Why does the visualizer default to the Spotify source when it rarely has a preview?</li>
+<li>How does a visitor recover after denying microphone permission?</li>
+<li>Disagreement: features/site-nav/feature.md says the nav links Home and Fonts; the code links Gallery and Upload.</li>
+<li>Disagreement: features/reveal-and-viz-nav/feature.md says a &#39;Viz&#39; nav link was added; the code and test say there is none.</li>
+<li>Disagreement: tests/e2e/smoke.spec.ts expects /health to return db ok, which needs a live Postgres.</li>
+<li>Disagreement: the smoke test calls home a &#39;hello-world heading&#39;, but home now has a billboard and search.</li>
+<li>Disagreement: README says React Router 7 and Stage 2, and lists four routes; the code runs React Router 8 with ten routes.</li>
+<li>Disagreement: the billboard feature doc describes a &#39;top 6&#39; ranking; no data feeds the cards.</li>
+<li>Are uploaded photos kept across redeploys?</li>
+<li>Is the gallery test meaningful when it accepts both the empty state and the slideshow?</li>
+</ol>
+<h2>Rerun</h2>
+<pre><code class="language-bash">/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start 184c7aff-d637-4879-be19-10eedb04ff61 --var repo-path=/tmp/ub-test/happy
+</code></pre>
+</body></html>

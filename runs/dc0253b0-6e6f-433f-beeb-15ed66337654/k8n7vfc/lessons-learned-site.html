@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game forge iterate: what improved the pipeline, and why</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1f;--mute:#5c5c66;--line:#e2e0da;--card:#fff;--ok:#1f7a4d;--bad:#b3261e;--warn:#8a5a00;--accent:#2f5bd3}
+@media (prefers-color-scheme:dark){:root{--bg:#141417;--fg:#ececf1;--mute:#a0a0ab;--line:#2c2c33;--card:#1c1c21;--ok:#5fd39a;--bad:#ff8a80;--warn:#f0c060;--accent:#8fb0ff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:920px;margin:0 auto;padding:40px 22px 80px}
+h1{font-size:1.75rem;margin:0 0 6px}
+h2{font-size:1.25rem;margin:44px 0 10px;padding-top:10px;border-top:1px solid var(--line)}
+h3{font-size:1.05rem;margin:22px 0 6px}
+p,li{max-width:72ch}
+.sub{color:var(--mute);margin:0 0 24px}
+nav a{margin-right:14px;color:var(--accent);text-decoration:none;font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+.tag{display:inline-block;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid currentColor;margin-right:6px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}.mute{color:var(--mute)}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+code{font:0.88em ui-monospace,SFMono-Regular,Menlo,monospace;background:color-mix(in srgb,var(--line) 55%,transparent);padding:1px 5px;border-radius:4px;word-break:break-all}
+pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:.85rem}
+.diff-add{color:var(--ok)}
+</style>
+</head>
+<body>
+<main>
+<h1>Game forge iterate: what improved the pipeline, and why</h1>
+<p class="sub">Analysis of tester stage <code>kt6n75z</code> in run <code>dc0253b0</code>, 2026-11-06. Pipeline <code>e0e79c86-afa6-4b85-a772-95afd55544e3</code>, now at v2.</p>
+<nav><a href="#verdict">Verdict</a><a href="#runs">Runs</a><a href="#f1">Link fix</a><a href="#f2">Keep-list fix</a><a href="#gap">Open gap</a><a href="#held">What held</a><a href="#claims">Claim check</a><a href="#saved">Where it is saved</a></nav>
+
+<h2 id="verdict">Verdict</h2>
+<div class="card">
+<ul>
+<li>The pipeline was sound as built. Both test runs passed every stage, and every round produced a playable build that verify passed at 60 fps.</li>
+<li>The tester made two edits. Neither edit has run yet, because a live run keeps the definition it started with.</li>
+<li>The link fix (v1) is very likely right. Deliver already followed the same rule, and its links returned 200 in 2 of 2 runs. The question stages lacked the rule, and 1 of their links returned 404.</li>
+<li>The keep-list fix (v2) targets the real cause. The ask stage had no input holding the earlier keep list. One consumer gap remains: code, art and merge now receive the keep list, but no prompt tells them to protect it.</li>
+</ul>
+</div>
+
+<h2 id="runs">The two test runs</h2>
+<table>
+<tr><th>Run</th><th>Input</th><th>Rounds</th><th>Ended by</th><th class="n">Wall clock</th></tr>
+<tr><td><code>505b884e</code> happy</td><td>Neon Kaiju; "monster feels sluggish, stomp lands late"</td><td>2 knob rounds</td><td>user said done</td><td class="n">16 min 34 s</td></tr>
+<tr><td><code>00c4ad83</code> stress</td><td>blank source; online multiplayer, pastel dino restyle, mouse movement</td><td>restyle + controls, then seed challenge</td><td>round cap of 2</td><td class="n">26 min 50 s</td></tr>
+</table>
+<p>Round times from each stage's <code>status.json</code>, research start to verify end:</p>
+<table>
+<tr><th>Round</th><th class="n">Measured</th><th>Report said</th></tr>
+<tr><td>Happy round 2, knob change</td><td class="n">2 min 28 s</td><td>about 3 min <span class="ok">matches</span></td></tr>
+<tr><td>Stress round 2, seed challenge</td><td class="n">5 min 59 s</td><td>about 6 min <span class="ok">matches</span></td></tr>
+</table>
+<p>The plan estimated 10 to 20 minutes a round. The runs took 3 to 10 minutes. A full sprite restyle was the slowest, at about 9.5 minutes.</p>
+
+<h2 id="f1">Change 1 (v1): curl the play link before asking</h2>
+<p><span class="tag warn">likely improves, unconfirmed</span> Stages edited: <code>first-ask</code>, <code>ask</code>.</p>
+<h3>The defect</h3>
+<p>The happy run's first question linked to <code>/api/runs/505b…/stages/understand/outputs/game/index.html</code>. That URL lacks <code>/files/</code> and returns 404. The stress run's first question got the link right.</p>
+<h3>The edit, exact text added to both prompts</h3>
+<pre><span class="diff-add">+ Before you ask, run curl -s -o /dev/null -w '%{http_code}' on the link and confirm 200.
++ A 404 means the /files/ segment or the run id is wrong.</span></pre>
+<h3>Why curl, not the wording, is the fix</h3>
+<p>The v0 first-ask prompt already gave the exact URL with <code>/files/</code>: "Put the full link in the same text: {{server-url}}/api/runs/&lt;runId&gt;/files/stages/understand/…". The model had the right template and still copied it wrong once. Naming the segment again adds little. Checking the link before sending it does.</p>
+<h3>Evidence: the same rule, already working in deliver</h3>
+<p>Counts of <code>tool_use</code> calls whose input contains <code>curl</code>, from each stage's transcript in both test runs:</p>
+<table>
+<tr><th>Stage</th><th>Curl rule in v0</th><th class="n">curl calls (happy / stress)</th><th>Links shown</th><th>Link result</th></tr>
+<tr><td>first-ask</td><td>no</td><td class="n">0 / 0</td><td>2</td><td><span class="bad">1 of 2 returned 404</span></td></tr>
+<tr><td>ask (newest round transcript)</td><td>no</td><td class="n">0 / 0</td><td>4 rounds</td><td><span class="ok">4 of 4 returned 200</span></td></tr>
+<tr><td>deliver</td><td>yes: "Prove the link before you publish the link"</td><td class="n">1 / 1</td><td>2</td><td><span class="ok">2 of 2 returned 200</span></td></tr>
+</table>
+<p>The sample is small: one failure in six question links. The direction is clear, though. The one stage told to prove its link did so every time.</p>
+<h3>Lesson for the builder</h3>
+<p>When one stage proves a link with curl, give every stage that shows a link the same rule.</p>
+
+<h2 id="f2">Change 2 (v2): carry the keep list through the change plan</h2>
+<p><span class="tag warn">targets the cause, unconfirmed</span> Edited: the shared change-plan shape in the pipeline prompt, plus <code>ask</code>'s inputs and prompt.</p>
+<h3>The defect</h3>
+<p>At the stress run's first ask, the user named two keep items: "Stomp, swipe and beam verbs" and "Sound effects". The round-1 ask asked no keep question. It rebuilt the list from the changelog. "Sound effects" disappeared.</p>
+<table>
+<tr><th>File</th><th>Keep list</th></tr>
+<tr><td><code>first-ask/outputs/feedback.md</code></td><td>Stomp, swipe and beam verbs. Sound effects (the current 18 synth cues).</td></tr>
+<tr><td><code>ask/rounds/1/feedback.md</code></td><td>Mint pastel dino art. Mouse-follow walking and the attack buttons. Dino stops off-frame. 60 fps and verify PASS. <span class="bad">No sound.</span></td></tr>
+</table>
+<h3>Root cause</h3>
+<ul>
+<li>The ask stage's v0 inputs were <code>merge.game</code>, <code>merge.changelog</code>, <code>verify.verdict</code> and <code>understand.digest</code>. None of them holds the keep list.</li>
+<li>The validator refuses <code>ask.feedback</code> as an input to <code>ask</code> itself, so the stage cannot read what it wrote last round.</li>
+<li>Research already reads both <code>first-ask.feedback</code> and <code>ask.feedback</code>. Research is the natural carrier.</li>
+</ul>
+<h3>The edit</h3>
+<pre>change-plan.md, written by research, one theme per round:
+  - the feedback answered, quoted
+<span class="diff-add">+ - the keep list, carried whole from the newest feedback file</span>
+  ...
+ask inputs: <span class="diff-add">+ research.change-plan</span>
+ask prompt: <span class="diff-add">+ Carry the keep list forward. Start from the keep list in change-plan.md.
+            + Add what the user names now. Drop an item only when the user releases it.</span></pre>
+<h3>Why it should work</h3>
+<p>The round-1 research change plan held no keep section at all. A grep for "keep" finds only sprite constraints. So in v0 the keep list reached nobody after the first ask. With v2 the list rides in the one file that code, art, merge and ask all read.</p>
+<h3>Lesson for the builder</h3>
+<p>A loop stage cannot read its own output. Carry its state through an upstream stage in the loop, and name the carried field in the shared shape.</p>
+
+<h2 id="gap">Open gap: code, art and merge receive the keep list but are not told to protect it</h2>
+<p><span class="tag bad">open</span> A version diff shows what changed, not what should have changed. v2 put the keep list into the change plan. Three stages read the change plan:</p>
+<table>
+<tr><th>Stage</th><th>Reads change-plan</th><th>Prompt mentions the keep list</th></tr>
+<tr><td>code</td><td>yes</td><td class="bad">no</td></tr>
+<tr><td>art</td><td>yes</td><td class="bad">no</td></tr>
+<tr><td>merge</td><td>yes</td><td class="bad">no</td></tr>
+<tr><td>ask</td><td>yes (v2)</td><td class="ok">yes (v2)</td></tr>
+</table>
+<p>The fix is one sentence per prompt: "Leave every keep item in change-plan.md working, and say so in your report." The builder todo now asks for v3 with that sentence. Lessons in the <code>code</code> and <code>art</code> tables carry the rule until v3 exists.</p>
+
+<h2 id="held">What held, no edit needed</h2>
+<ul>
+<li>A blank <code>source-run</code> resolved to the newest finished Game forge run, <code>8f2a5b1a</code>.</li>
+<li>Online multiplayer was declined at the first ask. The seed challenge was offered, chosen and built in round 2.</li>
+<li>The art condition ran only when <code>plan.json</code> set <code>art: true</code>. The restyle regenerated six strips, and merge's copy of <code>monster_idle.png</code> is byte-identical to art's.</li>
+<li>The done sentinel stopped the happy loop. The cap stopped the stress loop. Deliver ran in both runs, and it listed the unbuilt request under "What is left".</li>
+<li>Three happy-run follow-up answers came from a person in the app, not from the model. The first-ask transcript shows them as real tool results.</li>
+</ul>
+
+<h2 id="claims">Claim check: tester report against the run files</h2>
+<table>
+<tr><th>Claim</th><th>Grade</th><th>How checked</th></tr>
+<tr><td>v1 and v2 hold only the two described edits</td><td class="ok">confirmed</td><td>Field diff v0→v1→v2: two prompt additions in v1; one input, one prompt block and one shape line in v2. No loop or model fields changed.</td></tr>
+<tr><td>Happy first-ask link lacked <code>/files/</code></td><td class="ok">confirmed</td><td>URLs from the <code>AskUserQuestion</code> input in both first-ask transcripts</td></tr>
+<tr><td>Keep list lost "Sound effects"</td><td class="ok">confirmed</td><td>Both feedback files, quoted above</td></tr>
+<tr><td>Round 2 took about 3 and about 6 minutes</td><td class="ok">confirmed</td><td><code>status.json</code> timestamps</td></tr>
+<tr><td>"The prompt names /files/ as the usual culprit" is the fix</td><td class="warn">partly</td><td>v0 already held the right URL. The curl check is the active part.</td></tr>
+<tr><td>"No source run has a harness"</td><td class="warn">true then, not now</td><td>Game forge v2 run <code>8e345c4b</code> has <code>integrate/outputs/harness/play.mjs</code>. It was still running at 11:33. <code>check-source</code> accepts its pipeline.</td></tr>
+<tr><td>Fixes unconfirmed</td><td class="ok">confirmed</td><td>No run of <code>e0e79c86</code> started after 11:24</td></tr>
+</table>
+<p class="mute">Tester transcript: 5,176 lines. Only 3 of 46 thinking blocks held text, so the reasons above come from text blocks, tool results and the test report.</p>
+
+<h2 id="saved">Where this knowledge is saved</h2>
+<h3>Lessons, real pipeline <code>e0e79c86</code></h3>
+<ul>
+<li><code>first-ask</code> #2: the template alone failed; curl for 200 before asking.</li>
+<li><code>research</code> #1: copy the keep list whole into the change plan.</li>
+<li><code>code</code> #28 and <code>art</code> #1: treat change-plan keep items as constraints.</li>
+</ul>
+<h3>Lessons, Pipeline builder <code>ec49473c</code></h3>
+<ul>
+<li><code>k73m6ng</code> (builder) #29: carry loop state through an upstream stage.</li>
+<li><code>k73m6ng</code> (builder) #30: give every link-showing stage the curl rule.</li>
+<li><code>kt6n75z</code> (tester) #40: cite a sibling stage's guard as evidence for a copied fix.</li>
+<li><code>k8n7vfc</code> (this stage) #21: grep v0 before crediting a prompt fix, and count guard calls per stage.</li>
+</ul>
+<h3>Todos, <code>lessons__pipeline_builder_todos</code></h3>
+<ul>
+<li>Removed #11, "confirm v2". It was still open, but it lacked the v3 gap and the harness source.</li>
+<li>Added #12: make v3 with the keep sentence in code, art and merge. Then confirm v2 and v3 in one run, with <code>8e345c4b</code> as the source once it is done.</li>
+</ul>
+<h3>Tool plan</h3>
+<p><code>cli-tools-optional.md</code> in this stage's outputs plans <code>mpa links</code> and <code>mpa grep</code>. Those two verbs replace the link audit and the guard count done by hand here.</p>
+</main>
+</body>
+</html>

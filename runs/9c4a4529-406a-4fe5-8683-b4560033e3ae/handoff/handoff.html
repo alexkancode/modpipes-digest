@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Topic expert forge · handoff</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="handoff.md">Raw markdown</a></p><h1>Handoff: toddler-milestones-play</h1>
+<p>Topic: an expert in development milestones and fun activities for toddlers younger than 2.
+Title: Toddler Development Milestones and Play (Birth to 24 Months).</p>
+<h2>The agent</h2>
+<ul>
+<li>Name: <code>toddler-milestones-play</code></li>
+<li>File: <code>/home/alex/.claude/agents/toddler-milestones-play.md</code></li>
+<li>Installed: 2026-11-06T23:24:44</li>
+</ul>
+<h2>How to use it</h2>
+<ul>
+<li>In Claude Code, for one task: <code>use the toddler-milestones-play subagent to &lt;task&gt;</code></li>
+<li>For a whole session: <code>claude --agent toddler-milestones-play</code></li>
+<li>On a modpipes stage: set <code>&quot;agent&quot;: &quot;toddler-milestones-play&quot;</code> in the stage definition.</li>
+</ul>
+<p>It covers milestone ranges (CDC, WHO), the four developmental domains, the motor and language sequences, age-matched play, safety, red flags and screening, and screen and sleep guidance. It can also critique a play plan (Method A) and write practitioner briefs (Method B).</p>
+<h2>Images</h2>
+<p>None. Triage set <code>needs_images: false</code>, so there is no image folder and no gallery. The <code>install.json</code> entry has <code>images_path: null</code> and <code>image_count: 0</code>.</p>
+<h2>Examiner result</h2>
+<p><strong>Passed.</strong> 90/100 (pass mark 80) after 1 round.</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expert</td>
+<td>35/40</td>
+</tr>
+<tr>
+<td>Critique</td>
+<td>17/20</td>
+</tr>
+<tr>
+<td>Making</td>
+<td>18/20</td>
+</tr>
+<tr>
+<td>Usable</td>
+<td>20/20</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>90/100</strong></td>
+</tr>
+</tbody></table>
+<p>The agent got 6/6 on the quiz. The bare-Sonnet control got about 4/6, a margin of exactly 2. Lint was ok and the agent loaded on the first try.</p>
+<ul>
+<li>Full report: <a href="../../examiner/outputs/report.md">report.md</a></li>
+<li>Scores: <a href="../../examiner/outputs/scores.json">scores.json</a></li>
+<li>Exam files: <a href="../../examiner/outputs/exam/quiz.md">quiz.md</a>, <a href="../../examiner/outputs/exam/probe-1.json">probe-1.json</a>, <a href="../../examiner/outputs/exam/probe-2.json">probe-2.json</a>, <a href="../../examiner/outputs/exam/probe-3.json">probe-3.json</a>, <a href="../../examiner/outputs/exam/control.json">control.json</a></li>
+</ul>
+<h2>Drawing</h2>
+<p>There is no drawing. The topic has no images, so the make probe was a written practitioner brief: a one-page play plan for 15-month-olds, including one child born at 32 weeks. See <a href="../../examiner/outputs/exam/brief.md">brief.md</a>.</p>
+<h2>Optional polish</h2>
+<p>The agent passed, so none of this is required. The examiner listed these fixes for anyone who wants a higher score:</p>
+<ol>
+<li>Add more non-Wikipedia depth to the history and screening sections. The ASQ-3 psychometrics, M-CHAT-R/F follow-up scoring, the AAP 2020 screening clinical report itself, and page update dates would all help. The margin over the control was only 2.</li>
+<li>Rephrase &quot;I found / I didn&#39;t find&quot; in the screen-guidance section (2.9) to &quot;the November 2026 research pass did not find…&quot;. Extend the ground rule to ban &quot;I found&quot; about pages.</li>
+<li>In Method A step 1, add: if the text is pasted, Write it to <code>/tmp/milestones/input.txt</code> first, then run steps 2–3 on that file.</li>
+<li>In Method A step 7, merge duplicate fixes and mark unsourced safety points as general guidance.</li>
+<li>Add Method B step 8: run Method A steps 2 and 4 on your own brief file before reporting.</li>
+<li>In Method B step 4, require each &quot;builds&quot; cell to give the checklist age in brackets.</li>
+</ol>
+</body></html>

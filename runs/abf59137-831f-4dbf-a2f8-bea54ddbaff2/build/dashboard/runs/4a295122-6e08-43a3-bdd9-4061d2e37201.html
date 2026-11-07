@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Thu 5 Nov, 12:14</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">A conversational game-design pipeline, Game forge concierge, tested to v3</p>
+  <p class="summary">The pipeline builder was asked for a pipeline that holds a full interactive game-design conversation before Game forge runs. The user chose mocks plus playable sketches as samples, and the builder left Game forge concierge at v3.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-05T18:14:57.458Z">Thu 5 Nov, 12:14</time></span><span>Finished <time datetime="2026-11-05T19:01:52.975Z">Thu 5 Nov, 13:01</time></span><span>46 min 56 s</span><span>11.5M tokens</span><span class="id">4a295122-6e08-43a3-bdd9-4061d2e37201</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/run.json">http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/4a295122-6e08-43a3-bdd9-4061d2e37201.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from kt6n75z.test-report</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>can you build a pipeline that knows enough game development and user experience and the Game forge pipeline to have a really full interative conversation with the user about what they might want, producing static sites for samples and diagrams that are linked for the user to look at to better communicate and ground their responses. By the end there should be a debriefing document that captures samples and descriptions using collegial tone and flowing prose that fuctions as a bible a future Game forge run can utilize</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Game forge concierge: test report</h1>
+<p>Tested 2026-11-05 from 12:37 to 12:57 CST, about 20 of the 45 budgeted minutes. Pipeline <code>baab9c04-607b-4039-b75c-ab526275f90e</code> now stands at v3. The test copy <code>2d4d0f40-dda2-4e14-b5c2-6c04004bb11c</code> (&quot;Game forge concierge (test)&quot;) had its loop cap cut to two rounds. The copy is deleted, and its runs stay in history.</p>
+<h2>What ran</h2>
+<p>The pipeline has no start inputs; the conversation opens blank. The test inputs were therefore the answers, which the tester typed as two different users.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Variable</th>
+<th>The user played</th>
+<th>Rounds</th>
+<th>Ending</th>
+<th>Wall clock</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>happy <code>6ff46294-7e16-4648-88fc-c85825780091</code></td>
+<td>samples-per-round 3</td>
+<td>Ordinary arcade taste: &quot;Tense and twitchy&quot;, tiny-arena dodger, near miss. Reacted to every sample, tuned graze radius to 22 px, asked for one more sketch and a HUD mock.</td>
+<td>2, loop cap reached without done.md</td>
+<td>Confirm yes, launch started Game forge run <code>789bd5e0-1e3b-4065-9b5a-87f995ee3be1</code>, which the tester cancelled at once</td>
+<td>14 min 51 s</td>
+</tr>
+<tr>
+<td>stress <code>b9fe8916-8548-46f9-80ff-6ec20ab655f9</code></td>
+<td>samples-per-round 5</td>
+<td>Free text in Other asking for online co-op, saves and a 20-hour campaign. Then same-keyboard two-player plus phone play. Quit in the middle of round 2.</td>
+<td>2, critic wrote done.md on userDone</td>
+<td>Confirm &quot;Not yet&quot;, park wrote the copy-ready command</td>
+<td>13 min 4 s</td>
+</tr>
+</tbody></table>
+<p>Round timing, from stage timestamps:</p>
+<ul>
+<li>Happy round 1, three sketches: about 6 min 50 s from the last answer to the first round-2 question. The sketch stage ran about 6 min of that.</li>
+<li>Stress round 1, three sketches, one mock and one diagram: about 8 min 20 s. The mock took 55 s and the diagram 35 s; the sketches set the pace.</li>
+<li>Happy round 2, one sketch and one mock: sketches 119 s, mocks 52 s, critic 40 s.</li>
+<li>After the loop: bible 49 to 57 s, confirm 29 to 35 s, launch and park under a second.</li>
+</ul>
+<h2>What worked</h2>
+<p>Each line below is backed by a file or a transcript count, not by a stage summary.</p>
+<ul>
+<li>One question per AskUserQuestion call. The happy conversation made 12 calls and the stress conversation 5. No assistant message held more than one call, so the lesson-14 server crash did not occur.</li>
+<li>The interview craft. Questions were contrasts with grounded options, asked about games the user had played, and offered &quot;write the bible now&quot; at every round close. Round 1 picked three directions that differ on MDA aesthetic: graze surge (sensation), gap reader (challenge) and matador dash (fantasy).</li>
+<li>Wish handling. The stress conversation answered the online co-op ask with &quot;Game forge can&#39;t do co-op, saves, or a 20-hour campaign&quot;, then offered four buildable versions. The bible records all four wishes under its own section.</li>
+<li>Builder conditions. The happy round 1 skipped mocks and diagrams, and round 2 ran mocks cleanly when a mock was requested. Stress round 2 skipped all three builders on an empty requests list.</li>
+<li>Samples. Every folder has index.html, and every link in both bibles resolves on disk. The file route returns 200 for index.html and sketch.js. The sketch stage ran Playwright, saved title, play and over screenshots, and read 6 PNGs in round 1. The tester read <code>stages/sketches/work/shot-r2-blended-run-t100.png</code> and <code>stages/mocks/work/shot.png</code> from the happy run. Both show the requested neon palette, HUD, tuning readouts and arrival markers.</li>
+<li>The critic. gaps.md named concrete, ordered gaps with a closing question each, such as &quot;no rank letters, thresholds or multiplier cap&quot; after the blended sketch scored 94000. done.md appeared only in the stress run, for the userDone case.</li>
+<li>The bible. Both bibles keep the fixed section order. The happy bible keeps all ten decisions, D1 to D10, and the stress bible keeps D1 to D3. The tuned 22 px value appears six times. The prose is collegial and cites decisions inline.</li>
+<li>Handoff. launch.handoff.md holds the Game forge run id with watch and run commands. park.handoff.md holds the user&#39;s reason and a correctly shell-quoted start command.</li>
+<li>Self-reporting. The stress run&#39;s stages added two rows about the hidden links to <code>lessons__game_forge_concierge</code> on their own.</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li>Sample links missing from the round-2 question (stress run). Fix confirmed: no; the fix is unconfirmed.<ul>
+<li>Evidence: <code>/home/alex/.modpipes/runs/b9fe8916-8548-46f9-80ff-6ec20ab655f9/stages/conversation/outputs/decisions.md</code> Q5 records &quot;The user picked from the descriptions in the question and did not open the sketches.&quot; The conversation transcript beside that file holds no link before the Q5 call. Every D3 value is therefore untuned sketch defaults.</li>
+<li>The happy run put the full link in every reaction question, so the behaviour varies between sessions. The prompt line &quot;Later rounds open with the links&quot; leaves the place of the links open.</li>
+<li>Fix in v2: the conversation prompt now says the user sees only the question dialog, so each sample&#39;s full link goes inside the question text.</li>
+</ul>
+</li>
+<li>Notes leaking into forge-values.json (both runs). Fix confirmed: no; the fix is unconfirmed.<ul>
+<li>Evidence: <code>/home/alex/.modpipes/runs/6ff46294-7e16-4648-88fc-c85825780091/stages/bible/outputs/forge-values.json</code> has ship-score &quot;Game forge default. 80. Not discussed.&quot; and audience &quot;Game forge default. General. Not discussed.&quot; The launch passed both verbatim; see <code>stages/launch/outputs/handoff.md</code> in the same run. Game forge&#39;s critic reads &quot;ship is true only when total is at least {{ship-score}}&quot;, so a sentence lands where a number belongs. The stress run&#39;s style also carried &quot;(From the mock; the user did not confirm it.)&quot;.</li>
+<li>Fix in v2 and v3: the bible prompt keeps notes such as default, not discussed and unconfirmed in the bible only. The prompt also makes ship-score digits only.</li>
+</ul>
+</li>
+<li>npm i playwright failed with ETARGET (happy sketches, round 1). Fix confirmed: no; the fix is unconfirmed.<ul>
+<li>Evidence: the Bash results in <code>/home/alex/.modpipes/runs/6ff46294-7e16-4648-88fc-c85825780091/stages/sketches/transcript.jsonl</code> show &quot;No matching version found for <a href="mailto:playwright-core@1.65.0">playwright-core@1.65.0</a>&quot;. The stage spent three more commands before installing <a href="mailto:playwright@1.57.0">playwright@1.57.0</a>, which is part of the six-minute round.</li>
+<li>Fix in v3: the shared prompt says to install the release before the newest by exact version when npm reports No matching version.</li>
+</ul>
+</li>
+</ol>
+<p>Lessons went to the real pipeline&#39;s tables: one each for the bible and sketches stages. The links lesson already sat in <code>lessons__game_forge_concierge</code> from the runs themselves. One open todo is row 4 in <code>lessons__pipeline_builder_todos</code>.</p>
+<h2>What the next tester should look at first</h2>
+<ul>
+<li>Confirm v3 with one fresh run, using row 4 of <code>lessons__pipeline_builder_todos</code> as the script. Check every round-2 reaction question for a full link. Answer no at the confirm, then read forge-values.json for a digits-only ship-score.</li>
+<li>Time round 1 against the default of four samples. Three sketches already took close to seven minutes, which is past the five-minute mark in the built note. A default of 3 is the likely change.</li>
+<li>Decide whether two players on one keyboard counts as multiplayer. The shared prompt lumps every kind of multiplayer as beyond Game forge. The stress conversation called same-keyboard co-op &quot;a stretch&quot; and still made it the core of the concept. Game forge&#39;s play-tester has never seen a two-player game.</li>
+<li>The happy conversation offered &quot;Other value&quot; beside the automatic Other once. The duplicate is cosmetic and was left alone.</li>
+<li>The Mermaid CDN path in the diagrams stage is still unseen. The one diagram built was hand-written SVG.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/kt6n75z/outputs/test-report.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:16:22.551Z">Thu 5 Nov, 12:16</time></p>
+    <div class="q"><p class="question">What kind of samples should the conversation build and link for you to look at? The in-app viewer blocks scripts, so anything playable opens as a link in a new tab.</p><p class="options">Options: Mocks plus playable sketches (Recommended) · Static mocks and diagrams only · Playable sketches only</p><p class="answer">Mocks plus playable sketches (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:24:17.525Z">Thu 5 Nov, 12:24</time></p>
+    <div class="q"><p class="question">Who decides the conversation is finished? Each round is a few questions, a batch of samples, and a look at the links. Game forge needs concept, scope, controls, audience, and style settled, plus the brief-level detail that makes the bible worth having.</p><p class="options">Options: You end it, with a critic nudging (Recommended) · You end it, no critic · Critic ends it</p><p class="answer">You end it, with a critic nudging (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:24:38.890Z">Thu 5 Nov, 12:24</time></p>
+    <div class="q"><p class="question">Where does the conversation begin? Game forge today runs from a plain-language concept, but this pipeline is meant to find the concept with you.</p><p class="options">Options: Optional seed, blank allowed (Recommended) · Always a seed · Always blank</p><p class="answer">Always blank</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:25:09.340Z">Thu 5 Nov, 12:25</time></p>
+    <div class="q"><p class="question">What should happen with the bible at the end? Game forge takes concept, scope, controls, audience, and style as variables, and modpipes can start a run from an earlier run&#39;s markdown with --from.</p><p class="options">Options: Bible plus ready Game forge values (Recommended) · Bible only · Start Game forge from the pipeline</p><p class="answer">Start Game forge from the pipeline</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:25:53.296Z">Thu 5 Nov, 12:25</time></p>
+    <div class="q"><p class="question">How should samples be built between your answers? This sets how long you wait each round and how good the samples are.</p><p class="options">Options: Builders between rounds (Recommended) · Conversation builds its own · Both</p><p class="answer">Builders between rounds (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-05T18:26:17.369Z">Thu 5 Nov, 12:26</time></p>
+    <div class="q"><p class="question">Here is the picture I will hand to the researchers and planner. Is this right?
+
+Game forge concierge: a pipeline that holds a real conversation with you about a game you might want, grounds every round in things to look at, and ends in a bible Game forge builds from.
+
+- Opens blank. Round 1 asks what you are in the mood to make and shows contrasting sketches to react to.
+- Each round: the conversation (opus, one session resumed across rounds) asks one question at a time, then writes sample requests. Builder stages make static mocks (palettes, HUD layouts, screens, mood boards), playable canvas sketches, and diagrams (core loop, state machine, difficulty curve) in parallel. A sufficiency critic reads the growing bible and names the gaps to ask next. Next round opens with the links.
+- You can say done at any point. Hard cap 8 rounds.
+- Researchers load game design, UX, game feel, and Game forge&#39;s own conventions (static folder, asset-plan contract, window.__game, 2 to 5 minute arcade scope) so the conversation knows when a wish exceeds what Game forge builds today, and records it as such.
+- The bible: flowing collegial prose, samples embedded by link with descriptions, decisions and open edges, and a final section with the exact Game forge values for concept, scope, controls, audience, and style.
+- After the bible, one confirm, then the pipeline starts a Game forge run itself with those values.</p><p class="options">Options: Yes, write it up · Mostly, with changes</p><p class="answer">Yes, write it up</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">8.3KB</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">378B</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">9.7KB</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">9.5KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">7.9KB</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">6.0KB</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">3.9KB</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/k8n7vfc/outputs/lessons-learned-site.html">Analyse the test · lessons-learned-site.html</a> <span class="type">16KB</span></li><li><a href="http://localhost:4810/api/runs/4a295122-6e08-43a3-bdd9-4061d2e37201/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">9.0KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>12 min 31 s</td><td>717K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>1 min 40 s</td><td>301K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>2 min 09 s</td><td>468K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 36 s</td><td>505K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>2 min 17 s</td><td>1.1M</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>8 min 03 s</td><td>1.4M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>18 min 02 s</td><td>4.4M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>6 min 03 s</td><td>2.6M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

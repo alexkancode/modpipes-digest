@@ -1,0 +1,589 @@
+{
+  "name": "Credit repair interview (split)",
+  "description": "Split of run 02e98ac7-8b9f-4734-a22f-0cc8c970cce7 of Credit repair interview, with stage playbook split into parallel stages.",
+  "definition": {
+    "prompt": "You are one stage of an automated credit-repair interview pipeline. The person this run is about is the person whose credit it is; when you speak to them or write for them, use second person and plain language, and explain any credit term in one short clause the first time it appears. Work without waiting on anything except the questions you deliberately ask.\n\nShared conventions, used identically by every stage:\n- facts.md (written by the interviewer) is the single source of truth about the person. Its sections, in order: Profile (full name, mailing address, state of residence, DOB as month/year, SSN last four or [SSN-LAST4] placeholder, goal, deadline, monthly budget for credit repair); Scores (per bureau, date, model if known); Open accounts (table A1, A2, ...: creditor, type, opened, balance, limit, status, autopay); Negative items (table N1, N2, ...: creditor or collector, original creditor, type, amount, date of first delinquency, date reported, bureaus, status, what happened in the person's words, believed inaccurate yes/no and why, paid yes/no, collector first contact date); Inquiries (date, creditor, purpose); Flags (identity theft, bankruptcy, military, disaster, medical, divorce, co-signer, each yes/no with notes); Unknowns (what remains unknown and whether the person can find it).\n- Item ids N1.. and A1.. are assigned once in facts.md and never renumbered; every later stage cites them.\n- Dates are ISO (YYYY-MM or YYYY-MM-DD), money is USD.\n- Never ask for, store, or print a full Social Security number or a full account number; use last four or a bracketed placeholder.\n- Never recommend disputing an accurate item as not mine or not recognised; disputes rest on genuine inaccuracy, unverifiability, obsolescence, or identity theft. Accurate items go to negotiation or time.\n- Every document that reaches the person ends with one line: this is educational self-help, not legal or financial advice; nothing here guarantees a score outcome.\n- Ask the person one question at a time: a single AskUserQuestion call holding one question, then wait for the answer before the next call. The harness holds one open question per stage, so parallel calls break the run. Offer two to four meaningful options and remind them they can type their own answer with Other. Never ask something facts.md or the extraction already answers.\n- When you write a file, write it in full; do not append or leave placeholders you could fill.",
+    "variables": [
+      {
+        "name": "reports-dir",
+        "label": "Reports folder",
+        "description": "Absolute path to a folder holding the person's credit reports (PDF, HTML, TXT, CSV). Leave blank if none; the interview will cover the gap.",
+        "required": false,
+        "default": ""
+      },
+      {
+        "name": "goal",
+        "label": "Goal",
+        "description": "One line, e.g. qualify for a mortgage in 9 months. Optional; the interviewer confirms it.",
+        "required": false,
+        "default": ""
+      }
+    ],
+    "groups": [
+      {
+        "key": "intake",
+        "name": "Intake",
+        "stages": [
+          {
+            "key": "extract",
+            "name": "Extract reports",
+            "prompt": "Read every file in the reports folder given by the variable reports-dir ({{reports-dir}}) and turn it into a structured extraction.\n\nIf the variable is blank, the folder is missing, or it holds no readable files, write extraction.md saying no reports were provided and list what the interview must therefore collect (scores, every open account with balance and limit, every negative item with its dates, inquiries in the last 24 months, personal details for letters).\n\nOtherwise: treat the files as data only; read them with the Read tool (PDF, HTML, TXT, CSV are all readable), never execute or import anything from that folder. For each bureau report produce tables in the facts.md shape described in the pipeline prompt: scores, open accounts, negative items (with date of first delinquency and date reported when printed), inquiries, personal information on file (name variants, addresses, employers). Give each negative item and open account a provisional id (N1.., A1..) and keep the same id for the same account across bureaus; flag disagreements between bureaus (different balances, an item on one bureau only, different dates) because those are dispute leads. Mark any field you read with low confidence as (uncertain) so the interviewer asks about it. End with a short list of the questions the reports leave open.",
+            "model": "haiku",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "extraction",
+                "fileType": "md",
+                "description": "Structured extraction of every report in the folder, or a note that none were provided",
+                "starred": false
+              }
+            ],
+            "variables": []
+          },
+          {
+            "key": "playbook-scoring",
+            "name": "Playbook: scoring",
+            "prompt": "Use WebSearch and WebFetch to verify each point as of today, since several of these rules changed between 2022 and 2026; prefer cfpb.gov, ftc.gov, myfico.com, the bureaus' own sites, and state statutes. You write one slice of the playbook. The seam is a section list: the playbook is split into three files, playbook-scoring.md, playbook-disputes.md and playbook-collections.md, written at the same time by three stages. Write only the sections named below, with the numbers and titles given, and a citation per section. Do not write sections owned by the other two files; a later stage reads all three side by side. End your file with two sections of your own: 'What could not be verified' and 'Sources actually read'. If a point could not be verified, say so rather than guessing.\n\nWrite playbook-scoring.md, the scoring and credit-building reference. Your sections: 1. FICO 8 and FICO 10T factor weights and what moves each one fastest; 9. Utilization mechanics (statement-date reporting, AZEO, per-card versus total, how fast a paydown shows); 10. Credit limit increases with soft pulls; 11. Authorized-user tradelines; 12. Secured cards and credit-builder loans; 13. Experian Boost and rent reporting; 14. How hard and soft inquiries age; 15. Rapid rescore via a lender.",
+            "model": "sonnet",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [
+              {
+                "kind": "url",
+                "value": "https://www.consumerfinance.gov/consumer-tools/credit-reports-and-scores/",
+                "note": "CFPB credit reports hub"
+              },
+              {
+                "kind": "url",
+                "value": "https://www.myfico.com/credit-education/whats-in-your-credit-score",
+                "note": "FICO factor weights"
+              },
+              {
+                "kind": "url",
+                "value": "https://www.ftc.gov/legal-library/browse/statutes/fair-credit-reporting-act",
+                "note": "FCRA text"
+              }
+            ],
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "playbook-scoring",
+                "fileType": "md",
+                "description": "Verified-today reference on FICO factor weights, utilization, limit increases, authorized users, secured cards and builder loans, Boost and rent reporting, inquiries, rapid rescore",
+                "starred": false
+              }
+            ],
+            "variables": []
+          },
+          {
+            "key": "playbook-disputes",
+            "name": "Playbook: disputes",
+            "prompt": "Use WebSearch and WebFetch to verify each point as of today, since several of these rules changed between 2022 and 2026; prefer cfpb.gov, ftc.gov, myfico.com, the bureaus' own sites, and state statutes. You write one slice of the playbook. The seam is a section list: the playbook is split into three files, playbook-scoring.md, playbook-disputes.md and playbook-collections.md, written at the same time by three stages. Write only the sections named below, with the numbers and titles given, and a citation per section. Do not write sections owned by the other two files; a later stage reads all three side by side. End your file with two sections of your own: 'What could not be verified' and 'Sources actually read'. If a point could not be verified, say so rather than guessing.\n\nWrite playbook-disputes.md, the dispute-law reference. Your sections: 2. The dispute process under FCRA section 611 (30 days, 45 with annualcreditreport.com reports, what verified means, what to do after a verified result including the method-of-verification request and a section 623 direct dispute to the furnisher); 3. FCRA section 605B identity-theft blocks and the FTC identitytheft.gov report; 4. The seven-year reporting limit measured from the date of first delinquency and how re-aging is detected; 5. FDCPA section 809(b) debt validation and the 30-day window, plus what Regulation F requires in the validation notice; 6. Current medical-debt reporting rules at the bureaus (paid medical collections, the under-500 rule, any CFPB rule in force or vacated); 16. Current mailing addresses for disputes at Equifax, Experian, and TransUnion.",
+            "model": "sonnet",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [
+              {
+                "kind": "url",
+                "value": "https://www.consumerfinance.gov/consumer-tools/credit-reports-and-scores/",
+                "note": "CFPB credit reports hub"
+              },
+              {
+                "kind": "url",
+                "value": "https://www.myfico.com/credit-education/whats-in-your-credit-score",
+                "note": "FICO factor weights"
+              },
+              {
+                "kind": "url",
+                "value": "https://www.ftc.gov/legal-library/browse/statutes/fair-credit-reporting-act",
+                "note": "FCRA text"
+              }
+            ],
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "playbook-disputes",
+                "fileType": "md",
+                "description": "Verified-today reference on FCRA 611 and 623 disputes, 605B blocks, the seven-year limit and re-aging, FDCPA 809(b) and Regulation F, medical-debt rules, bureau dispute addresses",
+                "starred": false
+              }
+            ],
+            "variables": []
+          },
+          {
+            "key": "playbook-collections",
+            "name": "Playbook: collections",
+            "prompt": "Use WebSearch and WebFetch to verify each point as of today, since several of these rules changed between 2022 and 2026; prefer cfpb.gov, ftc.gov, myfico.com, the bureaus' own sites, and state statutes. You write one slice of the playbook. The seam is a section list: the playbook is split into three files, playbook-scoring.md, playbook-disputes.md and playbook-collections.md, written at the same time by three stages. Write only the sections named below, with the numbers and titles given, and a citation per section. Do not write sections owned by the other two files; a later stage reads all three side by side. End your file with two sections of your own: 'What could not be verified' and 'Sources actually read'. If a point could not be verified, say so rather than guessing.\n\nWrite playbook-collections.md, the debt-negotiation reference. Your sections: 7. A statute-of-limitations table by state for credit card, written contract, oral, and promissory note debt, with the states where a payment or written acknowledgement revives the clock; 8. The realities of goodwill letters and pay-for-delete (legal, discretionary, who tends to agree).",
+            "model": "sonnet",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [
+              {
+                "kind": "url",
+                "value": "https://www.consumerfinance.gov/consumer-tools/credit-reports-and-scores/",
+                "note": "CFPB credit reports hub"
+              },
+              {
+                "kind": "url",
+                "value": "https://www.myfico.com/credit-education/whats-in-your-credit-score",
+                "note": "FICO factor weights"
+              },
+              {
+                "kind": "url",
+                "value": "https://www.ftc.gov/legal-library/browse/statutes/fair-credit-reporting-act",
+                "note": "FCRA text"
+              }
+            ],
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "playbook-collections",
+                "fileType": "md",
+                "description": "Verified-today reference on statutes of limitations by state with revival rules, goodwill letters and pay-for-delete",
+                "starred": false
+              }
+            ],
+            "variables": []
+          }
+        ]
+      },
+      {
+        "key": "interview",
+        "name": "Interview",
+        "stages": [
+          {
+            "key": "interviewer",
+            "name": "Interviewer",
+            "prompt": "You run the interview. Your output is facts.md in the exact shape set in the pipeline prompt, rewritten in full at the end of every round.\n\nRound 1: start from the extraction and the goal variable ({{goal}}). Briefly tell the person what you will cover and that they can answer freely with Other. Then ask, one question at a time, only what the extraction cannot answer, in this order: their goal and deadline (confirm the variable if given), state of residence, the monthly amount they can put toward repair, full name and mailing address as they want them on letters, whether anything on their reports looks unfamiliar (identity theft), any bankruptcy. Then for each negative item in the extraction that lacks a story or dates, ask what happened and whether they believe anything about it is wrong; for collections, when the collector first contacted them. For open revolving accounts missing a balance or limit, ask. If no reports were provided, walk them through their report section by section the same way, starting with scores and the negative items. Keep each round to about eight questions; if more are needed, stop at eight, write facts.md with the rest under Unknowns, and let the critic send you back.\n\nLater rounds: the gaps input from the critic lists exactly what is still missing. Ask only those items, then rewrite facts.md in full with everything learned so far. If the person says they cannot know something, record it under Unknowns as unknowable so the critic can accept it.\n\nUse the playbook to phrase options well (for example, offer common reasons for a late payment: job loss, medical, oversight, dispute with the creditor, not my account). Thank them at the end of each round and say what happens next.",
+            "model": "sonnet",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "extract",
+                "output": "extraction"
+              },
+              {
+                "fromStage": "playbook-scoring",
+                "output": "playbook-scoring"
+              },
+              {
+                "fromStage": "playbook-disputes",
+                "output": "playbook-disputes"
+              },
+              {
+                "fromStage": "playbook-collections",
+                "output": "playbook-collections"
+              },
+              {
+                "fromStage": "critic",
+                "output": "gaps"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "facts",
+                "fileType": "md",
+                "description": "Everything known about the person in the fixed facts.md shape, rewritten each round",
+                "starred": false
+              }
+            ],
+            "variables": []
+          }
+        ]
+      },
+      {
+        "key": "check",
+        "name": "Check",
+        "stages": [
+          {
+            "key": "critic",
+            "name": "Sufficiency critic",
+            "prompt": "You decide whether the interview has gathered enough to act. Read facts.md against this checklist and write gaps.md.\n\nChecklist: Profile has goal, deadline, state, monthly budget, name and mailing address. Every negative item Nn has creditor, amount, type, status, bureaus, a date of first delinquency or a best estimate, the person's account of what happened, a believed-inaccurate answer, paid status, and for collections the first-contact date. Every open revolving account An has a balance and a limit. Inquiries in the last 24 months are listed or stated as none. Every flag (identity theft, bankruptcy, military, disaster, medical, divorce, co-signer) has a yes or no. Anything under Unknowns is either marked unknowable by the person or appears in your gaps.\n\ngaps.md: a numbered list of concrete follow-up questions, each naming the item id it concerns and phrased so the interviewer can ask it directly. Keep it to the items that would change the plan or a letter; do not pad. If nothing is missing write gaps.md with the single line None.\n\nsufficient.md: write this file only when every checklist item passes or is explicitly unknowable. Its existence ends the interview loop, so do not write it otherwise. When you do write it, summarise in a few lines what the file holds (counts of items, the goal, the deadline) so later stages can trust the interview is closed.",
+            "model": "opus",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "interviewer",
+                "output": "facts"
+              },
+              {
+                "fromStage": "extract",
+                "output": "extraction"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "gaps",
+                "fileType": "md",
+                "description": "Numbered follow-up questions by item id, or None",
+                "starred": false
+              },
+              {
+                "name": "sufficient",
+                "fileType": "md",
+                "description": "Written only when the checklist passes; ends the interview loop",
+                "starred": false
+              }
+            ],
+            "variables": []
+          }
+        ]
+      },
+      {
+        "key": "analyze",
+        "name": "Analyze",
+        "stages": [
+          {
+            "key": "diagnosis",
+            "name": "Diagnosis",
+            "prompt": "Write diagnosis.md: the honest picture of why the scores are where they are and what can move them, using facts.md as truth, the extraction for detail, and the playbook for how FICO weighs things.\n\nFor each of the five FICO factors (payment history, amounts owed, length of history, new credit, mix): the person's standing, the specific items (by Nn or An) driving it, and whether it is a quick win (weeks, e.g. utilization), a medium win (one to three months, e.g. a successful dispute or goodwill), or slow (time only). Then rank the top drags, estimate a plausible point range for fixing each one (ranges, with the reasoning, never a promise), and state what is realistic by the person's deadline given their budget. Call out anything that would hurt them if done at the wrong time (closing old cards, new applications before a mortgage, paying a time-barred debt). Speak to the person directly.",
+            "model": "opus",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "interviewer",
+                "output": "facts"
+              },
+              {
+                "fromStage": "extract",
+                "output": "extraction"
+              },
+              {
+                "fromStage": "playbook-scoring",
+                "output": "playbook-scoring"
+              },
+              {
+                "fromStage": "playbook-disputes",
+                "output": "playbook-disputes"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "diagnosis",
+                "fileType": "md",
+                "description": "Per-factor assessment, top drags, realistic point ranges by the deadline",
+                "starred": false
+              }
+            ],
+            "variables": []
+          },
+          {
+            "key": "disputes",
+            "name": "Disputes",
+            "prompt": "Write disputes.md: for every negative item Nn in facts.md, the dispute decision and its basis, using the extraction for bureau-level detail and the playbook for the law.\n\nFor each item, one of: dispute (with the exact inaccuracy or unverifiability, which bureaus, whether to go to the bureau under section 611, the furnisher under section 623, or both, and what evidence to enclose); validation request to the collector under FDCPA 809(b) (only if within the window or if no validation notice was ever received, say which); identity-theft block under 605B (FTC report first); obsolete (DOFD plus seven years passed, or re-aged, with the arithmetic); or accurate, do not dispute, route to negotiation. Note bureau disagreements from the extraction as leads. Give an order of operations (validation before dispute for collections, identity theft report before everything) and what to expect at each 30-day mark, including the step after a verified result. End with a checklist of documents the person should gather.",
+            "model": "opus",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "interviewer",
+                "output": "facts"
+              },
+              {
+                "fromStage": "extract",
+                "output": "extraction"
+              },
+              {
+                "fromStage": "playbook-disputes",
+                "output": "playbook-disputes"
+              },
+              {
+                "fromStage": "playbook-collections",
+                "output": "playbook-collections"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "disputes",
+                "fileType": "md",
+                "description": "Per-item dispute decision and basis, order of operations, evidence checklist",
+                "starred": false
+              }
+            ],
+            "variables": []
+          },
+          {
+            "key": "negotiation",
+            "name": "Negotiation",
+            "prompt": "Write negotiation.md: for every negative item that is accurate or likely to be verified, the negotiating play, using facts.md for the person's state, budget, and story and the playbook for statute of limitations and what creditors tend to accept.\n\nFor each item: SOL status in the person's state for that debt type (time-barred or not, with the date), whether a payment or written acknowledgement would revive it there and the warning if so; the recommended play (goodwill letter for isolated lates on accounts in good standing, pay-for-delete or settlement for collections, a hardship or re-aging request for charged-off originals, or leave alone and wait for obsolescence); a target number and a walk-away number inside the monthly budget; who to contact and in what channel; a short phone script with the words to use and the words to avoid (never admit the debt is yours on a time-barred account before terms are in writing). Then an order of operations that fits the budget month by month, and the rule that nothing is paid until the agreement is in writing.",
+            "model": "opus",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "interviewer",
+                "output": "facts"
+              },
+              {
+                "fromStage": "playbook-collections",
+                "output": "playbook-collections"
+              },
+              {
+                "fromStage": "playbook-disputes",
+                "output": "playbook-disputes"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "negotiation",
+                "fileType": "md",
+                "description": "Per-item SOL status, play, target numbers, scripts, order within budget",
+                "starred": false
+              }
+            ],
+            "variables": []
+          },
+          {
+            "key": "building",
+            "name": "Building",
+            "prompt": "Write building.md: the plan to build positive factors, using facts.md for accounts, balances, limits, budget, and deadline and the playbook for mechanics.\n\nCover: utilization per card and overall now, the paydown order and amounts to reach under 30 percent then under 10 percent, when to pay relative to each statement date so the lower balance reports, and whether AZEO is worth doing before the deadline; which cards to request a limit increase on and when (soft pull only); whether an authorized-user tradeline is available and sensible; for a thin or young file, a secured card or credit-builder loan with specific product criteria (no annual fee, graduates, reports to all three); Experian Boost and rent reporting if they help this person; an inquiry freeze until the goal date; what never to do (close the oldest card, let a card go dormant and be closed, open store cards). Give a month-by-month sequence that fits the budget alongside any negotiation payments.",
+            "model": "opus",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "interviewer",
+                "output": "facts"
+              },
+              {
+                "fromStage": "playbook-scoring",
+                "output": "playbook-scoring"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "building",
+                "fileType": "md",
+                "description": "Utilization, limits, authorized user, secured and builder accounts, inquiry freeze, month by month",
+                "starred": false
+              }
+            ],
+            "variables": []
+          }
+        ]
+      },
+      {
+        "key": "compose",
+        "name": "Compose",
+        "stages": [
+          {
+            "key": "letters",
+            "name": "Letters",
+            "prompt": "Produce the letters directory: one file per letter the disputes and negotiation documents call for, ready to print and mail.\n\nName files NN-kind-recipient.md with NN a two-digit order (01-validation-midland-N3.md, 02-dispute-equifax-N1-N4.md, 03-goodwill-capital-one-N2.md). Each letter: the person's name and mailing address from facts.md, the date, the recipient's mailing address (bureau addresses from the playbook; collector addresses from facts or marked [ADDRESS FROM YOUR NOTICE]), a subject line naming the account by creditor and last four or placeholder, the body in plain firm language citing the right section (FCRA 611 or 623, FDCPA 809(b), FCRA 605B), the specific items with the specific inaccuracy, the request (delete, correct, validate, goodwill removal, pay-for-delete terms in writing), an enclosures list, and a signature line. Never include a full SSN or full account number. Where a fact is missing, use a bracketed placeholder and list it in README.md. Also write README.md: the mailing order, certified-mail-with-return-receipt instructions, what to enclose with each letter, the 30-day clock to track, and a one-line table of letter, recipient, item ids, send-by date.",
+            "model": "sonnet",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "interviewer",
+                "output": "facts"
+              },
+              {
+                "fromStage": "disputes",
+                "output": "disputes"
+              },
+              {
+                "fromStage": "negotiation",
+                "output": "negotiation"
+              },
+              {
+                "fromStage": "playbook-disputes",
+                "output": "playbook-disputes"
+              },
+              {
+                "fromStage": "playbook-collections",
+                "output": "playbook-collections"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "letters",
+                "fileType": "dir",
+                "description": "One mail-ready letter per file plus README with mailing instructions",
+                "starred": true
+              }
+            ],
+            "variables": []
+          },
+          {
+            "key": "plan",
+            "name": "Plan",
+            "prompt": "Write plan.md: the single prioritized plan the person will follow, merging the diagnosis, disputes, negotiation, and building documents against facts.md.\n\nStructure: a two-paragraph summary in plain language of where they are and where they can realistically be by the deadline; then a month-by-month plan for twelve months (or to the deadline if sooner) where every action names the item ids it touches, the document it comes from, the expected effect, its cost against the monthly budget, and its dependencies (mail validation letters before disputes on the same collector; wait for a dispute result before a goodwill letter on the same account; pay down before a limit increase request). Include checkpoints to re-pull all three reports and what to look for, and a decision table for the common outcomes (deleted, verified, no response in 30 days, collector offers a settlement). Resolve any conflicts between the four documents explicitly and say why. Close with the three things to do this week.",
+            "model": "opus",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "interviewer",
+                "output": "facts"
+              },
+              {
+                "fromStage": "diagnosis",
+                "output": "diagnosis"
+              },
+              {
+                "fromStage": "disputes",
+                "output": "disputes"
+              },
+              {
+                "fromStage": "negotiation",
+                "output": "negotiation"
+              },
+              {
+                "fromStage": "building",
+                "output": "building"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "plan",
+                "fileType": "md",
+                "description": "Prioritized month-by-month plan citing item ids, with checkpoints and a decision table",
+                "starred": true
+              }
+            ],
+            "variables": []
+          }
+        ]
+      },
+      {
+        "key": "deliver",
+        "name": "Deliver",
+        "stages": [
+          {
+            "key": "dossier",
+            "name": "Dossier site",
+            "prompt": "Build the site directory: a small static site the person can read in the modpipes web app or print, from the plan, diagnosis, disputes, negotiation, building, letters, and facts inputs.\n\nindex.html is the plan with navigation to one page each for diagnosis, disputes, negotiation, building, letters, and the facts on file. Copy every letter file into site/letters/ and link them relatively; never link outside the site directory. Render the markdown faithfully (tables stay tables), use one stylesheet with a print media rule so each page prints cleanly, keep item ids visible as anchors, and put the not-legal-advice line in the footer of every page. No external scripts or fonts. Check that every link resolves to a file inside the directory before finishing.",
+            "model": "sonnet",
+            "agent": null,
+            "permissionMode": "bypass",
+            "run": {
+              "kind": "model"
+            },
+            "condition": null,
+            "links": [],
+            "inputs": [
+              {
+                "fromStage": "plan",
+                "output": "plan"
+              },
+              {
+                "fromStage": "diagnosis",
+                "output": "diagnosis"
+              },
+              {
+                "fromStage": "disputes",
+                "output": "disputes"
+              },
+              {
+                "fromStage": "negotiation",
+                "output": "negotiation"
+              },
+              {
+                "fromStage": "building",
+                "output": "building"
+              },
+              {
+                "fromStage": "letters",
+                "output": "letters"
+              },
+              {
+                "fromStage": "interviewer",
+                "output": "facts"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "site",
+                "fileType": "dir",
+                "description": "Browsable dossier with index.html, pages per document, letters inside",
+                "starred": true
+              }
+            ],
+            "variables": []
+          }
+        ]
+      }
+    ],
+    "loops": [
+      {
+        "key": "interview-loop",
+        "from": "interview",
+        "to": "check",
+        "rounds": 4,
+        "stop": {
+          "kind": "exists",
+          "input": {
+            "fromStage": "critic",
+            "output": "sufficient"
+          }
+        }
+      }
+    ]
+  },
+  "id": "ca9e8735-86ea-4053-9446-13a8bc560f31",
+  "createdAt": "2026-11-06T18:08:25.391Z",
+  "updatedAt": "2026-11-06T18:08:25.391Z"
+}

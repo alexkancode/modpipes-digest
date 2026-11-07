@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Game forge concierge (test) · Thu 5 Nov, 12:38</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Game forge concierge (test)</h1>
+  <p class="caption">A game bible for a tense neon graze dodger</p>
+  <p class="summary">The Game forge concierge test held a conversation with three samples per round. It ended with a bible for a one-hit neon survival dodger that rewards grazing hazards.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-05T18:38:30.085Z">Thu 5 Nov, 12:38</time></span><span>Finished <time datetime="2026-11-05T18:53:21.000Z">Thu 5 Nov, 12:53</time></span><span>14 min 51 s</span><span>3.5M tokens</span><span class="id">6ff46294-7e16-4648-88fc-c85825780091</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/run.json">http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/6ff46294-7e16-4648-88fc-c85825780091.jpg" width="800" height="500" alt="Render of the primary output of Game forge concierge (test)"><figcaption>Hero from bible.bible</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Samples per round</dt><dd>3</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Bible · bible<span class="type">md</span></h3><p class="desc">The bible: the game in collegial prose, every decision, every sample linked, the Game forge values</p></summary><div class="md"><h1>Bible: a neon graze dodger</h1>
+<p>The game is settled in outline after two rounds. Round 2 asked for two last samples, a blended sketch to check the run shape and a mock of the neon HUD and title. Both were built, but the user has not yet played or reacted to either, so their results may still adjust the arrival times and the palette. Nothing below waits on them to be buildable.</p>
+<h2>The game in one paragraph</h2>
+<p>This is a tense, twitchy survival dodger in a tiny neon arena. The player is a small bright dot, and one hit ends the run. Bullets spray in from the edges. Flying close past them without touching, a graze, raises a score multiplier with a brief slow-mo dip and a rising tone, so the player steers into danger on purpose (D4). At about 45 seconds, telegraphed walls with a single gap start sweeping through (D5). At about 90 seconds, chargers wind up and lunge across the arena (D6). Surviving three minutes wins the run, and the score is the rank (D10).</p>
+<h2>The player fantasy</h2>
+<p>You are the one who flies closest to death and lives, on purpose and for points. The user steered into bullets to feed the multiplier as soon as the graze sketch gave the chance (D4). The pattern-reader and showman readings became hazards rather than the fantasy (D5, D6).</p>
+<h2>The pillars</h2>
+<p>The user confirmed all three pillars as written (D8).</p>
+<ul>
+<li>Danger is the reward. The closer you fly, the more you score, and playing safe bleeds the multiplier away.</li>
+<li>Every death is readable. Walls are outlined before they turn solid, chargers show their aim line before they lunge, and bullets never spawn on top of the player, so the player always sees why they died.</li>
+<li>A run is over before you want it to be. A run lasts three minutes at most, restart is instant, and the next run is one key away.</li>
+</ul>
+<h2>The loop and the verbs</h2>
+<p>The loop is move, read, graze, survive, restart. The player moves with keys or by following the mouse, reads the incoming hazards, flies close to graze them, and tries to hold the multiplier while surviving to three minutes. There is no dash and no shooting (D3, D6). Movement is the only verb that touches the world, and the graze turns risk into score.</p>
+<p>In MDA terms, three mechanics produce the dynamics: a graze ring that pays only near hazards, a multiplier that decays at 0.5 a second when untouched, and one-hit death. Together they produce deliberate risk-taking and close calls. The aesthetics are sensation first and challenge second.</p>
+<h2>The screens and the first thirty seconds</h2>
+<p>The title screen shows the name, a one-line prompt and the controls. In the arena, a HUD shows the run clock counting toward 3:00, the score, the multiplier and the graze count. The game-over or win screen shows the score, grazes, peak multiplier and the best score this session, with instant restart. The r2-neon-hud mock tests this layout.</p>
+<p>The first thirty seconds are bullets only, aimed near the player so the first graze comes within a few seconds and teaches that the ring pays. The first spray should be sparse enough that a newcomer survives it while learning to graze.</p>
+<h2>The look and the sound</h2>
+<p>The look is neon on black (D9). Hazards glow against a near-black field, and each type has its own colour so it reads at a glance. The palette under test in r2-neon-hud is background #0a0a12, player #f2f2ff, bullets #ff2e88, walls #ff9a1f, chargers #39ff88, and graze ring and HUD accent #29e3ff.</p>
+<p>Sound is synthesised with WebAudio and stays silent until the first gesture. A graze plays a short tone whose pitch rises with the multiplier (D9), so a long chain sounds like a climb. Walls keep the click on a slip from the gap sketch. A charger&#39;s windup gets a low rising hum, so its threat is heard as well as seen. A hit is a short noise burst, then silence.</p>
+<h2>The controls</h2>
+<p>The controls are the Game forge default and were not discussed further: WASD or arrows, or follow the mouse; Enter or click to start; R or click to restart. There is no dash button (D6). Touch is a nice-to-have. On touch, the dot follows the finger at a small offset above it, so the finger does not hide the graze ring.</p>
+<h2>The audience</h2>
+<p>The audience is the Game forge default, general, and was not discussed. One hit ends a run for everyone, and the gentle first thirty seconds are the onramp.</p>
+<h2>The scope and the cuts</h2>
+<p>The scope is one arena, one loop, and a three-minute run to a win with a score rank (D10), inside the Game forge default scope. These were cut: calm, puzzle and expressive moods (D1); shooters, rhythm and platforming (D2); fighting back (D3); the dash and the crowd and matador fantasy (D6); walls as the core game (D5); and endless mode (D10).</p>
+<h2>The decisions with their reasons</h2>
+<ul>
+<li>D1. The mood is tense and twitchy, chosen over calm, puzzly and expressive moods.</li>
+<li>D2. The genre is a tiny-arena dodger, the kind of game the user has played a lot. It was chosen over bullet-threading shooters, rhythm games and platformers.</li>
+<li>D3. The near miss is the moment the user chased most, over pattern reading, fighting back and beating a best time.</li>
+<li>D4. Grazing for a multiplier leads, because in r1-graze-surge the user found themselves steering into bullets on purpose.</li>
+<li>D5. Telegraphed walls are a hazard wave, not the core. The user thought they worked well as a hazard type alongside grazing.</li>
+<li>D6. Chargers are a hazard wave dodged by movement. The dash and the cheer were left out.</li>
+<li>D7. The graze radius is 22 px. The user picked it on the slider in r1-graze-surge as slightly more forgiving than the 18 start.</li>
+<li>D8. The three pillars hold as written.</li>
+<li>D9. The look is neon on black with a rising tone, chosen over flat pastel with chimes and ink on paper with clicks.</li>
+<li>D10. Hazards arrive on a timer and the run is won at three minutes, chosen over an endless run and a random mix. Bullets come from 0 s, walls join at about 45 s and chargers at about 90 s.</li>
+</ul>
+<h2>The edges still open</h2>
+<p>The draft left these open, and the critic&#39;s gaps add to them.</p>
+<ul>
+<li>Pacing. Nobody knows yet whether walls at 45 s and chargers at 90 s pace the run well. r2-blended-run tests this with sliders, but the user has not played it. The sketch also ramps the last thirty seconds by about +25% spawn rate, +15% speed and one more charger. That ramp is not a decision yet. The open question is whether the run should end with a hanging-on finale.</li>
+<li>Palette and HUD. We don&#39;t know yet whether the neon palette and HUD layout hold up. r2-neon-hud tests this. The mock found pink bullets #ff2e88 and orange walls #ff9a1f the closest pair, though they stayed distinct side by side. The six hex values stay marked as under test until the user sees the mock.</li>
+<li>Warning times. The user has not tuned the telegraph time (600 ms in the sketch) or the charger windup (700 ms). The sketch values stand until then. The open question is whether both give enough warning to keep every death readable.</li>
+<li>What counts as a graze. Should grazing a wall edge or a lunging charger also feed the multiplier? The sensible default is yes, at the same 22 px radius. r2-blended-run already pays for charger grazes and for wall edge-slips within 7 px, but the user has not picked this.</li>
+<li>Scoring and rank. The bible names a score rank but no rank letters, thresholds or multiplier cap. The sketch uses a cap of x16 and guessed thresholds of S 50000, A 25000 and B 10000. A random-walk run sat at the x16 cap and scored about 94000, so the cap or the decay may be too generous at 22 px. The open questions are what the cap should be and whether the rank should be letters (S/A/B/C) set where a good run lands.</li>
+<li>The name. The game has no name yet. The mock uses the placeholder GRAZE.</li>
+<li>Defaults nobody asked about. Controls, audience and ship-score stay at the defaults. Nobody has asked whether touch should be a must, whether the game is for a general audience or players who already know dodgers, or whether 80 is the right bar to ship at.</li>
+</ul>
+<h2>Wishes beyond what Game forge builds today</h2>
+<p>The user raised no wishes. An online leaderboard would be the natural next one. Game forge cannot build it because it has no server and no persistence, and a best score for the current session is the closest it can get.</p>
+<h2>The samples</h2>
+<ul>
+<li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches/r1-graze-surge/index.html">Graze surge</a> shows bullets in sprays and a faint ring, with grazes feeding a multiplier through slow-mo, a spark and a rising tone. The user steered into bullets on purpose and settled the graze radius at 22 px. This sketch became the core.</li>
+<li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches/r1-gap-reader/index.html">Gap reader</a> shows dashed-outline walls that turn solid and sweep in with one gap, speeding up over two minutes. The user called it good as a hazard type, and walls join at about 45 s.</li>
+<li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches/r1-matador-dash/index.html">Matador dash</a> shows a bullring of crowd dots, chargers on locked aim lines, and a last-instant dash judged against a perfect window. The user kept the chargers as a hazard and left the dash out.</li>
+<li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches/r2-blended-run/index.html">Blended run</a> was requested in round 2. It puts all three hazard waves on a three-minute clock at a 22 px graze, in the neon palette, with sliders for grazeRadiusPx 22, wallsAtSec 45, chargersAtSec 90 and runLengthSec 180. A win screen reads &quot;YOU SURVIVED&quot; with a rank letter. The user has not played it yet.</li>
+<li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/mocks/outputs/mocks/r2-neon-hud/index.html">Neon HUD and title</a> was requested in round 2. It shows the title, with the placeholder name GRAZE, and the in-run HUD in the neon palette: score top left, run clock with 45 s and 90 s arrival marks top centre, multiplier top right, and grazes bottom left. The user has not seen it yet.</li>
+</ul>
+<h2>The Game forge values</h2>
+<p>Paste these in as the start variables.</p>
+<ul>
+<li>concept: A tense, twitchy neon survival dodger in a tiny arena. One hit ends the run. Flying close past hazards without touching them (a graze, inside a 22 px ring) raises a score multiplier with a brief slow-mo dip and a tone that rises with the multiplier; the multiplier decays at 0.5 per second when you play safe. Bullet sprays from the start, telegraphed walls with one gap join at 45 s, winding-up chargers that lunge across the arena join at 90 s, dodged by movement only with no dash. Surviving 3 minutes wins; the score ranks the run. Pillars: danger is the reward; every death is readable; a run is over before you want it to be.</li>
+<li>scope: A single arena with one core loop, a 3-minute run to a win with a score rank. A title screen, a HUD with run clock, score, multiplier and grazes, and a game-over or win screen with best this session and instant restart.</li>
+<li>controls: Game forge default. Keyboard and mouse on desktop, touch as a nice-to-have. Not discussed; no dash button.</li>
+<li>audience: Game forge default. General. Not discussed.</li>
+<li>style: Neon on black, with glowing hazards. Palette #0a0a12 background, #f2f2ff player, #ff2e88 bullets, #ff9a1f walls, #39ff88 chargers, #29e3ff graze ring and HUD accent. WebAudio synth sound with a rising graze tone.</li>
+<li>ship-score: Game forge default. 80. Not discussed.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/bible/outputs/bible.md">http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/bible/outputs/bible.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:38:39.657Z">Thu 5 Nov, 12:38</time></p>
+    <div class="q"><p class="question">Let&#39;s find a small browser game worth building, one you can play through in two to five minutes. What are you in the mood to make?</p><p class="options">Options: Tense and twitchy · Calm and absorbing · Clever and puzzly · Playful and expressive</p><p class="answer">Tense and twitchy</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:38:54.000Z">Thu 5 Nov, 12:38</time></p>
+    <div class="q"><p class="question">Think of a tense, twitchy game you&#39;ve actually played a lot. What were you doing in it that kept you going one more run?</p><p class="options">Options: Threading bullets · Hitting the beat · Dodging in a tiny arena · Precise platforming</p><p class="answer">Dodging in a tiny arena</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:39:02.066Z">Thu 5 Nov, 12:39</time></p>
+    <div class="q"><p class="question">In those tiny-arena dodge games, which moment did you chase most?</p><p class="options">Options: The near miss · Reading the pattern · Fighting back · Beating my best time</p><p class="answer">The near miss</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:39:23.812Z">Thu 5 Nov, 12:39</time></p>
+    <div class="q"><p class="question">I&#39;ll have three playable sketches built next, all tiny-arena dodgers built around the near miss but each chasing a different feeling: (1) Graze surge, where brushing past bullets charges your score multiplier with slow-mo and shake, pure sensation; (2) Gap reader, where telegraphed walls close in and you find the one gap, a reading challenge; (3) Matador dash, where chargers lunge and a last-instant dash past them earns a cheer, a showman fantasy. How shall we go on?</p><p class="options">Options: Build the three sketches · Write the bible now</p><p class="answer">Build the three sketches</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:46:30.669Z">Thu 5 Nov, 12:46</time></p>
+    <div class="q"><p class="question">Open Graze surge in a new tab and play a few runs: http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches/r1-graze-surge/index.html. Bullets that pass inside the faint ring raise a multiplier, with a slow-mo dip and a rising tone. What did it make you do?</p><p class="options">Options: Steered into bullets · Played safe anyway · Fun but too busy · Didn&#39;t grab me</p><p class="answer">Steered into bullets</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:46:41.781Z">Thu 5 Nov, 12:46</time></p>
+    <div class="q"><p class="question">Now Gap reader: http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches/r1-gap-reader/index.html. Walls show a dashed outline first, then sweep in with one gap. Compared with Graze surge, where you steered into bullets, how did it feel?</p><p class="options">Options: Tenser than grazing · Good as a hazard type · Too slow and planned · Didn&#39;t grab me</p><p class="answer">Good as a hazard type</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:46:57.131Z">Thu 5 Nov, 12:46</time></p>
+    <div class="q"><p class="question">And Matador dash: http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches/r1-matador-dash/index.html. Chargers wind up and lunge; a dash at the last instant earns a crowd cheer. Against Graze surge, which you steered into, what should the dash be?</p><p class="options">Options: Add the dash to grazing · Chargers as a hazard · Matador should lead · Leave it out</p><p class="answer">Chargers as a hazard</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:47:11.607Z">Thu 5 Nov, 12:47</time></p>
+    <div class="q"><p class="question">In Graze surge, move the grazeRadiusPx slider under the canvas (starts at 18, range 6 to 40) and play a run at a couple of settings. Which width felt right for steering into bullets?</p><p class="options">Options: 18 felt right · Tighter, about 12 · Wider, about 26 · Other value</p><p class="answer">22 px felt right</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:47:24.637Z">Thu 5 Nov, 12:47</time></p>
+    <div class="q"><p class="question">Here are draft pillars for a graze game where walls and chargers arrive as hazard waves: (A) Danger is the reward: the closer you fly, the more you score. (B) Every death is readable: you always see why you died. (C) A run is over before you want it to be: instant restart, two to five minutes. Which set holds?</p><p class="options">Options: All three hold · A and C, drop B · Add &#39;slow-mo is earned&#39; · Change them</p><p class="answer">All three hold</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:47:38.679Z">Thu 5 Nov, 12:47</time></p>
+    <div class="q"><p class="question">The sketches used a dark arena with pink bullets and orange walls. For the real game, which look and near-miss sound fits a graze dodger best?</p><p class="options">Options: Neon on black, rising tone · Flat pastel, soft chimes · Ink on paper, scratchy clicks · Other</p><p class="answer">Neon on black, rising tone</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:47:53.000Z">Thu 5 Nov, 12:47</time></p>
+    <div class="q"><p class="question">How should pressure build across a run of bullets, then walls (as in Gap reader), then chargers (as in Matador dash)?</p><p class="options">Options: Timed arrivals, endless · Timed arrivals, 3-min win · Random mix ramp · Other</p><p class="answer">Timed arrivals, 3-min win</p></div>
+  </li><li>
+    <p class="who">Conversation asked · answered · <time datetime="2026-11-05T18:48:06.549Z">Thu 5 Nov, 12:48</time></p>
+    <div class="q"><p class="question">The game is now settled in outline: a neon graze dodger with a 22 px graze ring, walls joining at about 45 s and chargers at about 90 s, and a win for surviving 3 minutes. Controls, audience and ship-score would stay at the Game forge defaults (keyboard and mouse, general audience, 80). How shall we finish?</p><p class="options">Options: Write the bible now · One more sketch first</p><p class="answer">One more sketch first, plus a mock of the neon HUD and title screen so I can see the palette</p></div>
+  </li><li>
+    <p class="who">Confirm asked · answered · <time datetime="2026-11-05T18:53:00.961Z">Thu 5 Nov, 12:53</time></p>
+    <div class="q"><p class="question">Start Game forge now? Bible: http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/bible/outputs/bible.md
+
+Game forge values:
+concept: A tense, twitchy neon survival dodger in a tiny arena. One hit ends the run. Grazing hazards inside a 22 px ring raises a score multiplier (slow-mo dip, rising tone, decays 0.5/s). Bullets from the start, telegraphed walls with one gap at 45 s, winding-up chargers at 90 s, movement only, no dash. Surviving 3 minutes wins; score ranks the run.
+scope: A single arena, one core loop, a 3-minute run to a win with a score rank. Title screen, HUD (clock, score, multiplier, grazes), game-over/win screen with best this session and instant restart.
+controls: Game forge default. Keyboard and mouse on desktop, touch nice-to-have. No dash button.
+audience: Game forge default. General.
+style: Neon on black, glowing hazards. #0a0a12 background, #f2f2ff player, #ff2e88 bullets, #ff9a1f walls, #39ff88 chargers, #29e3ff graze ring and HUD. WebAudio synth with a rising graze tone.
+ship-score: Game forge default. 80.</p><p class="options">Options: Start Game forge now · Not yet</p><p class="answer">Start Game forge now</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/conversation/outputs/requests.json">Conversation · requests.json</a> <span class="type">1.7KB</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/conversation/outputs/bible-draft.md">Conversation · bible-draft.md</a> <span class="type">8.7KB</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/conversation/outputs/decisions.md">Conversation · decisions.md</a> <span class="type">3.5KB</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/mocks/outputs/mocks">Mocks · mocks.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/mocks/outputs/mocks-report.md">Mocks · mocks-report.md</a> <span class="type">1.8KB</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches">Sketches · sketches.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/sketches/outputs/sketches-report.md">Sketches · sketches-report.md</a> <span class="type">5.6KB</span></li><li><span class="absent">Diagrams · diagrams.dir (absent)</span></li><li><span class="absent">Diagrams · diagrams-report.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/critic/outputs/gaps.md">Critic · gaps.md</a> <span class="type">2.6KB</span></li><li><span class="absent">Critic · done.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/bible/outputs/forge-values.json">Bible · forge-values.json</a> <span class="type">1.5KB</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/confirm/outputs/confirm.md">Confirm · confirm.md</a> <span class="type">25B</span></li><li><a href="http://localhost:4810/api/runs/6ff46294-7e16-4648-88fc-c85825780091/files/stages/launch/outputs/handoff.md">Start Game forge · handoff.md</a> <span class="type">2.2KB</span></li><li><span class="absent">Park the handoff · handoff.md (absent)</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Conversation</td><td>talk</td><td>done</td><td>opus</td><td>2 min 56 s</td><td>875K</td></tr>
+<tr><td>Mocks</td><td>samples</td><td>done</td><td>sonnet</td><td>52 s</td><td>262K</td></tr>
+<tr><td>Sketches</td><td>samples</td><td>done</td><td>sonnet</td><td>2 min 00 s</td><td>1.7M</td></tr>
+<tr><td>Diagrams</td><td>samples</td><td>skipped</td><td>sonnet</td><td>0 s</td><td>0</td></tr>
+<tr><td>Critic</td><td>review</td><td>done</td><td>opus</td><td>40 s</td><td>395K</td></tr>
+<tr><td>Bible</td><td>write</td><td>done</td><td>opus</td><td>50 s</td><td>165K</td></tr>
+<tr><td>Confirm</td><td>confirm</td><td>done</td><td>sonnet</td><td>35 s</td><td>138K</td></tr>
+<tr><td>Start Game forge</td><td>launch</td><td>done</td><td>script</td><td>1 s</td><td>0</td></tr>
+<tr><td>Park the handoff</td><td>launch</td><td>skipped</td><td>script</td><td>0 s</td><td>0</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

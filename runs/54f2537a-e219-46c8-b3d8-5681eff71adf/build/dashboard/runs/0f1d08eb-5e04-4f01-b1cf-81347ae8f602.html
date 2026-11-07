@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 12:25</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">The Run dashboard pipeline, built and tested</p>
+  <p class="summary">The user asked the pipeline builder for a pipeline that shows every modpipes run in a period such as yesterday, today or the last hour. The result is the Run dashboard pipeline, tested and saved at version 2.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T18:25:26.607Z">Fri 6 Nov, 12:25</time></span><span>Finished <time datetime="2026-11-06T23:27:33.779Z">Fri 6 Nov, 17:27</time></span><span>5 h 02 min</span><span>15.0M tokens</span><span class="id">0f1d08eb-5e04-4f01-b1cf-81347ae8f602</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/run.json">http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/0f1d08eb-5e04-4f01-b1cf-81347ae8f602.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k8n7vfc/outputs/lessons-learned-site.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>Please build a pipeline that can look at everything run in a period of time (yesterday, today, the last 1 hour as defaults) and put together the pipeline name, the variables or user input collected by a concierge/input stage, and the outputs rendered and/or clickable in a beautiful dashboard showcasing the fruits of this high tech agentic building</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Run dashboard: test report</h1>
+<ul>
+<li>Pipeline: Run dashboard, <code>2dfb2952-2633-4582-b2ea-e1e48ec4b5ad</code>. Tested v1 and saved v2.</li>
+<li>Test copy: &quot;Run dashboard (test)&quot;, <code>b116d953-f391-42b4-a141-0f7ae3aa0954</code>. The copy is now deleted, and its runs stay in history.</li>
+<li>The pipeline has no loops, so no loop caps needed cutting. The test kept the prompts and models unchanged.</li>
+<li>No row in <code>lessons__pipeline_builder_todos</code> concerned Run dashboard, so no earlier todo applied.</li>
+<li>The session started at 17:09 CST on 2026-11-06. Both runs finished by 17:12. The v2 fix landed at 17:14.</li>
+</ul>
+<h2>What ran</h2>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Path</th>
+<th>Inputs</th>
+<th>Runs gathered</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>8dfb05bf-4d9f-486a-8646-f1b0e8f002e9</code></td>
+<td>happy</td>
+<td><code>period=last-hour</code></td>
+<td>5 (2 done, 3 live)</td>
+<td>63 s, 23:09:44 to 23:10:47 UTC</td>
+</tr>
+<tr>
+<td><code>abf59137-831f-4dbf-a2f8-bea54ddbaff2</code></td>
+<td>stress</td>
+<td><code>period=2026-11-03..2026-11-06</code></td>
+<td>56 (43 done, 2 failed, 4 cancelled, 7 live)</td>
+<td>2 min 38 s, 23:09:44 to 23:12:22 UTC</td>
+</tr>
+</tbody></table>
+<p>The stress inputs push these edges from the understanding:</p>
+<ul>
+<li>An explicit date range with a date-only end.</li>
+<li>A large volume of 56 runs and 145 questions.</li>
+<li>Failed and cancelled runs.</li>
+<li>Seven live runs, including the other test run and a run waiting on an answer.</li>
+<li>Each test run appears inside the other run&#39;s period.</li>
+</ul>
+<p>Stage times for the stress run:</p>
+<ul>
+<li>Toolkit: 2 s.</li>
+<li>Gather: 5 s.</li>
+<li>Heroes: 44 s for 56 heroes.</li>
+<li>Captions: 112 s on opus, at 0.81 USD.</li>
+<li>Build: under 1 s.</li>
+<li>Check: about 5 s.</li>
+<li>Overview: about 20 s.</li>
+</ul>
+<h2>What worked</h2>
+<p>All verified from files, not from stage summaries.</p>
+<ul>
+<li>Gather picked up the right runs in both periods, with correct counts by status and kind. The explicit range resolved to 2026-11-03 00:00 to 2026-11-07 00:00 local time (<code>stages/gather/outputs/runs.json</code>).</li>
+<li>Heroes rendered 56 of 56 with zero fallbacks: 28 page screenshots and 28 typographic cards (<code>abf59137…/stages/heroes/outputs/hero-report.json</code>). No run in the period had an image or video as its primary starred output, so those two hero kinds stayed untested.</li>
+<li>Captions covered every run id in both runs. The 56 keys match the 56 run ids exactly. Captions name the actual product, mark live runs as in progress, and give the self run the required caption.</li>
+<li>The happy run tagged its own run as &quot;This dashboard&quot; and sorted the run last. The stress run tagged the other copy run as a test run, which is correct.</li>
+<li>The check passed 15 of 15 in both runs. The stress check hit 115 index URLs, and every one answered. Axe found no serious or critical violations.</li>
+<li>The filter counts are right: 25 test, 14 builder, 2 failed and 4 cancelled.</li>
+<li>The overview flagged real visual defects instead of repeating the passing check. That is the behaviour the prompt asks for.</li>
+</ul>
+<h2>Defects, evidence and fixes</h2>
+<ol>
+<li><strong>Card text overlaps hero text.</strong> On typographic cards, the card&#39;s status chip and title sit on top of the hero&#39;s own title. White page heroes made the eyebrow chip hard to read. The cause was the 16:10 card shape with a scrim that faded out at 45 %.<ul>
+<li>Evidence:<ul>
+<li><code>/home/alex/.modpipes/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/stages/check/outputs/shots/sandboxes.png</code></li>
+<li><code>/home/alex/.modpipes/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/stages/kt6n75z/work/stress-index.png</code> (Topic expert forge, Game forge v2, Stage splitter cards)</li>
+<li>Both overview notes, section &quot;What you saw&quot;.</li>
+</ul>
+</li>
+<li>Fix in v2 (<code>build.mjs</code> CSS):<ul>
+<li>Cards are 4:3.</li>
+<li>The scrim holds 84 % black to 55 % height.</li>
+<li>Hero images anchor at the left top, so a cropped typographic title keeps its start.</li>
+</ul>
+</li>
+<li>Status: <strong>unconfirmed</strong> in a pipeline run. Verified offline: the stress data was rebuilt and checked with the v2 scripts, 15 of 15 passed, and the text no longer collides (<code>kt6n75z/work/smoke/shots/index-1280.png</code>).</li>
+</ul>
+</li>
+<li><strong>Check screenshot shows blank heroes.</strong> <code>index-1280.png</code> showed grey gradients and no heroes, even though &quot;every hero image decodes&quot; passed. A real browser paints every hero. The screenshot fired before the <code>decoding=&quot;async&quot;</code> images painted. The happy overview then reported missing heroes that were present.<ul>
+<li>Evidence:<ul>
+<li><code>/home/alex/.modpipes/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/stages/check/outputs/shots/index-1280.png</code></li>
+<li>My own capture of the same URL: <code>kt6n75z/work/mine-1280.png</code>.</li>
+</ul>
+</li>
+<li>Fix in v2 (<code>check.mjs</code>): the script awaits <code>img.decode()</code> on each hero and waits 300 ms before the screenshot.</li>
+<li>Status: <strong>unconfirmed</strong> in a pipeline run. Verified offline: the smoke <code>index-1280.png</code> shows every hero.</li>
+</ul>
+</li>
+<li><strong>Run-page screenshot shows the least useful page.</strong> <code>run-page.png</code> showed the first run, which is the newest. That run was a live test run with no starred outputs and no questions (<code>abf59137…/stages/check/outputs/shots/run-page.png</code>).<ul>
+<li>Fix in v2: the check samples done runs with the most questions first.</li>
+<li>Status: <strong>unconfirmed</strong> in a pipeline run. Verified offline: the smoke <code>run-page.png</code> shows a Game forge concierge page with 14 answered questions and a rendered bible.</li>
+</ul>
+</li>
+<li><strong>Negative stage durations for live runs.</strong> Gather computes &quot;now&quot; before a sibling stage starts, so the Heroes stage showed <code>durationMs: -367</code> (<code>abf59137…/stages/gather/outputs/runs.json</code>, run <code>8dfb05bf</code>, stages heroes and captions). The run page rounded the value to &quot;0 s&quot;, so a person barely sees the defect.<ul>
+<li>Fix in v2: gather clamps both durations with <code>Math.max(0, …)</code>.</li>
+<li>Status: <strong>unconfirmed</strong>.</li>
+</ul>
+</li>
+</ol>
+<p>v2 changes only the toolkit command. <code>pipeline show</code> after the update matches <code>v2.json</code> and contains all four fixes. Versions are saved in <code>outputs/pipeline-versions/</code>: <code>v1.json</code>, <code>v2.json</code> and <code>NOTES.md</code>.</p>
+<p>Not a defect: <code>sandboxes.png</code> crops the viewer frame. The harness frames are fixed at 290 px and 900 px wide, so the crop is the shot&#39;s framing.</p>
+<h2>Lessons recorded</h2>
+<ul>
+<li>Real <code>captions</code> table: digest <code>runs.json</code> instead of reading the whole file, and assert caption counts. This lesson was ported from the copy&#39;s table.</li>
+<li>Real <code>overview</code> table: a blank-hero screenshot was a timing artefact. Report a screenshot that disagrees with a passing check, and say which is which.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Run v2 once with <code>period=last-24h</code>, then open <code>check/outputs/shots/index-1280.png</code> and <code>run-page.png</code>. Confirm heroes paint and card text sits clear of hero text.</li>
+<li>Check the 4:3 card in the modpipes app viewer. The cards are taller, so the index scrolls more.</li>
+<li>Test image and video heroes. Neither path ran, because no run from 3 to 6 November had an image or video as its primary starred output. Point a test at a period that includes a Pixel loop forge or sprite run with a starred png, or add a starred mp4 fixture run.</li>
+<li>Test a game hero with <code>window.__game.start()</code>. Game forge pages rendered as page screenshots. Nobody checked whether the start call fired.</li>
+</ol>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/kt6n75z/outputs/test-report.md</a></p></figure>
+<figure class="out"><h3>Analyse the test · lessons-learned-site<span class="type">html</span></h3><p class="desc">A static site: which changes improved the pipeline, why, and the evidence behind each claim</p><iframe src="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k8n7vfc/outputs/lessons-learned-site.html" title="Analyse the test lessons-learned-site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k8n7vfc/outputs/lessons-learned-site.html">http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k8n7vfc/outputs/lessons-learned-site.html</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:27:12.345Z">Fri 6 Nov, 12:27</time></p>
+    <div class="q"><p class="question">Which runs belong on the dashboard for a period? Right now the last 24 hours hold 30 runs: real pipelines (Game forge, Pixel loop forge, Game forge concierge), &#39;(test)&#39; copies the pipeline builder ran, and the pipeline builder&#39;s own runs.</p><p class="options">Options: Every run, with filters (Recommended) · Hide test and builder runs · Only finished runs</p><p class="answer">Every run, with filters (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:29:17.076Z">Fri 6 Nov, 12:29</time></p>
+    <div class="q"><p class="question">How should a run&#39;s outputs show on the dashboard? A run can hold a playable game folder, a gallery of PNGs, markdown reports, JSON scores and screenshot folders. Starred outputs are the ones a person is meant to open.</p><p class="options">Options: Cards, then a run page (Recommended) · One long page, all embedded · Cards with links only</p><p class="answer">Cards, then a run page, but with the cards being mini hero&#39;s in a way, like full background renders of the primary output where possible</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:30:55.378Z">Fri 6 Nov, 12:30</time></p>
+    <div class="q"><p class="question">Where should the finished dashboard live? Every output of a run is served by the modpipes server at http://localhost:4810, so hero backgrounds, frames and links can point at outputs of other runs without copying them.</p><p class="options">Options: Dashboard run output only (Recommended) · Also a fixed path on disk · Fixed path only</p><p class="answer">Dashboard run output only (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:52:31.045Z">Fri 6 Nov, 12:52</time></p>
+    <div class="q"><p class="question">How much model work per run on the dashboard? A script can collect names, inputs, questions and answers, status, times, tokens and output links on its own. A model stage can add what a script cannot: a one-line caption of what each run made, read from its report.</p><p class="options">Options: Caption per run, haiku (Recommended) · Script only, no captions · Caption plus a period overview</p><p class="answer">caption per run using opus latest</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:54:09.716Z">Fri 6 Nov, 12:54</time></p>
+    <div class="q"><p class="question">Here is the pipeline as I understand it. Variables: period (today by default; also yesterday, last-hour, last-24h, last-7d, or an explicit from..to range, local time). Stages: (1) a script collects every run that started in the period from the modpipes CLI and run homes: pipeline name, variables, every question and answer a stage exchanged with you, status, times, tokens, and every output with its served URL, starred first. (2) A script renders a hero image per run with headless Chromium: a screenshot of the primary starred output (a game or site, an image, a video frame, or a typographic card for a report). (3) An opus stage reads each run&#39;s starred markdown and writes a one-line caption and a two-line summary per run. (4) A build stage assembles a static site as the starred dir output: a front page of hero cards with a filter bar for test, builder, failed and cancelled runs, and a run page per run with starred outputs embedded live and every other output linked. All links point at http://localhost:4810, so nothing is copied. Is that the pipeline you want?</p><p class="options">Options: Yes, build that · Yes, with changes</p><p class="answer">Yes, build that</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">7.2KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">671B</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">9.3KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">7.8KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">5.4KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">4.3KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">7.0KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>30 min 41 s</td><td>983K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>2 min 17 s</td><td>767K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>1 min 35 s</td><td>187K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 14 s</td><td>255K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>1 min 58 s</td><td>654K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>19 min 59 s</td><td>3.6M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>6 min 02 s</td><td>2.5M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>12 min 17 s</td><td>6.1M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

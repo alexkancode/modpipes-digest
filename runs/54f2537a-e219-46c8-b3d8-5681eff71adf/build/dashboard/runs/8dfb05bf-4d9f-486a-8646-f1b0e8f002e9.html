@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Run dashboard (test) · Fri 6 Nov, 17:09</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Run dashboard (test)</h1>
+  <p class="caption">A test dashboard of runs from the last hour</p>
+  <p class="summary">This test run of the Run dashboard was given the period last-hour. It built a static dashboard of the runs that started in that hour.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T23:09:44.000Z">Fri 6 Nov, 17:09</time></span><span>Finished <time datetime="2026-11-06T23:10:47.472Z">Fri 6 Nov, 17:10</time></span><span>1 min 03 s</span><span>380K tokens</span><span class="id">8dfb05bf-4d9f-486a-8646-f1b0e8f002e9</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/run.json">http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9.jpg" width="800" height="500" alt="Render of the primary output of Run dashboard (test)"><figcaption>Hero from http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/build/outputs/dashboard/index.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Period</dt><dd>last-hour</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Build · dashboard<span class="type">dir</span></h3><p class="desc">The dashboard: index.html with a hero card per run, runs/&lt;runId&gt;.html per run, heroes and stylesheet</p><iframe src="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/build/outputs/dashboard/index.html" title="Build dashboard" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/build/outputs/dashboard/index.html">http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/build/outputs/dashboard/index.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Overview · overview<span class="type">md</span></h3><p class="desc">Where the dashboard is, what the period held, which heroes fell back, and what the check found</p></summary><div class="md"><h1>Run dashboard overview</h1>
+<ul>
+<li>Index URL: <a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/build/outputs/dashboard/index.html">http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/build/outputs/dashboard/index.html</a></li>
+<li>On disk: /home/alex/.modpipes/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/stages/build/outputs/dashboard/</li>
+</ul>
+<h2>The period</h2>
+<ul>
+<li>Label: The last hour</li>
+<li>From: 2026-11-06T22:09:45.867Z</li>
+<li>To: 2026-11-06T23:09:45.867Z</li>
+<li>Runs: 5, with 10.8M tokens in total</li>
+</ul>
+<h2>Runs by status and by kind</h2>
+<p>By status:</p>
+<ul>
+<li>done: 2</li>
+<li>failed: 0</li>
+<li>cancelled: 0</li>
+<li>running: 3</li>
+</ul>
+<p>By kind:</p>
+<ul>
+<li>test: 3 (one Run dashboard test, two User bible tests)</li>
+<li>pipeline builder: 0</li>
+<li>this dashboard: 1 (run 8dfb05bf, still running while it built this page)</li>
+<li>everything else: 1 (Topic expert forge, run 79cab3e4)</li>
+</ul>
+<h2>Heroes</h2>
+<ul>
+<li>Rendered with the chrome engine at 800x500. 5 of 5 rendered, 0 fell back, 0 missing.</li>
+<li>From a page: 2 (both User bible runs, rendered from bible.html)</li>
+<li>From an image: 0</li>
+<li>From a video: 0</li>
+<li>Typographic card: 3 (the two Run dashboard runs, from the pipeline name, and Topic expert forge, from history.history)</li>
+<li>Fallbacks: none. The three typographic cards were chosen by design, not as a fallback.</li>
+</ul>
+<h2>The check</h2>
+<ul>
+<li>Result: pass (ok: true), checked 2026-11-06T23:10:23Z.</li>
+<li>All 15 checks passed. No check failed.</li>
+<li>Covered: 5 cards, 5 run pages, 5 heroes, no horizontal scroll at 1280 or 390, 13 index links answer, both sandboxes render, axe found nothing serious, no console errors.</li>
+</ul>
+<h2>What you saw</h2>
+<ul>
+<li>At 1280 wide (index-1280.png), the top of every card is a blank grey gradient and no hero image shows on any of the 5 cards, although the check said every hero decodes. At 390 wide, and inside the sandboxes, the heroes do show.</li>
+<li>In sandboxes.png, the card title and status sit on top of the hero text, so &quot;Topic expert forge&quot; overlaps &quot;History: Fleischer Studios, Betty Boop and the Rubber-Hose Era&quot;, and the User bible cards print their title over the hero page text. This is hard to read.</li>
+<li>The run page (run-page.png) and the 390 layout look clean. The running run is shown with &quot;absent&quot; outputs, which is correct for a run that had only built its toolkit.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/overview/outputs/overview.md">http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/overview/outputs/overview.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><p class="desc">No stage asked the user a question.</p></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/toolkit/outputs/tools">Toolkit · tools.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/gather/outputs/runs.json">Gather · runs.json</a> <span class="type">68KB</span></li><li><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/heroes/outputs/heroes">Heroes · heroes.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/heroes/outputs/hero-report.json">Heroes · hero-report.json</a> <span class="type">1.6KB</span></li><li><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/captions/outputs/captions.json">Captions · captions.json</a> <span class="type">1.9KB</span></li><li><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/check/outputs/report.json">Check · report.json</a> <span class="type">2.0KB</span></li><li><a href="http://localhost:4810/api/runs/8dfb05bf-4d9f-486a-8646-f1b0e8f002e9/files/stages/check/outputs/shots">Check · shots.dir</a> <span class="type">4.1KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Toolkit</td><td>toolkit</td><td>done</td><td>script</td><td>2 s</td><td>0</td></tr>
+<tr><td>Gather</td><td>gather</td><td>done</td><td>script</td><td>1 s</td><td>0</td></tr>
+<tr><td>Heroes</td><td>enrich</td><td>done</td><td>script</td><td>18 s</td><td>0</td></tr>
+<tr><td>Captions</td><td>enrich</td><td>done</td><td>opus</td><td>27 s</td><td>168K</td></tr>
+<tr><td>Build</td><td>build</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+<tr><td>Check</td><td>check</td><td>done</td><td>script</td><td>9 s</td><td>0</td></tr>
+<tr><td>Overview</td><td>report</td><td>done</td><td>sonnet</td><td>24 s</td><td>212K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

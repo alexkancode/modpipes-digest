@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>User bible (test) · Fri 6 Nov, 16:50</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>User bible (test)</h1>
+  <p class="caption">A user bible for a stress-test repo, version 3</p>
+  <p class="summary">This test run of User bible was pointed at a stress-test repo with a three-minute crawl budget. It produced version 3 of an HTML user bible and committed it locally without pushing.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T22:50:09.610Z">Fri 6 Nov, 16:50</time></span><span>Finished <time datetime="2026-11-06T23:02:51.816Z">Fri 6 Nov, 17:02</time></span><span>12 min 42 s</span><span>4.6M tokens</span><span class="id">15735487-29dc-475e-a95c-13d3ac09bf80</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/run.json">http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/15735487-29dc-475e-a95c-13d3ac09bf80.jpg" width="800" height="500" alt="Render of the primary output of User bible (test)"><figcaption>Hero from http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/assemble/outputs/bible.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Repo path</dt><dd>/tmp/ub-test/stress</dd></div><div><dt>Crawl budget in minutes</dt><dd>3</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Assemble · bible<span class="type">html</span></h3><p class="desc">The user bible: one self-contained HTML file with sitemap, personas, paths, diagrams and screenshots</p><iframe src="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/assemble/outputs/bible.html" title="Assemble bible" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/assemble/outputs/bible.html">http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/assemble/outputs/bible.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Handoff · handoff<span class="type">md</span></h3><p class="desc">Where the bible is, how to open the file, what the crawl captured, the gate results, the open questions</p></summary><div class="md"><h1>User bible handoff: /tmp/ub-test/stress</h1>
+<h2>Where the bible is</h2>
+<ul>
+<li>Version: 3 (<code>&lt;meta name=&quot;bible-version&quot;&gt;</code> and <code>#bible-version</code> in the banner)</li>
+<li>File: <code>docs/user-bible/user-bible-v3.html</code> (745,084 bytes)</li>
+<li>Latest alias: <code>docs/user-bible/latest.html</code></li>
+<li>Commit: <code>e6489d9</code> on branch <code>main</code>, one commit made by the publish stage</li>
+<li>Nothing was pushed.</li>
+</ul>
+<h2>How to open it</h2>
+<ul>
+<li>From disk: open <code>user-bible-v3.html</code> in any browser. It is one self-contained file with no external requests.</li>
+<li>From a static host: upload the file as-is. Do not use GitHub&#39;s raw view, which shows the HTML source and not the rendered page.</li>
+</ul>
+<h2>What the crawl captured</h2>
+<p>The crawl ran. It started <code>next dev --port 3737</code> with a placeholder Supabase URL, because the repo has no <code>.env</code> and no reachable Supabase. The server was stopped and the repo was left clean.</p>
+<ul>
+<li>7 screens captured, each with a JPEG and an ARIA snapshot. All returned 200.</li>
+<li>Every screen redirected to <code>/login</code> because no session existed. Only <code>/login</code> shows its own content.</li>
+<li>The four <code>/itineraries/:id</code> screens used a placeholder id, so their images show the login page, not the real plan screens. The authenticated screens are not in the bible.</li>
+</ul>
+<h2>Gate results</h2>
+<ul>
+<li>Coverage: <code>ok: true</code>. All 12 checks passed, including no script, no external URLs, no horizontal overflow at 390 px, zero serious or critical axe violations, and size under 5 MB.</li>
+<li>Critic: <code>ship: false</code>, score 74.<ul>
+<li>Blocker: at 390 px the &quot;All routes&quot; table on the sitemap is still broken. Cells wrap mid-word (<code>lay/ou/t</code>, <code>/logi/n</code>). The same CSS hits the summary tables. Suggested fix: <code>table{min-width:40rem}</code> inside <code>.scroll</code>.</li>
+<li>Notes: the banner says &quot;7 of 7 screens captured&quot; although all of them are the login redirect; <code>route-home</code> shows the sign-in image under plan-list text; the summary hides its Promises and Environment tables in closed details; <code>path-organiser-create-and-invite</code> visits the edit route three times.</li>
+</ul>
+</li>
+</ul>
+<h2>Open questions (from paths.json)</h2>
+<ol>
+<li>Which port and redirect URL should the app use: 3000, 3737 or 4000?</li>
+<li>Where does a new developer get <code>SUPABASE_SERVICE_ROLE_KEY</code>?</li>
+<li>Which document holds the feature spec?</li>
+<li>Where should a signed-out visitor land after signing in from a deep link?</li>
+<li>Should invited participants see the Edit page at all?</li>
+<li>How does an invitee learn they were invited?</li>
+<li>Who will deliver reminders, and through which channel?</li>
+<li>Is <code>/itineraries/:id/view</code> meant to replace the front page or be deleted?</li>
+<li>What happens with an invalid timezone on an activity?</li>
+<li>Is the day-by-day grouping meant to show?</li>
+<li>What does a removed participant see?</li>
+<li>Should deleting an activity or removing a person ask for confirmation?</li>
+<li>What should happen if the owner-row insert fails after a plan is created?</li>
+</ol>
+<h2>Rerun</h2>
+<pre><code>/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start 184c7aff-d637-4879-be19-10eedb04ff61 --var repo-path=/tmp/ub-test/stress
+</code></pre>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/handoff/outputs/handoff.md">http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/handoff/outputs/handoff.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><p class="desc">No stage asked the user a question.</p></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/code-read/outputs/routes.json">Code read · routes.json</a> <span class="type">16KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/code-read/outputs/code-notes.md">Code read · code-notes.md</a> <span class="type">6.1KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/crawl/outputs/crawl.json">Crawl · crawl.json</a> <span class="type">3.2KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/crawl/outputs/shots">Crawl · shots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/crawl/outputs/crawl-note.md">Crawl · crawl-note.md</a> <span class="type">1.6KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/toolkit/outputs/tools">Toolkit · tools.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/personas/outputs/personas.json">Personas · personas.json</a> <span class="type">4.3KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/paths/outputs/paths.json">Paths · paths.json</a> <span class="type">31KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/coverage/outputs/report.json">Coverage · report.json</a> <span class="type">1.3KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/critic/outputs/verdict.json">Critic · verdict.json</a> <span class="type">3.1KB</span></li><li><a href="http://localhost:4810/api/runs/15735487-29dc-475e-a95c-13d3ac09bf80/files/stages/publish/outputs/publish.json">Publish · publish.json</a> <span class="type">195B</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Code read</td><td>gather</td><td>done</td><td>sonnet</td><td>1 min 43 s</td><td>699K</td></tr>
+<tr><td>Crawl</td><td>crawl</td><td>done</td><td>sonnet</td><td>1 min 27 s</td><td>334K</td></tr>
+<tr><td>Toolkit</td><td>crawl</td><td>done</td><td>opus</td><td>4 min 50 s</td><td>1.1M</td></tr>
+<tr><td>Personas</td><td>personas</td><td>done</td><td>sonnet</td><td>23 s</td><td>293K</td></tr>
+<tr><td>Paths</td><td>paths</td><td>done</td><td>opus</td><td>1 min 39 s</td><td>1.6M</td></tr>
+<tr><td>Assemble</td><td>build</td><td>done</td><td>script</td><td>3 s</td><td>0</td></tr>
+<tr><td>Coverage</td><td>check</td><td>done</td><td>script</td><td>3 s</td><td>0</td></tr>
+<tr><td>Critic</td><td>check</td><td>done</td><td>sonnet</td><td>35 s</td><td>496K</td></tr>
+<tr><td>Publish</td><td>deliver</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+<tr><td>Handoff</td><td>report</td><td>done</td><td>haiku</td><td>17 s</td><td>132K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

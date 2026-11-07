@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Stripe billing desk (test) · Fri 6 Nov, 11:08</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Stripe billing desk (test)</h1>
+  <p class="caption">A Stripe billing handoff for the Instideck slides app</p>
+  <p class="summary">This test run of Stripe billing desk was pointed at the Instideck repo. It found a $5 per month Pro subscription fully built in code, but it could not check the live Stripe account or production secrets.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T17:08:46.839Z">Fri 6 Nov, 11:08</time></span><span>Finished <time datetime="2026-11-06T17:27:52.130Z">Fri 6 Nov, 11:27</time></span><span>19 min 05 s</span><span>5.6M tokens</span><span class="id">da8b00ba-5fb4-4b35-b602-0386a1bd635c</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/run.json">http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/da8b00ba-5fb4-4b35-b602-0386a1bd635c.jpg" width="800" height="500" alt="Render of the primary output of Stripe billing desk (test)"><figcaption>Hero from http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/site/outputs/site/index.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Repo path</dt><dd>/home/alex/Desktop/dev/dirslides-correct</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Site · site<span class="type">dir</span></h3><p class="desc">The static site: index.html with the verdict, capability cards, steps and sources</p><iframe src="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/site/outputs/site/index.html" title="Site site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/site/outputs/site/index.html">http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/site/outputs/site/index.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Handoff · handoff<span class="type">md</span></h3><p class="desc">The verdict, chosen tasks with steps, open risks, what was not verifiable, the quality gate, the rerun command</p></summary><div class="md"><h1>Stripe billing handoff: Instideck (dirslides-correct)</h1>
+<p>Date: 2026-11-06</p>
+<h2>Answer</h2>
+<p>One $5/month Instideck Pro subscription is fully built in code (Checkout, Billing Portal, 8-event webhook, KV entitlements) and the repo claims Stripe live mode since 2026-09-17, but the live Stripe account and production Worker secrets could not be checked in this run, so production readiness is not verified and the runbook&#39;s real-money test is still open.</p>
+<h2>Capabilities</h2>
+<p>Every capability is <code>not-verifiable</code>: the code leg passes, but the live Stripe account and production Worker secrets could not be read (Stripe CLI live login expired).</p>
+<ul>
+<li><strong>Checkout (subscription)</strong> — not-verifiable — <code>server/src/index.ts:78-99</code>: subscription-mode Checkout Session, one price, qty 1, 30 min expiry.</li>
+<li><strong>Subscriptions</strong> — not-verifiable — <code>server/src/reconcile.ts:31-35</code>: active/trialing/past_due give Pro, every other status gives Free.</li>
+<li><strong>Webhooks</strong> — not-verifiable — <code>server/src/index.ts:113-151</code>: raw-body signature check, livemode guard, event-id dedupe, 500 on failure.</li>
+<li><strong>Customer portal</strong> — not-verifiable — <code>server/src/index.ts:101-111</code>: portal session with no configuration id, relies on the live default.</li>
+<li><strong>Entitlements</strong> — not-verifiable — <code>server/src/entitlements.ts:20-35</code>: Cloudflare KV <code>ENTITLEMENTS</code>, written only by the webhook.</li>
+<li><strong>Revenue recovery</strong> — not-verifiable — <code>server/src/reconcile.ts:31</code>: <code>past_due</code> keeps Pro; revocation relies on Stripe moving to unpaid/canceled.</li>
+<li><strong>Account activation</strong> — not-verifiable — <code>features/launch-runbook/index.html:92</code> claims activation 2026-09-17; the only account id in the repo is the sandbox one (<code>DOCS.md:215</code>).</li>
+</ul>
+<h2>Chosen tasks</h2>
+<p>Note: <code>tasks.json</code> from the checkpoint has <code>chosen: []</code> (mode pick), so no tasks were explicitly chosen. The writer and the site cover the required tasks t1 to t9 (the checkpoint answer was &#39;Required tasks only&#39;). Tasks t10 to t13 are optional and have no steps; see verdict.md.</p>
+<h3>t1. Re-authenticate the Stripe CLI and rerun this audit</h3>
+<p>Why: The expired live login blocked every live-object check</p>
+<ol>
+<li><strong>Do:</strong> In the Stripe Dashboard, switch to the live account and open Settings &gt; Team and security &gt; MCP and CLI access (<a href="https://dashboard.stripe.com/settings/mcp-and-cli-access">https://dashboard.stripe.com/settings/mcp-and-cli-access</a>). Turn CLI access on for live mode if it is off.
+<strong>Expect:</strong> CLI access shows as enabled for the live account and environment.
+Note: Stripe CLI versions newer than v1.50.0 need this setting. This machine runs 1.50.10, per the dossier.
+Source: <a href="https://docs.stripe.com/cli/login.md">https://docs.stripe.com/cli/login.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> In your own terminal, start the browser login. Approve the pairing code in the Dashboard and grant live-mode access.<pre><code class="language-bash">stripe login --new-session
+</code></pre>
+<strong>Expect:</strong> The browser shows the same pairing code as the terminal. After you approve, the terminal reports that the login finished.
+Note: --new-session replaces the expired session. A plain stripe login keeps the current session. Stripe reauth only changes permissions on an existing session.
+Source: <a href="https://docs.stripe.com/cli/login.md">https://docs.stripe.com/cli/login.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> List the accounts the CLI is authorized for.<pre><code class="language-bash">stripe login list
+</code></pre>
+<strong>Expect:</strong> The live Instideck account appears with live mode authorized, not only the sandbox acct_1Tv1…drg2.
+Source: <a href="https://docs.stripe.com/cli/login.md">https://docs.stripe.com/cli/login.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Rerun this audit so the account-inspector stage can read the live objects.<pre><code class="language-bash">/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start 1f4d4bee-e2df-4df7-b616-43a64d0f630a --var repo-path=/home/alex/Desktop/dev/dirslides-correct --var question=&quot;What billing is set up, and is it production ready or still in staging?&quot;
+</code></pre>
+<strong>Expect:</strong> The new run&#39;s assessment shows capabilities as live, sandbox-only or missing instead of not-verifiable.
+Note: The rerun command comes from this pipeline&#39;s config, not from Stripe docs. The source page covers the CLI login the rerun depends on.
+Source: <a href="https://docs.stripe.com/stripe-cli/keys.md">https://docs.stripe.com/stripe-cli/keys.md</a> (fetched 2026-11-06)</li>
+</ol>
+<h3>t2. Confirm the account is activated with charges and payouts enabled</h3>
+<p>Why: Live payments need an activated account; the repo records only the sandbox account id</p>
+<ol>
+<li><strong>Do:</strong> Retrieve the live account.<pre><code class="language-bash">stripe get --live /v1/account
+</code></pre>
+<strong>Expect:</strong> JSON with charges_enabled: true, payouts_enabled: true and details_submitted: true.
+Note: If the command fails with an expired-key error, do t1 first.
+Source: <a href="https://docs.stripe.com/api/accounts/object.md">https://docs.stripe.com/api/accounts/object.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> In the same output, read requirements.currently_due, requirements.past_due and requirements.disabled_reason.
+<strong>Expect:</strong> Both lists are empty and disabled_reason is null. Anything listed there is what Stripe still needs before it pays out or charges.
+Source: <a href="https://docs.stripe.com/api/accounts/object.md">https://docs.stripe.com/api/accounts/object.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Record the live account id (the id field from step 1) in DOCS.md beside the sandbox id. Ids are not keys, so this is safe.
+<strong>Expect:</strong> DOCS.md names both the sandbox account acct_1Tv1…drg2 and the live account.
+Note: The repo records only the sandbox account id today.
+Source: /home/alex/Desktop/dev/dirslides-correct/DOCS.md:215 (fetched 2026-11-06)</li>
+</ol>
+<h3>t3. Confirm price_1UGiKTGZimDzWoEHYE1zB3S5 exists in live mode and is active</h3>
+<p>Why: Sandbox prices do not carry over; Checkout fails on a mode mismatch</p>
+<ol>
+<li><strong>Do:</strong> Retrieve the price the Worker uses, in live mode.<pre><code class="language-bash">stripe prices retrieve price_1UGiKTGZimDzWoEHYE1zB3S5 --live
+</code></pre>
+<strong>Expect:</strong> livemode: true, active: true, type: recurring, recurring.interval: month, unit_amount: 500. If the CLI says No such price, the id is sandbox-only, so continue with step 2. Otherwise this task is done.
+Note: The id comes from server/wrangler.toml:30.
+Source: <a href="https://docs.stripe.com/api/prices/retrieve.md">https://docs.stripe.com/api/prices/retrieve.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Only if step 1 found no live price: in the live Dashboard, go to More &gt; Product catalog, open the Instideck Pro product (create it if it is missing), and add a $5.00 USD monthly recurring price.
+<strong>Expect:</strong> The product shows an active $5.00 / month price. Copy its price_… id.
+Note: Sandbox prices do not carry over to live mode, and a price cannot be given a chosen id, so the live id will differ.
+Source: <a href="https://docs.stripe.com/products-prices/manage-prices.md">https://docs.stripe.com/products-prices/manage-prices.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Only if you did step 2: set STRIPE_PRICE_ID in server/wrangler.toml line 30 to the new id.<pre><code class="language-bash">STRIPE_PRICE_ID = &quot;&lt;price id from step 2&gt;&quot;
+</code></pre>
+<strong>Expect:</strong> wrangler.toml line 30 holds the live price id. Price ids are public, so this file is the right place.
+Source: /home/alex/Desktop/dev/dirslides-correct/server/wrangler.toml:30 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Only if you did step 3: from server/, run the runbook&#39;s preflight, build and deploy chain.<pre><code class="language-bash">cd server &amp;&amp; npm run preflight &amp;&amp; cd .. &amp;&amp; npm run preflight &amp;&amp; npm run build &amp;&amp; cd server &amp;&amp; npx wrangler deploy
+</code></pre>
+<strong>Expect:</strong> Wrangler prints the deployed version and the instideck.com routes.
+Source: /home/alex/Desktop/dev/dirslides-correct/features/launch-runbook/index.html:137-140 (fetched 2026-11-06)</li>
+</ol>
+<h3>t4. Confirm the live webhook endpoint is enabled with the 8 events and note its API version</h3>
+<p>Why: Entitlements depend on it, and its payload version may differ from the SDK pin</p>
+<ol>
+<li><strong>Do:</strong> List the live webhook endpoints.<pre><code class="language-bash">stripe webhook_endpoints list --live
+</code></pre>
+<strong>Expect:</strong> One endpoint with url <a href="https://instideck.com/api/stripe-webhook">https://instideck.com/api/stripe-webhook</a>, status: enabled and livemode: true. If none exists, go to step 4.
+Source: <a href="https://docs.stripe.com/api/webhook_endpoints/object.md">https://docs.stripe.com/api/webhook_endpoints/object.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Compare that endpoint&#39;s enabled_events with HANDLED_EVENTS in server/src/reconcile.ts.
+<strong>Expect:</strong> enabled_events holds all 8: checkout.session.completed, checkout.session.async_payment_succeeded, checkout.session.async_payment_failed, invoice.paid, invoice.payment_failed, customer.subscription.created, customer.subscription.updated, customer.subscription.deleted.
+Note: Add any missing event in Workbench &gt; Webhooks &gt; the endpoint &gt; edit events. A missing customer.subscription.deleted leaves cancelled users on Pro.
+Source: /home/alex/Desktop/dev/dirslides-correct/server/src/reconcile.ts:4-13 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Note the endpoint&#39;s api_version. If it is null, the endpoint uses the account default version.
+<strong>Expect:</strong> You have a written version string to compare with the version stripe-node 18.5.0 pins (server/package.json) and the newest GA version, 2026-10-28.endive.
+Note: Webhook payloads follow the version set when the endpoint was created, else the account default.
+Source: <a href="https://docs.stripe.com/api/versioning.md">https://docs.stripe.com/api/versioning.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Only if step 1 found no live endpoint: in the live Dashboard, open Workbench &gt; Webhooks (<a href="https://dashboard.stripe.com/webhooks">https://dashboard.stripe.com/webhooks</a>), add an endpoint for <a href="https://instideck.com/api/stripe-webhook">https://instideck.com/api/stripe-webhook</a>, and select the 8 events from step 2.
+<strong>Expect:</strong> The endpoint page shows the URL, status enabled, and a signing secret starting whsec_.
+Note: Each endpoint has its own signing secret, so step 5 is required.
+Source: <a href="https://docs.stripe.com/webhooks.md">https://docs.stripe.com/webhooks.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Only if you did step 4: click Reveal secret on the new endpoint, then store it on the Worker from server/ and paste it at the prompt.<pre><code class="language-bash">cd server &amp;&amp; npx wrangler secret put STRIPE_WEBHOOK_SECRET
+</code></pre>
+<strong>Expect:</strong> Wrangler reports that the secret STRIPE_WEBHOOK_SECRET was uploaded to the dirslides Worker.
+Note: Paste the value only at the wrangler prompt. Never put it in .dev.vars, CREDENTIALS.md, any other repo file, or a chat.
+Source: <a href="https://docs.stripe.com/webhooks.md">https://docs.stripe.com/webhooks.md</a> (fetched 2026-11-06)</li>
+</ol>
+<h3>t5. Confirm Worker secrets STRIPE_SECRET_KEY (live) and STRIPE_WEBHOOK_SECRET (live endpoint) are set</h3>
+<p>Why: Production config is the third leg of live and is unchecked</p>
+<ol>
+<li><strong>Do:</strong> From server/, confirm that wrangler is logged into the Cloudflare account that owns the dirslides Worker.<pre><code class="language-bash">cd server &amp;&amp; npx wrangler whoami
+</code></pre>
+<strong>Expect:</strong> The account id starts 1080 and ends c2136cc915, matching DOCS.md section 8.
+Note: Run npx wrangler login first if it says you are not authenticated.
+Source: /home/alex/Desktop/dev/dirslides-correct/server/wrangler.toml:1 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> List the Worker&#39;s secret names. Cloudflare shows names only, never values.<pre><code class="language-bash">cd server &amp;&amp; npx wrangler secret list
+</code></pre>
+<strong>Expect:</strong> Both STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET are listed.
+Source: /home/alex/Desktop/dev/dirslides-correct/server/wrangler.toml:33-35 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Check the key&#39;s mode by its behaviour. Sign in at <a href="https://instideck.com">https://instideck.com</a> and click upgrade to open Checkout, but do not pay.
+<strong>Expect:</strong> A Stripe Checkout page opens for $5.00 per month. An error instead of Checkout means the Worker key and the live price are in different modes.
+Note: Secrets are write-only, so behaviour is the only safe read-back.
+Source: /home/alex/Desktop/dev/dirslides-correct/server/src/index.ts:78-99 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> List the newest live Checkout Session.<pre><code class="language-bash">stripe checkout sessions list --live --limit 1
+</code></pre>
+<strong>Expect:</strong> The newest session was created a moment ago, with livemode: true. That proves the Worker holds a live key.
+Note: unverified: this checks the session list, and no fetched page documents that list. The cited page is the closest fetched source.
+Source: <a href="https://docs.stripe.com/api/accounts/object.md">https://docs.stripe.com/api/accounts/object.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Check the webhook secret by its behaviour: in live Workbench &gt; Webhooks, open the instideck.com endpoint and look at recent event deliveries.
+<strong>Expect:</strong> Deliveries return 200. Repeated 400 responses mean signature verification is failing because the Worker holds the wrong whsec_, so redo t4 step 5 with the secret from Reveal secret.
+Note: Before any live traffic exists there may be no deliveries. t8 step 3 makes this check final.
+Source: <a href="https://docs.stripe.com/webhooks/signature.md">https://docs.stripe.com/webhooks/signature.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Only if step 4 showed no live session: put the live restricted key on the Worker and paste it at the prompt.<pre><code class="language-bash">cd server &amp;&amp; npx wrangler secret put STRIPE_SECRET_KEY
+</code></pre>
+<strong>Expect:</strong> Wrangler reports that STRIPE_SECRET_KEY was uploaded. Repeat steps 3 and 4 and expect a live session.
+Note: Paste the value only at the wrangler prompt. Never put it in .dev.vars, CREDENTIALS.md, any other repo file, or a chat. Use an rk_live_ key, not sk_test_.
+Source: /home/alex/Desktop/dev/dirslides-correct/features/launch-runbook/index.html:137 (fetched 2026-11-06)</li>
+</ol>
+<h3>t6. Confirm a default Billing Portal configuration exists in live mode</h3>
+<p>Why: The portal call passes no configuration id and fails without a default</p>
+<ol>
+<li><strong>Do:</strong> List the live customer portal configurations.<pre><code class="language-bash">stripe get --live /v1/billing_portal/configurations
+</code></pre>
+<strong>Expect:</strong> At least one configuration with is_default: true and active: true.
+Note: POST /api/portal passes no configuration id (server/src/index.ts:101-111), so it relies on the default.
+Source: <a href="https://docs.stripe.com/api/customer_portal/configurations/list.md">https://docs.stripe.com/api/customer_portal/configurations/list.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> In the default configuration, read features.subscription_cancel.enabled, features.payment_method_update.enabled and default_return_url.
+<strong>Expect:</strong> Both features are enabled: true and default_return_url is <a href="https://instideck.com">https://instideck.com</a>, as the runbook specifies.
+Source: /home/alex/Desktop/dev/dirslides-correct/features/launch-runbook/index.html:130 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Only if there is no default, or step 2 differs: open the live portal settings at <a href="https://dashboard.stripe.com/settings/billing/portal">https://dashboard.stripe.com/settings/billing/portal</a>, allow cancellation and payment-method updates, set the redirect link to <a href="https://instideck.com">https://instideck.com</a>, and save.
+<strong>Expect:</strong> Repeat step 1. It now shows a default configuration with those settings.
+Source: <a href="https://docs.stripe.com/customer-management/configure-portal.md">https://docs.stripe.com/customer-management/configure-portal.md</a> (fetched 2026-11-06)</li>
+</ol>
+<h3>t7. Confirm the Smart Retries final action cancels or marks unpaid</h3>
+<p>Why: past_due keeps Pro with no limit in code</p>
+<ol>
+<li><strong>Do:</strong> In live mode, open Billing &gt; Revenue recovery &gt; Retries (<a href="https://dashboard.stripe.com/revenue_recovery/retries">https://dashboard.stripe.com/revenue_recovery/retries</a>).
+<strong>Expect:</strong> The subscription retry schedule and the action taken after the last retry are shown.
+Source: <a href="https://docs.stripe.com/billing/revenue-recovery/smart-retries.md">https://docs.stripe.com/billing/revenue-recovery/smart-retries.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Set the action after all retries fail to Cancel the subscription (or Mark the subscription as unpaid), then save.
+<strong>Expect:</strong> The setting reads cancel (or unpaid), not leave past-due.
+Note: server/src/reconcile.ts:31 grants Pro while past_due, so leave past-due keeps Pro forever. Both canceled and unpaid revoke Pro. Changes affect future retries only.
+Source: <a href="https://docs.stripe.com/billing/revenue-recovery/smart-retries.md">https://docs.stripe.com/billing/revenue-recovery/smart-retries.md</a> (fetched 2026-11-06)</li>
+</ol>
+<h3>t8. Run the real-money test: buy, check Pro, cancel, refund, check Free</h3>
+<p>Why: The runbook says it has not been done and there are no live customers yet</p>
+<ol>
+<li><strong>Do:</strong> With a real card, buy Pro on <a href="https://instideck.com">https://instideck.com</a>.
+<strong>Expect:</strong> Checkout succeeds and the app shows the Pro badge within its polling window.
+Note: Do t3 to t6 first. This charges $5.00 of real money, which step 6 refunds.
+Source: /home/alex/Desktop/dev/dirslides-correct/features/launch-runbook/index.html:152-155 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> In browser devtools &gt; Network, open the response of GET /api/me.
+<strong>Expect:</strong> The body contains &quot;plan&quot;:&quot;pro&quot;.
+Source: /home/alex/Desktop/dev/dirslides-correct/server/src/index.ts:73-76 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> In the live Dashboard, open Workbench &gt; Webhooks &gt; the instideck.com endpoint, and the new subscription under Subscriptions.
+<strong>Expect:</strong> The subscription is active, and every delivery for this purchase returned 200.
+Source: <a href="https://docs.stripe.com/webhooks.md">https://docs.stripe.com/webhooks.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> On the Subscriptions page (<a href="https://dashboard.stripe.com/subscriptions">https://dashboard.stripe.com/subscriptions</a>), open the test subscription&#39;s overflow menu (⋯) &gt; Cancel subscription and choose immediately.
+<strong>Expect:</strong> The subscription status is canceled, and a customer.subscription.deleted delivery returns 200.
+Note: Do not cancel in the portal. It cancels at period end, so Pro would stay on for the month.
+Source: <a href="https://docs.stripe.com/billing/subscriptions/cancel.md">https://docs.stripe.com/billing/subscriptions/cancel.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Reload the app and check GET /api/me again.
+<strong>Expect:</strong> The Pro badge is gone and the body contains &quot;plan&quot;:&quot;free&quot;.
+Source: /home/alex/Desktop/dev/dirslides-correct/features/launch-runbook/index.html:161 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> On the Payments page (<a href="https://dashboard.stripe.com/payments">https://dashboard.stripe.com/payments</a>), open the $5.00 payment&#39;s overflow menu (⋯) &gt; Refund payment and issue a full refund.
+<strong>Expect:</strong> The payment shows as refunded. The plan stays free because cancellation, not the refund, revoked access.
+Source: <a href="https://docs.stripe.com/refunds.md">https://docs.stripe.com/refunds.md</a> (fetched 2026-11-06)</li>
+</ol>
+<h3>t9. Roll the restricted live key</h3>
+<p>Why: The runbook says the key was pasted into a chat transcript</p>
+<ol>
+<li><strong>Do:</strong> In live mode, open the API keys page (<a href="https://dashboard.stripe.com/apikeys">https://dashboard.stripe.com/apikeys</a>). On the restricted key the Worker uses, open the overflow menu (⋯) &gt; Rotate key, pick an expiration later than Now (for example 1 day), and click Rotate API key.
+<strong>Expect:</strong> Stripe shows the replacement rk_live_ key once. The old key keeps working until the expiration you picked.
+Note: Rotate after t8 finishes, as the runbook says. In Add a note, record where you stored the key, never the key itself.
+Source: <a href="https://docs.stripe.com/keys.md">https://docs.stripe.com/keys.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Store the replacement key on the Worker from server/ and paste it at the prompt.<pre><code class="language-bash">cd server &amp;&amp; npx wrangler secret put STRIPE_SECRET_KEY
+</code></pre>
+<strong>Expect:</strong> Wrangler reports that STRIPE_SECRET_KEY was uploaded to the dirslides Worker.
+Note: Paste the value only at the wrangler prompt. Never put it in .dev.vars, CREDENTIALS.md, any other repo file, or a chat.
+Source: /home/alex/Desktop/dev/dirslides-correct/features/launch-runbook/index.html:167 (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> Repeat t5 steps 3 and 4 to prove the Worker uses the new key.<pre><code class="language-bash">stripe checkout sessions list --live --limit 1
+</code></pre>
+<strong>Expect:</strong> A new live session appears, created after the rotation.
+Note: unverified: the session-list check is not on the cited page, which covers rotation.
+Source: <a href="https://docs.stripe.com/keys.md">https://docs.stripe.com/keys.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> On the API keys page, open the old key&#39;s overflow menu (⋯) &gt; View request logs.
+<strong>Expect:</strong> No requests from the old key since the secret put in step 2.
+Source: <a href="https://docs.stripe.com/keys.md">https://docs.stripe.com/keys.md</a> (fetched 2026-11-06)</li>
+<li><strong>Do:</strong> If the old key has not expired on its own, open its overflow menu (⋯) &gt; Expire key and confirm.
+<strong>Expect:</strong> Only the replacement restricted key remains on the API keys page.
+Source: <a href="https://docs.stripe.com/keys.md">https://docs.stripe.com/keys.md</a> (fetched 2026-11-06)</li>
+</ol>
+<h2>Open risks (from verdict.md)</h2>
+<ul>
+<li>Google OAuth consent screen is in Testing mode (<code>CLAUDE.md:63</code>). Only listed test users can sign in and reach checkout, so the public cannot buy even if Stripe is live.</li>
+<li>Stale and conflicting docs. <code>CREDENTIALS.md</code> (last verified 2026-09-08) says everything is test mode. <code>README.md:68-75</code> says to register two events. <code>DOCS.md:196</code> gives workers.dev as the live URL.</li>
+<li>Entitlement drift detection was removed with the admin dashboard (<code>features/dashboard-removal/feature.md:45-49</code>). Nothing notices if KV and Stripe disagree.</li>
+<li>Refunds do not revoke access (<code>CLAUDE.md:95-100</code>). By design, but it relies on a manual &quot;cancel first&quot; procedure.</li>
+<li>No CI. Deploys and secret changes are manual from one machine, so there is no record of which key mode was last put.</li>
+<li>Non-atomic KV dedupe and inline reconcile before the 2xx. Harmless today, bugs if reconcile gains side effects.</li>
+<li>Optional tasks t10 to t13 (dispute and email settings, old workers.dev endpoint, unpinned apiVersion three majors behind 2026-10-28.endive, missing idempotency keys) are not covered by steps.</li>
+</ul>
+<h2>Not verifiable in this run</h2>
+<p>Per readiness.json (checked 2026-11-06, Stripe CLI 1.50.10): live login failed with &quot;your live mode API key needs to be re-configured&quot;; no sandbox profile exists; no account was read. Production Worker secrets were unreadable because no <code>CLOUDFLARE_API_TOKEN</code> is set in a non-interactive shell.</p>
+<table>
+<thead>
+<tr>
+<th>Not verified</th>
+<th>Command that would fix it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Stripe CLI live login (blocks all items below)</td>
+<td><code>stripe login --new-session</code></td>
+</tr>
+<tr>
+<td>Account activation, charges and payouts (account-activation)</td>
+<td><code>stripe get --live /v1/account</code></td>
+</tr>
+<tr>
+<td>Live price exists and is active (checkout)</td>
+<td><code>stripe prices retrieve price_1UGiKTGZimDzWoEHYE1zB3S5 --live</code></td>
+</tr>
+<tr>
+<td>Live webhook endpoint, 8 events, API version (webhooks)</td>
+<td><code>stripe webhook_endpoints list --live</code></td>
+</tr>
+<tr>
+<td>Worker secrets set (webhooks, subscriptions)</td>
+<td><code>cd server &amp;&amp; npx wrangler secret list</code> (needs <code>wrangler login</code> or a <code>CLOUDFLARE_API_TOKEN</code>)</td>
+</tr>
+<tr>
+<td>Default portal configuration (customer-portal)</td>
+<td><code>stripe get --live /v1/billing_portal/configurations</code></td>
+</tr>
+<tr>
+<td>Smart Retries final action (revenue-recovery)</td>
+<td>Dashboard only: Billing &gt; Revenue recovery &gt; Retries (t7)</td>
+</tr>
+<tr>
+<td>Entitlements fed by a live endpoint</td>
+<td>Follows from the webhook check, then the real-money test (t8)</td>
+</tr>
+</tbody></table>
+<h2>Quality gate</h2>
+<ul>
+<li>Site report ok: <strong>false</strong>. The only failing check is &quot;one section per chosen task&quot;: expected [] got t1 to t9, because <code>tasks.json</code> has <code>chosen: []</code>. All 20 other checks pass, including no key material and no external requests.</li>
+<li>Billing critic: <strong>pass</strong> (no blockers). Open, non-blocking: Dashboard URLs the writer added are generic paths; t5 step 4 and t9 step 3 are marked unverified, and <a href="https://docs.stripe.com/api/checkout/sessions/list.md">https://docs.stripe.com/api/checkout/sessions/list.md</a> would be a better source.</li>
+<li>UX critic: <strong>pass</strong>, score <strong>86</strong>, no blockers. Non-blocking: 38 steps over nine tasks is a long scroll; mobile was not re-viewed in the last round.</li>
+<li>Blocker left after the last round: none from either critic. The one remaining failure is the empty <code>chosen</code> list upstream in the checkpoint.</li>
+</ul>
+<h2>Rerun</h2>
+<pre><code class="language-bash">/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start 1f4d4bee-e2df-4df7-b616-43a64d0f630a --var repo-path=/home/alex/Desktop/dev/dirslides-correct --var question=&quot;What billing is set up, and is it production ready or still in staging?&quot;
+</code></pre>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/handoff/outputs/handoff.md">http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/handoff/outputs/handoff.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Preflight asked · declined · <time datetime="2026-11-06T17:08:53.292Z">Fri 6 Nov, 11:08</time></p>
+    <div class="q"><p class="question">Both Stripe modes failed. Sandbox: &quot;no config for that project was found ... Please run `stripe login --project-name=live`&quot;. Live: &quot;your live mode API key needs to be re-configured. Run `stripe login` to re-authenticate&quot;. Please run `stripe login` in a terminal, then choose an option.</p><p class="options">Options: Done, retry · Continue without account access</p><p class="answer">(declined)</p></div>
+  </li><li>
+    <p class="who">Checkpoint asked · declined · <time datetime="2026-11-06T17:13:11.387Z">Fri 6 Nov, 11:13</time></p>
+    <div class="q"><p class="question">Answer: One $5/month Instideck Pro subscription is fully built in code, but live Stripe and production secrets could not be checked, so production readiness is not verified (lead.verdict: not-verifiable on all 7 capabilities). Which tasks should the instructions cover?
+
+t1 Re-authenticate the Stripe CLI and rerun this audit (required)
+t2 Confirm the account is activated with charges and payouts enabled (required)
+t3 Confirm live price price_1UGiKTGZimDzWoEHYE1zB3S5 exists and is active (required)
+t4 Confirm live webhook endpoint is enabled with the 8 events, note API version (required)
+t5 Confirm Worker secrets STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET are set (required)
+t6 Confirm a default Billing Portal configuration exists in live mode (required)
+t7 Confirm Smart Retries final action cancels or marks unpaid (required)
+t8 Run the real-money test: buy, check Pro, cancel, refund, check Free (required)
+t9 Roll the restricted live key (required)
+t10 Set disputed payments to cancel immediately; enable live receipt and refund emails
+t11 Delete test-mode endpoint aimed at production; set workers_dev = false
+t12 Pin apiVersion and plan the Basil to Endive upgrade
+t13 Add idempotency keys to customers.create and checkout.sessions.create</p><p class="options">Options: All tasks · Required tasks only · Pick from the list</p><p class="answer">(declined)</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/preflight/outputs/readiness.json">Preflight · readiness.json</a> <span class="type">644B</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/scan/outputs/scan.json">Repo scan · scan.json</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/fetch-docs/outputs/pages">Fetch docs · pages.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/dossier/outputs/dossier.md">Dossier · dossier.md</a> <span class="type">7.1KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/dossier/outputs/facts.json">Dossier · facts.json</a> <span class="type">2.5KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/code-auditor/outputs/findings.md">Code auditor · findings.md</a> <span class="type">12KB</span></li><li><span class="absent">Account inspector · findings.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/deploy-inspector/outputs/findings.md">Deploy inspector · findings.md</a> <span class="type">7.3KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/docs-reader/outputs/findings.md">Docs reader · findings.md</a> <span class="type">14KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/lead/outputs/verdict.md">Lead expert · verdict.md</a> <span class="type">8.7KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/lead/outputs/assessment.json">Lead expert · assessment.json</a> <span class="type">8.9KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/checkpoint/outputs/tasks.json">Checkpoint · tasks.json</a> <span class="type">51B</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/writer/outputs/steps.json">Writer · steps.json</a> <span class="type">25KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/site-check/outputs/report.json">Site check · report.json</a> <span class="type">3.6KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/site-check/outputs/shots">Site check · shots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/billing-critic/outputs/verdict.json">Billing critic · verdict.json</a> <span class="type">1.9KB</span></li><li><a href="http://localhost:4810/api/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/files/stages/ux-critic/outputs/verdict.json">UX critic · verdict.json</a> <span class="type">1.4KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Preflight</td><td>intake</td><td>done</td><td>sonnet</td><td>21 s</td><td>123K</td></tr>
+<tr><td>Repo scan</td><td>intake</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+<tr><td>Fetch docs</td><td>intake</td><td>done</td><td>script</td><td>5 s</td><td>0</td></tr>
+<tr><td>Dossier</td><td>knowledge</td><td>done</td><td>sonnet</td><td>57 s</td><td>396K</td></tr>
+<tr><td>Code auditor</td><td>experts</td><td>done</td><td>sonnet</td><td>1 min 20 s</td><td>288K</td></tr>
+<tr><td>Account inspector</td><td>experts</td><td>skipped</td><td>sonnet</td><td>0 s</td><td>0</td></tr>
+<tr><td>Deploy inspector</td><td>experts</td><td>done</td><td>sonnet</td><td>46 s</td><td>231K</td></tr>
+<tr><td>Docs reader</td><td>experts</td><td>done</td><td>sonnet</td><td>1 min 24 s</td><td>497K</td></tr>
+<tr><td>Lead expert</td><td>verdict</td><td>done</td><td>opus</td><td>1 min 33 s</td><td>475K</td></tr>
+<tr><td>Checkpoint</td><td>choose</td><td>done</td><td>sonnet</td><td>1 min 26 s</td><td>145K</td></tr>
+<tr><td>Writer</td><td>steps</td><td>done</td><td>opus</td><td>2 min 49 s</td><td>1.1M</td></tr>
+<tr><td>Site</td><td>build</td><td>done</td><td>opus</td><td>50 s</td><td>1.1M</td></tr>
+<tr><td>Site check</td><td>check</td><td>done</td><td>script</td><td>4 s</td><td>0</td></tr>
+<tr><td>Billing critic</td><td>review</td><td>done</td><td>sonnet</td><td>38 s</td><td>727K</td></tr>
+<tr><td>UX critic</td><td>review</td><td>done</td><td>sonnet</td><td>17 s</td><td>342K</td></tr>
+<tr><td>Handoff</td><td>deliver</td><td>done</td><td>sonnet</td><td>33 s</td><td>173K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

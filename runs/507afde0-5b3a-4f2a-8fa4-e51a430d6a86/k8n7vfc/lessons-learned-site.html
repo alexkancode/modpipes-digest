@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stripe billing desk test: what improved and why</title>
+<style>
+:root{
+  --bg:#0b0f14; --surface:#121821; --raised:#1a222d;
+  --text:#e6edf3; --muted:#9aa7b4; --line:#66717f; --accent:#5ee1ff;
+  --ok:#5fe39a; --warn:#f2c14e; --fix:#ff7ab6; --open:#a9b8ff; --bad:#ff6b6b;
+  --r:10px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--text);font:clamp(15px,1vw + 10px,17px)/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+body{margin:0;background:
+  radial-gradient(1200px 500px at 85% -10%,rgba(94,225,255,.10),transparent 60%),
+  radial-gradient(900px 400px at -10% 10%,rgba(169,184,255,.08),transparent 60%),
+  repeating-linear-gradient(0deg,transparent 0 31px,rgba(102,113,127,.07) 31px 32px),var(--bg)}
+header,main,footer{max-width:72rem;margin:0 auto;padding:0 1.25rem}
+header{padding-top:3rem}
+.kicker{font:600 .78rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(1.7rem,3vw + .8rem,2.7rem);line-height:1.15;margin:.6rem 0 0;max-width:24ch;text-wrap:balance}
+h2{font-size:1.35rem;margin:0 0 .3rem;display:flex;gap:.6rem;align-items:baseline}
+h2 .n{font:600 .8rem var(--mono);color:var(--accent)}
+h3{font-size:1.02rem;margin:0 0 .35rem}
+p{margin:.4rem 0;max-width:68ch;text-wrap:pretty}
+.muted{color:var(--muted)}
+section{margin:2.6rem 0}
+.lead{color:var(--muted);max-width:68ch;margin-bottom:1rem}
+#verdict{border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(135deg,rgba(94,225,255,.08),rgba(18,24,33,.9) 45%);padding:1.4rem 1.5rem;position:relative;overflow:hidden}
+#verdict::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--accent)}
+#verdict p.verdict{font-size:clamp(1.1rem,1vw + .8rem,1.35rem);line-height:1.45;margin:0;max-width:62ch}
+.tally{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;margin-top:1rem;font:500 .88rem var(--mono);color:var(--muted)}
+.tally b{color:var(--text);font-size:1.05rem}
+.grid{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,21rem),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.25rem}
+.card .why{color:var(--muted);font-size:.95rem}
+.badge{display:inline-flex;align-items:center;gap:.35rem;font:600 .74rem/1 var(--mono);letter-spacing:.04em;padding:.32rem .55rem;border-radius:999px;border:1px solid currentColor;width:max-content;margin-bottom:.3rem}
+.b-ok{color:var(--ok)} .b-warn{color:var(--warn)} .b-fix{color:var(--fix)} .b-open{color:var(--open)} .b-bad{color:var(--bad)}
+.group-title{font:600 .8rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:1.4rem 0 .6rem}
+details{margin-top:.4rem;border-top:1px dashed var(--line);padding-top:.45rem}
+summary{cursor:pointer;color:var(--accent);font-size:.9rem;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";font-family:var(--mono)}
+details[open] summary::before{content:"▾ "}
+details ul{margin:.4rem 0 0;padding-left:1.1rem;color:var(--muted);font-size:.92rem}
+details li{margin:.2rem 0}
+code{font-family:var(--mono);font-size:.86em;background:var(--raised);padding:.08rem .3rem;border-radius:4px;color:var(--text);word-break:break-word}
+pre{font:.82rem/1.5 var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.7rem .8rem;overflow-x:auto;margin:.5rem 0 0}
+.del{color:var(--bad)} .ins{color:var(--ok)}
+/* timeline */
+.tl{margin-top:1rem}
+.bar{display:flex;gap:2px;height:46px;border-radius:6px;overflow:visible}
+.seg{position:relative;background:#2a3542;border-radius:2px;min-width:3px;outline:none}
+.seg:first-child{border-radius:6px 2px 2px 6px}.seg:last-child{border-radius:2px 6px 6px 2px}
+.seg.writer,.seg.site{background:#3c4b5c}
+.seg.stall{background:repeating-linear-gradient(45deg,rgba(255,107,107,.85) 0 6px,rgba(255,107,107,.55) 6px 12px)}
+.seg:hover,.seg:focus{filter:brightness(1.35)}
+.seg .tip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--raised);border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;font:.8rem/1.4 var(--mono);white-space:nowrap;z-index:5;color:var(--text)}
+.seg:hover .tip,.seg:focus .tip{display:block}
+.axis{display:flex;justify-content:space-between;font:.75rem var(--mono);color:var(--muted);margin-top:.35rem}
+.labels{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:.7rem;font-size:.88rem;color:var(--muted)}
+.key{display:inline-block;width:.9rem;height:.9rem;border-radius:3px;vertical-align:-2px;margin-right:.35rem}
+table{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:.5rem}
+th,td{text-align:left;padding:.35rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+td.num{font-family:var(--mono);text-align:right;white-space:nowrap}
+footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.2rem 1.25rem 3rem;color:var(--muted);font-size:.85rem}
+footer p{max-width:none}
+a{color:var(--accent)}
+@media (max-width:560px){.bar{height:38px}#verdict{padding:1.1rem}}
+@media (prefers-reduced-motion:no-preference){.card{transition:border-color .2s}.card:hover{border-color:var(--accent)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">modpipes · analysis of tester kt6n75z · run 507afde0</div>
+  <h1>Stripe billing desk test: what improved, and why</h1>
+  <p class="muted">Pipeline <code>1f4d4bee</code>, tested at v1 and left at v2 on 2026-11-06. Every claim below was checked against run files, not stage summaries.</p>
+</header>
+
+<main>
+<section id="verdict" aria-label="Verdict">
+  <p class="verdict">One heredoc fix unblocked the whole review loop. The other v2 edits close gaps in the contracts between stages. The Stripe account check, which is the core of the ask, has never run.</p>
+  <div class="tally">
+    <span><b>6</b> edits v1→v2</span>
+    <span><b>3</b> confirmed in patched runs</span>
+    <span><b>3</b> unconfirmed</span>
+    <span><b>4</b> report corrections</span>
+    <span><b>16</b> lessons saved</span>
+  </div>
+</section>
+
+<section id="legend" aria-label="How to read the badges">
+  <p class="muted">Badges grade the evidence:
+    <span class="badge b-ok">✔ confirmed</span>
+    <span class="badge b-warn">◐ unconfirmed</span>
+    <span class="badge b-fix">✎ report corrected</span>
+    <span class="badge b-open">○ still open</span></p>
+</section>
+
+<section id="changes">
+  <h2><span class="n">01</span>The six v1→v2 edits</h2>
+  <p class="lead">Diffed field by field with python difflib. The v2 edits touch only the prompt and command fields listed here. No models, links or loop settings changed.</p>
+
+  <div class="group-title">Unblocked the loop · site-check command</div>
+  <div class="grid">
+    <article class="card">
+      <span class="badge b-ok">✔ confirmed · 2 of 2 patched runs</span>
+      <h3>Heredoc closing line fixed</h3>
+      <p class="why">v1 failed in 0.2 s in every run, so no stage after site-check could run. v2 runs both loop rounds.</p>
+      <details><summary>Evidence</summary>
+        <pre><span class="del">-PY 2&gt;check.err; code=$?; if [ ! -s …</span>
+<span class="ins">+python3 -I - 2&gt;check.err &lt;&lt;'PY'   (opening line)</span>
+<span class="ins">+PY</span>
+<span class="ins">+code=$?; if [ ! -s …</span></pre>
+        <ul>
+          <li><code>da8b00ba/stages/site-check/status.json</code> failureReason: "here-document at line 1 delimited by end-of-file (wanted `PY')".</li>
+          <li>The cause sits in <code>plan/work/gen.py:420</code>. The wrapper appends <code>" 2&gt;check.err; code=$?; "</code> after the heredoc closer.</li>
+          <li>The plan stage smoke-tested <code>site-check.py</code> alone, so the wrapper was never run.</li>
+          <li><code>bash -n</code> exits 0 on this defect and only prints a warning to stderr. Reproduced here.</li>
+        </ul>
+      </details>
+    </article>
+    <article class="card">
+      <span class="badge b-ok">✔ confirmed · stress round 1 ok</span>
+      <h3>Hyphenated badge states accepted</h3>
+      <p class="why">The checker turned <code>not-verifiable</code> into "not verifiable", then looked for those words in a badge reading "? not-verifiable".</p>
+      <details><summary>Evidence</summary>
+        <pre><span class="del">-re.sub(r"\s+", " ", …)</span>
+<span class="ins">+re.sub(r"[\s-]+", " ", …)</span></pre>
+        <ul>
+          <li>The patched snapshot held the full v2 command. The stored command in both runs contains <code>file://</code> and a lone <code>PY</code> line.</li>
+          <li>Stress <code>site-check/rounds/1/report.json</code>: ok true, zero failed checks.</li>
+          <li>The plan stage's fixture in <code>/tmp/smoke</code> used only "✔ Live" and "◐ Sandbox only". Every real run produced not-verifiable.</li>
+        </ul>
+      </details>
+    </article>
+    <article class="card">
+      <span class="badge b-ok">✔ checker confirmed · contract line not run</span>
+      <h3><code>file://</code> repo sources accepted</h3>
+      <p class="why">The writer prompt asks for repo-file sources, but the v1 checker allowed only <code>http</code> and <code>../</code> hrefs. v2 adds one page-contract line plus the checker change.</p>
+      <details><summary>Evidence</summary>
+        <ul>
+          <li>The pipeline prompt gained: "A source from the repo uses href file:// plus the absolute path, with the same visible text."</li>
+          <li>The stress billing-critic noted the repo sources rendered as <code>file:///tmp/sbd-stress-repo/…</code> and called the difference style only.</li>
+          <li>The plan fixture held one https source and no repo source.</li>
+          <li>Only the checker half ran. A diff of the stored run snapshot against v2 shows the pipeline prompt, which holds the new contract line, unchanged from v1. The site wrote <code>file://</code> hrefs without the contract line.</li>
+        </ul>
+      </details>
+    </article>
+  </div>
+
+  <div class="group-title">Contract between checkpoint, writer and site</div>
+  <div class="grid">
+    <article class="card">
+      <span class="badge b-warn">◐ unconfirmed · no v2 run</span>
+      <h3>Writer follows <code>chosen</code></h3>
+      <p class="why">With <code>chosen: []</code>, the v1 writer read the checkpoint's status.json and chose t1 to t9 itself. site-check then failed in both rounds, and no site change could fix it.</p>
+      <details><summary>Evidence</summary>
+        <ul>
+          <li>Happy <code>site-check</code> rounds 1 and 2 both failed with "one section per chosen task: expected [] got [t1 … t9]".</li>
+          <li>The happy handoff says the checkpoint answer was "Required tasks only". Nobody gave that answer.</li>
+          <li>The writer took 2.8 min and 16.8k output tokens for nine tasks, the longest stage in the run.</li>
+        </ul>
+      </details>
+    </article>
+    <article class="card">
+      <span class="badge b-warn">◐ unconfirmed · design question</span>
+      <h3>Unanswered checkpoint picks every task</h3>
+      <p class="why">v2 picks every task when the dialog comes back unanswered. The happy run had 13 tasks. "Required only" would match what the v1 writer and the tester both picked.</p>
+      <details><summary>Evidence</summary>
+        <ul>
+          <li>Happy <code>checkpoint/outputs/tasks.json</code>: <code>{"chosen":[],"mode":"pick","note":""}</code>.</li>
+          <li>The trade-off is logged in builder todo 13.</li>
+        </ul>
+      </details>
+    </article>
+    <article class="card">
+      <span class="badge b-open">○ workaround · CLI fix open</span>
+      <h3>No <code>=</code> in question text</h3>
+      <p class="why">The answer verb splits on the first <code>=</code>, so the answer is dropped while the CLI still exits 0. v2 tells preflight and checkpoint to keep <code>=</code> out of question text.</p>
+      <details><summary>Evidence</summary>
+        <ul>
+          <li><code>cli/src/commands.ts:192</code> still uses <code>pair.indexOf('=')</code> at modpipes <code>dc7d3bb</code>.</li>
+          <li>Both happy questions held <code>=</code>: <code>--project-name=live</code> in preflight and <code>workers_dev = false</code> in checkpoint.</li>
+          <li>Builder todo 10 holds the CLI fix.</li>
+        </ul>
+      </details>
+    </article>
+  </div>
+</section>
+
+<section id="why">
+  <h2><span class="n">02</span>Why these edits mattered: three patterns</h2>
+  <p class="lead">Each edit repaired a gap that the builder's offline checks could not see. Each pattern is now a lesson in the plan stage's table.</p>
+  <div class="grid">
+    <article class="card">
+      <h3>The smoke test ran the inner script, not the stored command</h3>
+      <p class="why">site-check.py passed offline. The defect lived in the generator's wrapper, which only a run executed. Gate each stored command on empty stderr from <code>bash -n</code>, then run it with <code>bash -c</code>.</p>
+      <p class="muted"><small>Lesson: plan #15</small></p>
+    </article>
+    <article class="card">
+      <h3>The fixtures encoded the builder's reading of the contract</h3>
+      <p class="why">The fixture spelled "Sandbox only" and cited https only. The model site spelled "not-verifiable" and cited <code>file://</code>. Write one fixture card per enum value, exactly as the contract spells it.</p>
+      <p class="muted"><small>Lesson: plan #16</small></p>
+    </article>
+    <article class="card">
+      <h3>A stated rule that nobody measures gets broken</h3>
+      <p class="why">The pipeline prompt already asked for 3:1 borders and at most five items per group. The site broke one rule in each run, and each break cost a round. The critic measured. The producer did not.</p>
+      <p class="muted"><small>Lessons: plan #17, site #1</small></p>
+    </article>
+  </div>
+  <details><summary>Measured border contrast, recomputed from each site's CSS</summary>
+    <table>
+      <thead><tr><th>Run</th><th>Round 1 <code>--line</code></th><th>On page</th><th>On card</th><th>Final <code>--line</code></th><th>On card</th></tr></thead>
+      <tbody>
+        <tr><td>happy da8b00ba</td><td><code>#3a4350</code></td><td class="num">1.89:1</td><td class="num">1.73:1</td><td><code>#717d8d</code></td><td class="num">4.14:1</td></tr>
+        <tr><td>stress 3b113848</td><td><code>#5b6573</code></td><td class="num">3.18:1</td><td class="num">2.92:1</td><td><code>#6b7685</code></td><td class="num">3.75:1</td></tr>
+      </tbody>
+    </table>
+  </details>
+</section>
+
+<section id="corrections">
+  <h2><span class="n">03</span>Where the test report needs correcting</h2>
+  <p class="lead">The report held up on verdict quality, redaction and the heredoc root cause. These four points change what the next session should believe.</p>
+  <div class="grid">
+    <article class="card">
+      <span class="badge b-fix">✎ under-claimed</span>
+      <h3>The badge and <code>file://</code> fixes did run</h3>
+      <p class="why">The report calls these two fixes unconfirmed in a run. The snapshot patch copied the whole v2 command, so both ran in both runs. Stress round 1 passed every check.</p>
+    </article>
+    <article class="card">
+      <span class="badge b-fix">✎ two causes, not one</span>
+      <h3>The dropped preflight answer</h3>
+      <p class="why">The question held <code>=</code> and also <code>`stripe login`</code>. The tester passed the question in bash double quotes, so bash ran the backticks. Transcript line 1512 says so, but the report kept only the <code>=</code> cause.</p>
+    </article>
+    <article class="card">
+      <span class="badge b-fix">✎ mislabelled</span>
+      <h3>Stress round-1 blocker</h3>
+      <p class="why">The only stress blocker was task grouping, with seven items under one heading. Border contrast of 2.92:1 appeared as a note, not a blocker.</p>
+    </article>
+    <article class="card">
+      <span class="badge b-fix">✎ 19 minutes was 11.5</span>
+      <h3>Run time included a 7.6-minute stall</h3>
+      <p class="why"><code>poll.py</code> stopped only on finished runs or open questions. A failed stage leaves the run at <code>attention</code>, so the failure sat unseen for 5 min 43 s.</p>
+    </article>
+  </div>
+</section>
+
+<section id="timing">
+  <h2><span class="n">04</span>Where the stress run's 19 minutes went</h2>
+  <p class="lead">Times come from each stage's status.json and the tester's transcript timestamps. Hover or focus a segment for its span.</p>
+  <figure class="tl" aria-label="Stress run timeline, 19.1 minutes">
+    <div class="bar" role="list">
+      <div class="seg" role="listitem" tabindex="0" style="flex:0.63"><span class="tip">intake · 0.6 min (incl. one answer)</span></div>
+      <div class="seg" role="listitem" tabindex="0" style="flex:0.85"><span class="tip">dossier · 0.9 min</span></div>
+      <div class="seg" role="listitem" tabindex="0" style="flex:0.67"><span class="tip">four experts in parallel · 0.7 min</span></div>
+      <div class="seg" role="listitem" tabindex="0" style="flex:1.19"><span class="tip">lead (opus) · 1.2 min</span></div>
+      <div class="seg" role="listitem" tabindex="0" style="flex:1.03"><span class="tip">checkpoint · 1.0 min, four questions</span></div>
+      <div class="seg writer" role="listitem" tabindex="0" style="flex:1.99"><span class="tip">writer (opus) · 2.0 min</span></div>
+      <div class="seg site" role="listitem" tabindex="0" style="flex:2.05"><span class="tip">site round 1 (opus) · 2.1 min</span></div>
+      <div class="seg stall" role="listitem" tabindex="0" style="flex:7.62"><span class="tip">stall · 7.6 min: site-check failed 17:17:13, noticed 17:22:56, restarted 17:24:50</span></div>
+      <div class="seg" role="listitem" tabindex="0" style="flex:0.92"><span class="tip">site-check + critics, round 1 · 0.9 min</span></div>
+      <div class="seg site" role="listitem" tabindex="0" style="flex:0.95"><span class="tip">site round 2 · 1.0 min</span></div>
+      <div class="seg" role="listitem" tabindex="0" style="flex:0.63"><span class="tip">site-check + critics, round 2 · 0.6 min</span></div>
+      <div class="seg" role="listitem" tabindex="0" style="flex:0.52"><span class="tip">handoff · 0.5 min</span></div>
+    </div>
+    <div class="axis"><span>17:08:47</span><span>19.1 min wall · ≈11.5 min of pipeline work</span><span>17:27:51</span></div>
+    <div class="labels">
+      <span><i class="key" style="background:#2a3542"></i>sonnet or script stage</span>
+      <span><i class="key" style="background:#3c4b5c"></i>opus writer and site</span>
+      <span><i class="key" style="background:repeating-linear-gradient(45deg,rgba(255,107,107,.85) 0 4px,rgba(255,107,107,.55) 4px 8px)"></i>stall: failed stage, unseen, then patched</span>
+    </div>
+    <details><summary>Table view</summary>
+      <table><thead><tr><th>Span</th><th>From → to (UTC)</th><th>Minutes</th></tr></thead><tbody>
+        <tr><td>intake</td><td>17:08:47 → 17:09:25</td><td class="num">0.63</td></tr>
+        <tr><td>dossier</td><td>→ 17:10:16</td><td class="num">0.85</td></tr>
+        <tr><td>experts</td><td>→ 17:10:57</td><td class="num">0.67</td></tr>
+        <tr><td>lead</td><td>→ 17:12:08</td><td class="num">1.19</td></tr>
+        <tr><td>checkpoint</td><td>→ 17:13:10</td><td class="num">1.03</td></tr>
+        <tr><td>writer</td><td>→ 17:15:09</td><td class="num">1.99</td></tr>
+        <tr><td>site round 1</td><td>→ 17:17:12</td><td class="num">2.05</td></tr>
+        <tr><td>stall</td><td>17:17:13 → 17:24:50</td><td class="num">7.62</td></tr>
+        <tr><td>check and critics, round 1</td><td>→ 17:25:45</td><td class="num">0.92</td></tr>
+        <tr><td>site round 2</td><td>→ 17:26:42</td><td class="num">0.95</td></tr>
+        <tr><td>check and critics, round 2</td><td>→ 17:27:20</td><td class="num">0.63</td></tr>
+        <tr><td>handoff</td><td>→ 17:27:51</td><td class="num">0.52</td></tr>
+      </tbody></table>
+    </details>
+  </figure>
+</section>
+
+<section id="open">
+  <h2><span class="n">05</span>Still open</h2>
+  <div class="grid">
+    <article class="card">
+      <span class="badge b-open">○ todo 9</span>
+      <h3>The account inspector has never run</h3>
+      <p class="why">The Stripe login had expired in both modes, so the "live or sandbox-only" verdict, which is the heart of the ask, is untested. The read-only Stripe rule held, but only preflight ran Stripe commands.</p>
+    </article>
+    <article class="card">
+      <span class="badge b-open">○ todo 13 · new</span>
+      <h3>Stripe billing desk v3</h3>
+      <p class="why">The site measures contrast and group sizes itself. The checkpoint writes skipped required ids into note. A required-only fallback is weighed against all tasks.</p>
+    </article>
+    <article class="card">
+      <span class="badge b-open">○ todo 10</span>
+      <h3>Fix the CLI answer verb</h3>
+      <p class="why">Match each key against the open question texts, and exit 1 when a key matches none. Until then, every asking stage keeps <code>=</code> out of its questions.</p>
+    </article>
+  </div>
+</section>
+
+<section id="lessons">
+  <h2><span class="n">06</span>Where the knowledge now lives</h2>
+  <p class="lead">Each finding went to the table of the stage that will act on it. No todo closed: nothing has run since v2.</p>
+  <details open><summary>16 lessons, by table</summary>
+    <table><thead><tr><th>Table</th><th>Ids</th><th>Subject</th></tr></thead><tbody>
+      <tr><td>Stripe <code>site</code></td><td class="num">1</td><td>Measure contrast and group sizes before finishing</td></tr>
+      <tr><td>Stripe <code>checkpoint</code></td><td class="num">2</td><td>Put skipped required ids in note</td></tr>
+      <tr><td>Stripe <code>writer</code></td><td class="num">1</td><td>Write steps only for chosen ids, never fill the gap</td></tr>
+      <tr><td>Stripe <code>billing-critic</code></td><td class="num">1</td><td>Name a red site-check check and the stage that owns it</td></tr>
+      <tr><td>Stripe <code>site-check</code></td><td class="num">2</td><td>v2 normalisation ran, and how to debug the next miss</td></tr>
+      <tr><td>builder <code>plan</code></td><td class="num">15–18</td><td>Stored-command smoke test, enum fixtures, measured rules, no <code>=</code></td></tr>
+      <tr><td>builder tester <code>kt6n75z</code></td><td class="num">41–44</td><td>Poll on attention, backticks in answers, timing, patched-snapshot grading</td></tr>
+      <tr><td>analyzer <code>k8n7vfc</code></td><td class="num">22–24</td><td>Diff fixtures against runs, subtract stall, search for "Correction"</td></tr>
+    </tbody></table>
+  </details>
+</section>
+</main>
+
+<footer>
+  <p>Analysed 2026-11-06. Sources: <code>kt6n75z/outputs/test-report.md</code>, <code>pipeline-versions/v1.json</code> and <code>v2.json</code>, <code>kt6n75z/transcript.jsonl</code> (5,218 lines), and runs <code>da8b00ba</code> and <code>3b113848</code> under <code>~/.modpipes/runs</code>. No run of v2 exists as of this analysis.</p>
+</footer>
+</body>
+</html>

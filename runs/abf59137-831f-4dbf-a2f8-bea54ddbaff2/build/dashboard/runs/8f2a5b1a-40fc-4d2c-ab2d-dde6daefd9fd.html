@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Game forge · Thu 5 Nov, 22:47</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Game forge</h1>
+  <p class="caption">Neon Kaiju, a city-stomping monster arcade game, shipped at 83</p>
+  <p class="summary">Game forge was given a detailed neon kaiju concept with stomp, swipe and ranged attacks, keyboard and mouse controls, and a fixed palette. It shipped Neon Kaiju at 83 out of 100 after three play-test rounds.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T04:47:14.074Z">Thu 5 Nov, 22:47</time></span><span>Finished <time datetime="2026-11-06T06:43:33.439Z">Fri 6 Nov, 00:43</time></span><span>1 h 56 min</span><span>35.4M tokens</span><span class="id">8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/run.json">http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd.jpg" width="800" height="500" alt="Render of the primary output of Game forge"><figcaption>Hero from http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/deliver/outputs/game/index.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Concept</dt><dd>You are a giant monster in a side-view neon night city. Walk, stomp buildings, swipe with a long animated reach, and fire a ranged attack (a breath beam) as tanks and helicopters attack. Health drains constantly, and every collapsed building (+10) or destroyed unit (+8) heals you, so destruction is survival. The army spawns at 0.6/s and ramps up, with none in the first 3 s and helicopters from 12 s. Health drains at 4/s. The stomp has a 140 px radius with shake 12, and buildings take 3 hits. Swipe reach is about 220 px and the ranged attack has about a 1.5 s cooldown; these two are untuned. The score is survival time plus destruction. The monster animates visibly on walk, stomp, swipe and breath. Use hit-stop, shake, dust, shockwave rings, combo popups and synthesised thuds and roars. The full bible is at /home/alex/.modpipes/runs/7a1088d1-12ce-4103-9966-8f87a4346cec/stages/bible/outputs/bible.md; read it first.</dd></div><div><dt>Scope</dt><dd>a small arcade game with one core loop, playable to a score in two to five minutes: one refilling city strip, played until death. A title screen and a game-over screen with restart.</dd></div><div><dt>Controls</dt><dd>keyboard and mouse on desktop. A/D walk, Space stomps, left-click swipes toward the cursor, and right-click or F fires the ranged attack toward the cursor. Touch is a nice-to-have.</dd></div><div><dt>Audience</dt><dd>general</dd></div><div><dt>Style</dt><dd>neon night city: glowing outlines on dark with a perspective grid. Palette #0b0720, #2a1b5e, #19f0ff, #ff2bd6, #fff04a, #6dff6d, with the monster outlined in lime #6dff6d.</dd></div><div><dt>Ship score</dt><dd>80</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Deliver · game<span class="type">dir</span></h3><p class="desc">The finished game; open index.html</p><iframe src="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/deliver/outputs/game/index.html" title="Deliver game" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/deliver/outputs/game/index.html">http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/deliver/outputs/game/index.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Deliver · report<span class="type">md</span></h3><p class="desc">What was built, how the science was applied, scores per round, next steps</p></summary><div class="md"><h1>Neon Kaiju: delivery report</h1>
+<p><strong>Verdict: SHIP at 83/100 (ship-score 80), no blockers, after 3 play-test rounds (75 → 79 → 83).</strong></p>
+<h2>Concept and pitch</h2>
+<blockquote>
+<p>Be the giant monster that flattens a neon city to stay alive, because your health drains and only destruction heals you.</p>
+</blockquote>
+<p>You play a lime-outlined kaiju in a side-view neon night city, 640×360 logical, on a 1280 px strip that refills itself. Health drains at 4/s. Each collapsed building heals +10 (power towers +20) and each destroyed tank or helicopter heals +8. Tanks arrive from 3 s, helicopters join from 12 s, and the army ramps until it overwhelms you. Score is survival time plus destruction weighted by a combo multiplier. One run lasts 2 to 5 minutes.</p>
+<h2>How to play</h2>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A / D (or ← / →)</td>
+<td>Walk</td>
+</tr>
+<tr>
+<td>Space (hold to repeat)</td>
+<td>Stomp: 140 px ring, 1 hit to buildings, kills tanks, can&#39;t reach helicopters</td>
+</tr>
+<tr>
+<td>Left-click</td>
+<td>Swipe toward the cursor: 210 px reach, 100° arc, hits everything including helicopters</td>
+</tr>
+<tr>
+<td>Right-click or F</td>
+<td>Breath beam toward the cursor: 0.25 s charge, then a full-screen beam that pierces units and hits the first building in its path. 1.8 s cooldown</td>
+</tr>
+<tr>
+<td>Esc / P</td>
+<td>Pause (the game also pauses when the window loses focus)</td>
+</tr>
+<tr>
+<td>Touch (nice-to-have)</td>
+<td>Walk pad on the left half, STOMP and BEAM buttons (BEAM auto-aims), tap the field to swipe</td>
+</tr>
+</tbody></table>
+<p>A building takes 3 hits. Destructions landed close together raise the combo from x2 to x5, which multiplies score but never healing. Glowing in-world signs teach SPACE, F/RMB and CLICK during the first 13 s. The game-over card shows the cause of death, time, buildings, units, best combo, a TIME + DESTRUCTION breakdown and the session best. Click or Space restarts.</p>
+<h2>How to host</h2>
+<p><code>game/</code> is a self-contained static folder: index.html at the root, plain Canvas 2D with classic scripts, no library, no CDN and no build step. It is 348 KB in total. To host it, copy the folder to any static host (GitHub Pages, Netlify, S3, itch.io as an HTML upload, <code>python3 -m http.server</code>), or open <code>index.html</code> from file://. It needs no network access.</p>
+<p>Machine hooks: <code>window.__game.start()</code> skips the title. <code>__game.state</code> is one of <code>title | play | pause | over</code>, along with <code>__game.score</code> and <code>__game.perf {frames, fps, worstMs}</code>. <code>?seed=N</code> makes runs reproducible, and <code>__game.debug</code> exposes hp, t, combo and unit counts. Every tunable number is in <code>src/config.js</code>.</p>
+<p><strong>Delivery check (this stage):</strong> I loaded the copied folder in headless Chrome over http and from file://, and called <code>__game.start()</code> both times. Both reached <code>play</code>, ran 60 fps for 5 s with a worst frame of 16.8 ms, and logged 0 console errors and 0 failed requests. The screen showed the HUD, the SPACE sign and the monster beside the first building.</p>
+<h2>The science applied</h2>
+<p>The pipeline drew on two briefs: the concept brief (<code>brief/outputs/brief.md</code>) and the fun brief (<code>fun/outputs/fun-brief.md</code>), which draws on MDA, SDT, Cook, Swink, Hopson, Juul, Nielsen and flow. The GDD settled every point where they disagreed. Its main decisions, and where each one came from:</p>
+<table>
+<thead>
+<tr>
+<th>GDD decision</th>
+<th>Principle (source)</th>
+<th>How it shows up in the build</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Drain 4/s against fixed heals. The break-even arithmetic was done before any tuning (one collapse per 2.5 s, or one kill per 2 s)</td>
+<td>MDA: time pressure plus an opponent creates Challenge; the heal economy <em>is</em> the game (fun §1)</td>
+<td>The drain-and-heal loop is the core loop. Round 1 found the drain had &quot;no teeth&quot; because the beam pierced buildings. Limiting the beam to the first building restored it</td>
+</tr>
+<tr>
+<td>Start at 80 hp, not 100</td>
+<td>Cook&#39;s skill atom: the player has to <em>see</em> that breaking means living (fun §1, §11)</td>
+<td>The first collapse visibly fills the bar instead of being capped away</td>
+</tr>
+<tr>
+<td>Heal lands on the collapse frame, a lime number flies to the bar, damage flashes magenta</td>
+<td>Cook&#39;s modelling step; cues you can tell apart on a muted recording (fun §1)</td>
+<td>Check 9 passes</td>
+</tr>
+<tr>
+<td>No attack stat scales with health, and heals are worth ×1.25 below 25 hp</td>
+<td>Avoid MDA&#39;s Monopoly spiral; add mild negative feedback (fun §2)</td>
+<td>The last stand stays winnable. Low skilled-run HP minima of 9–16 recovered</td>
+</tr>
+<tr>
+<td>Each verb owns a niche: stomp for buildings and tanks, swipe for mid range and low helis, beam for far targets with pierce</td>
+<td>Cook: burnout when a skill has no use (fun §3)</td>
+<td>Check 12: stomp-only dies before 45 s (28 s median, max 36 s); all-verb bots pass 90 s</td>
+</tr>
+<tr>
+<td>Hit-stop tiers (stomp 60, collapse 80/100, swipe 40 ms, capped at 150 ms/s), stomp ring drawn at exactly the hit radius, pitch-varied thuds</td>
+<td>Swink: polish as physicality; Cook: the ring teaches the reach (fun §4)</td>
+<td>Game feel scored 8 in every round</td>
+</tr>
+<tr>
+<td>Anticipation pose on the next frame, inputs buffered, walk responds within 2 frames</td>
+<td>Nielsen&#39;s 0.1 s limit; SDT: intuitive controls predict competence (fun §5)</td>
+<td>Check 8 passes</td>
+</tr>
+<tr>
+<td>Health, time and score always on the HUD; only short popups on the action</td>
+<td>Flow&#39;s three conditions (fun §6)</td>
+<td>Fixed the score/combo overlap seen in the sketch</td>
+</tr>
+<tr>
+<td>Spawn rate <code>min(3.0, 0.6 + 0.01·t)</code> with surge-then-lull breaths every 45 s, and the city refills (regrow plus pull-forward)</td>
+<td>Flow channel; MDA&#39;s tension-release arc; Hopson: avoid sharp drops in reward (fun §7)</td>
+<td>Skilled runs end at about 3–3.5 min and the city never runs dry</td>
+</tr>
+<tr>
+<td>Fixed heals, variable spectacle (combo multiplier on score only, shard kills, power towers)</td>
+<td>Hopson: fixed vs variable ratio schedules (fun §8)</td>
+<td>Round 1 found the combo pinned at x5. Polish shortened the window by step; x5 now appears in 13–46 % of samples</td>
+</tr>
+<tr>
+<td>Death cause on the card, one-press restart after 600 ms, every run starts fresh with the 3 s grace, session best kept</td>
+<td>Juul: self-blame and fail-then-succeed rate highest, avoid setback; Nielsen 1 s (fun §9)</td>
+<td>Restart takes 9–14 ms. The cause text still needs one fix (see next steps)</td>
+</tr>
+<tr>
+<td>Three diegetic neon signs and no tutorial screen; rookie tanks deal 1 damage</td>
+<td>Cook: let each atom loop on a target made for it (fun §11)</td>
+<td>Signs appear at 0.5 / 10.5 / 12.5 s. Onboarding went from 7 to 8</td>
+</tr>
+<tr>
+<td>Plain Canvas, a 640×360 logical canvas, glow pre-baked offscreen, pooled effects</td>
+<td>Brief scope: 60 fps on an integrated GPU</td>
+<td>60 fps and a 16.8 ms worst frame in every round, including at the 3.0/s cap</td>
+</tr>
+</tbody></table>
+<p>Where the build deliberately departs from the brief (all recorded in <code>game/NOTES.md</code> and <code>polish/outputs/changelog.md</code>):</p>
+<ul>
+<li>Swipe reach is 210 px instead of 220, and the beam cooldown is 1.8 s instead of 1.5 s. The concept left both untuned, and at the brief&#39;s values bots outlived the 2–5 min window.</li>
+<li>Survival is scored at 100 points per second instead of 10, so time makes up about a quarter to a third of the score.</li>
+<li>Shot damage ramps up over the first 75 s. Spawns, drain and heals stay exactly as the bible sets them (D7).</li>
+</ul>
+<h2>Play-test scores per round</h2>
+<p>Rounds 1 and 2 come from <code>stages/playtest/rounds/&lt;n&gt;/scores.json</code>; round 3 from <code>stages/playtest/outputs/scores.json</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>R1</th>
+<th>R2</th>
+<th>R3 (final)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>reads-as-concept</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>core-loop-and-flow</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>game-feel</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>onboarding</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>performance</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>art-readability</td>
+<td>8</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td>audio-feedback</td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>acceptance-checklist</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>75</strong></td>
+<td><strong>79</strong></td>
+<td><strong>83</strong></td>
+</tr>
+<tr>
+<td>Verdict</td>
+<td>ITERATE</td>
+<td>ITERATE</td>
+<td><strong>SHIP</strong></td>
+</tr>
+</tbody></table>
+<p>What each round changed:</p>
+<ul>
+<li><strong>R1 → R2.</strong> The beam now hits only the first building it crosses (the drain gained teeth). The combo window shrinks with each step, and survival scores 100/s. Audio fixes: the combo pitch now rises, pause suspends audio, and priority cues skip the voice cap.</li>
+<li><strong>R2 → R3.</strong> Shot damage ramps over 75 s to soften the novice cliff. The game-over card was respaced. The CLICK sign moved above the monster so it no longer covers its target.</li>
+</ul>
+<p>Final real-time bot runs (round 3, two seeds each): skilled 187 s / 200 s+ (capped), casual 129 s / 193 s, novice 39 s / 40 s.</p>
+<h2>Final verdict</h2>
+<p><strong>SHIP, 83/100, no blockers.</strong> The difficulty curve now spans skill levels. Skilled and casual runs fall in the GDD&#39;s bands, the combo and survival both show up in the score, and the build holds 60 fps with zero errors. Remaining weaknesses:</p>
+<ul>
+<li>Real-time novice runs die at about 40 s against the 45 s first-run floor.</li>
+<li>One line of death text contradicts itself.</li>
+<li>Checklist items 2 and 10 fail as written. Both are agreed design conflicts, not bugs.</li>
+</ul>
+<h2>Next iteration should tackle</h2>
+<ol>
+<li><strong>Novice floor (~40 s → 50–60 s).</strong> Polish&#39;s sim mirror (<code>polish/work/sim.mjs</code>, mode <code>ptnov</code>) claims a 67 s median because its reaction cycle and idle cadence are faster than the real bot&#39;s. Re-run it with a 0.55 s reaction and an idle every 6 s from start to start. If it then reproduces the ~40 s deaths, try a 90 s damage ramp, or a 1.25 helicopter starting damage, keeping stomp-only under 45 s.</li>
+<li><strong>Legible death cause.</strong> Use &quot;Starved&quot; only when ≥ 3 s have passed without a heal. Otherwise name the source that did the most damage in the last 5 s, from the existing <code>Run.dmg</code> buckets (<code>src/render.js</code>, <code>src/run.js</code>). This puts fun brief §9 into practice: death is legible.</li>
+<li><strong>Amend the GDD checklist to match the agreed design.</strong> Check 2 becomes &quot;idle death in 15–20 s&quot; (it is 16.5 s, because tanks fire from about 12 s). Check 10 becomes &quot;≥ 2 standing within ±320 px, or ≥ 3 including regrowing lots&quot;. The checklist score would then reflect the build.</li>
+<li><strong>Nice-to-haves, if there&#39;s room:</strong><ul>
+<li>Escalate the reward beyond the x5 roar, for example bigger popups and a stronger collapse flash at high combo.</li>
+<li>Test touch on a real device.</li>
+<li>Listen to the audio mix in a headed browser, since every play-test so far was headless.</li>
+</ul>
+</li>
+</ol>
+<h2>Outputs</h2>
+<ul>
+<li><code>game/</code>: the final polished build, copied from <code>polish/outputs/game/</code>.</li>
+<li><code>screenshots/</code>: the final round-3 play-test captures. Skilled and casual runs at 5 / 30 / 60 / 120 s, the title, the game-over cards (including the novice &quot;Starved&quot; card that next-step 2 refers to) and the pause probe.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/deliver/outputs/report.md">http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/deliver/outputs/report.md</a></p></figure>
+<figure class="out"><details open><summary><h3>Play link · play<span class="type">md</span></h3><p class="desc">One click to play: a link to the delivered game served by modpipes, with the pitch, controls, and final score</p></summary><div class="md"><p><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/deliver/outputs/game/index.html">Play Neon Kaiju</a>
+Be the giant monster that flattens a neon city to stay alive: health drains, and only destruction heals you.
+Controls: A/D walk, Space stomp, left-click swipe toward the cursor, right-click or F breath beam toward the cursor.
+Final play-test score: 83/100 (SHIP).</p>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/play/outputs/play.md">http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/play/outputs/play.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><p class="desc">No stage asked the user a question.</p></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/brief/outputs/brief.md">Design brief · brief.md</a> <span class="type">9.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/fun/outputs/fun-brief.md">Fun and engagement science · fun-brief.md</a> <span class="type">20KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/perf/outputs/perf-brief.md">Performance science · perf-brief.md</a> <span class="type">14KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/art/outputs/art-brief.md">Art and audio science · art-brief.md</a> <span class="type">24KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/gdd/outputs/gdd.md">Game design document · gdd.md</a> <span class="type">25KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/tech/outputs/tech-plan.md">Tech plan · tech-plan.md</a> <span class="type">49KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/artdir/outputs/art-direction.md">Art direction · art-direction.md</a> <span class="type">24KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/artdir/outputs/asset-plan.json">Art direction · asset-plan.json</a> <span class="type">13KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/assets/outputs/assets">Assets · assets.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/game/outputs/game/index.html">Game code · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/integrate/outputs/game/index.html">Integrate · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/integrate/outputs/screenshots">Integrate · screenshots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/integrate/outputs/smoke.md">Integrate · smoke.md</a> <span class="type">4.7KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/polish/outputs/game/index.html">Polish · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/polish/outputs/changelog.md">Polish · changelog.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/playtest/outputs/scores.json">Play-test critic · scores.json</a> <span class="type">3.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/playtest/outputs/notes.md">Play-test critic · notes.md</a> <span class="type">3.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/playtest/outputs/verdict.md">Play-test critic · verdict.md</a> <span class="type">803B</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/playtest/outputs/screenshots">Play-test critic · screenshots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd/files/stages/deliver/outputs/screenshots">Deliver · screenshots.dir</a> <span class="type">4.1KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Design brief</td><td>understand</td><td>done</td><td>opus</td><td>1 min 07 s</td><td>148K</td></tr>
+<tr><td>Fun and engagement science</td><td>understand</td><td>done</td><td>opus</td><td>3 min 32 s</td><td>747K</td></tr>
+<tr><td>Performance science</td><td>understand</td><td>done</td><td>opus</td><td>4 min 57 s</td><td>556K</td></tr>
+<tr><td>Art and audio science</td><td>understand</td><td>done</td><td>opus</td><td>15 min 19 s</td><td>2.2M</td></tr>
+<tr><td>Game design document</td><td>design</td><td>done</td><td>opus</td><td>3 min 10 s</td><td>258K</td></tr>
+<tr><td>Tech plan</td><td>plan</td><td>done</td><td>opus</td><td>7 min 13 s</td><td>562K</td></tr>
+<tr><td>Art direction</td><td>plan</td><td>done</td><td>opus</td><td>4 min 20 s</td><td>580K</td></tr>
+<tr><td>Assets</td><td>build</td><td>done</td><td>opus</td><td>8 min 04 s</td><td>2.3M</td></tr>
+<tr><td>Game code</td><td>build</td><td>done</td><td>opus</td><td>18 min 36 s</td><td>6.6M</td></tr>
+<tr><td>Integrate</td><td>integrate</td><td>done</td><td>opus</td><td>3 min 18 s</td><td>838K</td></tr>
+<tr><td>Polish</td><td>polish</td><td>done</td><td>opus</td><td>11 min 04 s</td><td>14.2M</td></tr>
+<tr><td>Play-test critic</td><td>judge</td><td>done</td><td>opus</td><td>9 min 32 s</td><td>5.6M</td></tr>
+<tr><td>Deliver</td><td>deliver</td><td>done</td><td>opus</td><td>1 min 48 s</td><td>649K</td></tr>
+<tr><td>Play link</td><td>play</td><td>done</td><td>haiku</td><td>32 s</td><td>235K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

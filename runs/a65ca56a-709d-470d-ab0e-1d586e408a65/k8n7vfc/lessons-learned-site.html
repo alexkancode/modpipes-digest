@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Song forge: what improved the pipeline, and why</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1c1a;--mut:#5d5a54;--line:#dedad2;--card:#fff;--good:#1f6f43;--warn:#8a5a00;--bad:#9b2c2c;--acc:#2f4f8f}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--fg:#ecebe6;--mut:#a9a59c;--line:#34332f;--card:#1e1e1b;--good:#6fcf97;--warn:#e0b04f;--bad:#f08a8a;--acc:#8fb0f0}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:28px 18px 80px}
+h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em}
+h2{font-size:1.3rem;margin:2.2em 0 .6em;padding-top:.4em;border-top:1px solid var(--line)}
+h3{font-size:1.05rem;margin:1.4em 0 .4em}
+p,li{max-width:72ch}
+.mut{color:var(--mut)}
+nav{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.92rem;margin:12px 0 4px}
+a{color:var(--acc)}
+code{font:0.86em ui-monospace,SFMono-Regular,Menlo,monospace;background:color-mix(in srgb,var(--line) 45%,transparent);padding:1px 4px;border-radius:4px;overflow-wrap:anywhere}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:16px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.card b{display:block;font-size:1.5rem;line-height:1.2}
+.card span{color:var(--mut);font-size:.88rem}
+.tbl{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--card)}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+thead th{background:color-mix(in srgb,var(--line) 40%,var(--card))}
+.tag{display:inline-block;font-size:.78rem;font-weight:600;padding:1px 7px;border-radius:10px;border:1px solid currentColor;white-space:nowrap}
+.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.bar{display:flex;height:22px;border-radius:4px;overflow:hidden;border:1px solid var(--line);margin:4px 0 2px;max-width:640px}
+.bar i{display:block;height:100%}
+.bar .tool{background:var(--warn)}.bar .model{background:var(--acc)}
+.legend{font-size:.85rem;color:var(--mut)}
+.legend i{display:inline-block;width:10px;height:10px;margin:0 4px 0 10px;vertical-align:middle}
+blockquote{margin:.6em 0;padding:.4em 12px;border-left:3px solid var(--line);color:var(--mut)}
+details{margin:6px 0}
+summary{cursor:pointer}
+</style>
+</head>
+<body>
+<main>
+<p class="mut">Analysis stage k8n7vfc · run <code>a65ca56a-709d-470d-ab0e-1d586e408a65</code> · 2026-11-06</p>
+<h1>Song forge: what improved the pipeline, and why</h1>
+<p>Song forge (<code>2b6a02f9-4629-44cd-a1f2-b1b938e4a81e</code>) writes one song from a theme, motifs and a genre. The tester ran v0 twice, then edited it to v1 and v2. No run used v1 or v2, so every edit below is graded against the v0 runs' own files.</p>
+<nav aria-label="Sections">
+<a href="#summary">Summary</a><a href="#design">What v0 got right</a><a href="#edits">The tester's edits, graded</a><a href="#corrections">Corrections to the report</a><a href="#time">Where the toolkit time went</a><a href="#saved">Lessons and todos saved</a><a href="#evidence">Evidence paths</a>
+</nav>
+
+<section id="summary" aria-labelledby="h-summary">
+<h2 id="h-summary">Summary</h2>
+<div class="cards">
+<div class="card"><b>2 of 2</b><span>test runs shipped a song in round 2 of a 2-round loop</span></div>
+<div class="card"><b>11 / 8</b><span>page checks passed, happy run and stress run, of 11 each</span></div>
+<div class="card"><b>5</b><span>tester edits across v1 and v2, none run yet</span></div>
+<div class="card"><b>90% / 64%</b><span>share of toolkit wall time spent by the model writing, happy and stress</span></div>
+</div>
+<ul>
+<li>The biggest gains came from the v0 design, not the edits. The writers' self-check, the fresh-eyes gate and the critic's brief-fit floor each changed a song.</li>
+<li>Both v2 edits target the real causes of the stress page's failures. Both causes were also present in the happy run, which passed by luck.</li>
+<li>The v1 timeout rule targets 120 s of a 916 s stage. Model output, about 70k tokens per run, is the real cost of the toolkit.</li>
+<li>The lasting fix is to freeze the toolkit. Todo row 19 carries that, and a toolkit lesson now points the next run at the happy toolkit.</li>
+</ul>
+</section>
+
+<section id="design" aria-labelledby="h-design">
+<h2 id="h-design">What v0 got right</h2>
+<p>These stages were in v0. They are the reasons the songs improved between rounds.</p>
+<div class="tbl"><table>
+<caption class="mut" style="caption-side:bottom;text-align:left;padding-top:6px">Each row was checked against the test runs' files, cited in the last column.</caption>
+<thead><tr><th scope="col">Design choice</th><th scope="col">What it changed</th><th scope="col">Evidence</th></tr></thead>
+<tbody>
+<tr><th scope="row">Writers run <code>check-abc.mjs</code> on their own song</th><td>All six writer songs passed the checker. Every loop round went to craft, not notation.</td><td>Writer transcripts. Final reports: 36 bars, 90 s (happy). 29 bars, 66.7 s with <code>M:6/8</code> to <code>M:4/4</code> (stress).</td></tr>
+<tr><th scope="row">Fresh-eyes cold reader as its own gate</th><td>Stress round 1: the reader saw "a hospitalized person, sedated by a morphine drip" and no nurse. Agree was false. Round 2: "A nurse working the night shift sits with a dying patient". Agree was true.</td><td><code>53fa4c7f/stages/fresh-eyes/rounds/1/verdict.json</code> against <code>outputs/verdict.json</code></td></tr>
+<tr><th scope="row">Critic floors, brief-fit at 9</th><td>Brief-fit was the round-1 blocker in both runs. Happy went 8 to 9. Stress went 7 to 9, and lyric-craft 7 to 8. Totals rose 68 to 70 and 63 to 69.</td><td><code>critic/rounds/1/scores.json</code> against <code>critic/outputs/scores.json</code> in each run</td></tr>
+<tr><th scope="row">Small, targeted polish fixes</th><td>The happy brief-fit fix was one line: "At home, a letter, one line long" became "My last to you is one line long". The listener became Ruth, and the stopped letters became legible.</td><td><code>ded9f511/stages/polisher/outputs/song/changes.md</code></td></tr>
+<tr><th scope="row">Judge borrow list</th><td>Happy round 1 took three named borrows from writer-story and writer-motif into the winning song.</td><td>Same <code>changes.md</code>, round 1</td></tr>
+<tr><th scope="row">Render failure is a status, not a crash</th><td>The invalid key returned HTTP 400. The page and overview showed the reason. The key appeared in no output.</td><td>Tester's grep. <code>render-status.json</code> in the stress run</td></tr>
+</tbody></table></div>
+<p>The brief-fit pattern repeats across both runs. A cold reader could not tell who "you" was, or what the singer did for a living. That is now a lesson in all three writer tables and the polisher table. A writer that names the role in verse 1 saves one 3 to 5 minute round.</p>
+</section>
+
+<section id="edits" aria-labelledby="h-edits">
+<h2 id="h-edits">The tester's edits, graded</h2>
+<p>Grades: <span class="tag good">targets the cause</span> means the edit addresses the cause the files show. <span class="tag warn">small effect</span> means the edit is right but moves little. <span class="tag bad">untested</span> applies to all five, because no run used v1 or v2.</p>
+<div class="tbl"><table>
+<thead><tr><th scope="col">Version</th><th scope="col">Edit</th><th scope="col">Grade</th><th scope="col">Why</th></tr></thead>
+<tbody>
+<tr><td>v2</td><th scope="row">Toolkit prompt spells the scores.json shape: <code>scores</code> keyed by criterion, history with round, total, ship, blockers</th><td><span class="tag good">targets the cause</span></td><td>v0 gave the shape only to the critic. The toolkit runs in the research group, before any critic output exists, and was told only "in the shapes the critic writes". Both toolkits then guessed a <code>criteria</code> array. Residue: the shape now lives twice in gen.py, as a JSON literal and as prose (todo row 20).</td></tr>
+<tr><td>v2</td><th scope="row">Demo rewrites every <code>%%MIDI program</code>, <code>chordprog</code> and <code>bassprog</code> to 0</th><td><span class="tag good">targets the cause</span></td><td>The checker flags a missing <code>%%MIDI program</code>, so writers pick genre instruments: 25 for folk, 53 for fado. Only piano is vendored. The happy toolkit's build-page.mjs line 227 already does this rewrite, and its synth ran. The v2 text asks for the same thing.</td></tr>
+<tr><td>v1</td><th scope="row">Overview infers the ending gate from the last round's ship, checker and fresh-eyes flags</th><td><span class="tag good">targets the cause</span> <span class="tag warn">small effect</span></td><td>The rule mirrors the STOP command in gen.py exactly. Both overviews named the stop gate correctly. Only the phrase "the cap of 4" was wrong, and only on a cap-2 test copy.</td></tr>
+<tr><td>v1</td><th scope="row">Wrap probe servers in <code>timeout 60</code></th><td><span class="tag warn">small effect</span></td><td>The hung fake server cost 120 s in the stress toolkit. The happy toolkit had no hang. That is at most 13% of one run's toolkit stage.</td></tr>
+<tr><td>v1</td><th scope="row">Keep scratch in the stage work directory, not /tmp</th><td><span class="tag warn">small effect</span></td><td>Hygiene. The happy run used /tmp/tk and the stress run used /tmp/ly, /tmp/st and /tmp/ck. No collision happened, so this rule fixed nothing observed.</td></tr>
+</tbody></table></div>
+<h3>What the version files show</h3>
+<ul>
+<li>v0 to v1: two bullets added to the toolkit prompt, one line rewritten in the overview prompt. Baseline: <code>plan/work/pipeline.v0.json</code>. No v0 was saved under <code>pipeline-versions/</code>.</li>
+<li>v1 to v2: three toolkit prompt lines changed: the demo bullet, the scorecard bullet and the fixtures bullet. Nothing else differs except <code>updatedAt</code>.</li>
+</ul>
+</section>
+
+<section id="corrections" aria-labelledby="h-corrections">
+<h2 id="h-corrections">Corrections to the test report</h2>
+<ol>
+<li><strong>The criteria-array fixture was in both runs.</strong> The report says the stress toolkit invented it. The happy <code>fixtures/sample-scores.json</code> holds the same <code>criteria</code> array. The happy page kept its scorecard only because <code>criteriaOf()</code> at build-page.mjs line 172 accepts arrays and objects. The stress <code>scorecardArea()</code> at line 117 accepts arrays only.</li>
+<li><strong>The happy demo would also have failed without its own rewrite.</strong> The happy song sets <code>%%MIDI program 25</code>, a steel-string guitar. The report says the happy toolkit "happened to rewrite programs to 0". That is true, and the rewrite was the only thing standing between it and the same 404.</li>
+<li><strong>The toolkit's cost is output, not probes.</strong> See the next section. The report's "fix trims the hang only" is right. The report does not say how small that share is.</li>
+</ol>
+<p>Each correction strengthens the case for freezing the toolkit. A passing run is not proof that its scripts meet the contract.</p>
+</section>
+
+<section id="time" aria-labelledby="h-time">
+<h2 id="h-time">Where the toolkit time went</h2>
+<p>Each tool_use timestamp was paired with its tool_result timestamp. Everything else in the stage span is the model thinking and writing.</p>
+<h3>Happy run, 689 s</h3>
+<div class="bar" role="img" aria-label="Happy toolkit: 68 seconds of tools, 621 seconds of model"><i class="tool" style="width:9.9%"></i><i class="model" style="width:90.1%"></i></div>
+<p class="legend"><i class="tool"></i>tools 68 s (soundfont download 33 s)<i class="model"></i>model 621 s, 70,035 output tokens, 47 turns</p>
+<h3>Stress run, 916 s</h3>
+<div class="bar" role="img" aria-label="Stress toolkit: 327 seconds of tools, 589 seconds of model"><i class="tool" style="width:35.7%"></i><i class="model" style="width:64.3%"></i></div>
+<p class="legend"><i class="tool"></i>tools 327 s (hung probe 120 s, two self-tests 80 s, soundfont 33 s)<i class="model"></i>model 589 s, 70,437 output tokens, 46 turns</p>
+<p>The toolkit is the critical path. Research takes 1 to 2 minutes, and the writers cannot start until the checker exists. About 600 s per run go to retyping roughly 50 KB of scripts that already exist and already pass. Freezing the toolkit saves most of those 600 s, and removes the drift that produced both stress defects.</p>
+</section>
+
+<section id="saved" aria-labelledby="h-saved">
+<h2 id="h-saved">Lessons and todos saved</h2>
+<h3>Song forge stage tables (read by the next run)</h3>
+<ul>
+<li><code>…__toolkit</code> #2: copy the passing happy toolkit from run ded9f511, run its self-test, and patch only the gaps. This is the interim stand-in for a frozen toolkit.</li>
+<li><code>…__writer_hook</code>, <code>…__writer_story</code>, <code>…__writer_motif</code>, <code>…__polisher</code> #1: name the singer's role and who "you" is in verse 1. Brief-fit decided round 1 in both runs.</li>
+</ul>
+<h3>Builder table k73m6ng (writes the next pipeline)</h3>
+<ul>
+<li>#35: state each cross-stage JSON shape once, as a generator constant used by the producer and every consumer.</li>
+<li>#36: when a stage chooses a value, such as an instrument, list what each consumer can handle.</li>
+<li>#37: freeze a model-written toolkit once it passes a real run.</li>
+</ul>
+<h3>Tester table kt6n75z</h3>
+<ul><li>#54: when one run fails a check, grep the passing run for the same cause.</li></ul>
+<h3>Analysis table k8n7vfc</h3>
+<ul>
+<li>#31: split stage time into tool time and model time before crediting a timing fix. Script: <code>k8n7vfc/work/gaps.py</code>.</li>
+<li>#32: the baseline may sit in <code>plan/work/pipeline.v0.json</code>, not in pipeline-versions.</li>
+</ul>
+<h3>Todos in lessons__pipeline_builder_todos</h3>
+<ul>
+<li>Row 19 replaced. The new row 19 carries the corrected facts, the interim toolkit lesson, and the freeze plan.</li>
+<li>Row 20 opened: put SCORES_SHAPE and VERDICT_SHAPE constants in gen.py, so the critic and toolkit prompts cannot drift.</li>
+</ul>
+</section>
+
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence paths</h2>
+<p class="mut">Run homes under <code>/home/alex/.modpipes/runs/</code>. Happy is <code>ded9f511-3a82-42d3-a4a2-588e018149a4</code>. Stress is <code>53fa4c7f-1492-41bf-a31e-ca546b898584</code>.</p>
+<details><summary>Scorecard defect</summary><ul>
+<li>Happy fixture: <code>ded9f511/stages/toolkit/outputs/toolkit/fixtures/sample-scores.json</code> (criteria array)</li>
+<li>Stress fixture: <code>53fa4c7f/stages/toolkit/outputs/toolkit/fixtures/sample-scores.json</code> (criteria array)</li>
+<li>Happy reader: <code>ded9f511/…/build-page.mjs:172</code>. Stress reader: <code>53fa4c7f/…/build-page.mjs:117</code></li>
+<li>Critic shape: <code>plan/work/gen/gen.py:306</code>. v2 toolkit shape: <code>gen.py:205</code></li>
+<li>Stress page check: <code>53fa4c7f/stages/page-check/outputs/report.json</code>, "scorecard table false"</li>
+</ul></details>
+<details><summary>Demo playback defect</summary><ul>
+<li>Songs: <code>%%MIDI program 25</code> (happy) and <code>53</code> (stress), in <code>stages/polisher/outputs/song/song.abc</code></li>
+<li>Vendored fonts: <code>acoustic_grand_piano-mp3</code> only, in both toolkits</li>
+<li>Happy rewrite: <code>ded9f511/…/build-page.mjs:226-227</code></li>
+<li>Stress failure: "Can't load sound at sf/voice_oohs-mp3/D4.mp3 status=404"</li>
+</ul></details>
+<details><summary>Overview gate</summary><ul>
+<li>Both <code>stages/overview/outputs/overview.md</code> line 13 name the stop gate, then say "The cap of 4 was not reached."</li>
+<li>STOP command: <code>gen.py:329-336</code> requires checker ok, critic ship and fresh-eyes agree.</li>
+</ul></details>
+<details><summary>Toolkit timing</summary><ul>
+<li><code>stages/toolkit/transcript.jsonl</code> in each run: result duration_ms 689,376 and 916,143, output tokens 70,035 and 70,437</li>
+<li>Hung probe: stress transcript line 4076 at 22:11:59, "Exercise render-lyria paths with fake server", 120.1 s</li>
+<li>Script used: <code>a65ca56a…/stages/k8n7vfc/work/gaps.py</code></li>
+</ul></details>
+<details><summary>Version files</summary><ul>
+<li>v0: <code>a65ca56a…/stages/plan/work/pipeline.v0.json</code></li>
+<li>v1 and v2: <code>a65ca56a…/stages/kt6n75z/outputs/pipeline-versions/</code></li>
+<li>Tester transcript: <code>a65ca56a…/stages/kt6n75z/transcript.jsonl</code>, 4,017 lines. All thinking blocks were empty, so reasons come from text blocks and tool results.</li>
+</ul></details>
+</section>
+</main>
+</body>
+</html>

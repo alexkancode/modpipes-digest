@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Game forge iterate (test) · report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="report.md">Raw markdown</a></p><h1>Neon Kaiju: delivery report</h1>
+<h2>The game</h2>
+<p>Neon Kaiju is a side-view neon night city where you are a giant monster. Your health drains 4/s from 80, and only destruction heals you: buildings +10, power towers +20, tanks and helicopters +8. After two rounds the monster is a cute mint pastel dinosaur steered by the mouse, and a shareable CITY number lets a friend play the same city. Single player, static folder, no storage.</p>
+<p>Source run id: 8f2a5b1a-40fc-4d2c-ab2d-dde6daefd9fd (this run: 00c4ad83-53fa-42e0-b623-e1b6af6a3821).</p>
+<p>Play: <a href="http://localhost:4810/api/runs/00c4ad83-53fa-42e0-b623-e1b6af6a3821/files/stages/deliver/outputs/game/index.html">http://localhost:4810/api/runs/00c4ad83-53fa-42e0-b623-e1b6af6a3821/files/stages/deliver/outputs/game/index.html</a></p>
+<h2>How to play</h2>
+<ul>
+<li>Mouse: put the cursor about 64 px ahead of the dino and it walks; it stops within 24 px of the cursor or when the pointer leaves the frame. A/D or arrows still walk and take priority.</li>
+<li>Left click: swipe toward the cursor (210 px, 100° arc, hits helicopters). Cooldown 0.45 s.</li>
+<li>Right click, F or K: breath beam toward the cursor (700 px, pierces units, hits the first building). Cooldown 1.8 s.</li>
+<li>Space: stomp (140 px ring, kills tanks, cannot reach helicopters). J: auto-aim swipe.</li>
+<li>Esc or P pauses, M mutes. Any key or click on the title starts; click or key on the game-over card restarts.</li>
+<li>Title and game-over cards: click the CITY line and type digits, R rolls a new city. <code>?seed=N</code> in the URL sets the city.</li>
+<li>Touch: left 40% is the walk pad, with STOMP and BEAM buttons.</li>
+</ul>
+<h2>Rounds</h2>
+<h3>Round 1: your dinosaur, a cute pastel dino steered by the mouse</h3>
+<ul>
+<li>User said first: &quot;Add online multiplayer so a friend can play, redraw the kaiju as a cute pastel dinosaur, and switch movement to the mouse.&quot;</li>
+<li>Changed: 6 monster strips redrawn as a mint #a8f5c4 dino with lilac plates, peach blush, one big eye, and the 2 px lime outline (192×176, same frame counts: idle 3, walk 4, stomp 3, swipe 4, beam 7, dead 3). Added <code>CONFIG.monster.followStart</code> 64 and <code>followStop</code> 24. Mouse-follow walking with hysteresis, pointerleave stops, canvas <code>tabindex</code> and focus on pointerdown. Title hint now reads &quot;MOUSE walk&quot;.</li>
+<li>Verify: PASS.</li>
+<li>What the user said next: multiplayer held back as out-of-scope (needs a server); the user took &quot;Seed challenge&quot; as the stand-in.</li>
+</ul>
+<h3>Round 2: seed challenge, a city number you share with a friend</h3>
+<ul>
+<li>Answered: &quot;Seed challenge&quot;. Online multiplayer stays out of scope.</li>
+<li>Changed: <code>Rng</code> split into three streams (city, army, fx) so every restart replays the same city and opening waves. Digits typed on the title or game-over card set the city, R rolls one, and per-city BEST HERE is kept in memory. <code>CITY ####</code> line added to the title (y 300) and game-over card. <code>__game.debug</code> gains <code>city</code>.</li>
+<li>Files: src/util.js, army.js, fx.js, city.js, input.js, main.js, run.js, render.js, harness/README.md. Art edits: none.</li>
+<li>Verify: PASS, 60 fps, 218 kB, 0 errors.</li>
+<li>What the user said next: &quot;Easier first minute&quot; (balance, frustrating). A novice dies at about 40 s. Hint: novice survival to 50-60 s, damage ramp 75 to 90, clearer death cause. This request was not built; it is listed under what is left.</li>
+</ul>
+<h2>Keep list</h2>
+<ul>
+<li>The mint pastel dino art (192×176 frames, lilac plates, big eye, lime outline and glow).</li>
+<li>Mouse-follow walking (start 64 px, stop 24 px), A/D still working, left-click swipe, right-click beam, Space stomp. The dino stops when the pointer leaves the frame.</li>
+<li>Seed challenge: CITY #### line on title and game-over cards, click it and type 4 digits, R rolls, every restart replays the same city and opening waves, BEST HERE per city.</li>
+<li>60 fps, verify PASS, canvas focus on click.</li>
+</ul>
+<h2>Final verify</h2>
+<p>PASS (60 fps, worst frame 16.8 ms; 218 kB; keyboard start in the sandboxed frame works; 0 console errors; 0 failed requests). Re-run on the delivered folder: PASS.</p>
+<h2>What is left</h2>
+<ul>
+<li>Out of scope: live online multiplayer (needs a server; the game must stay a static folder).</li>
+<li>Requested, not built: &quot;Easier first minute&quot;. Try <code>dmgRamp</code> 75 to 90, heli <code>dmgStart</code> 1.25, and a death cause that names the real damage source (src/render.js ~626, src/run.js ~73).</li>
+<li>Typing a new city on the title changes only the line. The skyline behind it updates at run start.</li>
+<li>No bot harness (play.mjs) exists. A bot must park the mouse over the dino or off the canvas, and must not start with a click on the CITY line.</li>
+<li>Source notes: acceptance checks 2 and 10 are known design conflicts; touch is untested on a real device.</li>
+</ul>
+<h2>How to continue</h2>
+<p>Start this pipeline again with source-run set to 00c4ad83-53fa-42e0-b623-e1b6af6a3821.</p>
+</body></html>

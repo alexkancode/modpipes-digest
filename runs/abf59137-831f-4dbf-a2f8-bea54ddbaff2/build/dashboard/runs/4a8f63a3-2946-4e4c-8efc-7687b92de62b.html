@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Wed 4 Nov, 10:09</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">A website-building pipeline, Website forge, tested to v4</p>
+  <p class="summary">The pipeline builder was asked for a pipeline that turns a website description into a gorgeous, fast and secure site. The pipeline chooses Cloudflare or Railway per brief, and the builder left Website forge at v4 after both test runs were cancelled at scaffold.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-04T16:09:38.099Z">Wed 4 Nov, 10:09</time></span><span>Finished <time datetime="2026-11-04T17:22:40.634Z">Wed 4 Nov, 11:22</time></span><span>1 h 13 min</span><span>11.0M tokens</span><span class="id">4a8f63a3-2946-4e4c-8efc-7687b92de62b</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/run.json">http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/4a8f63a3-2946-4e4c-8efc-7687b92de62b.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from kt6n75z.test-report</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>a pipeline that can take a description of a website and build something that is visually gorgeous, performant on the front and back end, secure, highly researched solutions that solve problems at the correct architectural altitude, and follow the deployment infrastructure found on this machine that is used by these repos: &quot;lives at ~/Desktop/dev/test/test/repo&quot; and &quot;~/Desktop/dev/dirslides-correct,&quot; (with all it&#39;s own infrastructure resources, never shared, and all aliased meaninfully). It should also know how to use accessibility tools to effectively drive the machine and capture screenshots as needed the same way any other cli instance on this machine would know.</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Website forge: test report, 2026-11-04</h1>
+<ul>
+<li>Pipeline: <code>82c5bae9-da14-4d33-8b63-9e622efa8451</code>, tested at v1, now at v4.</li>
+<li>Test copy: <code>0d6f6694-d7a7-46fd-9dec-7fd761e64016</code> &quot;Website forge (test)&quot;, with both loop caps cut to 2. The copy has been deleted, and its runs stay in history.</li>
+<li>Budget: 45 minutes, from 10:31 to 11:16 CST. Both runs started at 10:32 and were cancelled at 11:14, while scaffold was still running.</li>
+<li><code>lessons__pipeline_builder_todos</code> was empty at the start, so there was no earlier todo to close.</li>
+</ul>
+<h2>What ran</h2>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Target picked</th>
+<th>Reached</th>
+<th>Wall</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>07387426-5584-4818-99ea-66435df9dbb5</code></td>
+<td>Marrow bakery brief, <code>slug=forge-test-marrow</code>, <code>checkpoints=no</code>, ship-score 80</td>
+<td>cloudflare (Worker + D1)</td>
+<td>scaffold, round 1</td>
+<td>41 min, cancelled</td>
+</tr>
+<tr>
+<td>Stress <code>f1008c7a-1c24-46c4-998e-8aebb8814c0f</code></td>
+<td>Potluck brief with live updates, photo uploads, a script client reading JSON, and no accounts. Empty slug, <code>checkpoints=yes</code>, ship-score 95</td>
+<td>railway</td>
+<td>scaffold, round 1</td>
+<td>41 min, cancelled</td>
+</tr>
+</tbody></table>
+<p>The stress brief pushes the edges the understanding names:</p>
+<ul>
+<li>a derived slug</li>
+<li>the design checkpoint and its &quot;none&quot; path</li>
+<li>a live stream, which tests the headless Chrome rule</li>
+<li>an automated client</li>
+<li>relational data under light load, which tests the D1 versus Railway choice</li>
+<li>the logged-out Railway target</li>
+</ul>
+<p>Stage durations:</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>intake</th>
+<th>research (slowest stage)</th>
+<th>architect</th>
+<th>directions</th>
+<th>pick</th>
+<th>plan-feature</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy</td>
+<td>0:53</td>
+<td>6:55 (threat-model)</td>
+<td>10:19</td>
+<td>6:56</td>
+<td>1:23 (judge)</td>
+<td>5:21</td>
+</tr>
+<tr>
+<td>Stress</td>
+<td>0:59</td>
+<td>10:24 (threat-model)</td>
+<td>9:53</td>
+<td>7:25</td>
+<td>0:30, failed, then rerun</td>
+<td>5:04</td>
+</tr>
+</tbody></table>
+<h2>What worked</h2>
+<p>These results are counted from the transcripts, not taken from stage summaries.</p>
+<ul>
+<li>Research did real reading. WebFetch counts were:<ul>
+<li>design-research: 17 and 16</li>
+<li>perf-research: 10 and 10</li>
+<li>threat-model: 46 and 66</li>
+<li>backend-research: 21 in the stress run. In the happy run it fetched about ten pages with curl through Bash, and each one is listed in its sources.</li>
+<li>Script: <code>kt6n75z/work/tools.py</code>.</li>
+</ul>
+</li>
+<li>Intake derived <code>block-party-potluck</code> from an empty slug and wrote a basePort of 4740. The happy run kept its given slug, with basePort 4780.</li>
+<li>The happy architect overturned the intake&#39;s SQLite and container decision and chose a Worker with D1. Its disagreement table names whose side it took (<code>architect/outputs/decision.md</code> lines 9-27).</li>
+<li>Directions rendered three folders, each holding <code>index.html</code>, <code>styles.css</code>, <code>tokens.css</code> and phone and desktop captures. The happy direction B is a warm menu board with hand-drawn bread SVGs and real copy: <code>07387426.../stages/directions/outputs/directions/b/b-desktop.png</code>.</li>
+<li>design-judge read all six screenshots (11 Read calls) and wrote a scored <code>choice.md</code> that starts with <code>B</code>.</li>
+<li>design-ask asked exactly one AskUserQuestion with four options. A letter answer produced <code>choice.md</code> that starts with <code>a</code>.</li>
+<li>plan-feature committed <code>&lt;slug&gt; plan</code> in both repositories. Each <code>feature.md</code> holds four mermaid blocks.</li>
+<li>Nothing was pushed: <code>gh repo view alexkancode/forge-test-marrow</code> fails. No cloud resource was created.</li>
+<li>After the cancel, no process held either repository and no port from 4740 to 4799 was listening. One orphaned <code>eslint</code> from the stress scaffold was killed by hand.</li>
+</ul>
+<h2>Defects and fixes</h2>
+<h3>1. Intake decides the stack, and research follows it (v2, unconfirmed)</h3>
+<ul>
+<li>Evidence:<ul>
+<li><code>07387426.../stages/intake/outputs/intake.md</code> line 71: D13 sets &quot;SQLite database, one process, one container&quot;.</li>
+<li><code>f1008c7a.../stages/intake/outputs/intake.md</code> line 87: D15 sets the same.</li>
+<li>Backend-research then recommended SQLite on a Railway volume in both runs (<code>backend-notes.md</code>).</li>
+<li>The happy <code>playbook-railway.md</code> line 9 reads &quot;This is the default target. Intake D13 chose one container&quot;. Postgres is marked optional there.</li>
+</ul>
+</li>
+<li>Seen in 2 of 2 runs. Three research stages spent their work on a target the architect then had to overturn.</li>
+<li>Fix:<ul>
+<li>The intake prompt now leaves the target, stack and storage to the architect.</li>
+<li>backend-research lists only D1 or KV on Cloudflare and Postgres 17 on Railway.</li>
+</ul>
+</li>
+<li>Status: unconfirmed, because no run used v2.</li>
+</ul>
+<h3>2. The architect may pick SQLite on a volume for Railway (v3, unconfirmed)</h3>
+<ul>
+<li>Evidence: the stress architect chose Railway with SQLite on a volume and rejected Postgres (<code>f1008c7a.../stages/architect/outputs/decision.md</code> section 1).</li>
+<li>The confirmed understanding sets Railway&#39;s store as Postgres 17. The happy Railway playbook says the 4.36.1 CLI cannot name a volume, which breaks the <code>&lt;slug&gt;-&lt;role&gt;</code> rule.</li>
+<li>Fix: the architect prompt now says the Railway store is Postgres 17 named <code>&lt;slug&gt;-db</code>, and that SQLite on a volume is not an option.</li>
+<li>Status: unconfirmed.</li>
+</ul>
+<h3>3. &quot;None&quot; at design-ask fails the stage (v4, unconfirmed)</h3>
+<ul>
+<li>Evidence: <code>f1008c7a.../stages/design-ask/status.json</code> gives the failure reason &quot;missing outputs: choice&quot;. The round-1 outputs are copied to <code>kt6n75z/work/stress-design-ask-r1-evidence/</code>.</li>
+<li>The stage followed v1 exactly and wrote <code>feedback.md</code> alone.</li>
+<li>modpipes has no optional outputs (<code>dist/server/src/engine/outputs.js:23</code>). This means the design loop&#39;s &quot;round again on none&quot; path cannot work in v1.</li>
+<li>Fix:<ul>
+<li>design-ask always writes <code>choice.md</code>, with <code>none</code> on line one for a rejection.</li>
+<li>The design-loop stop now exits 0 only when a <code>choice.md</code> starts with a, b or c.</li>
+<li>plan-feature reads &quot;a letter on line one&quot;.</li>
+</ul>
+</li>
+<li>The new stop command passed five shell cases: none, a letter, a judge letter, a missing file, and none with a missing file.</li>
+<li>I restarted design-ask in the stress run and answered with a letter, so the run could go on.</li>
+<li>Status: unconfirmed in a run.</li>
+</ul>
+<h2>Versions</h2>
+<ul>
+<li><code>pipeline-versions/v1.json</code>: the plan stage&#39;s pipeline as tested.</li>
+<li><code>v2.json</code>: the intake and backend-research storage fix.</li>
+<li><code>v3.json</code>: the architect rule that Railway means Postgres 17.</li>
+<li><code>v4.json</code>: design-ask always writes <code>choice.md</code>, and the design-loop stop checks for a letter.</li>
+</ul>
+<p>After each update, <code>pipeline show</code> matched the file exactly. The voice audit reported 0 sentences over 25 words for each version.</p>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Confirm v4&#39;s none path: start with <code>checkpoints=yes</code>, answer none, then answer a letter. This is todo row 1 in <code>lessons__pipeline_builder_todos</code>.</li>
+<li>The build loop, deploy and handoff are untested. The early groups take about 30 minutes, so start a run at scaffold with <code>start --from 07387426-5584-4818-99ea-66435df9dbb5 --take ...</code>. This is todo row 2.</li>
+<li>Check that v2 and v3 hold. Intake should name no storage, and backend-research and the Railway playbook should not treat SQLite on a volume as the default.</li>
+<li>The happy architect named the Worker <code>forge-test-marrow-worker</code>. The understanding says the Worker is named <code>&lt;slug&gt;</code>, so pick one rule.</li>
+<li>The modpipes build changed during the test: the server runs 2452ab1 and the CLI runs ad950cc-dirty. Expect a server restart and re-check <code>pipeline show</code> after it.</li>
+</ol>
+<h2>Leftovers</h2>
+<ul>
+<li><code>~/Desktop/dev/forge-test-marrow</code> and <code>~/Desktop/dev/block-party-potluck</code> each hold one plan commit plus partial scaffold files. Delete them when they are no longer useful as evidence.</li>
+<li>Lessons were added to the real pipeline&#39;s <code>intake</code> and <code>design-ask</code> tables, and two to this tester&#39;s table.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/kt6n75z/outputs/test-report.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-04T16:12:23.324Z">Wed 4 Nov, 10:12</time></p>
+    <div class="q"><p class="question">The machine has two deployment shapes: Cloudflare Worker (static bundle plus /api in one Worker, KV, wrangler, like dirslides) and Railway (Astro SSR, Postgres, Docker, GitHub Actions, like the party repo). How should the website pipeline choose between them for a given brief?</p><p class="options">Options: Pipeline decides per brief (Recommended) · Always Cloudflare Worker · Always Railway · A pipeline variable chooses</p><p class="answer">Pipeline decides per brief (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-04T16:13:06.733Z">Wed 4 Nov, 10:13</time></p>
+    <div class="q"><p class="question">How far should a run go? Deploying for real creates billable or account-bound things: a private GitHub repo under alexkancode, a Railway project and Postgres service (metered) or a Cloudflare Worker and KV namespace (free tier), and a public URL on up.railway.app or workers.dev.</p><p class="options">Options: Deploy to production (Recommended) · Local only, deploy-ready · Deploy, but ask me first</p><p class="answer">Deploy to production (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-04T16:13:30.230Z">Wed 4 Nov, 10:13</time></p>
+    <div class="q"><p class="question">Screenshots and visual checks can run two ways. Headless Chrome with a throwaway profile captures pages without touching your desktop. The real desktop (Firefox or Chrome on DISPLAY :0 with xdotool, gnome-screenshot, and AT-SPI through pyatspi) shows true rendering and real interaction but takes your screen, so the house rule runs the zenity takeover.sh countdown first. Which should the pipeline use?</p><p class="options">Options: Headless by default, desktop gated (Recommended) · Real desktop always, gated · Headless only</p><p class="answer">Headless by default, desktop gated (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-04T16:14:25.936Z">Wed 4 Nov, 10:14</time></p>
+    <div class="q"><p class="question">Should the run pause for your approval anywhere, or run unattended from brief to live URL? The natural checkpoint is after design: the pipeline would show you two or three visual directions as rendered screenshots and ask which to build.</p><p class="options">Options: One design checkpoint (Recommended) · Fully unattended · Two checkpoints</p><p class="answer">this should be variable determined where a user say yes to checkpoints or no, and it either does the recommended approach or fully unattended unless it needs human intervention (like authentication)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-04T16:16:12.695Z">Wed 4 Nov, 10:16</time></p>
+    <div class="q"><p class="question">Here is the understanding I will write down. Result: a pipeline that takes a website brief and ends with a live, deployed site in a new repo at ~/Desktop/dev/&lt;slug&gt;, pushed to a private GitHub repo under alexkancode. Stages: brief intake; five parallel research stages (visual design, front-end performance, back-end and data, security threat model, deployment playbooks read from the two reference repos); an architecture stage that picks Cloudflare Worker or Railway per brief and writes acceptance criteria; design directions rendered as screenshots; a build loop of implementer, test runner, security and performance reviewers, and a critic with a score gate; deploy with project-named resources never shared with another project; a live smoke, screenshot and accessibility pass; a handoff with CLAUDE.md, runbook, and a commit. House process throughout: features/&lt;alias&gt;/feature.md with mermaid, plan and implementation commits, TDD with canary tests, preflight, no code comments, no emojis. Variables: brief (required), slug, checkpoints yes/no. With checkpoints=yes the run asks you to pick a design direction; with no it runs unattended and asks only when it must, such as an expired railway login. Screenshots are headless Chrome; the real desktop is used only for the final pass and only after takeover.sh grants it. Is this right?</p><p class="options">Options: Yes · Yes, but · No</p><p class="answer">Yes</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">10KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">481B</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">9.6KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">9.0KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/research-backend/outputs/backend.md">Research back-end approaches · backend.md</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">8.5KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">10KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">3.7KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/k8n7vfc/outputs/lessons-learned-site.html">Analyse the test · lessons-learned-site.html</a> <span class="type">17KB</span></li><li><a href="http://localhost:4810/api/runs/4a8f63a3-2946-4e4c-8efc-7687b92de62b/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">11KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>9 min 25 s</td><td>1.3M</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>1 min 33 s</td><td>289K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>1 min 35 s</td><td>287K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>done</td><td>default</td><td>2 min 08 s</td><td>302K</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 30 s</td><td>280K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>1 min 50 s</td><td>913K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>10 min 03 s</td><td>1.6M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>44 min 21 s</td><td>3.5M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>7 min 06 s</td><td>2.5M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

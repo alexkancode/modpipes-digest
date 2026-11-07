@@ -1,0 +1,85 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ChatGPT ad plan (test) · overview</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="overview.md">Raw markdown</a></p><h1>bookrender ChatGPT ads: run overview</h1>
+<p>Date: 2026-11-06. Positioning used: &quot;Turn any long PDF into a narrated audiobook you can play offline.&quot; Repo: <code>/home/alex/Desktop/dev/bookrender</code>.</p>
+<h2>What was produced</h2>
+<ol>
+<li><strong>Guided page: <code>stages/page/outputs/page/index.html</code></strong> (7 steps, with the five creative cards <code>c1.png</code> to <code>c5.png</code> alongside it). It is a checklist-style guide to the ChatGPT ads test, with copy buttons and sources. It is not an ad and does not spend anything.</li>
+<li><strong>Ad plan: <code>stages/ad-plan/outputs/plan.md</code></strong>, with budget, tracking, setup and kill criteria.</li>
+<li><strong>Creatives: <code>stages/copywriter/outputs/creatives.json</code></strong> (c1 to c5, with image briefs).</li>
+</ol>
+<h2>Fit verdict</h2>
+<ul>
+<li><strong>Do not advertise yet.</strong> The repo is a 3D book-club web app (Lap Book Viewer). It has no PDF, text-to-speech, audio or offline code, and no live URL, so the promise in the positioning is not in the product.</li>
+<li><strong>Spend nothing until</strong> the feature ships, the site has a public HTTPS URL with a <code>/listen</code> route, and tracking fires. Then run the two-ad-group test (A and C) at 25 USD/day for 4 days, capped at 120 USD.</li>
+</ul>
+<h2>Creatives</h2>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>headline</th>
+<th>body</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c1</td>
+<td>Your PDF, read aloud</td>
+<td>Turn a 300-page PDF into one audiobook file.</td>
+</tr>
+<tr>
+<td>c2</td>
+<td>Read on your commute</td>
+<td>Hear long papers and reports with hands busy.</td>
+</tr>
+<tr>
+<td>c3</td>
+<td>PDF audio, no wifi</td>
+<td>Download narrated PDFs for flights and tunnels.</td>
+</tr>
+<tr>
+<td>c4</td>
+<td>Rest your eyes, keep up</td>
+<td>Listen to your study PDFs as narrated audio.</td>
+</tr>
+<tr>
+<td>c5</td>
+<td>Long PDFs, as audiobooks</td>
+<td>An offline audiobook option for your own PDFs.</td>
+</tr>
+</tbody></table>
+<p>Only c1 (ad group A) and c3 (ad group C) run in the 120 USD test. c2, c4 and c5 are parked with their groups. All five have <code>targetUrl: null</code>, so none can be submitted until a live URL exists. Every creative describes the PDF-to-audio feature that the repo does not yet have.</p>
+<h2>Check and critic results</h2>
+<p><strong>page-check: ok = true.</strong> All checks passed at 390x844 and 1440x900, in both direct and framed modes:</p>
+<ul>
+<li>Steps navigate (next button and arrow keys), reaching all 7 steps.</li>
+<li>20 copy buttons present.</li>
+<li>Five images at 1024 px.</li>
+<li>Headline and body lengths within the checker&#39;s limits.</li>
+<li>No horizontal overflow.</li>
+<li>Zero axe violations.</li>
+<li>Official sources cited for creatives, setup and tracking.</li>
+<li>Checklist state survives reload.</li>
+<li>No page, console or failed-request errors.</li>
+</ul>
+<p>Links: 26 checked, 0 dead. 19 returned 200 and 7 returned 403 (walled but alive: openai.com/index/testing-ads-in-chatgpt, searchengineland, alternativeto, mediapost, help.openai.com daily-budgets, openai.com 26-countries, help.openai.com creating-campaigns).</p>
+<p><strong>page-critic: ship = true, score = 86, blockers = none</strong> after round 2. Open notes, none blocking:</p>
+<ul>
+<li>Each step fades in over 0.35 s, so a screenshot taken at load can catch near-invisible text. Honouring <code>prefers-reduced-motion</code> or starting at opacity 1 would fix it.</li>
+<li>Step 5 is one long checklist. A visible done-count would help.</li>
+<li>The sandboxed-viewer fallbacks (no localStorage, no clipboard, blocked <code>target=_blank</code>) were not separately tested in round 2. Page-check&#39;s framed-mode run passed, but that run did not exercise these three fallbacks in isolation.</li>
+</ul>
+<p><code>ship = true</code> applies to the page. It does not clear the ad copy, which the plan blocks until the product ships.</p>
+<h2>What to do next</h2>
+<ol>
+<li><strong>Settle the positioning.</strong> Either build and deploy the PDF-to-audio feature (in this repo, or in the repo that holds it), or rerun with a positioning that matches what the repo ships.</li>
+<li><strong>Deploy.</strong> Build <code>web/Dockerfile</code> and <code>api/Dockerfile</code> with Postgres, set the Google OAuth variables to the public domain, and put TLS in front. Confirm <code>/listen</code> resolves.</li>
+<li><strong>Add tracking.</strong> Install the oaiq Pixel on every page, fire the sign-up event with a shared <code>event_id</code>, post the same event from the server, and record UTMs.</li>
+<li><strong>Set up ads.openai.com.</strong> Start verification as soon as the domain is live (5 to 15 business days). Fill <code>targetUrl</code> for c1 and c3, use the copy as written, and submit for review. Record the approval date as day 0.</li>
+<li><strong>Fund the test.</strong> 25 USD/day for 4 days, 120 USD total, cap-pause at 110 USD. Review on day 14 with the kill criteria in plan section 7.</li>
+</ol>
+<h2>Rerun with corrected positioning</h2>
+<p>If the product read is wrong (for example, the PDF feature lives in another repo), run:</p>
+<pre><code>/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start b9afa7ec-8375-40a9-bb31-cd7aefffa6cf --var repo-path=/home/alex/Desktop/dev/bookrender --var positioning=&quot;&lt;one sentence describing what the product does&gt;&quot;
+</code></pre>
+<p>Replace <code>&lt;one sentence describing what the product does&gt;</code> with one sentence that matches the shipped feature. Use <code>--var repo-path=&lt;path&gt;</code> to point at a different repo.</p>
+</body></html>

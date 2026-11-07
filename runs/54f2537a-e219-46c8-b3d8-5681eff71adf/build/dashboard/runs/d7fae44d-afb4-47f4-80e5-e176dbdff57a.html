@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 22:59</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-running"><span class="dot" aria-hidden="true"></span>running</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">A pipeline that emails a digest of modpipes outputs, in progress</p>
+  <p class="summary">The user asked the pipeline builder for a pipeline that gathers modpipes outputs and emails them so they can be opened from any machine. The run is still going and has confirmed a single HTML digest email after questions about which runs, which outputs and where to host them.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-07T04:59:01.379Z">Fri 6 Nov, 22:59</time></span><span>Still running at build time</span><span>23 min 58 s</span><span>2.5M tokens</span><span class="id">d7fae44d-afb4-47f4-80e5-e176dbdff57a</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/d7fae44d-afb4-47f4-80e5-e176dbdff57a/files/run.json">http://localhost:4810/api/runs/d7fae44d-afb4-47f4-80e5-e176dbdff57a/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/d7fae44d-afb4-47f4-80e5-e176dbdff57a.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from k73m6ng.hammered-out-understanding</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>a pipeline that rounds up the modpipes outputs and sends me them via emails that I can use to view and experience them from any machine</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><p class="desc">This run has no starred output present.</p></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-07T05:00:43.950Z">Fri 6 Nov, 23:00</time></p>
+    <div class="q"><p class="question">Each time the pipeline runs, which modpipes runs should go into the email?</p><p class="options">Options: New since last email (Recommended) · Runs in a period · One run by id · Every finished run ever</p><p class="answer">Runs in a period</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-07T05:02:34.304Z">Fri 6 Nov, 23:02</time></p>
+    <div class="q"><p class="question">A site or game output needs a place to live before a link in an email works from another machine. localhost links only work here. How should sites and games be made viewable from any machine?</p><p class="options">Options: GitHub Pages via gh (Recommended) · Attach a zip and a single-file HTML · Google Drive folder with links · Both Pages and attachments</p><p class="answer">GitHub Pages via gh (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-07T05:03:36.993Z">Fri 6 Nov, 23:03</time></p>
+    <div class="q"><p class="question">How should the emails be shaped?</p><p class="options">Options: One digest email (Recommended) · One email per run · Digest plus one email per run</p><p class="answer">One digest email (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-07T05:03:51.526Z">Fri 6 Nov, 23:03</time></p>
+    <div class="q"><p class="question">Which outputs of each run count as the result worth publishing and emailing?</p><p class="options">Options: Starred outputs only (Recommended) · Starred plus every markdown · Every output</p><p class="answer">Starred outputs only (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-07T05:04:14.253Z">Fri 6 Nov, 23:04</time></p>
+    <div class="q"><p class="question">Which run statuses belong in the digest? Today&#39;s history holds 89 done, 3 failed, 31 cancelled and 6 running.</p><p class="options">Options: Done runs only (Recommended) · Done, plus a short list of the rest · Every run in the period</p><p class="answer">Done, plus a short list of the rest</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-07T05:08:14.720Z">Fri 6 Nov, 23:08</time></p>
+    <div class="q"><p class="question">Here is the understanding. A pipeline named &#39;Run digest&#39; takes a period variable (for example 2026-11-01..2026-11-06). A script gathers every run started in that period from `runs --json`: pipeline name, your typed variables, status, timings, usage, starred outputs. For each done run, the starred outputs are copied into a public GitHub Pages repo under alexkancode (one folder per run, created once by gh if missing) and pushed, so every site, game, image, video and markdown has a public URL that works on any machine. A Playwright stage screenshots each run&#39;s primary output as a hero image. A writer stage composes one HTML digest email: a card per done run with name, ask, hero inline, and links to each output on Pages, followed by one line each for failed and cancelled runs. A sender stage mails the digest through the Gmail connector to alexandrab@phase2online.com, with the markdown writeups attached under 25 MB. The digest HTML itself is also pushed to Pages as that period&#39;s index page and starred as the run&#39;s output. Open edges I will leave to the planner: the repo name, how a dir output without index.html is shown, and that scheduling (daily cron) is outside the pipeline. Is this right?</p><p class="options">Options: Yes, write it up · Yes, but change the recipient · No, something is off</p><p class="answer">Yes, write it up</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/d7fae44d-afb4-47f4-80e5-e176dbdff57a/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">5.5KB</span></li><li><a href="http://localhost:4810/api/runs/d7fae44d-afb4-47f4-80e5-e176dbdff57a/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">424B</span></li><li><a href="http://localhost:4810/api/runs/d7fae44d-afb4-47f4-80e5-e176dbdff57a/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">10KB</span></li><li><a href="http://localhost:4810/api/runs/d7fae44d-afb4-47f4-80e5-e176dbdff57a/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">8.8KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/d7fae44d-afb4-47f4-80e5-e176dbdff57a/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">8.4KB</span></li><li><a href="http://localhost:4810/api/runs/d7fae44d-afb4-47f4-80e5-e176dbdff57a/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">10KB</span></li><li><span class="absent">Plan and build the pipeline · pipeline-plan.md (absent)</span></li><li><span class="absent">Plan and build the pipeline · built-pipeline.md (absent)</span></li><li><span class="absent">Test the pipeline · test-report.md (absent)</span></li><li><span class="absent">Test the pipeline · pipeline-versions.dir (absent)</span></li><li><span class="absent">Analyse the test · lessons-learned-site.html (absent)</span></li><li><span class="absent">Analyse the test · cli-tools-optional.md (absent)</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>10 min 20 s</td><td>791K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>1 min 37 s</td><td>375K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>1 min 52 s</td><td>389K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 40 s</td><td>278K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>2 min 01 s</td><td>706K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>running</td><td>fable</td><td>11 min 36 s</td><td>0</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>waiting</td><td>default</td><td></td><td>0</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>waiting</td><td>default</td><td></td><td>0</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

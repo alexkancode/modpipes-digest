@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Topic expert forge · handoff</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="handoff.md">Raw markdown</a></p><h1>Handoff: ADHD and Todo-App UX Expert</h1>
+<p><strong>Topic:</strong> ADHD and todo UX, and what often stops ADHD people from sticking with a todo app.
+<strong>Result: PASSED, 94/100 (pass mark 80), in 1 round.</strong></p>
+<h2>The agent</h2>
+<ul>
+<li>Name: <code>adhd-todo-ux</code></li>
+<li>File: <code>/home/alex/.claude/agents/adhd-todo-ux.md</code> (installed 2026-11-06)</li>
+</ul>
+<h3>How to use it</h3>
+<ul>
+<li>In Claude Code, one task: say <code>use the adhd-todo-ux subagent to ...</code></li>
+<li>A whole session: <code>claude --agent adhd-todo-ux</code></li>
+<li>On a modpipes stage: set <code>&quot;agent&quot;: &quot;adhd-todo-ux&quot;</code> in the stage config.</li>
+</ul>
+<h2>Reference images</h2>
+<ul>
+<li>13 images (target was 10, cap 16) in <code>/home/alex/.claude/agents/adhd-todo-ux-images/</code></li>
+<li>Gallery: <a href="file:///home/alex/.claude/agents/adhd-todo-ux-images/index.html">index.html</a> (captions and source URLs are in <code>index.md</code> beside it)</li>
+</ul>
+<h2>Examiner scores (round 1)</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expert</td>
+<td>38 / 40</td>
+</tr>
+<tr>
+<td>Critique</td>
+<td>19 / 20</td>
+</tr>
+<tr>
+<td>Making</td>
+<td>18 / 20</td>
+</tr>
+<tr>
+<td>Usable</td>
+<td>19 / 20</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>94 / 100</strong></td>
+</tr>
+</tbody></table>
+<ul>
+<li>The agent got 6/6 on the closed-book quiz, with contested claims hedged. Bare Sonnet scored about 1.75/6.</li>
+<li>Full report: <a href="../../examiner/outputs/report.md">report.md</a></li>
+<li>Scores: <a href="../../examiner/outputs/scores.json">scores.json</a></li>
+<li>Exam files: <a href="../../examiner/outputs/exam/">exam/</a></li>
+</ul>
+<h3>The drawing from the exam</h3>
+<p><a href="../../examiner/outputs/exam/drawing.png">drawing.png</a>: a &quot;welcome back after two weeks&quot; Today screen that the agent drew with Pillow.</p>
+<h2>What the examiner still wants</h2>
+<p>The agent passed. These fixes are minor and optional. To apply them, edit <code>/home/alex/.claude/agents/adhd-todo-ux.md</code> by hand or rerun the forge.</p>
+<ol>
+<li>Name the authors, year and journal for the delay-aversion meta-analysis (PMID 29806533), the two reviews in §7 (32424511, 34383674) and the 2025 review (40011386). Fetch each PubMed page first.</li>
+<li>Method 1 (critique): list the visible items by name before giving any count. The agent miscounted tasks in the probe (said about five, there were four).</li>
+<li>Method 4 (drawing):<ul>
+<li>The cap line must read &quot;Showing 3 of N&quot; with N above the number shown, or &quot;That&#39;s all for today&quot;. The drawing said &quot;3 of 3 shown. The rest can wait&quot;, which contradicts itself.</li>
+<li>The timer ring should show the estimate (full ring, Start button) until the user starts the task. Icons must match the task.</li>
+</ul>
+</li>
+<li>Replace the fixed <code>/tmp/adhd-wire/</code> and <code>/tmp/adhd-ref-NN.jpg</code> paths with <code>D=$(mktemp -d /tmp/adhd-wire.XXXX)</code> so sessions do not collide.</li>
+<li>Optional: add non-Wikipedia depth. This means a Barkley primary source for the unverified &quot;time blindness / point of performance&quot; attribution, a Dodson page for &quot;interest-based nervous system&quot;, and CHADD or ADDitude guidance pages.</li>
+</ol>
+</body></html>

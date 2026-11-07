@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Game forge · Tue 3 Nov, 13:20</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Game forge</h1>
+  <p class="caption">Wyrmhold, a one-thumb dragon kingdom game, shipped at 90</p>
+  <p class="summary">Game forge was asked for an open-world fantasy MMO with kingdoms, trade, dragons and guild wars, for one thumb on a phone, with a ship score of 90. It shipped Wyrmhold, a short arcade game that turns each idea into one mechanic, at 90 out of 100 after four play-test rounds.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-03T19:20:54.950Z">Tue 3 Nov, 13:20</time></span><span>Finished <time datetime="2026-11-05T04:01:03.773Z">Wed 4 Nov, 22:01</time></span><span>32 h 40 min</span><span>42.0M tokens</span><span class="id">3389325d-e504-447c-aa53-ff368729873e</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/run.json">http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/3389325d-e504-447c-aa53-ff368729873e.jpg" width="800" height="500" alt="Render of the primary output of Game forge"><figcaption>Hero from http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/deliver/outputs/game/index.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Concept</dt><dd>an open-world fantasy MMO where you build a kingdom, trade with other players, raise dragons, and fight in seasonal guild wars</dd></div><div><dt>Controls</dt><dd>touch only, one thumb, phone held upright</dd></div><div><dt>Ship score</dt><dd>90</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Deliver · game<span class="type">dir</span></h3><p class="desc">The finished game; open index.html</p><iframe src="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/deliver/outputs/game/index.html" title="Deliver game" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/deliver/outputs/game/index.html">http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/deliver/outputs/game/index.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Deliver · report<span class="type">md</span></h3><p class="desc">What was built, how the science was applied, scores per round, next steps</p></summary><div class="md"><h1>Wyrmhold: delivery report</h1>
+<p><strong>Verdict: SHIP. Final score 90.0/100 (ship bar 90), no blockers, after 4 play-test rounds.</strong></p>
+<h2>Concept and pitch</h2>
+<p>The concept was an open-world fantasy MMO where you build a kingdom, trade with other players, raise dragons and fight in seasonal guild wars. The scope was a 2–5 minute one-thumb arcade game, so the build keeps each noun as one mechanic you touch every few seconds and makes everything else art and copy.</p>
+<blockquote>
+<p><strong>Steer your growing dragon with one thumb: burn rival guild raiders, guide trade caravans home, and keep your castle standing through three seasons of guild war.</strong></p>
+</blockquote>
+<ul>
+<li><strong>Kingdom:</strong> one castle that grows itself from Camp to Keep, Fortress and Citadel as you bank gold.</li>
+<li><strong>Trade:</strong> scripted caravans of &quot;other players&quot; (<code>Merchant_Lyra92</code>, <code>xX_SilkRoad_Xx</code>) that you escort home for gold.</li>
+<li><strong>Dragons:</strong> one dragon that hatches from an egg and grows from Hatchling to Drake, Wyrm and Elder, with a new sprite and new handling at each tier.</li>
+<li><strong>Guild wars:</strong> Spring, Summer and Winter each end in a War Horn siege by a named rival guild ([Ashveil], [Ironfang], [Frostmere]). The run ends on a 6-guild season leaderboard.</li>
+<li><strong>MMO dressing:</strong> nameplates, a scrolling chat ticker and rival banners make it look like a live server, but it is entirely offline and single-player.</li>
+</ul>
+<p>Style: 16-bit pixel art, top-down 3/4 view, vanilla Canvas 2D with no libraries.</p>
+<h2>How to play</h2>
+<ul>
+<li><strong>Touch to start.</strong> The egg hatches and you are flying in under a second.</li>
+<li><strong>Drag anywhere</strong> to steer. The dragon moves by your finger&#39;s offset ×1.6, so your thumb never covers it. Lift your finger and it circles where it is.</li>
+<li><strong>Fire is automatic.</strong> The dragon breathes at the nearest raider in range twice a second, and burned raiders drop coins.</li>
+<li><strong>Fly over coins</strong> to pick them up. The sack above the dragon shows how much you carry. Fly over the castle to bank. Unbanked gold scores nothing, and banking a nearly full sack pays ×1.25 (&quot;Full Hoard&quot;).</li>
+<li><strong>Archers</strong> flash their bow before they shoot. A hit spills 30% of what you carry, and you have 4 s to grab it back.</li>
+<li><strong>Escort caravans</strong> by staying inside their blue ring. They go 3× faster and pay gold when they reach the gate.</li>
+<li><strong>At each tier-up</strong>, fly into one of two shields: <strong>Dragon</strong> (stronger breath) or <strong>Walls</strong> (an extra tower, more HP, faster reload).</li>
+<li><strong>Win</strong> by keeping the castle standing through the Winter siege, which gives a ×1.5 score bonus. <strong>Lose</strong> if the castle falls. Touch Play again to restart instantly.</li>
+</ul>
+<p>A full run lasts about 2:50. Your best score is saved locally.</p>
+<h2>How to host</h2>
+<p><code>game/</code> is a self-contained static folder: <code>index.html</code> at the root, relative paths only, no CDN and no build step.</p>
+<ul>
+<li><strong>Local:</strong> open <code>game/index.html</code> directly (it works from <code>file://</code>), or run <code>python3 -m http.server</code> inside <code>game/</code>.</li>
+<li><strong>Web:</strong> copy the whole <code>game/</code> folder to any static host (GitHub Pages, Netlify, S3, itch.io as an HTML game) and open its <code>index.html</code>.</li>
+<li><strong>Machine hook:</strong> <code>window.__game = { start(), state, score, perf }</code>. <code>start()</code> skips the title. <code>?seed=N</code> fixes the RNG.</li>
+</ul>
+<p><strong>Delivery check:</strong> I loaded the packaged copy once from <code>file://</code> in headless Chrome (390×844, DPR 2, touch):</p>
+<ul>
+<li>title reached, and <code>start()</code> → <code>play</code></li>
+<li>5 s of play: fps 60, worstMs 16.8</li>
+<li>0 console errors or warnings, 0 page errors, 0 failed requests</li>
+</ul>
+<h2>The science applied</h2>
+<p>The concept brief (<code>brief.md</code>) and the fun brief (<code>fun-brief.md</code>) disagreed in places. The GDD settled each disagreement in one table, and these are the main decisions and the principles behind them.</p>
+<table>
+<thead>
+<tr>
+<th>GDD decision</th>
+<th>Principle (source)</th>
+<th>How it shows in the game</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Drag is the only input. Collecting, banking, escorting and choosing all happen by flying over things</td>
+<td>Intuitive controls predict enjoyment (β = .64), and they work through felt competence, which predicts replay (β = .41) (Ryan, Rigby &amp; Przybylski 2006). One-thumb grip (Hoober)</td>
+<td>Relative drag keeps the dragon visible above the thumb. Feedback fires on the frame of contact, well under the 100 ms direct-manipulation threshold (Nielsen/Miller)</td>
+</tr>
+<tr>
+<td>Three seasons of 50/50/60 s, each ending in a siege, about 2:50 in total</td>
+<td>Tension → release with a climax, and avoid runaway leaders (MDA). The fiero key (Lazzaro)</td>
+<td>Each season has an open-play build-up, then the War Horn. Siege size scales with castle tier, so a strong economy draws a stronger rival. The winning runs were decided in the last seconds of Winter</td>
+</tr>
+<tr>
+<td>Egg hatches on the first touch, then four visibly different dragon tiers</td>
+<td>Naches and wonder (Lazzaro, Easy/People Fun). Chain schedule: the next goal is always in view (Hopson)</td>
+<td>The Kingdom bar always shows the next tier tick, and an average run grows 2–3 times</td>
+</tr>
+<tr>
+<td>Choices are spatial: escort vs. hunt, bank now vs. hold for Full Hoard, Dragon vs. Walls boon</td>
+<td>Autonomy (β = .49 for enjoyment). One binary choice every 10–20 s, and at least two winning strategies (fun brief §3)</td>
+<td>After round 4 tuning, both boon strategies win: always-Walls bots 2/2 in play-test and 7/12 in sims, always-Dragon bots 1/2 and 9/12</td>
+</tr>
+<tr>
+<td>Full Hoard ×1.25 and burn chains instead of a tap-timing window</td>
+<td>Skill should pay more than luck (competence)</td>
+<td>Greed and chains reward flying well. Chain pitch climbs one semitone per kill</td>
+</tr>
+<tr>
+<td>A gem drops from 1 in 4–14 kills (mean 8)</td>
+<td>Variable-ratio schedule (Hopson), scaled to a 3-minute run</td>
+<td>Cyan sparkle and its own chime, so it is noticed before pickup</td>
+</tr>
+<tr>
+<td>Anti-runaway: below 40% HP, caravans come sooner and pay more</td>
+<td>MDA negative feedback that keeps the outcome open</td>
+<td>Trailing players get help, so Winter stays in doubt</td>
+</tr>
+<tr>
+<td>No tutorial screen. One skill atom at a time in the first 30 s, with labels of five words or fewer</td>
+<td>Cook&#39;s skill atoms. Learn by doing</td>
+<td>&quot;Drag to fly&quot; ghost thumb, then a coin line, &quot;Bank here&quot;, one slow grunt, the first caravan, the first archer. 15 g was banked by 5 s in every play-test run</td>
+</tr>
+<tr>
+<td>The game-over screen gives a one-line cause, a run-specific tip, the best score and a guild ladder. Restart is one touch</td>
+<td>Players prefer failure they can blame on themselves, and &quot;failure adds content&quot; (Juul 2009)</td>
+<td>&quot;Grunts overran your Citadel&quot; plus a tip. Restart takes 33–39 ms</td>
+</tr>
+<tr>
+<td>Faked social layer: usernames, ticker, rival banners, leaderboard</td>
+<td>Relatedness drives MMO play (Ryan et al., Study 4). Schadenfreude against named rivals (Lazzaro)</td>
+<td>Nameplates, ticker and banners are on screen in normal play, and [Wyrmhold] is ranked against 5 seeded rivals</td>
+</tr>
+<tr>
+<td>Juice budget: particles, 2–4 px shake on big events only, 60–80 ms hit-stop on tier-up and champion kill</td>
+<td>Swink&#39;s game feel: put the sensitivity in the response when input bandwidth is low</td>
+<td>Weighted flight with banking tilt, coin ease-out pulls, coin showers, and one SFX cue per event</td>
+</tr>
+<tr>
+<td>All play-critical targets in the lower 60%, at least 48 px</td>
+<td>Hoober&#39;s thumb reach. 48 dp touch-target convention</td>
+<td>Boon shields are 72 px at y 470. The castle is at the bottom centre. The HUD at the top is read-only</td>
+</tr>
+</tbody></table>
+<h2>Play-test scores per round</h2>
+<p>Scores come from <code>stages/playtest/rounds/1–3/scores.json</code> and the final <code>stages/playtest/outputs/scores.json</code>. Each criterion is out of 10; the total is out of 100.</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>R1</th>
+<th>R2</th>
+<th>R3</th>
+<th>R4 (final)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reads as concept</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Core loop and flow</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Game feel</td>
+<td>7</td>
+<td>8</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Onboarding</td>
+<td>8</td>
+<td>7</td>
+<td>7</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>10</td>
+<td>10</td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Art readability</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Audio feedback</td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Acceptance checklist</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td>10</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>77.5</strong></td>
+<td><strong>82.5</strong></td>
+<td><strong>82.5</strong></td>
+<td><strong>90.0</strong></td>
+</tr>
+<tr>
+<td>Verdict</td>
+<td>iterate</td>
+<td>iterate</td>
+<td>iterate</td>
+<td><strong>ship</strong></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><strong>Round 1 (77.5):</strong></p>
+<ul>
+<li>SFX pitch climbs were broken: the game passed rate ratios where sfx.js expects semitones.</li>
+<li>The fire breath didn&#39;t read in still frames.</li>
+<li>Winter looked like night, not snow.</li>
+<li>The Spring siege was too harsh.</li>
+</ul>
+</li>
+<li><p><strong>Round 2 (82.5):</strong> polish fixed all of round 1&#39;s issues. New issues:</p>
+<ul>
+<li>Caravan nameplates and the moved &quot;Drag to fly&quot; pill covered the dragon.</li>
+<li>The Walls boon was a trap: always-Walls bots lost every run.</li>
+<li>Bank and chain floats piled up, and there was no siege ambience.</li>
+</ul>
+</li>
+<li><p><strong>Round 3 (82.5):</strong> the polish session ended before writing anything, so the build was byte-identical to round 2 and the same notes were raised again.</p>
+</li>
+<li><p><strong>Round 4 (90.0):</strong> every open note was closed and still held in wall-clock play.</p>
+<ul>
+<li>Plates draw under the dragon, and the pill is clear of the spawn point.</li>
+<li>Walls got +60 HP, a 1.0 s boon-tower reload and ×0.9 reload on all towers per boon.</li>
+<li>Floats collapse and chains read ×n.</li>
+<li>A siege ambience bed was added.</li>
+<li>Pause now actually silences audio.</li>
+</ul>
+<p>The play-test ran 4 wall-clock runs with live touch: 3 wins at 2:50 (5783, 7158, 6461) and 1 loss early in Winter (3788). It saw 60 fps / 16.8 ms worst frame and 0 errors.</p>
+</li>
+</ul>
+<h2>Final verdict</h2>
+<p><strong>SHIP at 90.0/100 with no blockers.</strong> All 15 GDD acceptance items pass. The game reads as the concept at a glance, runs at a locked 60 fps, opens from <code>file://</code>, has two viable strategies, and restarts in a few dozen milliseconds.</p>
+<h2>What the next iteration should tackle</h2>
+<ol>
+<li><strong>Warn before the castle collapses.</strong> One loss went from 155 HP to rubble in about 4.5 s as grunts massed at the gate, and the only warning was the HP bar pulse below 30%. A cue when grunts mass at the gate would make that loss feel earned. Options: a gate alarm, a red vignette that scales with the number of attackers, or a ticker line such as &quot;Frostmere at the gate!&quot;. Core-loop score: 8.</li>
+<li><strong>Ease arrow pressure.</strong> Walls-strategy runs took 37–42 arrow hits and spilled 263–428 g. Try a longer archer cooldown in Summer and Winter, or cap how many archers can be drawing at once.</li>
+<li><strong>Match the loss tip to the loss cause.</strong> The tip rule picks the first match, so it can give advice unrelated to what actually ended the run.</li>
+<li><strong>Fix the edge-on coin spin frames.</strong> They read as thin yellow bars when dozens are on screen. This is in the art asset and has been unchanged since round 1. Art-readability score: 8.</li>
+<li><strong>Housekeeping:</strong> the round 4 polish changelog still contains a literal <code>WALL_CLOCK_PLACEHOLDER</code> line in its verification list. It doesn&#39;t affect the game.</li>
+<li><strong>Beyond polish, ways to grow scope:</strong><ul>
+<li>a sound toggle on the title (cut in tech)</li>
+<li>a fourth season or endless mode for players who already win</li>
+<li>a daily seed with a shared ladder, which would make the faked social layer real</li>
+</ul>
+</li>
+</ol>
+<h2>Package contents</h2>
+<ul>
+<li><code>game/</code>: the shipped build, identical to <code>stages/polish/outputs/game/</code>.</li>
+<li><code>screenshots/</code>: the final round 4 play-test captures: title, hatch, play at 5–165 s, game-over cards and restart.</li>
+<li><code>report.md</code>: this file.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/deliver/outputs/report.md">http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/deliver/outputs/report.md</a></p></figure>
+<figure class="out"><details open><summary><h3>Play link · play<span class="type">md</span></h3><p class="desc">One click to play: a link to the delivered game served by modpipes, with the pitch, controls, and final score</p></summary><div class="md"><p><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/deliver/outputs/game/index.html">Play Wyrmhold</a>
+Steer your growing dragon with one thumb: burn rival guild raiders, guide trade caravans home, and keep your castle standing through three seasons of guild war.
+Controls: drag anywhere with one thumb to steer; the dragon breathes automatically, and you fly over coins and the castle to collect and bank gold.
+Final play-test score: 90.0/100 (ship).</p>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/play/outputs/play.md">http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/play/outputs/play.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><p class="desc">No stage asked the user a question.</p></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/brief/outputs/brief.md">Design brief · brief.md</a> <span class="type">7.3KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/fun/outputs/fun-brief.md">Fun and engagement science · fun-brief.md</a> <span class="type">16KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/perf/outputs/perf-brief.md">Performance science · perf-brief.md</a> <span class="type">14KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/art/outputs/art-brief.md">Art and audio science · art-brief.md</a> <span class="type">18KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/gdd/outputs/gdd.md">Game design document · gdd.md</a> <span class="type">26KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/tech/outputs/tech-plan.md">Tech plan · tech-plan.md</a> <span class="type">33KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/artdir/outputs/art-direction.md">Art direction · art-direction.md</a> <span class="type">28KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/artdir/outputs/asset-plan.json">Art direction · asset-plan.json</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/assets/outputs/assets">Assets · assets.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/game/outputs/game/index.html">Game code · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/integrate/outputs/game/index.html">Integrate · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/integrate/outputs/screenshots">Integrate · screenshots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/integrate/outputs/smoke.md">Integrate · smoke.md</a> <span class="type">5.7KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/polish/outputs/game/index.html">Polish · game.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/polish/outputs/changelog.md">Polish · changelog.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/playtest/outputs/scores.json">Play-test critic · scores.json</a> <span class="type">4.3KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/playtest/outputs/notes.md">Play-test critic · notes.md</a> <span class="type">2.6KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/playtest/outputs/verdict.md">Play-test critic · verdict.md</a> <span class="type">800B</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/playtest/outputs/screenshots">Play-test critic · screenshots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/3389325d-e504-447c-aa53-ff368729873e/files/stages/deliver/outputs/screenshots">Deliver · screenshots.dir</a> <span class="type">4.1KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Design brief</td><td>understand</td><td>done</td><td>opus</td><td>1 min 02 s</td><td>95K</td></tr>
+<tr><td>Fun and engagement science</td><td>understand</td><td>done</td><td>opus</td><td>2 min 32 s</td><td>561K</td></tr>
+<tr><td>Performance science</td><td>understand</td><td>done</td><td>opus</td><td>4 min 25 s</td><td>419K</td></tr>
+<tr><td>Art and audio science</td><td>understand</td><td>done</td><td>opus</td><td>3 min 56 s</td><td>367K</td></tr>
+<tr><td>Game design document</td><td>design</td><td>done</td><td>opus</td><td>3 min 26 s</td><td>242K</td></tr>
+<tr><td>Tech plan</td><td>plan</td><td>done</td><td>opus</td><td>4 min 18 s</td><td>365K</td></tr>
+<tr><td>Art direction</td><td>plan</td><td>done</td><td>opus</td><td>5 min 02 s</td><td>578K</td></tr>
+<tr><td>Assets</td><td>build</td><td>done</td><td>opus</td><td>7 min 00 s</td><td>1.8M</td></tr>
+<tr><td>Game code</td><td>build</td><td>done</td><td>opus</td><td>21 min 47 s</td><td>6.6M</td></tr>
+<tr><td>Integrate</td><td>integrate</td><td>done</td><td>opus</td><td>3 min 28 s</td><td>733K</td></tr>
+<tr><td>Polish</td><td>polish</td><td>done</td><td>opus</td><td>3 min 39 s</td><td>20.6M</td></tr>
+<tr><td>Play-test critic</td><td>judge</td><td>done</td><td>opus</td><td>13 min 40 s</td><td>8.7M</td></tr>
+<tr><td>Deliver</td><td>deliver</td><td>done</td><td>opus</td><td>1 min 38 s</td><td>647K</td></tr>
+<tr><td>Play link</td><td>play</td><td>done</td><td>haiku</td><td>29 s</td><td>267K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

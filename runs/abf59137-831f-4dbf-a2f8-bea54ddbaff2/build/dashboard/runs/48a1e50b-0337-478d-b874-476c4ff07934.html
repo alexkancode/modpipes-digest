@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>User bible (test) · Fri 6 Nov, 16:50</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>User bible (test)</h1>
+  <p class="caption">A version 1 user bible for the happy-path repo clone</p>
+  <p class="summary">The User bible test copy analysed the throwaway repo /tmp/ub-test/happy. It produced a self-contained user-bible-v1.html of about 516 KB and committed it locally without pushing.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T22:50:09.306Z">Fri 6 Nov, 16:50</time></span><span>Finished <time datetime="2026-11-06T23:00:26.361Z">Fri 6 Nov, 17:00</time></span><span>10 min 17 s</span><span>3.5M tokens</span><span class="id">48a1e50b-0337-478d-b874-476c4ff07934</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/run.json">http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/48a1e50b-0337-478d-b874-476c4ff07934.jpg" width="800" height="500" alt="Render of the primary output of User bible (test)"><figcaption>Hero from http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/assemble/outputs/bible.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Repo path</dt><dd>/tmp/ub-test/happy</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Assemble · bible<span class="type">html</span></h3><p class="desc">The user bible: one self-contained HTML file with sitemap, personas, paths, diagrams and screenshots</p><iframe src="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/assemble/outputs/bible.html" title="Assemble bible" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/assemble/outputs/bible.html">http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/assemble/outputs/bible.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Handoff · handoff<span class="type">md</span></h3><p class="desc">Where the bible is, how to open the file, what the crawl captured, the gate results, the open questions</p></summary><div class="md"><h1>User bible handoff</h1>
+<h2>Where the bible is</h2>
+<ul>
+<li>Version: 1</li>
+<li>File: <code>docs/user-bible/user-bible-v1.html</code> (repo-relative; 516,415 bytes)</li>
+<li>Latest alias: <code>docs/user-bible/latest.html</code></li>
+<li>Absolute path: <code>/tmp/ub-test/happy/docs/user-bible/user-bible-v1.html</code></li>
+<li>Commit: <code>094e9f4</code>, branch <code>liquid-eq</code></li>
+<li>Nothing was pushed.</li>
+</ul>
+<h2>How to open it</h2>
+<ul>
+<li>Open the HTML file directly in a browser from disk. It is self-contained: no scripts, no external URLs.</li>
+<li>Or copy the file to any static host.</li>
+<li>GitHub&#39;s raw view shows the HTML source, not the rendered page.</li>
+</ul>
+<h2>What the crawl captured</h2>
+<ul>
+<li>Crawl ran against a throwaway Postgres container and the dev server on port 5173.</li>
+<li>8 screens captured, all HTTP 200: <code>/</code>, <code>/fonts</code>, <code>/viz</code>, <code>/viz/mesh</code>, <code>/viz/raymarch</code>, <code>/viz/metaballs2d</code>, <code>/gallery</code>, <code>/upload</code>.</li>
+<li>The three <code>/viz/&lt;technique&gt;</code> canvases rendered black under headless WebGL, so they are marked blank.</li>
+<li>No extra pages were found beyond the seed list.</li>
+<li>Cleanup: the container, <code>.env</code> and gallery dir were removed. <code>git status</code> in the repo shows <code>?? node_modules</code>, which existed before the crawl.</li>
+</ul>
+<h2>Gate results</h2>
+<ul>
+<li>Coverage: <code>ok: true</code>. All 12 checks passed (no script, no external URL, no horizontal overflow at 390 px, no serious axe violations, and so on).</li>
+<li>Critic: ship <code>true</code>, score 82, blockers none.</li>
+<li>Critic notes to act on:<ul>
+<li>The banner says &quot;screenshots captured: 0 of 6&quot;, which contradicts the page. Fix the counter.</li>
+<li>Add a short intro on which persona to read first.</li>
+<li>Identifiers break mid-word in narrow tables at 390 px.</li>
+<li>The guest &quot;shared link&quot; arrival is a guess and should be marked as a hypothesis.</li>
+</ul>
+</li>
+</ul>
+<h2>Open questions (from paths.json)</h2>
+<ol>
+<li>Is the open, unauthenticated upload intended? Who removes an unwanted photo?</li>
+<li>After uploading, does the contributor know to click &#39;Gallery&#39; in the nav?</li>
+<li>Which screen is meant to be the landing page: home or gallery?</li>
+<li>What does a person see when saving a pick fails?</li>
+<li>Should a search outage look different from &#39;No results&#39;?</li>
+<li>Why does the visualizer default to the Spotify source when it rarely has a preview?</li>
+<li>How does a visitor recover after denying microphone permission?</li>
+<li>Disagreement: features/site-nav/feature.md says the nav links Home and Fonts; the code links Gallery and Upload.</li>
+<li>Disagreement: features/reveal-and-viz-nav/feature.md says a &#39;Viz&#39; nav link was added; the code and test say there is none.</li>
+<li>Disagreement: tests/e2e/smoke.spec.ts expects /health to return db ok, which needs a live Postgres.</li>
+<li>Disagreement: the smoke test calls home a &#39;hello-world heading&#39;, but home now has a billboard and search.</li>
+<li>Disagreement: README says React Router 7 and Stage 2, and lists four routes; the code runs React Router 8 with ten routes.</li>
+<li>Disagreement: the billboard feature doc describes a &#39;top 6&#39; ranking; no data feeds the cards.</li>
+<li>Are uploaded photos kept across redeploys?</li>
+<li>Is the gallery test meaningful when it accepts both the empty state and the slideshow?</li>
+</ol>
+<h2>Rerun</h2>
+<pre><code class="language-bash">/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start 184c7aff-d637-4879-be19-10eedb04ff61 --var repo-path=/tmp/ub-test/happy
+</code></pre>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/handoff/outputs/handoff.md">http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/handoff/outputs/handoff.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><p class="desc">No stage asked the user a question.</p></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/code-read/outputs/routes.json">Code read · routes.json</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/code-read/outputs/code-notes.md">Code read · code-notes.md</a> <span class="type">5.9KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/crawl/outputs/crawl.json">Crawl · crawl.json</a> <span class="type">3.5KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/crawl/outputs/shots">Crawl · shots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/crawl/outputs/crawl-note.md">Crawl · crawl-note.md</a> <span class="type">1.1KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/toolkit/outputs/tools">Toolkit · tools.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/personas/outputs/personas.json">Personas · personas.json</a> <span class="type">4.4KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/paths/outputs/paths.json">Paths · paths.json</a> <span class="type">29KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/coverage/outputs/report.json">Coverage · report.json</a> <span class="type">1.3KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/critic/outputs/verdict.json">Critic · verdict.json</a> <span class="type">2.0KB</span></li><li><a href="http://localhost:4810/api/runs/48a1e50b-0337-478d-b874-476c4ff07934/files/stages/publish/outputs/publish.json">Publish · publish.json</a> <span class="type">200B</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Code read</td><td>gather</td><td>done</td><td>sonnet</td><td>1 min 11 s</td><td>499K</td></tr>
+<tr><td>Crawl</td><td>crawl</td><td>done</td><td>sonnet</td><td>1 min 28 s</td><td>457K</td></tr>
+<tr><td>Toolkit</td><td>crawl</td><td>done</td><td>opus</td><td>4 min 43 s</td><td>1.3M</td></tr>
+<tr><td>Personas</td><td>personas</td><td>done</td><td>sonnet</td><td>21 s</td><td>149K</td></tr>
+<tr><td>Paths</td><td>paths</td><td>done</td><td>opus</td><td>3 min 02 s</td><td>646K</td></tr>
+<tr><td>Assemble</td><td>build</td><td>done</td><td>script</td><td>2 s</td><td>0</td></tr>
+<tr><td>Coverage</td><td>check</td><td>done</td><td>script</td><td>3 s</td><td>0</td></tr>
+<tr><td>Critic</td><td>check</td><td>done</td><td>sonnet</td><td>37 s</td><td>331K</td></tr>
+<tr><td>Publish</td><td>deliver</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+<tr><td>Handoff</td><td>report</td><td>done</td><td>haiku</td><td>19 s</td><td>129K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>User bible (test) · handoff</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="handoff.md">Raw markdown</a></p><h1>User bible handoff: /tmp/ub-test/stress</h1>
+<h2>Where the bible is</h2>
+<ul>
+<li>Version: 3 (<code>&lt;meta name=&quot;bible-version&quot;&gt;</code> and <code>#bible-version</code> in the banner)</li>
+<li>File: <code>docs/user-bible/user-bible-v3.html</code> (745,084 bytes)</li>
+<li>Latest alias: <code>docs/user-bible/latest.html</code></li>
+<li>Commit: <code>e6489d9</code> on branch <code>main</code>, one commit made by the publish stage</li>
+<li>Nothing was pushed.</li>
+</ul>
+<h2>How to open it</h2>
+<ul>
+<li>From disk: open <code>user-bible-v3.html</code> in any browser. It is one self-contained file with no external requests.</li>
+<li>From a static host: upload the file as-is. Do not use GitHub&#39;s raw view, which shows the HTML source and not the rendered page.</li>
+</ul>
+<h2>What the crawl captured</h2>
+<p>The crawl ran. It started <code>next dev --port 3737</code> with a placeholder Supabase URL, because the repo has no <code>.env</code> and no reachable Supabase. The server was stopped and the repo was left clean.</p>
+<ul>
+<li>7 screens captured, each with a JPEG and an ARIA snapshot. All returned 200.</li>
+<li>Every screen redirected to <code>/login</code> because no session existed. Only <code>/login</code> shows its own content.</li>
+<li>The four <code>/itineraries/:id</code> screens used a placeholder id, so their images show the login page, not the real plan screens. The authenticated screens are not in the bible.</li>
+</ul>
+<h2>Gate results</h2>
+<ul>
+<li>Coverage: <code>ok: true</code>. All 12 checks passed, including no script, no external URLs, no horizontal overflow at 390 px, zero serious or critical axe violations, and size under 5 MB.</li>
+<li>Critic: <code>ship: false</code>, score 74.<ul>
+<li>Blocker: at 390 px the &quot;All routes&quot; table on the sitemap is still broken. Cells wrap mid-word (<code>lay/ou/t</code>, <code>/logi/n</code>). The same CSS hits the summary tables. Suggested fix: <code>table{min-width:40rem}</code> inside <code>.scroll</code>.</li>
+<li>Notes: the banner says &quot;7 of 7 screens captured&quot; although all of them are the login redirect; <code>route-home</code> shows the sign-in image under plan-list text; the summary hides its Promises and Environment tables in closed details; <code>path-organiser-create-and-invite</code> visits the edit route three times.</li>
+</ul>
+</li>
+</ul>
+<h2>Open questions (from paths.json)</h2>
+<ol>
+<li>Which port and redirect URL should the app use: 3000, 3737 or 4000?</li>
+<li>Where does a new developer get <code>SUPABASE_SERVICE_ROLE_KEY</code>?</li>
+<li>Which document holds the feature spec?</li>
+<li>Where should a signed-out visitor land after signing in from a deep link?</li>
+<li>Should invited participants see the Edit page at all?</li>
+<li>How does an invitee learn they were invited?</li>
+<li>Who will deliver reminders, and through which channel?</li>
+<li>Is <code>/itineraries/:id/view</code> meant to replace the front page or be deleted?</li>
+<li>What happens with an invalid timezone on an activity?</li>
+<li>Is the day-by-day grouping meant to show?</li>
+<li>What does a removed participant see?</li>
+<li>Should deleting an activity or removing a person ask for confirmation?</li>
+<li>What should happen if the owner-row insert fails after a plan is created?</li>
+</ol>
+<h2>Rerun</h2>
+<pre><code>/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start 184c7aff-d637-4879-be19-10eedb04ff61 --var repo-path=/tmp/ub-test/stress
+</code></pre>
+</body></html>

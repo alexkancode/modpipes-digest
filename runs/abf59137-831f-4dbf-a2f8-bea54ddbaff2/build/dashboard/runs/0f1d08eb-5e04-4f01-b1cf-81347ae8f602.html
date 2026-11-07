@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 12:25</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-running"><span class="dot" aria-hidden="true"></span>running</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">The Run dashboard pipeline, being built and tested</p>
+  <p class="summary">The pipeline builder was asked for a pipeline that shows every run in a chosen period as a static dashboard. It has confirmed the ask, planned the stages, and is now testing the pipeline.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T18:25:26.607Z">Fri 6 Nov, 12:25</time></span><span>Still running at build time</span><span>4 h 44 min</span><span>6.4M tokens</span><span class="id">0f1d08eb-5e04-4f01-b1cf-81347ae8f602</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/run.json">http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/0f1d08eb-5e04-4f01-b1cf-81347ae8f602.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from k73m6ng.hammered-out-understanding</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>Please build a pipeline that can look at everything run in a period of time (yesterday, today, the last 1 hour as defaults) and put together the pipeline name, the variables or user input collected by a concierge/input stage, and the outputs rendered and/or clickable in a beautiful dashboard showcasing the fruits of this high tech agentic building</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><p class="desc">This run has no starred output present.</p></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:27:12.345Z">Fri 6 Nov, 12:27</time></p>
+    <div class="q"><p class="question">Which runs belong on the dashboard for a period? Right now the last 24 hours hold 30 runs: real pipelines (Game forge, Pixel loop forge, Game forge concierge), &#39;(test)&#39; copies the pipeline builder ran, and the pipeline builder&#39;s own runs.</p><p class="options">Options: Every run, with filters (Recommended) · Hide test and builder runs · Only finished runs</p><p class="answer">Every run, with filters (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:29:17.076Z">Fri 6 Nov, 12:29</time></p>
+    <div class="q"><p class="question">How should a run&#39;s outputs show on the dashboard? A run can hold a playable game folder, a gallery of PNGs, markdown reports, JSON scores and screenshot folders. Starred outputs are the ones a person is meant to open.</p><p class="options">Options: Cards, then a run page (Recommended) · One long page, all embedded · Cards with links only</p><p class="answer">Cards, then a run page, but with the cards being mini hero&#39;s in a way, like full background renders of the primary output where possible</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:30:55.378Z">Fri 6 Nov, 12:30</time></p>
+    <div class="q"><p class="question">Where should the finished dashboard live? Every output of a run is served by the modpipes server at http://localhost:4810, so hero backgrounds, frames and links can point at outputs of other runs without copying them.</p><p class="options">Options: Dashboard run output only (Recommended) · Also a fixed path on disk · Fixed path only</p><p class="answer">Dashboard run output only (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:52:31.045Z">Fri 6 Nov, 12:52</time></p>
+    <div class="q"><p class="question">How much model work per run on the dashboard? A script can collect names, inputs, questions and answers, status, times, tokens and output links on its own. A model stage can add what a script cannot: a one-line caption of what each run made, read from its report.</p><p class="options">Options: Caption per run, haiku (Recommended) · Script only, no captions · Caption plus a period overview</p><p class="answer">caption per run using opus latest</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:54:09.716Z">Fri 6 Nov, 12:54</time></p>
+    <div class="q"><p class="question">Here is the pipeline as I understand it. Variables: period (today by default; also yesterday, last-hour, last-24h, last-7d, or an explicit from..to range, local time). Stages: (1) a script collects every run that started in the period from the modpipes CLI and run homes: pipeline name, variables, every question and answer a stage exchanged with you, status, times, tokens, and every output with its served URL, starred first. (2) A script renders a hero image per run with headless Chromium: a screenshot of the primary starred output (a game or site, an image, a video frame, or a typographic card for a report). (3) An opus stage reads each run&#39;s starred markdown and writes a one-line caption and a two-line summary per run. (4) A build stage assembles a static site as the starred dir output: a front page of hero cards with a filter bar for test, builder, failed and cancelled runs, and a run page per run with starred outputs embedded live and every other output linked. All links point at http://localhost:4810, so nothing is copied. Is that the pipeline you want?</p><p class="options">Options: Yes, build that · Yes, with changes</p><p class="answer">Yes, build that</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">7.2KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">671B</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">11KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">9.3KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">7.8KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">5.4KB</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">4.3KB</span></li><li><span class="absent">Test the pipeline · test-report.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/0f1d08eb-5e04-4f01-b1cf-81347ae8f602/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><span class="absent">Analyse the test · lessons-learned-site.html (absent)</span></li><li><span class="absent">Analyse the test · cli-tools-optional.md (absent)</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>30 min 41 s</td><td>983K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>2 min 17 s</td><td>767K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>1 min 35 s</td><td>187K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 14 s</td><td>255K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>1 min 58 s</td><td>654K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>19 min 59 s</td><td>3.6M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>running</td><td>default</td><td>32 s</td><td>0</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>waiting</td><td>default</td><td></td><td>0</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

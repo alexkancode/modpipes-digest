@@ -1,0 +1,27 @@
+Slow 90s trip hop crossed with Lisbon fado, sung in European Portuguese, set on a Lisbon hospital ward at night. D minor. The verses rock in 6/8 at 60 dotted-quarter beats per minute over a brushed, dusty drum loop sampled from worn vinyl. The choruses switch to a flat, heavy 4/4 boom-bap beat at 90 BPM, with the same eighth-note pulse. A deep sub bass walks a falling chromatic line, D, C sharp, C, B, B flat, A, one note per bar. Soft Rhodes chords and vinyl crackle sit underneath. A bright twelve-string Portuguese guitar answers the voice in tremolo in every gap, and it plays the chorus hook back after each title line. A low string pad enters only in the last chorus, where the mix thins to bass and voice, and a single tram bell rings once. The singer is a male countertenor in a fragile, breathy head voice, close to the microphone, with almost no vibrato. On the last chorus he holds one high note on "até" until it nearly breaks. The mood is three to five in the morning on a hospital ward: tired, tender and resigned.
+
+Create a 1-minute song with the following lyrics:
+
+[Verse 1]
+O relógio sobre a porta
+dá-te as três, enfermeira;
+a janela não se abre,
+a morfina pinga-lhe as horas.
+
+[Chorus]
+Canta até às cinco,
+fado do sal da mãe,
+o vinte e oito vem,
+canta até às cinco.
+
+[Verse 2]
+Ele empresta-te a malha da mãe,
+cheira a sal de Alcochete;
+mal te aperta a mão, e pede,
+e não sabes a letra.
+
+[Chorus]
+Cantas até às cinco
+sem letra, saudade,
+toca o sino do elétrico,
+canta até às cinco.

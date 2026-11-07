@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 11:25</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-running"><span class="dot" aria-hidden="true"></span>running</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">A user bible pipeline for site personas and paths, finishing its tests</p>
+  <p class="summary">The pipeline builder was asked for a pipeline that reads a website repo and maps its potential users and their conceptual paths. It built User bible, tested it on throwaway clones up to v3, and is now writing its lessons-learned site.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T17:25:53.566Z">Fri 6 Nov, 11:25</time></span><span>Still running at build time</span><span>5 h 43 min</span><span>8.2M tokens</span><span class="id">b31a9135-5ddf-425b-a511-0adfdee9f5c5</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/run.json">http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/b31a9135-5ddf-425b-a511-0adfdee9f5c5.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from kt6n75z.test-report</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>Please build a pipeline that can analyze a given website from a repo on this machine and capture all the potential users and potential conceptual paths a given user might take in the website and capture those to an output resource of a user-bible static site that gets copied to a documentation folder in that repo as a versioned file</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>User bible: test report</h1>
+<p>Pipeline <code>184c7aff-d637-4879-be19-10eedb04ff61</code>, tested on 2026-11-06 from 16:49 to 17:08 CST. The pipeline was tested at v1 and is now stored at v3. The test copy &quot;User bible (test)&quot; had a loop cap of 2, unchanged prompts and models, and has been deleted.</p>
+<h2>What ran</h2>
+<p>Both runs started at 16:50:09 on throwaway clones under <code>/tmp/ub-test/</code>. No real repo received a commit.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Input</th>
+<th>Duration</th>
+<th>Rounds</th>
+<th>Gate</th>
+<th>Published</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>happy <code>48a1e50b-0337-478d-b874-476c4ff07934</code></td>
+<td>clone of artist-invest-shop, branch liquid-eq at bb439b4, node_modules symlinked</td>
+<td>10m17s</td>
+<td>1</td>
+<td>coverage ok, critic ship true at 82</td>
+<td><code>docs/user-bible/user-bible-v1.html</code> and <code>latest.html</code>, commit 094e9f4</td>
+</tr>
+<tr>
+<td>stress <code>15735487-29dc-475e-a95c-13d3ac09bf80</code></td>
+<td>clone of itinerary (Next.js 16, Supabase login), both <code>docs/</code> and <code>documentation/</code>, a seeded <code>user-bible-v2.html</code>, no node_modules, crawl-minutes 3</td>
+<td>12m42s</td>
+<td>2, cap reached</td>
+<td>coverage ok, critic ship false at 74</td>
+<td><code>docs/user-bible/user-bible-v3.html</code> and <code>latest.html</code>, commit e6489d9</td>
+</tr>
+</tbody></table>
+<p>Stage timing in both runs:</p>
+<ul>
+<li>code-read: 1-2 min</li>
+<li>crawl: 1-1.5 min</li>
+<li>toolkit (opus): 5-6 min, the critical path</li>
+<li>personas: under 1 min</li>
+<li>paths: 2-3 min</li>
+<li>critic: about 1 min</li>
+</ul>
+<h2>What worked</h2>
+<ul>
+<li>Code-read found all 10 artist-invest-shop routes, including the three <code>viz/:technique</code> values, and all 11 itinerary routes with their guards. Evidence: <code>stages/code-read/outputs/routes.json</code> in each run.</li>
+<li>The happy crawl started a throwaway Postgres, ran migrations and captured 8 screens. It flagged the three WebGL canvases as blank, then removed the container and <code>.env</code>. Evidence: <code>48a1e50b.../stages/crawl/outputs/crawl-note.md</code> and <code>shots/</code> (16 files).</li>
+<li>The stress crawl ran <code>npm ci</code>, passed placeholder Supabase env vars and captured 7 screens. It recorded each redirect to /login. It removed node_modules, <code>.next</code> and <code>next-env.d.ts</code> and left <code>git status</code> empty.</li>
+<li>version.mjs picked <code>docs/</code> when both folders existed, and returned v3 after the seeded v2. An override of <code>documentation</code> returned v1. I checked this by hand.</li>
+<li>Publish staged exactly two files in one commit. Nothing was pushed. latest.html is byte-identical to the versioned file.</li>
+<li>The coverage check passed all 12 checks in both runs: no script, no external URL, no overflow at 390 px, axe clean, size under 5 MB.</li>
+<li>Personas were role-named and evidence-backed: 4 code-grounded and 2 labelled inferred on the happy run. Round 2 of the stress run acted on the critic&#39;s round 1 notes. It folded the phone persona into the visitor, added a plan-maintainer persona and added participant invite paths.</li>
+<li>The critic spot-checked three claims against the code each round. Both handoffs reported the gate result truthfully, including the stress run&#39;s ship false.</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li><p><strong>The critic blocks on CSS that no loop stage can fix.</strong> The stress critic blocked ship in rounds 1 and 2 on the sitemap table wrapping mid-word at 390 px. The toolkit&#39;s build.mjs owns that CSS and runs before the loop, so round 2 burned a full round for nothing. Evidence:</p>
+<ul>
+<li><code>~/.modpipes/runs/15735487-29dc-475e-a95c-13d3ac09bf80/stages/critic/rounds/1/</code></li>
+<li><code>~/.modpipes/runs/15735487-29dc-475e-a95c-13d3ac09bf80/stages/critic/outputs/verdict.json</code></li>
+</ul>
+<p>Fix in v2: rendering defects become notes that start with <code>render:</code> and cost score points, never blockers. The toolkit&#39;s CSS rules now say table cells never break inside a word, and the file column moves into the route article. <strong>Unconfirmed.</strong> I patched the critic prompt into both runs&#39; snapshots before stress round 2. Round 2 resumes the critic session and never resends the prompt, so the patch had no effect: the round 2 transcript contains no <code>render:</code>.</p>
+</li>
+<li><p><strong>The banner screenshot count is wrong.</strong> The happy banner read &quot;screenshots captured: 0 of 6&quot; while 8 images showed. build.mjs increments the counter while rendering articles, but the banner renders first. A <code>crawlBySlug</code> map also keeps only one of the three <code>viz/:technique</code> screenshots. Evidence:</p>
+<ul>
+<li><code>~/.modpipes/runs/48a1e50b-0337-478d-b874-476c4ff07934/stages/toolkit/outputs/tools/build.mjs</code> lines 60-70 and 138</li>
+</ul>
+<p>The stress toolkit, written separately, counted correctly. Fix in v3: count from crawl.json before writing markup, and show one screenshot per dynamic value. The toolkit smoke test now asserts that the fixture banner reads 1 of 3. <strong>Unconfirmed.</strong></p>
+</li>
+<li><p><strong>Scratch files land in shared /tmp.</strong> The happy personas stage wrote <code>/tmp/mkp.py</code> while the stress personas stage ran in parallel. No clobber was observed. Evidence: <code>48a1e50b.../stages/personas/transcript.jsonl</code>. Fix in v2: a shared rule to keep scratch files in the stage&#39;s work directory. <strong>Unconfirmed.</strong></p>
+</li>
+<li><p><strong>Repeated login screenshots, not fixed.</strong> On a site with login, all 7 stress screens show the same /login image under 7 titles, and the banner says 7 of 7 captured. The critic noted this twice. Fixing it needs a <code>finalUrl</code> field in the crawl.json contract, which touches crawl, build.mjs and paths. I left the contract unchanged and recorded a builder todo.</p>
+</li>
+<li><p><strong>observed is false on a path the crawl saw, not fixed.</strong> <code>path-visitor-guarded-deep-link</code> in the stress <code>paths.json</code> is marked observed false, but the crawl saw the redirect. Builder todo.</p>
+</li>
+</ol>
+<h2>Housekeeping</h2>
+<ul>
+<li>An earlier tester session left a test copy (<code>c06804cb...</code>) and two dead runs in attention: <code>0921d4b2...</code> and <code>0b2ee527...</code>. In each, the stages failed with &quot;process exited with code null&quot;. The crawl of run <code>0921d4b2...</code> had also leaked a Postgres container, <code>ub-0921d4b2-...-pg</code>. I cancelled both runs, deleted that copy and removed the container. The crawl&#39;s cleanup cannot run when the process is killed. The next tester should check <code>docker ps | grep ub-</code> after any server restart.</li>
+<li>The clones under <code>/tmp/ub-test/</code> remain as evidence and are safe to delete.</li>
+</ul>
+<h2>Lessons recorded</h2>
+<ul>
+<li>Real pipeline, critic: the loop cannot fix rendering, so render problems are notes.</li>
+<li>Real pipeline, toolkit: the banner counter bug, and the table that wraps mid-word.</li>
+<li>Tester table: run timings, and the finding that a snapshot patch does not reach a resumed round 2 session.</li>
+<li><code>lessons__pipeline_builder_todos</code> row 21: confirm v2 and v3, then add <code>finalUrl</code> for redirected screens.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Make one fresh run on a login site, such as an itinerary clone with both docs folders. Check three things:<ul>
+<li><code>verdict.json</code> holds <code>render:</code> notes and no layout blockers.</li>
+<li>The loop stops in round 1 when the content is sound.</li>
+<li>The banner count matches the img count.</li>
+</ul>
+</li>
+<li>Read the toolkit transcript. Confirm the smoke test checked the banner count (v3).</li>
+<li>Then build the <code>finalUrl</code> contract change for redirected screens (todo row 21).</li>
+</ol>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/kt6n75z/outputs/test-report.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T17:27:33.384Z">Fri 6 Nov, 11:27</time></p>
+    <div class="q"><p class="question">The pipeline takes a repo path as a variable. Which repo on this machine should the first test run analyse? (I scanned ~/Desktop/dev for web apps.)</p><p class="options">Options: artist-invest-shop (Recommended) · songstock · itinerary · potluck</p><p class="answer">artist-invest-shop (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:52:48.984Z">Fri 6 Nov, 12:52</time></p>
+    <div class="q"><p class="question">How should the pipeline learn the website? Reading the code finds routes, roles, forms and guards. Running the site and crawling it with Playwright adds real screenshots and observed navigation, but needs the repo to start cleanly (install, env vars, maybe a database).</p><p class="options">Options: Code read, crawl when it starts (Recommended) · Code read only · Code read plus mandatory crawl</p><p class="answer">Code read, crawl when it starts (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:53:20.569Z">Fri 6 Nov, 12:53</time></p>
+    <div class="q"><p class="question">&quot;Potential users&quot;: how far may the pipeline go beyond what the code proves? Code proves roles (guest, member, admin), auth gates and forms. Audiences such as &quot;first-time buyer on mobile&quot; are inferred.</p><p class="options">Options: Code-grounded plus inferred, labelled (Recommended) · Code-grounded only · Free imagination</p><p class="answer">Code-grounded plus inferred, labelled (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:54:24.062Z">Fri 6 Nov, 12:54</time></p>
+    <div class="q"><p class="question">The user bible lands in the repo&#39;s documentation folder &quot;as a versioned file&quot;. A static site is normally a directory, so which shape do you want? (Existing folder is reused: artist-invest-shop has docs/. A repo without one gets docs/.)</p><p class="options">Options: One self-contained HTML per version (Recommended) · Directory per version · One HTML, versioned by date and commit</p><p class="answer">One self-contained HTML per version (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:54:34.932Z">Fri 6 Nov, 12:54</time></p>
+    <div class="q"><p class="question">After the bible is copied into docs/user-bible/, should the pipeline commit it to the repo&#39;s git history?</p><p class="options">Options: Commit on the current branch (Recommended) · Leave uncommitted · Commit only if the tree is clean</p><p class="answer">Commit on the current branch (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T18:55:18.043Z">Fri 6 Nov, 12:55</time></p>
+    <div class="q"><p class="question">Here is my understanding. Please confirm or correct.
+
+Result: a &quot;user bible&quot; for a website whose repo lives on this machine: one self-contained HTML file (CSS, scripts, screenshots inlined) saved as docs/user-bible/user-bible-vN.html plus latest.html, committed on the current branch in one commit. N = highest existing version + 1.
+
+Content: a product summary; a sitemap of every route and screen with its guards and forms; personas, each citing the routes and roles it rests on, inferred ones marked as inferred; conceptual paths (journeys) per persona as step lists with flow diagrams, each step linking to a screen; dead ends and open questions; a version banner with the repo commit analysed.
+
+Method: stages read the code (routes, components, auth, forms, API handlers) and in parallel try to start the site following the repo&#39;s own README/QUICKSTART, including a throwaway Docker Postgres when the docs call for one, then crawl with Playwright for screenshots. Everything started gets stopped. If the site will not start, the bible ships without screenshots and says so.
+
+Quality gate: a script checks every route in the code appears in the bible and every persona has a path; a critic reviews coverage and clarity; at most three rounds.
+
+First test: artist-invest-shop (React Router 7, Postgres on 5455, currently not running). Is that right?</p><p class="options">Options: Yes, build that · Yes, but no Docker · No, let me correct it</p><p class="answer">Yes, build that</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">7.4KB</span></li><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">508B</span></li><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">8.9KB</span></li><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">9.5KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">8.4KB</span></li><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">6.6KB</span></li><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">2.8KB</span></li><li><a href="http://localhost:4810/api/runs/b31a9135-5ddf-425b-a511-0adfdee9f5c5/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><span class="absent">Analyse the test · lessons-learned-site.html (absent)</span></li><li><span class="absent">Analyse the test · cli-tools-optional.md (absent)</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>1 h 32 min</td><td>803K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>1 min 52 s</td><td>467K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>1 min 46 s</td><td>353K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 21 s</td><td>346K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>2 min 03 s</td><td>608K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>10 min 26 s</td><td>1.6M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>18 min 38 s</td><td>4.0M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>running</td><td>default</td><td>1 min 41 s</td><td>0</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

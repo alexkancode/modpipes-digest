@@ -1,0 +1,75 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Topic expert forge · handoff</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="handoff.md">Raw markdown</a></p><h1>Handoff: pixel-art-polish-depth</h1>
+<p>Topic: what makes pixel art assets feel polished, like they have depth and beauty.</p>
+<p><strong>Result: passed, 86/100 (pass mark 80), in 1 round.</strong></p>
+<h2>The agent</h2>
+<ul>
+<li>Name: <code>pixel-art-polish-depth</code></li>
+<li>File: <code>/home/alex/.claude/agents/pixel-art-polish-depth.md</code></li>
+<li>Installed: 2026-11-06T23:23:14</li>
+</ul>
+<h2>How to use it</h2>
+<ul>
+<li>In Claude Code, one task: say &quot;use the pixel-art-polish-depth subagent to …&quot;</li>
+<li>A whole session: <code>claude --agent pixel-art-polish-depth</code></li>
+<li>On a modpipes stage: set <code>&quot;agent&quot;: &quot;pixel-art-polish-depth&quot;</code> in the stage config.</li>
+</ul>
+<h2>Reference images</h2>
+<ul>
+<li>Folder: <code>/home/alex/.claude/agents/pixel-art-polish-depth-images/</code></li>
+<li>Count: 16</li>
+<li>Gallery: <code>/home/alex/.claude/agents/pixel-art-polish-depth-images/index.md</code> (source page URL and direct URL for each image)</li>
+</ul>
+<h2>Examiner scores (round 1 of 1)</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Score</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expert</td>
+<td>38</td>
+<td>40</td>
+</tr>
+<tr>
+<td>Critique</td>
+<td>14</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Making</td>
+<td>14</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Usable</td>
+<td>20</td>
+<td>20</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>86</strong></td>
+<td>100</td>
+</tr>
+</tbody></table>
+<p>The agent passed. The full report is in <a href="../../examiner/outputs/report.md">report.md</a>. Raw scores are in <a href="../../examiner/outputs/scores.json">scores.json</a>. The probe transcripts and quiz are in <a href="../../examiner/outputs/exam/">exam/</a>.</p>
+<p>Drawing the agent made during the exam: <a href="../../examiner/outputs/exam/drawing.png">drawing.png</a> (160x96 native, shown at 6x).</p>
+<h2>What the examiner still wants</h2>
+<p>The agent passed, but the examiner listed these fixes. They are optional. Edit the agent file by hand or rerun to apply them.</p>
+<ol>
+<li><strong>Critique, light direction.</strong> Section 5&#39;s note for file 14 repeats the caption&#39;s &quot;one top-left light&quot;. The measured values say the cubes are lit from the upper right and the rocks from the left. Correct the note. Add to Method 1 step 3: sample one pixel on each visible face, compare the values, and state the implied light direction instead of trusting a caption.</li>
+<li><strong>Making, make the final check a gate.</strong> Method 4 step 6 should block delivery until the colour count is at or below the planned palette size, the greyscale thumbnail has been opened, and the light direction matches the light source&#39;s position.</li>
+<li><strong>Making, shading rules in 4a.</strong><ul>
+<li>Place any visible sun, moon or lamp on the side the shading assumes.</li>
+<li>Rim-light faces that turn toward a local light.</li>
+<li>Build tree canopies as clumps lit from one side, not as discs with centred highlights.</li>
+</ul>
+</li>
+<li><strong>Making, palette budget.</strong> Add about 24–32 colours for a scene. Make glows from existing ramp colours. The exam drawing used 55 colours.</li>
+<li><strong>Expert, palette construction.</strong> Explain how the cited palette&#39;s ramps add up to its total. Fetch the contents of Saint11&#39;s tutorial and AdamCYounis&#39;s ramp method, or keep marking them unread.</li>
+</ol>
+<p>Keep: the <code>[contested]</code> and <code>[unverified]</code> tagging, a URL beside each fact, the provenance line, the audit command, and the Pass/Weak/Fail-per-trait format.</p>
+</body></html>

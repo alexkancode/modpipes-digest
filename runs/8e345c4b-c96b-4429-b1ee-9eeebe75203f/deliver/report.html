@@ -1,0 +1,199 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Game forge v2 · report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="report.md">Raw markdown</a></p><h1>Last Light Pond: delivery report</h1>
+<h2>Concept and pitch</h2>
+<p>Concept: a frog hopping between lily pads to catch fireflies before the pond freezes over.</p>
+<p><strong>Pitch:</strong> A frog hops between drifting lily pads on a night pond, snapping up fireflies whose warmth holds back the ice until dawn.</p>
+<p>It is a single-screen, top-down arcade survival game with a score chase. One run is one night of 180 s. Catch fireflies to push back a ring of ice that is closing in. If you are still on an open pad at dawn you win and get a bonus for the open water left. If your pad freezes under you, you lose. It uses plain Canvas 2D with no library, and every sound is synthesised in WebAudio.</p>
+<h2>How to play</h2>
+<ul>
+<li><strong>Goal:</strong> survive to dawn (the moon crossing the top strip shows how much night is left), or score as high as you can before you freeze.</li>
+<li><strong>Hop:</strong> click or tap an open pad within range, or press the arrow keys / WASD to hop to the nearest open pad in that direction. Hops never land in the water. A pad that is out of range or frozen gets a &quot;nope&quot; croak.</li>
+<li><strong>Snap:</strong> click or tap a firefly, or press Space to snap the nearest firefly in reach. You can snap during a hop.</li>
+<li><strong>Warmth:</strong> each firefly pushes the ice back (+3 px, a golden firefly +10). Pads thaw again when the ice recedes past them. When your own pad starts to frost and creak, hop inward.</li>
+<li><strong>Score:</strong> a firefly is worth 10 and a golden one 50. A catch made mid-hop scores double. Catches less than 2 s apart build a combo up to ×5. Reaching dawn adds 500 + 2 × the open-water radius. Your best score is saved in localStorage.</li>
+<li><strong>Other keys:</strong> P / Esc pauses, M mutes, V toggles reduced motion, and R / Enter / Space or a click restarts from the game-over screen.</li>
+</ul>
+<h2>How to host</h2>
+<p><code>game/</code> is a self-contained static folder (228 kB) with no CDN dependencies and no build step. To host it, copy the folder to any static host (GitHub Pages, Netlify, S3, itch.io as an HTML zip) and open <code>index.html</code>. It also runs straight from disk over <code>file://</code>. Add <code>?seed=N</code> to the URL to replay a fixed layout.</p>
+<p>Delivery check: I loaded <code>game/index.html?seed=1</code> from <code>file://</code> in headless Chrome. It reached <code>title</code>, <code>__game.start()</code> moved it to <code>play</code>, and Space caught firefly #1 (score 10, caught 1). There were no console errors and no failed requests, and it ran at 59.9 fps. The title frame is saved as <code>screenshots/deliver-check-title.png</code>.</p>
+<h2>The science applied</h2>
+<p>The brief set the numbers and the fun brief (<code>stages/fun/outputs/fun-brief.md</code>) set the principles. The fun brief draws on Flow, MDA, SDT (Ryan, Rigby and Przybylski), Hopson&#39;s reward schedules, Swink and Cook on game feel and skill atoms, Juul on failure, and Lazzaro&#39;s four keys. Before fixing any numbers, the GDD ran a balance sim over 24 seeds per strategy. That sim drove most of its decisions:</p>
+<table>
+<thead>
+<tr>
+<th>GDD decision</th>
+<th>Principle it serves</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>The ice ring is the only threat and grows linearly, v(t) = 0.8 + 0.012·t, with no spikes</td>
+<td>Flow channel, and MDA&#39;s &quot;constant rate tax&quot; fix. Hopson: sudden spikes drive players away</td>
+<td>Idle play freezes at 141 s, exactly as predicted</td>
+</tr>
+<tr>
+<td>Thaw per catch cut from +6 to +3 (golden +10)</td>
+<td>Juul: the &quot;fail some, then complete&quot; group rated games highest</td>
+<td>At +6 the sim&#39;s novice bot won almost every run. At +3 it sits at the fail-then-win edge</td>
+</tr>
+<tr>
+<td>Fireflies spawn at least 120 px from the frog and are shy within 130 px</td>
+<td>Fun brief §0 (camping must fail) and Cook (keep the hop atom in use all game)</td>
+<td>Camping on the centre pad freezes at 146–157 s</td>
+</tr>
+<tr>
+<td>Frozen pads thaw again when R recedes, and catches add the same warmth at any combo</td>
+<td>MDA&#39;s no-death-spiral rule: subsidise the losing player and reward the leader only with score</td>
+<td>Pads were seen re-opening in the bots&#39; probes (<code>padsOpen</code> 11 → 9 → up again)</td>
+</tr>
+<tr>
+<td>Golden firefly at a seeded 15–25 s jitter, worth about 5× in every channel</td>
+<td>Hopson: variable-ratio rewards on top of an avoidance schedule, so players don&#39;t clock-watch</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Rigid pad rotation, and every pad has a neighbour 70–135 px further in</td>
+<td>SDT competence (β = .41 for continued play): a death should never be stranding the player can&#39;t control</td>
+<td>The sim showed stranding deaths at 51–75 s with differential drift, and none with rigid rotation</td>
+</tr>
+<tr>
+<td>Hops can&#39;t miss, the range ring wobbles on a refused click, and snap hit-testing is lenient</td>
+<td>SDT: intuitive controls lead to competence</td>
+<td>Every bot hop and snap verb worked in all 4 rounds</td>
+</tr>
+<tr>
+<td>The first firefly is tame and within reach. Fireflies stay unshy until 3 catches. The hop hint appears only when needed</td>
+<td>Cook&#39;s skill atoms and teaching within 30 s without a tutorial</td>
+<td>Every bot made its first catch by about 15 s</td>
+</tr>
+<tr>
+<td>Pad frost warning 3 s ahead with a creak, and a death card that names the gap (&quot;27 fireflies short of dawn&quot;, &quot;Your pad iced over: hop inward…&quot;)</td>
+<td>Juul: players who blame themselves come back. Lazzaro: fiero after frustration</td>
+<td>Death card verified on screen in round 4</td>
+</tr>
+<tr>
+<td>Squash, landing ripple, 40–60 ms hit-pause, a combo chime rising a whole tone per step, no shake on normal catches</td>
+<td>Swink: polish sells physicality, with restraint</td>
+<td>Audio scored 9 in rounds 2–4</td>
+</tr>
+<tr>
+<td>Warm amber fireflies against cool ice; frog is the highest-contrast object</td>
+<td>Art brief: warm means reward, cool means danger. Reads as the concept at a glance</td>
+<td>Reads-as-concept went from 7 to 9</td>
+</tr>
+</tbody></table>
+<p>Polish added one deliberate deviation. The thaw cap falls from 260 to 215 across the night (<code>CAP_FALL</code>), so skilled players still feel the ice in Act 2. Their R at 120 s dropped from 200–250 to 200–230. A novice assist (a bright firefly one hop away every 10 s) was tried and then reverted, because over 24 seeds it cut novice dawns from 11/24 to 7/24.</p>
+<h2>Play-test scores per round</h2>
+<p>Each criterion is scored out of 10 and the total out of 100. Ship requires 80 or more with no blockers. Rounds 1–3 come from <code>stages/verdict/rounds/&lt;n&gt;/scores.json</code> and round 4 from <code>stages/verdict/outputs/scores.json</code>. The polish changelog (12:05) predates the round 4 scores (12:11), and the verdict re-read build <code>a5e8001b</code>, so the delivered build is the one that was scored.</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>R1</th>
+<th>R2</th>
+<th>R3</th>
+<th>R4 (final)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reads as concept</td>
+<td>7</td>
+<td>8</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Core loop and flow</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Game feel</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Onboarding</td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Art readability</td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Audio feedback</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Acceptance checklist</td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>70</strong></td>
+<td><strong>78</strong></td>
+<td><strong>78</strong></td>
+<td><strong>81</strong></td>
+</tr>
+<tr>
+<td>Blockers</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Verdict</td>
+<td>ITERATE</td>
+<td>ITERATE</td>
+<td>ITERATE</td>
+<td><strong>SHIP</strong></td>
+</tr>
+</tbody></table>
+<p>What moved each round:</p>
+<ul>
+<li><strong>Round 1 (70):</strong> blocked because the game-over screen never showed in the bots&#39; captures. The frog also blended into the same-green pads.</li>
+<li><strong>Round 2 (78):</strong> the over card and the frog outline were fixed and the blocker was cleared. Notes: shrink the over panel, dim the pond behind it, and make the fireflies warmer.</li>
+<li><strong>Round 3 (78):</strong> the frozen frog spotlight, the smaller card, the title plate, the falling thaw cap and the gentler early rim were added. The total held at 78, because fireflies still read cold and there was no death or dawn sample.</li>
+<li><strong>Round 4 (81):</strong> amber fireflies, a faceted ice sheet, a legible score/best plate and a combo chime on every step. A death card was finally captured (novice-1, frozen at 1:18).</li>
+</ul>
+<p>Final round bot results at t = 120 s: skilled bots reached R 228/210 with 3380 and 1870 points (68 and 51 catches), casual bots R 207/203 (1110 and 1140), and novice-2 R 125 with one pad open (210 points). Novice-1 froze at 79.1 s. Performance was 60 fps, worst frame 16.8 ms, 0 long frames and 0 errors.</p>
+<h2>Final verdict</h2>
+<p><strong>SHIP at 81/100 with no blockers.</strong> The whole loop (title, play, freeze, game over, restart) reads as the concept, runs at a locked 60 fps, and scales by skill in the right order. The weakest areas are core loop and flow (7) and the acceptance checklist (7). In all four rounds the harness stopped at 120 s, so dawn, the win card and the dawn bonus were only verified by the polish stage&#39;s own runs. Those runs report greedy bots reaching dawn 24/24, novices 11/24, and a median novice death at 148 s.</p>
+<h2>Next iteration</h2>
+<ol>
+<li><strong>Sample the full night.</strong> Run the bots for at least 185 s so dawn, the bonus and the win card are seen by the harness (checklist items 4, 14 and 15). Also add a device-scale-2 run and a heap-trend run.</li>
+<li><strong>Prevent early rim deaths.</strong> The one early loss (79 s, R 187, 9 pads still open) was a novice dying on a single outer pad. When the frog&#39;s pad has under 5 s left, pulse a ring on the best inward pad and raise the creak&#39;s pitch, so a first-timer can save themselves.</li>
+<li><strong>Move the game-over card.</strong> It still overlaps the top of the pond and the score plate. Shrink it or place it clear of both, so the frozen pond stays visible behind it.</li>
+<li><strong>Give novices more agency.</strong> Novices end at R about 125 with one pad open. The tried assist made things worse, so look at the pacing of <code>PAD_EDGE</code> and the warning instead of adding firefly supply.</li>
+<li><strong>Frame the pond.</strong> The pond is a disc in empty black margins. Fill them with reeds or a shore to give late play, which happens in a small dark core, more to look at.</li>
+</ol>
+<h2>Contents</h2>
+<ul>
+<li><code>game/</code>: the shipped build (index.html, js/, assets/ with sfx.js and manifest.json).</li>
+<li><code>screenshots/</code>: the final round&#39;s bot captures (novice, casual and skilled, two seeds each, at title, 5 s, 30 s, 60 s and over), plus <code>deliver-check-title.png</code> from the delivery load check.</li>
+</ul>
+</body></html>

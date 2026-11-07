@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Instideck · ChatGPT ads plan</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --bg:#141015; --surface:#1c161d; --line-strong:#3a2e3c;
+  --text:#f0e9ef; --muted:#a8a0aa; --accent:#e58ab0; --btn:#8a2e56; --btn-text:#fff;
+  --glow:rgba(138,46,86,.42);
+  --radius:14px;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:clamp(1rem,.96rem + .2vw,1.0625rem); line-height:1.6;
+  color:var(--text); background:var(--bg);
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#fbf8fa; --surface:#ffffff; --line-strong:#dccfd8;
+    --text:#221a22; --muted:#6a5f6c; --accent:#8a2e56; --glow:rgba(138,46,86,.14); }
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{margin:0; min-height:100vh; overflow-wrap:anywhere;
+  background:radial-gradient(60rem 26rem at 50% -8rem,var(--glow),transparent 70%) no-repeat,var(--bg)}
+main{max-width:42rem; margin:0 auto; padding:clamp(1rem,4vw,2rem) clamp(1rem,4vw,1.5rem) 4rem}
+h1,h2,h3{line-height:1.2; font-weight:650; letter-spacing:-.01em}
+h1{font-size:clamp(.8rem,.76rem + .2vw,.875rem); font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 1rem}
+h2{font-size:clamp(1.5rem,1.2rem + 1.4vw,2.1rem); margin:.2rem 0 1rem; outline:none}
+h3{font-size:clamp(1.05rem,1rem + .3vw,1.2rem); margin:0 0 .35rem}
+p{margin:0 0 1rem}
+a{color:var(--accent)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.88em}
+pre{white-space:pre-wrap; word-break:break-all; background:var(--surface); border:1px solid var(--line-strong); border-radius:10px; padding:.75rem .9rem; margin:0 0 .6rem}
+.num,table{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:.875rem}
+.eyebrow{font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0}
+
+/* progress rail */
+.rail ol{display:flex; gap:6px; list-style:none; margin:0 0 2rem; padding:0}
+.rail li{flex:1}
+.rail a{display:block; padding:.6rem 0; text-decoration:none}
+.rail a::before{content:""; display:block; height:4px; border-radius:4px; background:var(--line-strong)}
+.rail a[aria-current="step"]::before,.rail a.done::before{background:var(--accent)}
+.rail a.done::before{opacity:.5}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* screens */
+.step{padding:0 0 2.5rem}
+html:not(.js) .step + .step{border-top:1px solid var(--line-strong); padding-top:2.5rem}
+.promise{font-size:clamp(1.6rem,1.2rem + 2vw,2.5rem); line-height:1.15; font-weight:700; margin:0 0 1rem; color:var(--accent)}
+.lead{font-size:1.08em}
+.card{background:var(--surface); border:1px solid var(--line-strong); border-radius:var(--radius); padding:1rem 1.1rem; margin:0 0 1rem}
+.card > :last-child{margin-bottom:0}
+.decision{border-left:3px solid var(--accent)}
+.facts{display:grid; grid-template-columns:auto 1fr; gap:.35rem 1rem; margin:0 0 1rem}
+.facts dt{color:var(--muted)}
+.facts dd{margin:0}
+ul.plain,ol.plain{padding-left:1.1rem; margin:0 0 1rem}
+ul.plain li,ol.plain li{margin:.25rem 0}
+details{border:1px solid var(--line-strong); border-radius:10px; padding:.55rem .9rem; margin:0 0 .75rem; background:var(--surface)}
+details[open]{padding-bottom:.9rem}
+summary{cursor:pointer; font-weight:600}
+summary .muted{font-weight:400}
+.tag{display:inline-block; font-size:.75rem; font-weight:600; letter-spacing:.04em; padding:.05rem .5rem; border-radius:99px; border:1px solid currentColor; vertical-align:.1em}
+.tag.on{color:var(--accent)}
+.tag.off{color:var(--muted)}
+
+/* sources */
+a.source{text-decoration:none; white-space:normal}
+a.source .t{text-decoration:underline; text-underline-offset:2px}
+a.source .dom{color:var(--muted); font-size:.82em}
+.sources{font-size:.875rem; color:var(--muted); margin:-.25rem 0 1rem}
+
+/* creatives */
+article.creative{display:grid; grid-template-columns:clamp(5.5rem,28vw,9.5rem) 1fr; gap:1rem; align-items:start}
+article.creative img{width:100%; height:auto; border-radius:10px; display:block; border:1px solid var(--line-strong)}
+article.creative h3{margin-top:.1rem}
+.meta{font-size:.82rem; color:var(--muted); margin:0 0 .5rem}
+.actions{display:flex; flex-wrap:wrap; gap:.4rem; margin:.25rem 0 .6rem}
+
+/* controls */
+button,.btn{font:inherit; font-size:.85rem; line-height:1.2; border-radius:99px; padding:.45rem .85rem; cursor:pointer;
+  border:1px solid var(--line-strong); background:transparent; color:var(--text); text-decoration:none; display:inline-block}
+button:hover,.btn:hover{border-color:var(--accent)}
+button:focus-visible,.btn:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+html:not(.js) button[data-copy]{display:none}
+.pager{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 0; border-top:1px solid var(--line-strong)}
+.pager button{font-size:1rem; padding:.6rem 1.3rem}
+.pager .primary{background:var(--btn); border-color:var(--btn); color:var(--btn-text)}
+.pager button:disabled{opacity:.35; cursor:default}
+.keys{font-size:.8rem; color:var(--muted); text-align:center; margin:.25rem 0 0}
+
+/* checklist */
+.phase{font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:1.5rem 0 0}
+.checklist{list-style:none; padding:0; margin:0 0 1rem}
+.checklist > li{display:grid; grid-template-columns:1.4rem 1fr; gap:.6rem; padding:.85rem 0; border-bottom:1px solid var(--line-strong)}
+.checklist > li:last-child{border-bottom:0}
+.checklist input{width:1.15rem; height:1.15rem; margin:.25rem 0 0; accent-color:var(--btn)}
+.checklist label{font-weight:600; cursor:pointer}
+.checklist .detail{grid-column:2; font-size:.92rem}
+.checklist .detail p{margin:.25rem 0 .5rem}
+.checklist input:checked + label{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--accent)}
+
+table{width:100%; border-collapse:collapse; font-size:.9rem; margin:.25rem 0 .75rem}
+th,td{text-align:left; padding:.4rem .5rem .4rem 0; border-bottom:1px solid var(--line-strong); vertical-align:top}
+th{color:var(--muted); font-weight:600}
+td.r,th.r{text-align:right}
+
+.dates{display:grid; grid-template-columns:1fr auto; gap:.4rem 1rem; align-items:center; margin:.5rem 0 0}
+.dates output{font-weight:650}
+input[type=date]{font:inherit; color:var(--text); background:var(--bg); border:1px solid var(--line-strong); border-radius:8px; padding:.3rem .5rem}
+
+.quiet{font-size:.85rem; color:var(--muted); text-align:center; margin:0 0 1rem}
+#live{position:fixed; left:50%; bottom:1.25rem; transform:translateX(-50%); max-width:calc(100% - 2rem);
+  background:var(--surface); color:var(--text); border:1px solid var(--accent); border-radius:99px; padding:.5rem 1rem; font-size:.9rem;
+  margin:0; opacity:0; pointer-events:none}
+#live.show{opacity:1}
+/* clicks pass through the transition overlay to the new screen */
+::view-transition{pointer-events:none}
+@media (prefers-reduced-motion: no-preference){
+  #live{transition:opacity .25s ease}
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.2s}
+}
+@media (prefers-reduced-motion: reduce){
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none !important}
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Instideck · ChatGPT ads plan</h1>
+
+<nav class="rail" aria-label="Progress">
+  <ol>
+    <li><a href="#step-1"><span class="sr">Step 1: Product read</span></a></li>
+    <li><a href="#step-2"><span class="sr">Step 2: Audience and conversations</span></a></li>
+    <li><a href="#step-3"><span class="sr">Step 3: Creatives</span></a></li>
+    <li><a href="#step-4"><span class="sr">Step 4: Budget and bidding</span></a></li>
+    <li><a href="#step-5"><span class="sr">Step 5: Setup at ads.openai.com</span></a></li>
+    <li><a href="#step-6"><span class="sr">Step 6: Tracking</span></a></li>
+    <li><a href="#step-7"><span class="sr">Step 7: Kill criteria and review date</span></a></li>
+  </ol>
+</nav>
+
+<p id="sandbox-note" class="quiet" hidden>Open in new tab to save progress and follow links.</p>
+
+<!-- 1 · Product read -->
+<section class="step" id="step-1" aria-labelledby="h-1">
+  <p class="eyebrow">Step 1 of 7</p>
+  <h2 id="h-1" tabindex="-1">Product read</h2>
+  <p class="promise">Any Drive folder, instantly a slideshow.</p>
+  <p class="lead">Instideck plays the photos in a Google Drive folder as a fullscreen slideshow that advances on its own. Photos stream from Google to the browser, not through Instideck servers. Free gives 2 decks, Pro is $5/mo.</p>
+  <p class="sources">Source: <a class="source" data-kind="third-party" href="https://instideck.com" target="_blank" rel="noopener"><span class="t">Instideck landing page</span> <span class="dom">instideck.com · product site, third-party</span></a></p>
+
+  <dl class="facts">
+    <dt>Who</dt><dd>People with photos in Drive: families, event hosts, hobby photographers, teachers, small shops with a lobby screen. Needs a Google account.</dd>
+    <dt>Goal</dt><dd>Free signup with Google first. A Pro purchase is the deeper goal.</dd>
+    <dt>Live</dt><dd><span class="num">instideck.com</span> is live and takes payments, so there is no deploy step.</dd>
+  </dl>
+
+  <div class="card decision">
+    <p><strong>Decision:</strong> if this read is right, press Next. If it is wrong, rerun the pipeline with one sentence that says what the product is.</p>
+    <pre id="rerun">/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start b9afa7ec-8375-40a9-bb31-cd7aefffa6cf --var repo-path=/home/alex/Desktop/dev/dirslides-correct --var positioning="&lt;one sentence&gt;"</pre>
+    <div class="actions"><button type="button" data-copy="/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start b9afa7ec-8375-40a9-bb31-cd7aefffa6cf --var repo-path=/home/alex/Desktop/dev/dirslides-correct --var positioning=&quot;&lt;one sentence&gt;&quot;">Copy rerun command</button></div>
+    <p class="small muted">Example sentence: “A private lobby-screen slideshow for small businesses that runs from a Google Drive folder”. The ad groups, copy and cards all follow it.</p>
+  </div>
+</section>
+
+<!-- 2 · Audience and conversations -->
+<section class="step" id="step-2" aria-labelledby="h-2">
+  <p class="eyebrow">Step 2 of 7</p>
+  <h2 id="h-2" tabindex="-1">Audience and conversations</h2>
+  <div class="card decision">
+    <p><strong>Decision:</strong> launch groups A, B and C. Keep D and E paused for a second wave. The privacy hints (group F) join group A.</p>
+  </div>
+  <p>Ads show only to logged-in ChatGPT Free and Go users. People on paid seats, often professionals and school accounts, never see them. That is why D and E wait.</p>
+  <p class="sources">Source: <a class="source" data-kind="official" href="https://openai.com/index/chatgpt-ads-expands-across-europe/" target="_blank" rel="noopener"><span class="t">ChatGPT ads expands across Europe</span> <span class="dom">openai.com · official</span></a></p>
+  <p>Each ad group holds a bid and free-form context hints that describe a moment in a conversation. Hints steer placement but guarantee nothing. In one study about 1 in 7 ads had no topical link to the prompt.</p>
+  <p class="sources">Sources: <a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener"><span class="t">Ads developer docs</span> <span class="dom">developers.openai.com · official</span></a> · <a class="source" data-kind="third-party" href="https://www.seerinteractive.com/news/adweek-quotes-seer-chatgpt-ads" target="_blank" rel="noopener"><span class="t">Seer on ad relevance</span> <span class="dom">seerinteractive.com · third-party</span></a></p>
+
+  <details>
+    <summary>A · Drive folder as a slideshow <span class="tag on">launch</span></summary>
+    <p class="small muted">Moment: ChatGPT listed the workarounds and the user pushes back (“300 photos”, “don’t want to upload them again”).</p>
+    <ul class="plain small">
+      <li>turn a folder of Google Drive photos into a fullscreen slideshow without exporting them</li>
+      <li>play every picture in a shared Drive folder on a TV, one after another</li>
+      <li>present a Drive folder of images with no slide-building</li>
+      <li>loop a Drive photo folder on a screen at a party</li>
+      <li>show photos stored in Drive when Google Drive has no slideshow button</li>
+      <li>skip downloading a huge photo folder just to play it</li>
+      <li>put a Drive folder of HEIC iPhone photos on a big screen</li>
+      <li>shuffle the photos in a Drive folder and let them run on their own</li>
+      <li>slideshow tool that does not upload my photos to its own servers <span class="muted">(F)</span></li>
+      <li>display family photos without letting an AI app scan them <span class="muted">(F)</span></li>
+      <li>present Drive photos while keeping the folder private <span class="muted">(F)</span></li>
+    </ul>
+    <button type="button" data-copy="turn a folder of Google Drive photos into a fullscreen slideshow without exporting them&#10;play every picture in a shared Drive folder on a TV, one after another&#10;present a Drive folder of images with no slide-building&#10;loop a Drive photo folder on a screen at a party&#10;show photos stored in Drive when Google Drive has no slideshow button&#10;skip downloading a huge photo folder just to play it&#10;put a Drive folder of HEIC iPhone photos on a big screen&#10;shuffle the photos in a Drive folder and let them run on their own&#10;slideshow tool that does not upload my photos to its own servers&#10;display family photos without letting an AI app scan them&#10;present Drive photos while keeping the folder private">Copy group A hints</button>
+  </details>
+
+  <details>
+    <summary>B · Google Slides is the wrong tool <span class="tag on">launch</span></summary>
+    <p class="small muted">Moment: partway through Slides or an add-on, the user hits an error, a paywall or too many steps.</p>
+    <ul class="plain small">
+      <li>avoid building a Google Slides deck just to show photos on a loop</li>
+      <li>bulk image import into Slides failed halfway through a big folder</li>
+      <li>need photos to auto-advance without setting timings slide by slide</li>
+      <li>an add-on wants a paid plan to import a few hundred images</li>
+      <li>a deck of only photos with no text, and Slides feels like overkill</li>
+      <li>keep the slideshow in sync when new photos are added to the Drive folder</li>
+      <li>show a photo folder without giving an add-on access to all my Drive files</li>
+    </ul>
+    <button type="button" data-copy="avoid building a Google Slides deck just to show photos on a loop&#10;bulk image import into Slides failed halfway through a big folder&#10;need photos to auto-advance without setting timings slide by slide&#10;an add-on wants a paid plan to import a few hundred images&#10;a deck of only photos with no text, and Slides feels like overkill&#10;keep the slideshow in sync when new photos are added to the Drive folder&#10;show a photo folder without giving an add-on access to all my Drive files">Copy group B hints</button>
+  </details>
+
+  <details>
+    <summary>C · Events and family <span class="tag on">launch</span></summary>
+    <p class="small muted">Moment: a deadline (“tonight”) or a shared folder that guests filled. Memorial conversations are left out on purpose.</p>
+    <ul class="plain small">
+      <li>put a shared folder of party photos on the living-room TV</li>
+      <li>run a birthday slideshow from photos guests uploaded to Drive</li>
+      <li>play wedding reception photos from a Drive folder on a projector</li>
+      <li>cast a family photo folder to the TV for a holiday gathering</li>
+      <li>show a retirement or anniversary photo collection from Drive</li>
+      <li>collect photos from relatives in one Drive folder and present them together</li>
+      <li>start a slideshow of a vacation photo folder for visiting relatives</li>
+    </ul>
+    <button type="button" data-copy="put a shared folder of party photos on the living-room TV&#10;run a birthday slideshow from photos guests uploaded to Drive&#10;play wedding reception photos from a Drive folder on a projector&#10;cast a family photo folder to the TV for a holiday gathering&#10;show a retirement or anniversary photo collection from Drive&#10;collect photos from relatives in one Drive folder and present them together&#10;start a slideshow of a vacation photo folder for visiting relatives">Copy group C hints</button>
+  </details>
+
+  <details>
+    <summary>D · Photographers and small businesses <span class="tag off">paused</span></summary>
+    <ul class="plain small">
+      <li>show a photography portfolio kept in Drive full screen to a client</li>
+      <li>present client proofs from a Drive folder with crossfade transitions</li>
+      <li>run a looping product photo display in a shop without signage software</li>
+      <li>put the lobby TV on a Drive folder that staff can add photos to</li>
+      <li>display work samples from a shared Drive folder at a trade booth</li>
+      <li>avoid making a private Drive folder public just to display it</li>
+      <li>add captions or text over photos in a lobby slideshow</li>
+      <li>real estate listing photos from Drive on an open-house screen</li>
+    </ul>
+    <button type="button" data-copy="show a photography portfolio kept in Drive full screen to a client&#10;present client proofs from a Drive folder with crossfade transitions&#10;run a looping product photo display in a shop without signage software&#10;put the lobby TV on a Drive folder that staff can add photos to&#10;display work samples from a shared Drive folder at a trade booth&#10;avoid making a private Drive folder public just to display it&#10;add captions or text over photos in a lobby slideshow&#10;real estate listing photos from Drive on an open-house screen">Copy group D hints</button>
+  </details>
+
+  <details>
+    <summary>E · Teachers and groups <span class="tag off">paused</span></summary>
+    <ul class="plain small">
+      <li>show classroom photos from a shared Drive folder on the projector</li>
+      <li>loop student event photos during parent night</li>
+      <li>play end-of-season team pictures from a Drive folder at the banquet</li>
+      <li>share field trip photos with parents without making a presentation</li>
+      <li>run a church or club photo reel from a folder volunteers fill</li>
+      <li>show a yearbook-style photo run from Drive on a school hallway screen</li>
+    </ul>
+    <button type="button" data-copy="show classroom photos from a shared Drive folder on the projector&#10;loop student event photos during parent night&#10;play end-of-season team pictures from a Drive folder at the banquet&#10;share field trip photos with parents without making a presentation&#10;run a church or club photo reel from a folder volunteers fill&#10;show a yearbook-style photo run from Drive on a school hallway screen">Copy group E hints</button>
+  </details>
+  <p class="small muted">These hints are paraphrased from how-to pages, not quoted from users. Treat them as guesses to test.</p>
+</section>
+
+<!-- 3 · Creatives -->
+<section class="step" id="step-3" aria-labelledby="h-3">
+  <p class="eyebrow">Step 3 of 7</p>
+  <h2 id="h-3" tabindex="-1">Creatives</h2>
+  <p>Five ads, ready to paste. Every title and body fits the hard caps (title 50, body 100 characters) and the recommended ranges (title 16 to 24, body 32 to 48). Cards are 1024 × 1024 squares.</p>
+  <p class="sources">Sources: <a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001212-creating-ads-for-chatgpt-ads" target="_blank" rel="noopener"><span class="t">Creating ads</span> <span class="dom">help.openai.com · official</span></a> · <a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener"><span class="t">Ads developer docs</span> <span class="dom">developers.openai.com · official</span></a></p>
+
+  <article class="creative card" data-id="c1">
+    <img src="./c1.png" width="1024" height="1024" alt="Ad card c1: a Drive folder dissolving into a fullscreen photo on a laptop">
+    <div>
+      <p class="meta">c1 · Group A <span class="tag on">launch</span></p>
+      <h3 data-field="headline">Drive folder? Hit play.</h3>
+      <p data-field="body">Any Drive folder becomes a fullscreen slideshow.</p>
+      <p class="meta num">Title 23/50 · body 48/100</p>
+      <div class="actions">
+        <button type="button" data-copy="Drive folder? Hit play.">Copy headline</button>
+        <button type="button" data-copy="Any Drive folder becomes a fullscreen slideshow.">Copy body</button>
+        <a class="btn" href="./c1.png" download="instideck-c1.png">Download PNG</a>
+      </div>
+      <details>
+        <summary>Context hints <span class="muted">(5)</span></summary>
+        <ul class="plain small" data-field="hints">
+          <li>turn a folder of Google Drive photos into a fullscreen slideshow without exporting them</li>
+          <li>show photos stored in Drive when Google Drive has no slideshow button</li>
+          <li>skip downloading a huge photo folder just to play it</li>
+          <li>shuffle the photos in a Drive folder and let them run on their own</li>
+          <li>put a Drive folder of HEIC iPhone photos on a big screen</li>
+        </ul>
+        <button type="button" data-copy="turn a folder of Google Drive photos into a fullscreen slideshow without exporting them&#10;show photos stored in Drive when Google Drive has no slideshow button&#10;skip downloading a huge photo folder just to play it&#10;shuffle the photos in a Drive folder and let them run on their own&#10;put a Drive folder of HEIC iPhone photos on a big screen">Copy hints</button>
+      </details>
+    </div>
+  </article>
+
+  <article class="creative card" data-id="c2">
+    <img src="./c2.png" width="1024" height="1024" alt="Ad card c2: a cluttered slide editor crossed out beside one clean fullscreen photo">
+    <div>
+      <p class="meta">c2 · Group B <span class="tag on">launch</span></p>
+      <h3 data-field="headline">Skip the Slides import</h3>
+      <p data-field="body">Play photos straight from Drive. No deck needed.</p>
+      <p class="meta num">Title 22/50 · body 48/100</p>
+      <div class="actions">
+        <button type="button" data-copy="Skip the Slides import">Copy headline</button>
+        <button type="button" data-copy="Play photos straight from Drive. No deck needed.">Copy body</button>
+        <a class="btn" href="./c2.png" download="instideck-c2.png">Download PNG</a>
+      </div>
+      <details>
+        <summary>Context hints <span class="muted">(4)</span></summary>
+        <ul class="plain small" data-field="hints">
+          <li>avoid building a Google Slides deck just to show photos on a loop</li>
+          <li>bulk image import into Slides failed halfway through a big folder</li>
+          <li>need photos to auto-advance without setting timings slide by slide</li>
+          <li>a deck of only photos with no text, and Slides feels like overkill</li>
+        </ul>
+        <button type="button" data-copy="avoid building a Google Slides deck just to show photos on a loop&#10;bulk image import into Slides failed halfway through a big folder&#10;need photos to auto-advance without setting timings slide by slide&#10;a deck of only photos with no text, and Slides feels like overkill">Copy hints</button>
+      </details>
+    </div>
+  </article>
+
+  <article class="creative card" data-id="c3">
+    <img src="./c3.png" width="1024" height="1024" alt="Ad card c3: a living-room TV showing a warm party photo">
+    <div>
+      <p class="meta">c3 · Group C <span class="tag on">launch</span></p>
+      <h3 data-field="headline">Party photos on the TV</h3>
+      <p data-field="body">Loop the guests' Drive folder fullscreen.</p>
+      <p class="meta num">Title 22/50 · body 41/100</p>
+      <div class="actions">
+        <button type="button" data-copy="Party photos on the TV">Copy headline</button>
+        <button type="button" data-copy="Loop the guests' Drive folder fullscreen.">Copy body</button>
+        <a class="btn" href="./c3.png" download="instideck-c3.png">Download PNG</a>
+      </div>
+      <details>
+        <summary>Context hints <span class="muted">(4)</span></summary>
+        <ul class="plain small" data-field="hints">
+          <li>put a shared folder of party photos on the living-room TV</li>
+          <li>run a birthday slideshow from photos guests uploaded to Drive</li>
+          <li>play wedding reception photos from a Drive folder on a projector</li>
+          <li>cast a family photo folder to the TV for a holiday gathering</li>
+        </ul>
+        <button type="button" data-copy="put a shared folder of party photos on the living-room TV&#10;run a birthday slideshow from photos guests uploaded to Drive&#10;play wedding reception photos from a Drive folder on a projector&#10;cast a family photo folder to the TV for a holiday gathering">Copy hints</button>
+      </details>
+    </div>
+  </article>
+
+  <article class="creative card" data-id="c4">
+    <img src="./c4.png" width="1024" height="1024" alt="Ad card c4: a lobby screen showing a product photo with a gold caption">
+    <div>
+      <p class="meta">c4 · Group D <span class="tag off">paused</span></p>
+      <h3 data-field="headline">Lobby screen, one folder</h3>
+      <p data-field="body">Loop a private Drive folder on any screen.</p>
+      <p class="meta num">Title 24/50 · body 42/100</p>
+      <div class="actions">
+        <button type="button" data-copy="Lobby screen, one folder">Copy headline</button>
+        <button type="button" data-copy="Loop a private Drive folder on any screen.">Copy body</button>
+        <a class="btn" href="./c4.png" download="instideck-c4.png">Download PNG</a>
+      </div>
+      <details>
+        <summary>Context hints <span class="muted">(4)</span></summary>
+        <ul class="plain small" data-field="hints">
+          <li>put the lobby TV on a Drive folder that staff can add photos to</li>
+          <li>run a looping product photo display in a shop without signage software</li>
+          <li>show a photography portfolio kept in Drive full screen to a client</li>
+          <li>avoid making a private Drive folder public just to display it</li>
+        </ul>
+        <button type="button" data-copy="put the lobby TV on a Drive folder that staff can add photos to&#10;run a looping product photo display in a shop without signage software&#10;show a photography portfolio kept in Drive full screen to a client&#10;avoid making a private Drive folder public just to display it">Copy hints</button>
+      </details>
+    </div>
+  </article>
+
+  <article class="creative card" data-id="c5">
+    <img src="./c5.png" width="1024" height="1024" alt="Ad card c5: photos flowing from a Drive cloud straight into a browser window with a small lock">
+    <div>
+      <p class="meta">c5 · Group A (privacy hints from F) <span class="tag on">launch</span></p>
+      <h3 data-field="headline">Photos stay in Drive</h3>
+      <p data-field="body">They stream to your browser. No AI sees them.</p>
+      <p class="meta num">Title 20/50 · body 45/100</p>
+      <div class="actions">
+        <button type="button" data-copy="Photos stay in Drive">Copy headline</button>
+        <button type="button" data-copy="They stream to your browser. No AI sees them.">Copy body</button>
+        <a class="btn" href="./c5.png" download="instideck-c5.png">Download PNG</a>
+      </div>
+      <details>
+        <summary>Context hints <span class="muted">(3)</span></summary>
+        <ul class="plain small" data-field="hints">
+          <li>slideshow tool that does not upload my photos to its own servers</li>
+          <li>display family photos without letting an AI app scan them</li>
+          <li>present Drive photos while keeping the folder private</li>
+        </ul>
+        <button type="button" data-copy="slideshow tool that does not upload my photos to its own servers&#10;display family photos without letting an AI app scan them&#10;present Drive photos while keeping the folder private">Copy hints</button>
+      </details>
+    </div>
+  </article>
+
+  <p class="small">The plan asks for two ads per launched group. A has two. B and C have one each, so add a second ad there when you can. Conversational copy that names the situation beat search-style copy for one agency.</p>
+  <p class="sources">Source: <a class="source" data-kind="third-party" href="https://www.dept.global/insight/what-weve-learned-from-6-months-of-chatgpt-ads/" target="_blank" rel="noopener"><span class="t">DEPT, six months of ChatGPT ads</span> <span class="dom">dept.global · third-party</span></a></p>
+  <p class="small">OpenAI may rewrite copy or resize images through creative enhancements. Turn it off to keep the test clean.</p>
+  <p class="sources">Source: <a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001614-creative-enhancements-for-chatgpt-ads" target="_blank" rel="noopener"><span class="t">Creative enhancements</span> <span class="dom">help.openai.com · official</span></a></p>
+</section>
+
+<!-- 4 · Budget and bidding -->
+<section class="step" id="step-4" aria-labelledby="h-4">
+  <p class="eyebrow">Step 4 of 7</p>
+  <h2 id="h-4" tabindex="-1">Budget and bidding</h2>
+  <div class="card decision">
+    <p><strong>Decision: test small.</strong> $25 a day for 14 days.</p>
+    <dl class="facts num">
+      <dt>Daily</dt><dd><strong>$25</strong>, the platform minimum</dd>
+      <dt>Length</dt><dd>14 days from ad approval</dd>
+      <dt>Cap</dt><dd><strong>$350</strong> total. Set the end date, do not raise it.</dd>
+      <dt>Bid</dt><dd>Clicks (CPC), max <strong>$0.50</strong></dd>
+      <dt>Where</dt><dd>United States, <code>desktop_web</code> only</dd>
+    </dl>
+  </div>
+  <p class="sources">Sources: <a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001413-daily-budgets" target="_blank" rel="noopener"><span class="t">Daily budgets</span> <span class="dom">help.openai.com · official</span></a> · <a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener"><span class="t">Placements and bidding</span> <span class="dom">developers.openai.com · official</span></a> · <a class="source" data-kind="third-party" href="https://adlibrary.com/posts/we-tested-chatgpt-ads" target="_blank" rel="noopener"><span class="t">Two-week test at the minimum</span> <span class="dom">adlibrary.com · third-party</span></a></p>
+
+  <p><strong>Why clicks.</strong> You pay only for visits that can become signups. Impression bidding at a reported $25 to $65+ CPM, with CTR near 0.8 to 1.1%, can burn the budget on views.</p>
+  <p class="sources">Source: <a class="source" data-kind="third-party" href="https://www.emarketer.com/content/chatgpt-ads-will-soon-reach-more-users--proven-results-still-missing" target="_blank" rel="noopener"><span class="t">EMARKETER on CPM and CTR</span> <span class="dom">emarketer.com · third-party</span></a></p>
+  <p><strong>Not conversion bidding yet.</strong> It needs a conversion event that already arrives. Switch after <code>registration_completed</code> has fired reliably for a week.</p>
+  <p class="sources">Sources: <a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001412-conversion-optimized-campaigns" target="_blank" rel="noopener"><span class="t">Conversion-optimized campaigns</span> <span class="dom">help.openai.com · official</span></a></p>
+
+  <details>
+    <summary>Bid rules</summary>
+    <ul class="plain small">
+      <li>Start at $0.50. The daily budget must be at least the highest bid, and $25 covers it. <a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001413-daily-budgets" target="_blank" rel="noopener"><span class="t">Daily budgets</span> <span class="dom">help.openai.com · official</span></a></li>
+      <li>No impressions after 3 days in a group: raise its bid to $1.00. Never above $1.50 in this test.</li>
+      <li>Decline the suggested higher bid. One tester accepted it and spent two weeks of budget in about 2 days. <a class="source" data-kind="third-party" href="https://adlibrary.com/posts/we-tested-chatgpt-ads" target="_blank" rel="noopener"><span class="t">adlibrary test</span> <span class="dom">adlibrary.com · third-party</span></a></li>
+      <li>A, B and C share the budget. By day 7, cut a group that spent over half with the lowest signup rate.</li>
+    </ul>
+  </details>
+
+  <p><strong>Expected at the $0.50 start bid:</strong> about 700 clicks and 3 to 4 signups, roughly $100 each, if 0.5% of clicks sign up. The rate sources are in the table.</p>
+  <details>
+    <summary>What $350 buys at reported rates</summary>
+    <table>
+      <thead><tr><th>CPC</th><th class="r">Clicks</th><th class="r">Signups</th><th class="r">Per signup</th></tr></thead>
+      <tbody>
+        <tr><td>$0.10 <a class="source" data-kind="third-party" href="https://successfulsoftware.net/2026/09/02/chatgpt-ad-targeting-is-garbage/" target="_blank" rel="noopener"><span class="t">PerfectTablePlan</span> <span class="dom">successfulsoftware.net · third-party</span></a></td><td class="r">~3,500</td><td class="r">~17</td><td class="r">~$20</td></tr>
+        <tr><td>$0.50 <span class="muted small">start bid</span></td><td class="r">~700</td><td class="r">~3–4</td><td class="r">~$100</td></tr>
+        <tr><td>$1.00 <span class="muted small">raised bid</span></td><td class="r">~350</td><td class="r">~2</td><td class="r">~$200</td></tr>
+        <tr><td>$3.14 <a class="source" data-kind="third-party" href="https://www.airops.com/blog/chatgpt-ads-performance" target="_blank" rel="noopener"><span class="t">Workshop Digital</span> <span class="dom">airops.com · third-party</span></a></td><td class="r">~110</td><td class="r">0–1</td><td class="r">$600+</td></tr>
+        <tr><td>$5.00 <a class="source" data-kind="third-party" href="https://adlibrary.com/posts/we-tested-chatgpt-ads" target="_blank" rel="noopener"><span class="t">adlibrary</span> <span class="dom">adlibrary.com · third-party</span></a></td><td class="r">~70</td><td class="r">~0</td><td class="r">n/a</td></tr>
+      </tbody>
+    </table>
+    <p class="small">Signups assume 0.5% of clicks. Reported rates sit near it: 0.37% across about 1,900 sites, and 0.46% for the closest comparable.</p>
+    <p class="sources">Sources: <a class="source" data-kind="third-party" href="https://searchengineland.com/chatgpt-ads-generate-less-revenue-per-visit-than-google-search-study-500160" target="_blank" rel="noopener"><span class="t">Search Engine Land study</span> <span class="dom">searchengineland.com · third-party</span></a> · <a class="source" data-kind="third-party" href="https://successfulsoftware.net/2026/09/02/chatgpt-ad-targeting-is-garbage/" target="_blank" rel="noopener"><span class="t">PerfectTablePlan results</span> <span class="dom">successfulsoftware.net · third-party</span></a></p>
+  </details>
+  <p class="small muted">Expect the test to lose money and plan for 0 Pro purchases. Judge it on cost per signup, not profit.</p>
+</section>
+
+<!-- 5 · Setup -->
+<section class="step" id="step-5" aria-labelledby="h-5">
+  <p class="eyebrow">Step 5 of 7</p>
+  <h2 id="h-5" tabindex="-1">Setup at ads.openai.com</h2>
+  <p>Do these in order. Make the code changes in the Instideck repo and deploy them before you create the campaign.</p>
+  <h3 class="phase">While verification runs</h3>
+  <ol class="checklist">
+    <li>
+      <input type="checkbox" id="chk-account" data-check="setup-account"><label for="chk-account">Account and verification</label>
+      <div class="detail">
+        <p>Sign up for self-serve Ads Manager at ads.openai.com with business details that match instideck.com and Stripe. Upload a square favicon of 256 × 256 or more (<code>public/brand/logo-512.png</code>). Verification takes 5 to 15 business days and billing is postpay, so do the code steps while you wait.</p>
+        <p class="sources"><a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001524-sponsored-agents-in-chatgpt-ads" target="_blank" rel="noopener"><span class="t">Ways in</span> <span class="dom">help.openai.com · official</span></a> · <a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener"><span class="t">Favicon size</span> <span class="dom">developers.openai.com · official</span></a> · <a class="source" data-kind="third-party" href="https://www.webfx.com/blog/ai/chatgpt-ads-manager/" target="_blank" rel="noopener"><span class="t">Verification time</span> <span class="dom">webfx.com · third-party</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-pixel" data-check="setup-pixel"><label for="chk-pixel">Pixel</label>
+      <div class="detail">
+        <p>Create a Pixel in Ads Manager. Paste the exact snippet it gives into the <code>&lt;head&gt;</code> of <code>index.html</code>, then check in the network tab that the script loads. Allow these hosts in the CSP:</p>
+        <pre>script-src bzrcdn.openai.com; connect-src bzr.openai.com bzrcdn.openai.com; img-src bzr.openai.com</pre>
+        <button type="button" data-copy="script-src bzrcdn.openai.com; connect-src bzr.openai.com bzrcdn.openai.com; img-src bzr.openai.com">Copy CSP hosts</button>
+        <p>Fire <code>registration_completed</code> when Google sign-in first succeeds. A consent gate exists: <code>oaiq("consent", false)</code>. First update <code>/privacy</code> and the footer so the “no other server data” promise stays true.</p>
+        <p class="sources"><a class="source" data-kind="official" href="https://developers.openai.com/ads/measurement-pixel" target="_blank" rel="noopener"><span class="t">Measurement pixel</span> <span class="dom">developers.openai.com · official</span></a> · <a class="source" data-kind="official" href="https://developers.openai.com/ads/supported-events" target="_blank" rel="noopener"><span class="t">Supported events</span> <span class="dom">developers.openai.com · official</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-qst" data-check="setup-query-template"><label for="chk-qst">Query string template</label>
+      <div class="detail">
+        <p>Set it at campaign level. Step 6 has the exact string to copy.</p>
+        <p class="sources"><a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener"><span class="t">query_string_template</span> <span class="dom">developers.openai.com · official</span></a></p>
+      </div>
+    </li>
+  </ol>
+  <h3 class="phase">Build the campaign</h3>
+  <ol class="checklist" start="4">
+    <li>
+      <input type="checkbox" id="chk-campaign" data-check="setup-campaign"><label for="chk-campaign">Campaign</label>
+      <div class="detail">
+        <p>Traffic (clicks) objective, $25 daily budget, end date 14 days after expected approval. Edit the end date when approval lands. United States, <code>desktop_web</code>.</p>
+        <pre>instideck-test-2026-11</pre>
+        <button type="button" data-copy="instideck-test-2026-11">Copy campaign name</button>
+        <p class="sources"><a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001210-creating-campaigns-for-chatgpt-ads" target="_blank" rel="noopener"><span class="t">Creating campaigns</span> <span class="dom">help.openai.com · official</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-groups" data-check="setup-ad-groups"><label for="chk-groups">Ad groups</label>
+      <div class="detail">
+        <p>Create these three, each with clicks bidding at a $0.50 max bid and the hints from step 2 pasted line by line. Create D and E too, but leave them paused.</p>
+        <pre>A-folder-slideshow
+B-slides-fatigue
+C-events-family</pre>
+        <button type="button" data-copy="A-folder-slideshow&#10;B-slides-fatigue&#10;C-events-family">Copy group names</button>
+        <p class="sources"><a class="source" data-kind="official" href="https://developers.openai.com/ads/campaign-management" target="_blank" rel="noopener"><span class="t">Campaign management</span> <span class="dom">developers.openai.com · official</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-ads" data-check="setup-ads"><label for="chk-ads">Ads</label>
+      <div class="detail">
+        <p>Add the creatives from step 3 with their 1024 × 1024 cards. Set each target URL to the group’s <code>/chatgpt</code> link from step 6. Turn creative enhancements off.</p>
+        <p class="sources"><a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001212-creating-ads-for-chatgpt-ads" target="_blank" rel="noopener"><span class="t">Creating ads</span> <span class="dom">help.openai.com · official</span></a> · <a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001614-creative-enhancements-for-chatgpt-ads" target="_blank" rel="noopener"><span class="t">Creative enhancements</span> <span class="dom">help.openai.com · official</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-review" data-check="setup-review"><label for="chk-review">Submit for review and test one click</label>
+      <div class="detail">
+        <p>Click one ad preview. Check that the session reaches <code>/chatgpt</code> with its UTMs, the Pixel logs a test <code>registration_completed</code>, and the Cloudflare log shows the hit. Day 0 is the day the ads are approved.</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- 6 · Tracking -->
+<section class="step" id="step-6" aria-labelledby="h-6">
+  <p class="eyebrow">Step 6 of 7</p>
+  <h2 id="h-6" tabindex="-1">Tracking</h2>
+  <p>Count every paid visit by the <code>/chatgpt</code> path plus <code>utm_source=chatgpt</code>, never by referrer.</p>
+  <ol class="checklist">
+    <li>
+      <input type="checkbox" id="chk-utm" data-check="track-utm"><label for="chk-utm">Campaign query string template</label>
+      <div class="detail">
+        <pre>utm_source=chatgpt&amp;utm_medium=paid&amp;utm_campaign={campaign_id}&amp;utm_content={ad_id}&amp;oppref={oppref}</pre>
+        <button type="button" data-copy="utm_source=chatgpt&amp;utm_medium=paid&amp;utm_campaign={campaign_id}&amp;utm_content={ad_id}&amp;oppref={oppref}">Copy template</button>
+        <p class="sources"><a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener"><span class="t">Supported macros</span> <span class="dom">developers.openai.com · official</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-target" data-check="track-target-url"><label for="chk-target">Target URL per ad group</label>
+      <div class="detail">
+        <p>The template has no ad-group macro, so the group rides in the target URL. These replace the root URLs in creatives.json, so every paid visit lands on its own path.</p>
+        <pre>https://instideck.com/chatgpt?utm_term=A
+https://instideck.com/chatgpt?utm_term=B
+https://instideck.com/chatgpt?utm_term=C</pre>
+        <div class="actions">
+          <button type="button" data-copy="https://instideck.com/chatgpt?utm_term=A">Copy A</button>
+          <button type="button" data-copy="https://instideck.com/chatgpt?utm_term=B">Copy B</button>
+          <button type="button" data-copy="https://instideck.com/chatgpt?utm_term=C">Copy C</button>
+        </div>
+        <p><code>/chatgpt</code> already serves the landing page, so it shows up as its own path in the Cloudflare logs.</p>
+        <p class="sources"><a class="source" data-kind="third-party" href="https://instideck.com/chatgpt" target="_blank" rel="noopener"><span class="t">Landing path</span> <span class="dom">instideck.com · product site, third-party</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-session" data-check="track-session-utm"><label for="chk-session">Keep UTMs through Google sign-in</label>
+      <div class="detail"><p>On page load, store the UTM and <code>oppref</code> values in sessionStorage. Read them back when <code>registration_completed</code> fires.</p></div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-events" data-check="track-pixel-events"><label for="chk-events">Pixel events</label>
+      <div class="detail">
+        <p><code>registration_completed</code> for signup, <code>subscription_created</code> for Pro. The Pixel keeps <code>oppref</code> in a first-party <code>__oppref</code> cookie for 30 days.</p>
+        <p class="sources"><a class="source" data-kind="official" href="https://developers.openai.com/ads/supported-events" target="_blank" rel="noopener"><span class="t">Supported events</span> <span class="dom">developers.openai.com · official</span></a> · <a class="source" data-kind="official" href="https://developers.openai.com/ads/measurement-pixel" target="_blank" rel="noopener"><span class="t">Measurement pixel</span> <span class="dom">developers.openai.com · official</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-capi" data-check="track-capi"><label for="chk-capi">Conversions API from the Stripe webhook</label>
+      <div class="detail">
+        <p>Send <code>subscription_created</code> from the Worker’s <code>checkout.session.completed</code> handler. The API does not capture <code>oppref</code> by itself, so pass it into Stripe Checkout <code>metadata</code> and read it back in the webhook.</p>
+        <p class="sources"><a class="source" data-kind="official" href="https://developers.openai.com/ads/conversions-api" target="_blank" rel="noopener"><span class="t">Conversions API</span> <span class="dom">developers.openai.com · official</span></a></p>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="chk-promo" data-check="track-promo"><label for="chk-promo">Stripe promo code</label>
+      <div class="detail">
+        <p>Create <code>CHATGPT</code> (for example, first month $2) and mention it on <code>/chatgpt</code> only. It counts paid conversions.</p>
+        <button type="button" data-copy="CHATGPT">Copy code</button>
+      </div>
+    </li>
+  </ol>
+  <p class="small">Why not referrer: advertisers have seen clicks in OpenAI’s reports with none in analytics, and one pixel showed 0 conversions while UTM analytics showed 14. Ad-review crawlers also hit tagged URLs.</p>
+  <p class="sources">Sources: <a class="source" data-kind="third-party" href="https://www.outoftheboxadvisors.com/post/we-spent-real-money-on-chatgpt-ads-for-small-business-here-s-the-honest-truth" target="_blank" rel="noopener"><span class="t">Out of the Box Advisors</span> <span class="dom">outoftheboxadvisors.com · third-party</span></a> · <a class="source" data-kind="third-party" href="https://successfulsoftware.net/2026/09/02/chatgpt-ad-targeting-is-garbage/" target="_blank" rel="noopener"><span class="t">PerfectTablePlan</span> <span class="dom">successfulsoftware.net · third-party</span></a> · <a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001416-set-up-measurement-partner-integrations" target="_blank" rel="noopener"><span class="t">Measurement partners</span> <span class="dom">help.openai.com · official</span></a></p>
+</section>
+
+<!-- 7 · Kill criteria -->
+<section class="step" id="step-7" aria-labelledby="h-7">
+  <p class="eyebrow">Step 7 of 7</p>
+  <h2 id="h-7" tabindex="-1">Kill criteria and review date</h2>
+  <div class="card decision">
+    <p><strong>Decision: know when to stop.</strong> Day 0 is the day the ads are approved. Enter it to get your check dates.</p>
+    <div class="dates num">
+      <label for="approved">Approved on</label><input type="date" id="approved" value="2026-11-27">
+      <span>Day 3 · tracking check</span><output id="d3" for="approved">2026-11-30</output>
+      <span>Day 7 · creative check</span><output id="d7" for="approved">2026-12-04</output>
+      <span>Day 14 · review</span><output id="d14" for="approved">2026-12-11</output>
+    </div>
+  </div>
+  <ol class="checklist">
+    <li>
+      <input type="checkbox" id="chk-cal" data-check="review-calendar"><label for="chk-cal">Put the review date in the calendar</label>
+      <div class="detail"><p>Do it the day approval arrives.</p></div>
+    </li>
+  </ol>
+
+  <p><strong>Stop at once if</strong></p>
+  <ul class="plain">
+    <li>spend reaches <span class="num">$350</span>;</li>
+    <li>there are 0 signups after <span class="num">150</span> <code>/chatgpt</code> sessions;</li>
+    <li>or after <span class="num">100</span> sessions, time on page is under 10 s with bounce above 65%. One comparable saw 7 s and 69%.</li>
+  </ul>
+  <p class="sources">Source: <a class="source" data-kind="third-party" href="https://successfulsoftware.net/2026/09/02/chatgpt-ad-targeting-is-garbage/" target="_blank" rel="noopener"><span class="t">PerfectTablePlan results</span> <span class="dom">successfulsoftware.net · third-party</span></a></p>
+
+  <details>
+    <summary>Day 3 and day 7 checks</summary>
+    <p class="small"><strong>Day 3, pause, don’t kill.</strong> If <code>/chatgpt</code> sessions and OpenAI’s click count differ by more than 2×, or the Pixel shows nothing while sessions exist, pause and fix tracking. Paused days don’t count.</p>
+    <p class="small"><strong>Day 7, change creative.</strong> CTR under 0.5% after 5,000 impressions: replace the weaker ad. Over half the budget spent with signups under 0.3%: pause that group.</p>
+  </details>
+
+  <details>
+    <summary>Day 14 decision</summary>
+    <table>
+      <thead><tr><th>Result</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>Under 100 sessions, or signup rate under 0.3%, or over $100 per signup</td><td><strong>Stop.</strong> Put the money into a public how-to page ChatGPT can cite.</td></tr>
+        <tr><td>$50 to $100 per signup, 0.3% to 1% signup rate</td><td>One more 14-day round at $25/day, best group only, new creatives.</td></tr>
+        <tr><td>$50 or less per signup with 5+ signups, or 1+ Pro purchase</td><td>Keep running. Turn on group D. Consider conversion bidding.</td></tr>
+      </tbody>
+    </table>
+    <p class="small">Organic ChatGPT citations beat paid ads for one small-tool tester. A how-to page such as “How to play a Google Drive folder as a slideshow” also works as a landing page.</p>
+    <p class="sources">Source: <a class="source" data-kind="third-party" href="https://adlibrary.com/posts/we-tested-chatgpt-ads" target="_blank" rel="noopener"><span class="t">adlibrary test</span> <span class="dom">adlibrary.com · third-party</span></a></p>
+  </details>
+</section>
+
+<nav class="pager" id="pager" aria-label="Step navigation" hidden>
+  <button type="button" id="back">Back</button>
+  <span id="count" class="num muted small" aria-hidden="true">1 / 7</span>
+  <button type="button" id="next" class="primary">Next</button>
+</nav>
+<p class="keys" id="keys" hidden>Arrow keys move between steps.</p>
+</main>
+<p id="live" role="status" aria-live="polite"></p>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = '9f53bf42-1df3-4ebe-9f2c-82054ec321db:ad-plan';
+  document.documentElement.classList.add('js');
+
+  var $ = function (s) { return document.querySelector(s); };
+  var steps = [].slice.call(document.querySelectorAll('section.step'));
+  var railLinks = [].slice.call(document.querySelectorAll('.rail a'));
+  var back = $('#back'), next = $('#next'), count = $('#count'), live = $('#live');
+  var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  var current = -1;
+
+  /* storage: localStorage when allowed, memory when the sandbox refuses it */
+  var store = null;
+  try { localStorage.setItem(KEY + ':probe', '1'); localStorage.removeItem(KEY + ':probe'); store = localStorage; } catch (e) {}
+  var sandboxed = !store;
+  var state = {};
+  if (store) { try { state = JSON.parse(store.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; } }
+  function save() { if (store) { try { store.setItem(KEY, JSON.stringify(state)); } catch (e) {} } }
+  if (sandboxed) $('#sandbox-note').hidden = false;
+
+  /* announcements */
+  var liveTimer;
+  function say(msg) {
+    clearTimeout(liveTimer);
+    live.textContent = msg;
+    live.classList.add('show');
+    liveTimer = setTimeout(function () { live.classList.remove('show'); live.textContent = ''; }, 3200);
+  }
+
+  /* copy: clipboard API where allowed, else a selected textarea with execCommand.
+     The sandbox refuses the clipboard API and logs a policy error, so skip it there. */
+  var clipboardAllowed = !sandboxed && !!(navigator.clipboard && navigator.clipboard.writeText) &&
+    !(document.featurePolicy && !document.featurePolicy.allowsFeature('clipboard-write'));
+  function fallbackCopy(text) {
+    var ok = false;
+    var onCopy = function (e) { if (e.clipboardData) { e.clipboardData.setData('text/plain', text); e.preventDefault(); } };
+    var t = document.createElement('textarea');
+    t.value = text; t.setAttribute('readonly', '');
+    t.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+    document.body.appendChild(t); t.select();
+    document.addEventListener('copy', onCopy);
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.removeEventListener('copy', onCopy);
+    document.body.removeChild(t);
+    return ok;
+  }
+  function copy(text) {
+    try {
+      if (clipboardAllowed) {
+        return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return fallbackCopy(text); });
+      }
+    } catch (e) {}
+    return Promise.resolve(fallbackCopy(text));
+  }
+
+  /* screens */
+  function indexFromHash() {
+    var m = /^#step-(\d+)$/.exec(location.hash);
+    var i = m ? m[1] - 1 : 0;
+    return i >= 0 && i < steps.length ? i : 0;
+  }
+  function show(i, focus) {
+    current = i;
+    steps.forEach(function (s, k) { s.hidden = k !== i; });
+    railLinks.forEach(function (a, k) {
+      if (k === i) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current');
+      a.classList.toggle('done', k < i);
+    });
+    back.disabled = i === 0;
+    next.disabled = i === steps.length - 1;
+    count.textContent = (i + 1) + ' / ' + steps.length;
+    if (focus) {
+      window.scrollTo(0, 0);
+      var h = steps[i].querySelector('h2');
+      try { h.focus({ preventScroll: true }); } catch (e) { h.focus(); }
+    }
+  }
+  function render(i, focus) {
+    if (i === current) return;
+    var apply = function () { show(i, focus); };
+    if (focus && document.startViewTransition && !(reduceMotion && reduceMotion.matches)) document.startViewTransition(apply);
+    else apply();
+  }
+  function go(i) {
+    if (i < 0 || i >= steps.length || i === current) return;
+    var hash = '#step-' + (i + 1);
+    try { history.pushState(null, '', hash); } catch (e) { try { location.hash = hash; } catch (e2) {} }
+    render(i, true);
+  }
+  window.addEventListener('hashchange', function () {
+    var i = indexFromHash();
+    if (i === current) window.scrollTo(0, 0); else render(i, true);
+  });
+  window.addEventListener('popstate', function () { render(indexFromHash(), true); });
+  back.addEventListener('click', function () { go(current - 1); });
+  next.addEventListener('click', function () { go(current + 1); });
+  document.addEventListener('keydown', function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.defaultPrevented) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
+  });
+
+  /* checklist */
+  var checks = state.checks || (state.checks = {});
+  [].forEach.call(document.querySelectorAll('input[data-check]'), function (box) {
+    box.checked = !!checks[box.getAttribute('data-check')];
+    box.addEventListener('change', function () { checks[box.getAttribute('data-check')] = box.checked; save(); });
+  });
+
+  /* review dates */
+  var approved = $('#approved');
+  function addDays(iso, n) { var d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+  function dates() {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(approved.value)) return;
+    $('#d3').textContent = addDays(approved.value, 3);
+    $('#d7').textContent = addDays(approved.value, 7);
+    $('#d14').textContent = addDays(approved.value, 14);
+  }
+  if (state.approved) approved.value = state.approved;
+  approved.addEventListener('change', function () { state.approved = approved.value; save(); dates(); });
+  approved.addEventListener('input', dates);
+  dates();
+
+  /* clicks: copy buttons, and sandbox fallbacks for links and downloads */
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest ? e.target : e.target.parentElement;
+    var btn = el && el.closest('button[data-copy]');
+    if (btn) {
+      copy(btn.getAttribute('data-copy')).then(function (ok) {
+        if (!ok) { say('Copy blocked here. Select the text and copy it by hand.'); return; }
+        say('Copied');
+        if (!btn.hasAttribute('data-label')) btn.setAttribute('data-label', btn.textContent);
+        btn.textContent = 'Copied';
+        clearTimeout(btn._t);
+        btn._t = setTimeout(function () { btn.textContent = btn.getAttribute('data-label'); }, 1600);
+      });
+      return;
+    }
+    var link = el && el.closest('a.source');
+    if (link && sandboxed) {
+      e.preventDefault();
+      copy(link.href).then(function (ok) {
+        say(ok ? 'Link copied, paste in a new tab' : 'Copy blocked. Link: ' + link.href);
+      });
+      return;
+    }
+    var dl = el && el.closest('a[download]');
+    if (dl && sandboxed) {
+      e.preventDefault();
+      say('Downloads are blocked in this frame. Open in new tab to download.');
+    }
+  });
+
+  /* a reload starts over at step 1 (ticks are kept); a deep link opens its step */
+  var navEntry = window.performance && performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  var reloaded = !!navEntry && navEntry.type === 'reload';
+  if (reloaded && location.hash) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+  if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+  $('#pager').hidden = false;
+  $('#keys').hidden = false;
+  show(reloaded ? 0 : indexFromHash(), !reloaded && !!location.hash);
+  var toTop = function () { window.scrollTo(0, 0); };
+  requestAnimationFrame(toTop);
+  window.addEventListener('load', toTop);
+})();
+</script>
+</body>
+</html>

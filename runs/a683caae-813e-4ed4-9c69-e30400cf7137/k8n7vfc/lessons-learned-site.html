@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stage splitter: what the 2026-11-06 test changed, and why</title>
+<style>
+  :root { --ink:#1d1f23; --muted:#5b6170; --line:#dfe2e8; --bg:#fbfbfc; --card:#fff;
+          --ok:#1f7a4d; --warn:#9a6200; --bad:#a23b3b; --info:#2d5fa8; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink:#e6e8ec; --muted:#a3a9b6; --line:#343844; --bg:#16181d; --card:#1e2128;
+            --ok:#5cc08d; --warn:#e0aa4a; --bad:#e07a7a; --info:#7fa8e8; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header, main, footer { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  header { padding-top: 40px; }
+  h1 { font-size: 1.7rem; margin: 0 0 6px; }
+  h2 { font-size: 1.25rem; margin: 40px 0 10px; padding-top: 8px; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.05rem; margin: 24px 0 6px; }
+  p, li { max-width: 72ch; }
+  .sub { color: var(--muted); margin: 0; }
+  nav { margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .92rem; }
+  nav a { color: var(--info); text-decoration: none; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 6px; font-size: .93rem; background: var(--card); }
+  th, td { text-align: left; vertical-align: top; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  code { font: .88em ui-monospace, SFMono-Regular, Menlo, monospace; background: color-mix(in srgb, var(--line) 45%, transparent); padding: 1px 4px; border-radius: 3px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px 18px; margin: 14px 0; }
+  .grade { display: inline-block; font-size: .78rem; font-weight: 600; padding: 1px 8px; border-radius: 10px; border: 1px solid currentColor; white-space: nowrap; }
+  .g-ok { color: var(--ok); } .g-warn { color: var(--warn); } .g-bad { color: var(--bad); } .g-info { color: var(--info); }
+  .ev { color: var(--muted); font-size: .9rem; }
+  footer { color: var(--muted); font-size: .85rem; padding: 40px 24px 60px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Stage splitter: what the 2026-11-06 test changed, and why</h1>
+  <p class="sub">Analysis of tester stage <code>kt6n75z</code> in run <code>a683caae</code>. Pipeline <code>752f54e9</code>, Stage splitter, tested at v1 and left at v4. Written 2026-11-06.</p>
+  <nav>
+    <a href="#verdict">Verdict</a><a href="#changes">The four changes</a><a href="#new">What the tester missed</a>
+    <a href="#known">The known answer</a><a href="#time">Where the time went</a><a href="#report">Report accuracy</a>
+    <a href="#saved">Lessons and todos saved</a><a href="#method">Method</a>
+  </nav>
+</header>
+<main>
+
+<h2 id="verdict">Verdict</h2>
+<p>Every run in the test used v1, so no version-to-version evidence exists. All four changes came after the two runs. I graded each change by replaying it on the old runs' own files.</p>
+<ul>
+  <li>The v2 gather fix is confirmed offline. I replayed v1 and v4 gather on both source runs and got the effect the tester claimed.</li>
+  <li>The v3 floor fix is necessary but not sufficient. The floor no longer blocks the Game forge known answer. The judge's agreement rule still does.</li>
+  <li>The v4 kebab-case fix targets the cause, but it covers only half of it. The skeptic passed the same bad names with a false reason, and v4 did not touch the skeptic.</li>
+  <li>The v4 consumer-edit fix is sound in shape and untested.</li>
+</ul>
+<p>The tester's report holds up on every number I checked. The one overstatement sits in a mid-run note, and the report itself corrects it.</p>
+
+<h2 id="changes">The four changes</h2>
+<table>
+  <thead><tr><th>Version</th><th>Change</th><th>Grade</th><th>Evidence</th></tr></thead>
+  <tbody>
+    <tr><td>v2</td><td>Gather ranks stages by <code>busySeconds</code>, not elapsed seconds. A restarted stage no longer poses as the slowest.</td><td><span class="grade g-ok">replay-confirmed</span></td><td>My replay on Game forge run <code>8f2a5b1a</code>: <code>art</code> lead 622 s to −18 s, <code>perf</code> becomes the Understand candidate with an 18 s lead. Credit repair candidates unchanged.</td></tr>
+    <tr><td>v3</td><td><code>min-saving-percent</code> default 15 to 5.</td><td><span class="grade g-warn">needed, not enough</span></td><td>At v4 the floor is 180.2 s on Game forge. <code>game</code> (422 s) clears it. The judge also kept <code>game</code> for a seam leak, which v3 does not address.</td></tr>
+    <tr><td>v4a</td><td>The judge names new outputs in kebab case.</td><td><span class="grade g-warn">half the cause</span></td><td>v1 already asked for kebab-case keys, and the stress keys were kebab case. Only output names broke. The skeptic then passed those names.</td></tr>
+    <tr><td>v4b</td><td>The judge adds one sentence through <code>promptEdits</code> to each consumer whose prompt names the old output.</td><td><span class="grade g-info">unprobed</span></td><td>The build already appends every <code>promptEdits</code> entry. The stress build-notes list six consumers that still say "the playbook".</td></tr>
+  </tbody>
+</table>
+
+<h3>v2: why the gather fix improved the pipeline</h3>
+<div class="card">
+<p>Game forge <code>art</code> was stopped by a server restart and launched three times. Its <code>lastSeconds</code> was 919 s, but the model worked 278 s in all. v1 compared groups on <code>lastSeconds</code>, so <code>art</code> showed a 622 s lead and <code>perf</code>, the real slowest stage at 296 s, showed slack.</p>
+<p>v2 adds <code>busySeconds</code>: the last launch for a looped stage, and the summed work for any other stage. Lead, slack, group wall and critical path all read <code>busySeconds</code>.</p>
+<table>
+  <thead><tr><th>Figure, Game forge run 8f2a5b1a</th><th class="num">v1 gather</th><th class="num">v4 gather</th></tr></thead>
+  <tbody>
+    <tr><td><code>art</code> lead</td><td class="num">622 s</td><td class="num">−18 s</td></tr>
+    <tr><td><code>perf</code> lead</td><td class="num">−622 s</td><td class="num">18 s</td></tr>
+    <tr><td><code>game</code> lead</td><td class="num">632 s</td><td class="num">631 s</td></tr>
+    <tr><td>Understand group wall</td><td class="num">919 s</td><td class="num">296 s</td></tr>
+    <tr><td><code>groupWallSeconds</code></td><td class="num">4232 s</td><td class="num">3604 s</td></tr>
+    <tr><td>Credit repair <code>groupWallSeconds</code></td><td class="num">858 s</td><td class="num">852 s</td></tr>
+  </tbody>
+</table>
+<p class="ev">Evidence: v1 and v4 gather commands extracted from <code>pipeline-versions/v1.json</code> and <code>v4.json</code>, run with bash against both source runs, exit 0 each time. The v1 output matches the test run's stored <code>gather/outputs/summary.json</code>.</p>
+<p>The v1 judge had already read <code>art</code>'s elapsed note and set its Time to 235 s, so the v1 verdict was not wrong. v2 removes the need for the judge to catch the restart by hand.</p>
+</div>
+
+<h3>v3: why the floor fix was needed, and why it does not finish the job</h3>
+<div class="card">
+<p>The percent floor is a share of the whole run's <code>groupWallSeconds</code>. A long run therefore raises the bar for every stage. On Game forge under v1, 15 percent of 4232 s was 634.8 s. That exceeded <code>game</code>'s whole 632 s lead, so no split of <code>game</code> could pass. The plan names that split as the known answer.</p>
+<p>I projected each v1 judge saving onto the v4 floor. That floor is 5 percent of the v4 gather figure, 3604 s.</p>
+<table>
+  <thead><tr><th>Stage</th><th class="num">v1 judge saving</th><th class="num">% of 3604 s</th><th>Clears 180.2 s?</th><th>Other block named by the v1 judge</th></tr></thead>
+  <tbody>
+    <tr><td><code>game</code></td><td class="num">422 s</td><td class="num">11.7</td><td>yes</td><td>Seam not unanimous: the verify phase edits five source files.</td></tr>
+    <tr><td><code>playtest</code></td><td class="num">222 s</td><td class="num">6.2</td><td>yes</td><td>The solo perf window and shared port 47391.</td></tr>
+    <tr><td><code>tech</code></td><td class="num">173 s</td><td class="num">4.8</td><td>no, by 7 s</td><td>The 189 s think is serial with the write, so the true saving is near 0.</td></tr>
+    <tr><td><code>integrate</code></td><td class="num">130 s</td><td class="num">3.6</td><td>no</td><td>One flow chain.</td></tr>
+  </tbody>
+</table>
+<p>Under v4 the floor no longer decides <code>game</code>. The agreement rule does. Even at 15 percent, v2 alone would not have rescued <code>game</code>: 15 percent of 3604 s is 540.6 s, above the 422 s saving.</p>
+<p class="ev">Evidence: <code>~/.modpipes/runs/07ed9536-…/stages/judge/outputs/verdicts.md</code>, the ranking table and the <code>game</code> section, lines 4 and 29 to 37.</p>
+</div>
+
+<h3>v4a: the kebab-case fix covers the judge and misses the skeptic</h3>
+<div class="card">
+<p>The v1 judge prompt already said "a kebab-case key unused in the definition". The stress judge obeyed: the keys were <code>playbook-scoring</code>, <code>playbook-disputes</code> and <code>playbook-collections</code>. The output names were <code>playbook_scoring</code> and two similar names, and the validator raised 15 <code>invalid_format</code> codes. v4 extends the rule to output names, so the edit targets the cause.</p>
+<p>The skeptic checked the same names and passed them. Its verdict reads: "Output names use underscores, as the existing <code>playbook</code> output does." The existing output is named <code>playbook</code> and has no underscore. The skeptic prompt checks keys for kebab case and says nothing about output names. v3 to v4 changed only the judge prompt.</p>
+<p class="ev">Evidence: <code>~/.modpipes/runs/b411a216-…/stages/skeptic/outputs/verdict.md</code>, the "New keys unused and kebab-case" line. <code>build-split/outputs/build-notes.md</code>, section Validator codes.</p>
+</div>
+
+<h3>v4b: consumer prompt edits</h3>
+<div class="card">
+<p>After the split, six consumers received two or three playbook files while their prompts still said "the playbook". v4 asks the judge for one sentence per such consumer, appended through <code>promptEdits</code>. The build prompt already appends every <code>promptEdits</code> entry after a blank line, so no build change was needed. No run has exercised the edit.</p>
+</div>
+
+<h2 id="new">What the tester missed</h2>
+<h3>1. v2 moved the denominator of the v3 floor</h3>
+<p>The tester justified v3 with 15 percent of 4232 s. That 4232 s came from v1 gather. The v2 edit, saved at 18:03:41, had already cut it to 3604 s. The v3 edit followed at 18:06:56. The conclusion held, but the reasoning used a stale number. The fix was a one-call replay, which also exposed the shift.</p>
+<h3>2. The skeptic's suggestions never reach the build</h3>
+<p>The stress skeptic halved the judge's saving from 110 s to about 55 s. The skeptic traced the cut to a second fetch wave, c14, in the disputes half. It then proposed one sentence asking that half to fetch in a single parallel wave, and marked the sentence "not a blocker". The build reads <code>splits.json</code> and <code>verdicts.md</code>, not <code>verdict.md</code>, and <code>SKEPTIC-PASS</code> ends the loop. The saved split lacks the sentence, so the smaller saving is the one to expect.</p>
+<h3>3. Time and lead now use different figures</h3>
+<p>The judge prompt still sets Time to <code>lastLaunchSeconds</code>, while v2 moved lead and slack to <code>busySeconds</code>. The two differ only for a restarted stage that is not looped. For <code>art</code>: 235 s against 278 s. The effect is small and conservative, but a future reader of the arithmetic will see two units.</p>
+<h3>4. The skeptic's saving does not travel</h3>
+<p>The report showed both the judge's 110 s and the skeptic's 55 s. <code>splits.json</code> holds only 110 s, and the saved split's description inherits nothing else. This needs no fix today. A reader of the saved pipeline alone sees the larger number.</p>
+
+<h2 id="known">The known answer</h2>
+<p>The plan names Game forge v2, <code>ed5d719e-f049-4874-bdeb-5352aa6a888f</code>, as the split a good run should endorse. Its groups:</p>
+<table>
+  <thead><tr><th>Group</th><th>Stages</th></tr></thead>
+  <tbody>
+    <tr><td>build</td><td><code>sprites-entities</code>, <code>sprites-ui</code>, <code>sfx</code>, <code>game-logic</code>, <code>game-render</code>, <code>harness</code></td></tr>
+    <tr><td>integrate</td><td><code>integrate</code></td></tr>
+  </tbody>
+</table>
+<p>The v1 judge proposed the same shape for <code>game</code>: three authoring stages plus a verify merge. It kept <code>game</code> because the clusters showed the 340 s verify-and-tune phase editing five source files. In the hand-made v2 that phase belongs to the integrate group, which runs after the build group. A leak confined to a trailing verify phase is exactly what a merge stage absorbs. The rule "all three lenses agree" treats that leak as a block. I recorded this as an unconfirmed judge lesson and as a v5 edit in the builder todo.</p>
+
+<h2 id="time">Where the time went</h2>
+<table>
+  <thead><tr><th>Span (UTC)</th><th class="num">Length</th><th>What happened</th></tr></thead>
+  <tbody>
+    <tr><td>18:01:19 to 18:02:06</td><td class="num">47 s</td><td>Read inputs, create the test copy, start both runs.</td></tr>
+    <tr><td>18:02:06 to 18:09:59</td><td class="num">7 m 53 s</td><td>Both runs. v2, v3 and v4 written while the runs went on.</td></tr>
+    <tr><td>18:10:20 to 18:19:27</td><td class="num">9 m 07 s</td><td>Stall. The poll started 21 s after the stress run had finished.</td></tr>
+    <tr><td>18:19:27 to 18:20:58</td><td class="num">1 m 31 s</td><td>Cleanup, lessons, the todo and the report.</td></tr>
+  </tbody>
+</table>
+<p><code>poll.py</code> breaks only when a snapshot differs from the first one. A run that is already terminal never changes, so the poll sat to its 540 s cap. The stall was 46 percent of the 19 m 40 s session. The tester recorded the cause in its own table as lesson 50, so I added no tester lesson about the stall. This is the second <code>poll.py</code> stall on 2026-11-06. Lesson 41 recorded a different one: <code>attention</code> not treated as terminal.</p>
+<p class="ev">Evidence: transcript lines 3108 and 3132, and <code>runs/b411a216-…/run.json</code> finishedAt 18:09:59.533Z.</p>
+
+<h2 id="report">Report accuracy</h2>
+<table>
+  <thead><tr><th>Claim</th><th>Check</th><th>Grade</th></tr></thead>
+  <tbody>
+    <tr><td>Happy 4 m 55 s, stress 7 m 53 s</td><td><code>run.json</code>: 18:02:06 to 18:07:01, and 18:02:06 to 18:09:59.</td><td><span class="grade g-ok">confirmed</span></td></tr>
+    <tr><td>Build-split about 2 min, report about 30 s (stress)</td><td><code>status.json</code>: 90 s and 44 s.</td><td><span class="grade g-ok">close</span></td></tr>
+    <tr><td>15 % floor 634.8 s exceeds the 632 s lead</td><td>verdicts.md line 4 and the ranking table.</td><td><span class="grade g-ok">confirmed</span></td></tr>
+    <tr><td><code>art</code> drops to −18, <code>perf</code> becomes the candidate</td><td>My replay of v4 gather.</td><td><span class="grade g-ok">confirmed</span></td></tr>
+    <tr><td>15 <code>invalid_format</code> codes from underscored names</td><td>build-notes.md, Validator codes.</td><td><span class="grade g-ok">confirmed</span></td></tr>
+    <tr><td>The skeptic halved the saving and still passed</td><td>verdict.md: 55 s, 6.4 % of 858 s, against a 25.7 s floor.</td><td><span class="grade g-ok">confirmed</span></td></tr>
+    <tr><td>Mid-run note, 18:07:58: "The only reason was the floor defect"</td><td>verdicts.md also names the agreement check for <code>game</code>. The final report says the outcome is still open.</td><td><span class="grade g-warn">overstated, then corrected</span></td></tr>
+    <tr><td>The test copy cut the loop cap to 2, and v1 is the real pipeline</td><td><code>v1.json</code> holds <code>rounds: 3</code>, so the versions are real exports.</td><td><span class="grade g-ok">confirmed</span></td></tr>
+  </tbody>
+</table>
+<p>Thinking blocks: 4 of 36 held text. Each one states the reason for an edit, and each matches the report.</p>
+
+<h2 id="saved">Lessons and todos saved</h2>
+<h3>Stage splitter tables (pipeline <code>752f54e9</code>)</h3>
+<table>
+  <thead><tr><th>Table</th><th>Lesson</th></tr></thead>
+  <tbody>
+    <tr><td><code>judge</code></td><td>Under v4, Game forge's floor is 180.2 s of 3604 s. <code>game</code> and <code>playtest</code> clear the floor, so name the seam or agreement as the deciding reason.</td></tr>
+    <tr><td><code>judge</code></td><td>A leak confined to a trailing verify phase calls for a <code>new-stage</code> merge test before keeping. Unconfirmed.</td></tr>
+    <tr><td><code>judge</code></td><td>For a restarted stage that is not looped, use <code>busySeconds</code> as Time.</td></tr>
+    <tr><td><code>skeptic</code></td><td>Check output names for kebab case, not only keys.</td></tr>
+    <tr><td><code>skeptic</code></td><td>A suggestion that changes the saving needs <code>REVISE</code>. Otherwise the build never sees the suggestion.</td></tr>
+    <tr><td><code>build_split</code></td><td>The three places to map <code>_</code> to <code>-</code> when <code>invalid_format</code> appears.</td></tr>
+  </tbody>
+</table>
+<h3>Pipeline builder tables (pipeline <code>ec49473c</code>)</h3>
+<table>
+  <thead><tr><th>Table</th><th>Lesson</th></tr></thead>
+  <tbody>
+    <tr><td><code>plan</code></td><td>When a plan names a known answer, apply every default threshold to that run's numbers before create.</td></tr>
+    <tr><td><code>kt6n75z</code> (tester)</td><td>When one fix changes a figure another rule divides by, replay the first fix before justifying the second.</td></tr>
+    <tr><td><code>k8n7vfc</code> (this stage)</td><td>Replay a script stage's <code>run.command</code> offline across versions.</td></tr>
+    <tr><td><code>k8n7vfc</code></td><td>Grep the verdict files for the deciding reason before accepting "the only reason".</td></tr>
+    <tr><td><code>k8n7vfc</code></td><td>List the known-answer pipeline's groups beside the judge's proposal.</td></tr>
+  </tbody>
+</table>
+<h3>Builder todos</h3>
+<p>Row 18, "Stage splitter: confirm v2 to v4", stays open, because no run has confirmed the versions. I replaced row 18 with a sharper row, now also id 18. The new row adds the three v5 prompt edits, the offline replay results, the floor projection, and pass conditions for both confirmation runs. No other open row concerns Stage splitter.</p>
+
+<h2 id="method">Method</h2>
+<ul>
+  <li>Read the test report, <code>NOTES.md</code> and the 4,547-line tester transcript through <code>narrative.py</code>, with <code>pair.py</code> for single commands.</li>
+  <li>Diffed v1 to v4 field by field. I diffed the embedded gather script line by line.</li>
+  <li>Checked that <code>v1.json</code> is the real pipeline, not the test copy: its loop cap is 3.</li>
+  <li>Replayed v1 and v4 gather offline on both source runs, with env names taken from <code>server/src/engine/scriptEnv.ts</code>.</li>
+  <li>Projected the v4 floor onto the v1 judge's savings by hand.</li>
+  <li>Read the skeptic, build and judge outputs of both test runs, every <code>status.json</code>, and the known-answer pipeline through <code>pipeline show</code>.</li>
+  <li>Checked for a newer run of <code>752f54e9</code>. None exists.</li>
+</ul>
+</main>
+<footer>Run a683caae-813e-4ed4-9c69-e30400cf7137, stage k8n7vfc. Sources live under ~/.modpipes/runs/.</footer>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Topic expert forge · handoff</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="handoff.md">Raw markdown</a></p><h1>Handoff: ai-video-generator-picker</h1>
+<p><strong>Result: passed.</strong> 95/100 in 1 round (pass mark 80).</p>
+<h2>The agent</h2>
+<ul>
+<li>Name: <code>ai-video-generator-picker</code> (AI Video Generator Picker)</li>
+<li>File: <code>/home/alex/.claude/agents/ai-video-generator-picker.md</code></li>
+<li>Job: takes a short video blurb and returns a shortlist of good, affordable AI video generators, with dated prices.</li>
+</ul>
+<h2>How to use it</h2>
+<ul>
+<li>In Claude Code: <code>use the ai-video-generator-picker subagent</code> followed by your blurb.</li>
+<li>For a whole session: <code>claude --agent ai-video-generator-picker</code></li>
+<li>On a modpipes stage: <code>&quot;agent&quot;: &quot;ai-video-generator-picker&quot;</code></li>
+</ul>
+<h2>Images</h2>
+<p>None. The topic needed none (<code>needs_images: false</code>), so no image folder or gallery exists. <code>install.json</code> has <code>images_path: null</code> and <code>image_count: 0</code>.</p>
+<h2>Scores</h2>
+<p>Source: <a href="../../examiner/outputs/scores.json">scores.json</a>, <a href="../../examiner/outputs/report.md">report.md</a></p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expert</td>
+<td>37/40</td>
+</tr>
+<tr>
+<td>Critique</td>
+<td>19/20</td>
+</tr>
+<tr>
+<td>Making</td>
+<td>19/20</td>
+</tr>
+<tr>
+<td>Usable</td>
+<td>20/20</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>95/100</strong></td>
+</tr>
+</tbody></table>
+<ul>
+<li>Rounds: 1. Passed.</li>
+<li>The agent got 6/6 on the quiz. The bare sonnet control got about 3/6.</li>
+<li>Drawing the agent made during the exam: <a href="../../examiner/outputs/exam/drawing.png">drawing.png</a>. It is a cost chart.</li>
+<li>Other exam files, including the quiz and probe transcripts: <a href="../../examiner/outputs/exam/">exam folder</a>.</li>
+</ul>
+<h2>Optional polish</h2>
+<p>The agent passed. The examiner noted these small flaws, which you can fix by hand in the agent file:</p>
+<ol>
+<li><strong>First-person fetch claims (-3).</strong> The agent says it hit HTTP 403 or 404 on OpenAI and Luma pages, but the research stages did that, not the agent.<ul>
+<li>Recast the lines in §2.1, §2.4 and §2.9 as &quot;the 2026-11-06 research pass could not read X (403/404)&quot;.</li>
+<li>Add under the snapshot paragraph: &quot;Never say you fetched a page unless you fetched it in this session.&quot;</li>
+</ul>
+</li>
+<li><strong>Infeasible cost line (-1).</strong> The critique priced a 30 s Kling 3.0 4K take, but the agent&#39;s own specs (§2.6) say only Kling 4.0 and Seedance 2.5 reach 30 s.<ul>
+<li>In §4.4 step 5, add &quot;check that each costed take is feasible against the model&#39;s max length on that host.&quot;</li>
+</ul>
+</li>
+<li><strong>Risky sample shot (-1).</strong> The agent kept a shot with hands and faces in frame, which its own rules treat as low keep-rate.<ul>
+<li>In §4.3, add &quot;prefer shots without hands or faces in budget work; if needed, cost them at 1-in-5.&quot;</li>
+</ul>
+</li>
+</ol>
+</body></html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 10:39</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">The ChatGPT ad plan pipeline, built and tested</p>
+  <p class="summary">The user asked the pipeline builder to research how tech people use ChatGPT ads and build a pipeline that plans ads for a local repo. The result is ChatGPT ad plan, which produces a guided browser page and was left at version 2.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T16:39:04.899Z">Fri 6 Nov, 10:39</time></span><span>Finished <time datetime="2026-11-06T17:29:07.046Z">Fri 6 Nov, 11:29</time></span><span>50 min 02 s</span><span>11.3M tokens</span><span class="id">4bea23e3-f849-44c4-a471-e6a7dc125af3</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/run.json">http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/4bea23e3-f849-44c4-a471-e6a7dc125af3.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/k8n7vfc/outputs/lessons-learned-site.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>can you do very recent research on how real tech people are leveraging chatgpt ads and build a pipeline that takes a repo on this machine, researches it, takes learning you bake in around chatgpt ads, researches how to bring those together, and ultimately provides a very smooth, minimal UX that feels like cool future tech, very low cognitive load with full researched and linked instructions on how to set up an effective ad plan?</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Test report: ChatGPT ad plan</h1>
+<ul>
+<li>Pipeline id: <code>b9afa7ec-8375-40a9-bb31-cd7aefffa6cf</code>. Tested on the stored version from the plan stage (v0). Left at v2.</li>
+<li>Session: 10:53:56 to 11:22 on 2026-11-06, inside the 45-minute budget.</li>
+<li>Test copy <code>0ff58442-929f-43d4-b459-da869e926802</code>, &quot;ChatGPT ad plan (test)&quot;, polish loop cut to 2 rounds. Prompts and models unchanged. Deleted after both runs finished. Its runs stay in history.</li>
+</ul>
+<h2>What ran</h2>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Started</th>
+<th>Finished</th>
+<th>Wall clock</th>
+<th>Rounds</th>
+<th>Final gates</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>9f53bf42-1df3-4ebe-9f2c-82054ec321db</code></td>
+<td>repo-path <code>/home/alex/Desktop/dev/dirslides-correct</code>, other variables empty</td>
+<td>10:54:28</td>
+<td>11:21:05</td>
+<td>26m37s</td>
+<td>2</td>
+<td>check ok, critic ship 87</td>
+</tr>
+<tr>
+<td>Stress <code>f59b67ea-54db-4cfe-a8ba-a6397fd472ee</code></td>
+<td>repo-path <code>/home/alex/Desktop/dev/bookrender</code> (no root README, no live URL), monthly-budget <code>120</code> (under the 350 USD two-week minimum), positioning &quot;Turn any long PDF into a narrated audiobook you can play offline.&quot; (a feature the repo does not have)</td>
+<td>10:54:28</td>
+<td>11:17:17</td>
+<td>22m49s</td>
+<td>2</td>
+<td>check ok, critic ship 86</td>
+</tr>
+</tbody></table>
+<p>Stage timing, both runs alike:</p>
+<ul>
+<li>gather: 1 to 2.5 minutes</li>
+<li>fit: 1.5 minutes</li>
+<li>write: 2 to 3 minutes</li>
+<li>design: 1 minute</li>
+<li>render: seconds</li>
+<li>page (opus): 6 to 7 minutes a round</li>
+<li>check: under 1 minute</li>
+</ul>
+<p>The plan&#39;s estimate of 8 minutes a round holds.</p>
+<h2>What worked</h2>
+<p>Verified from files, not from stage summaries:</p>
+<ul>
+<li><code>facts.json</code> carries titleMax 50 and bodyMax 100 from developers.openai.com in both runs. The third-party 30 and 60 figures appear nowhere as caps.</li>
+<li>Product read found the live URL <code>https://instideck.com</code> with repo evidence (<code>server/wrangler.toml</code>, <code>CLAUDE.md</code>). Stress <code>profile.json</code> has no live URL.</li>
+<li>The stress plan handled all three edges with numbers and links: <code>~/.modpipes/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/stages/ad-plan/outputs/plan.md</code>.<ul>
+<li>The verdict is &quot;do not advertise yet&quot;.</li>
+<li>It names the positioning and repo mismatch.</li>
+<li>It says to deploy first.</li>
+<li>It shows 120 USD buys 4.8 days at the 25 USD official minimum.</li>
+<li>It predicts 0.1 to 0.2 signups.</li>
+</ul>
+</li>
+<li>The stress copywriter set every targetUrl to null. It flagged that the copy promises an unbuilt feature.</li>
+<li>render-creatives wrote five PNGs per run.</li>
+<li>The final reports have zero failed checks:<ul>
+<li>happy: 24 checks, 24 links, 0 dead</li>
+<li>stress: 23 checks, 26 links, 0 dead</li>
+</ul>
+</li>
+<li>The polish loop stop fired on ok plus ship in round 2 in both runs.</li>
+<li>The final happy page reads calm and clear. Evidence: a screenshot of step 3 with cards, copy buttons, cap counters and official badges at <code>kt6n75z/work/dbg/happy.png</code>.</li>
+<li>Both overviews state the right verdict, the creatives and the gate results.</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li>Round 1 failed page-check in both runs (2 of 2), for the same reasons. The cost was one extra opus round, about 7 minutes per run.<ul>
+<li>Evidence:<ul>
+<li><code>~/.modpipes/runs/9f53bf42-1df3-4ebe-9f2c-82054ec321db/stages/page-check/rounds/1/report.json</code></li>
+<li><code>~/.modpipes/runs/f59b67ea-54db-4cfe-a8ba-a6397fd472ee/stages/page-check/rounds/1/report.json</code></li>
+</ul>
+</li>
+<li>Cause: the shared page contract names no Next control and no screen identity, so check.cjs guessed.<ul>
+<li>The round-1 pages had no <code>[data-next]</code>, and every click timed out.</li>
+<li>No section label held &quot;setup&quot; or &quot;tracking&quot;.</li>
+<li>I reproduced the timeout with a Playwright probe on the stress round-1 page: zero visible <code>[data-next]</code>.</li>
+</ul>
+</li>
+<li>Second cause: a <code>navigator.clipboard</code> call inside the sandboxed frame logs a Permissions-policy console error.</li>
+<li>Fix v1: the contract now gives each section.step a <code>data-screen</code> (product, audience, creatives, budget, setup, tracking, review). It also requires a <code>data-next</code> and a <code>data-back</code> control. Framed pages skip the clipboard call. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>On the happy run, lazy images read <code>naturalWidth 0</code> on hidden screens in the round-1 sandbox check. Evidence: the happy round-1 report above, and <code>loading=&quot;lazy&quot;</code> in <code>stages/page/rounds/1/page/index.html</code>.<ul>
+<li>Fix v2: the page prompt now requires eager images. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>Copywriter and ad-plan both decided the tracking URL. They run side by side, so the two URLs disagreed.<ul>
+<li>The copywriter wrote <code>instideck.com/?…&amp;utm_content=c1&amp;utm_term={ad_id}</code>. Evidence: <code>stages/copywriter/outputs/creatives.json</code>.</li>
+<li>The plan wrote <code>/chatgpt?utm_term=A</code> plus a campaign <code>query_string_template</code>.</li>
+<li>The page chose the plan&#39;s URLs, so the conflict did not reach the user this time.</li>
+<li>Fix v1: targetUrl carries no query string, and ad-plan owns tracking. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>The happy overview says the sandboxed fallbacks were &quot;not tested&quot;, yet page-check ran framed mode and passed. Evidence: <code>~/.modpipes/runs/9f53bf42-1df3-4ebe-9f2c-82054ec321db/stages/overview/outputs/overview.md</code>. <strong>Not fixed.</strong> The todo row says what to try.</li>
+</ol>
+<p>The critic shipped round 1 in both runs (scores 84 and 82) while the checker failed. Requiring both gates in the loop stop is what caught the failures.</p>
+<h2>Versions</h2>
+<ul>
+<li><code>pipeline-versions/v1.json</code>: contract selectors, framed clipboard rule, copywriter targetUrl. Voice audit 0 long sentences. Stored copy verified equal, loop stop present.</li>
+<li><code>pipeline-versions/v2.json</code>: eager images. Same checks.</li>
+<li>The CLI warned that the server build (68ceb65) differs from the CLI build (ec248cb). The stored definition still matched the file after both updates.</li>
+<li>The plan stage&#39;s <code>gen.py</code> does not hold the v1 and v2 edits. Port them before you regenerate from the generator.</li>
+</ul>
+<h2>Lessons recorded</h2>
+<ul>
+<li>Real pipeline page table: the four round-1 failure causes.</li>
+<li>Real pipeline copywriter table: the tracking URL ownership.</li>
+<li>Tester table: stage timing and where the round-1 evidence lives.</li>
+<li><code>lessons__pipeline_builder_todos</code>: confirm v1 and v2, and fix the overview line.</li>
+<li>None of the seven earlier todo rows concerned this pipeline.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ul>
+<li>Run once on dirslides-correct with v2. Pass when round 1&#39;s page-check report says ok true and the run ends in one round, about 18 minutes.</li>
+<li>Grep the fresh <code>toolkit/outputs/tools/check.cjs</code> for <code>data-screen</code> and <code>data-next</code>. The toolkit should now match on the contract instead of h2 text.</li>
+<li>Read the overview for the framed-mode sentence.</li>
+</ul>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/kt6n75z/outputs/test-report.md</a></p></figure>
+<figure class="out"><h3>Analyse the test · lessons-learned-site<span class="type">html</span></h3><p class="desc">A static site: which changes improved the pipeline, why, and the evidence behind each claim</p><iframe src="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/k8n7vfc/outputs/lessons-learned-site.html" title="Analyse the test lessons-learned-site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/k8n7vfc/outputs/lessons-learned-site.html">http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/k8n7vfc/outputs/lessons-learned-site.html</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:40:01.087Z">Fri 6 Nov, 10:40</time></p>
+    <div class="q"><p class="question">Quick check on meaning. Today&#39;s research says &#39;ChatGPT ads&#39; means OpenAI&#39;s own ad product: ads shown inside ChatGPT to Free and Go users, bought at ads.openai.com (self-serve, $25 a day minimum, campaign &gt; ad group &gt; ad, &#39;context hints&#39; instead of keywords, 30-char headline and 60-char body with a square image). Is advertising inside ChatGPT what the pipeline should plan for?</p><p class="options">Options: Ads inside ChatGPT (Recommended) · Inside ChatGPT plus other channels · Using ChatGPT to make ads</p><p class="answer">Ads inside ChatGPT (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:40:32.051Z">Fri 6 Nov, 10:40</time></p>
+    <div class="q"><p class="question">The repo path will be a pipeline variable. Which repo under ~/Desktop/dev should the first real test run use? A repo with a clear product and audience makes the test honest.</p><p class="options">Options: dirslides-correct (Recommended) · potluck-signup · songstock · toddler-smash</p><p class="answer">dirslides-correct (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:40:54.340Z">Fri 6 Nov, 10:40</time></p>
+    <div class="q"><p class="question">The finished product is a page you open in the browser (the modpipes app renders a dir output with index.html). What shape should the page take? All three options are static files, no server.</p><p class="options">Options: Guided steps page (Recommended) · Single scrolling page · Page plus a markdown plan</p><p class="answer">Guided steps page (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:41:11.778Z">Fri 6 Nov, 10:41</time></p>
+    <div class="q"><p class="question">&#39;Learning you bake in around ChatGPT ads&#39;: I will write today&#39;s research into a dossier the pipeline carries (platform rules, costs, what worked and failed for real advertisers, tracking pitfalls, with links). Should each run also refresh that knowledge with a live search, since the platform changes monthly?</p><p class="options">Options: Baked dossier plus fresh search (Recommended) · Baked dossier only · Fresh search only</p><p class="answer">Baked dossier plus fresh search (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:41:25.197Z">Fri 6 Nov, 10:41</time></p>
+    <div class="q"><p class="question">Should the run pause for you anywhere, or run start to finish unattended? Low cognitive load argues for no pauses, but the product read of the repo (what the product is, who it is for) shapes every creative, so a wrong read wastes the run.</p><p class="options">Options: No pauses (Recommended) · One pause after the product read · Pause before the final page</p><p class="answer">No pauses (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:41:37.760Z">Fri 6 Nov, 10:41</time></p>
+    <div class="q"><p class="question">Every ChatGPT ad needs a square image. Should the pipeline produce the images, or only describe them?</p><p class="options">Options: Generate square PNGs (Recommended) · Describe only · Reuse repo assets</p><p class="answer">Generate square PNGs (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:41:52.479Z">Fri 6 Nov, 10:41</time></p>
+    <div class="q"><p class="question">Here is my understanding. Pipeline &#39;ChatGPT ad plan&#39;: variables are repo path (required) and an optional monthly budget (default: a two-week test at the $25 a day minimum). Stages: (1) in parallel, read the repo for product, audience, promise, colours and live URL, and refresh the baked ChatGPT ads dossier with a live search delta; (2) research how this product meets ChatGPT ads: which conversations the audience has, context hints, what comparable advertisers saw, tracking fit; (3) write the plan: three to five creatives (30-char headline, 60-char body, context hints), budget and bidding, step-by-step ads.openai.com setup, UTM and landing page tracking, two-week kill criteria, every claim linked; (4) render one 1024x1024 PNG per creative and build the guided steps page (one screen at a time, copy buttons, localStorage checklist, sources beside claims); (5) a reviewer checks links resolve and copy fits the character limits, then an overview. Unattended, no pauses. First test on dirslides-correct. Front end yes, back end no. Correct?</p><p class="options">Options: Yes, write it up · Yes, with a change</p><p class="answer">Yes, write it up</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">9.6KB</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">509B</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">9.1KB</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">9.4KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">6.9KB</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">12KB</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">6.3KB</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">3.5KB</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/4bea23e3-f849-44c4-a471-e6a7dc125af3/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">7.2KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>4 min 13 s</td><td>694K</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>1 min 51 s</td><td>477K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>2 min 21 s</td><td>587K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 30 s</td><td>424K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>2 min 38 s</td><td>816K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>7 min 56 s</td><td>1.5M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>28 min 46 s</td><td>3.2M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>6 min 29 s</td><td>3.7M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

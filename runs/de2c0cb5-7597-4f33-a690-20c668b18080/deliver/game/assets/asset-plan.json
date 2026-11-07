@@ -1,0 +1,1228 @@
+{
+ "sprites": [
+  {
+   "name": "hero_body",
+   "file": "hero_body.png",
+   "w": 48,
+   "h": 64,
+   "frames": 44,
+   "set": "entities",
+   "description": "The Exile (Witch, adult, 30s, sardonic). Base layer: pale skin #F0C8A8, dark hair, short dark witch hat #3A2A30 with a bent tip, and a cream/navy striped retro one-piece swimsuit (#E8E4DA / #2B3F6B) with modest scoop neck and boy-short legs, plus plain boots. 1 px ink #0A0809 outline, then a 1 px hero_rim #BDE6EE halo outside the ink on every outer edge (the hero's signature; no other entity uses it). Holds a short wand in the right hand. Head ~15 px tall, big readable expressions. Frame order (shared by every hero_* strip, 44 frames): 0-3 idle (breathing, 6 fps); 4-9 run (12 fps); 10-11 jump rise; 12-13 fall; 14-16 melee1 (antic, active slash, recover); 17-19 melee2 (antic, active backhand, recover); 20-23 melee3 (antic, antic-coil, active overhead, end-pose hold); 24-26 cast Spark (antic hand back, release palm-forward, recover); 27-31 dodge roll (crouch, tuck, tuck, tuck, rise); 32 hurt; 33-34 flustered (blush, sweat drop, eyes swirled; loop 8 fps); 35-36 swoon (knees wobble, hand to forehead); 37-40 dead (stagger, kneel, sit, flop on back fully clothed); 41-43 idle fidget (pulls out a scroll of trade whispers, reads, rolls eyes). Feet anchor: bottom-centre (24,63). Head top stays at y=2..4 except roll/dead. Faces right; code flips."
+  },
+  {
+   "name": "hero_leggings",
+   "file": "hero_leggings.png",
+   "w": 48,
+   "h": 64,
+   "frames": 44,
+   "set": "entities",
+   "description": "Overlay: Lightning Leggings, yellow #F2D640 with a zigzag stripe, covering hips to ankles over the swimsuit. Transparent elsewhere. Ink outline; hero_rim on edges not touching hero_body pixels. Same 44-frame order and pixel registration as hero_body. Draw order: body, leggings, tunic, cloak, barrel, hat."
+  },
+  {
+   "name": "hero_tunic",
+   "file": "hero_tunic.png",
+   "w": 48,
+   "h": 64,
+   "frames": 44,
+   "set": "entities",
+   "description": "Overlay: Cold Tunic, blue #58C6F2 long-sleeve tunic to mid-thigh with a frost hem, collar to neck. Ink outline; hero_rim on edges not touching hero_body pixels. Same 44-frame order and registration as hero_body."
+  },
+  {
+   "name": "hero_cloak",
+   "file": "hero_cloak.png",
+   "w": 48,
+   "h": 64,
+   "frames": 44,
+   "set": "entities",
+   "description": "Overlay: Fire Cloak, red-orange #F0552E short shoulder cape with flame-tongue hem; lags the body 2-4 frames in run/jump/roll (follow-through baked). Ink outline; hero_rim on edges not touching hero_body pixels. Same 44-frame order and registration as hero_body."
+  },
+  {
+   "name": "hero_barrel",
+   "file": "hero_barrel.png",
+   "w": 48,
+   "h": 64,
+   "frames": 44,
+   "set": "entities",
+   "description": "Overlay shown only at 0 layers: a wooden barrel #9A6234 with dark iron bands #5A3A22 and two rope shoulder straps, covering chest to knees over the swimsuit. The joke is that it covers nothing that needed covering. Bobs with the body; in roll frames the barrel rolls too. Ink outline + hero_rim on outer edges. Same 44-frame order as hero_body."
+  },
+  {
+   "name": "hero_hat",
+   "file": "hero_hat.png",
+   "w": 48,
+   "h": 64,
+   "frames": 44,
+   "set": "entities",
+   "description": "Overlay: cosmetic 'Supporter Pack' hat unlocked at stash 100: an absurdly tall gilded witch hat with a price tag dangling ('$480'). Replaces the base hat silhouette above the head; follows head position per frame. Same 44-frame order as hero_body."
+  },
+  {
+   "name": "hero_tabula",
+   "file": "hero_tabula.png",
+   "w": 48,
+   "h": 64,
+   "frames": 1,
+   "set": "entities",
+   "description": "Tabula Rasa gag: a shapeless white linen sack (#E6E2D8, ink outline) with 6 sloppy stitched sockets and a paper price tag '1c' at the hip, sized to drape over the full outfit from shoulders to shins, arm holes only. Code bobs it 1 px with the run cycle for 10 s. Feet anchor (24,63)."
+  },
+  {
+   "name": "grunt",
+   "file": "grunt.png",
+   "w": 40,
+   "h": 48,
+   "frames": 16,
+   "set": "entities",
+   "description": "Grunt archetype (L1 Thirsty Drowned look as the default): hunched angular humanoid, foe violet #9C7BE8 body, foe_dark #3E2A6A shading, spiky shoulders and a jagged jaw, glowing pale eyes #F4F7B0, ink outline, NO hero_rim. Triangular silhouette, wider at top. Frames: 0-1 idle; 2-5 walk; 6-7 swipe windup (arm raised high, 0.45 s tell pose); 8-9 swipe active; 10 hitstun; 11-13 dead (topples, fades to a little heap); 14-15 Wink Charm pose (hip cocked, one eye shut, finger-gun; code tints pink and shows ui_heart_tell). Feet anchor (20,47). Head top kept at y=4 (±1) so foe_hats anchors at (20,4)."
+  },
+  {
+   "name": "caster",
+   "file": "caster.png",
+   "w": 40,
+   "h": 48,
+   "frames": 16,
+   "set": "entities",
+   "description": "Caster archetype (default look Sand Spitter): thin robed floater, tall narrow inverted-triangle robe ending in a point (no feet), foe violet body, foe_dark hood, pale eyes, ink outline. Hovers (code bob 1 px at 2 Hz). Frames: 0-1 idle; 2-5 drift; 6-7 cast windup (hands cupped, white glow between them that code tints to the projectile element); 8-9 cast release; 10-11 Blown Kiss pose (hand to mouth, then flung outward; from L3); 12 hitstun; 13-15 dead (robe collapses empty). Origin anchor (20,47). Head top y=3 for foe_hats."
+  },
+  {
+   "name": "elite",
+   "file": "elite.png",
+   "w": 56,
+   "h": 56,
+   "frames": 17,
+   "set": "entities",
+   "description": "Elite archetype (default Hillock's Wingman): broad brute, trapezoid torso with spiked pauldrons, small head, foe violet with foe_dark armour plates, ink outline. Smug grin. Frames: 0-1 idle; 2-5 walk; 6-7 shoulder-charge crouch tell (0.5 s); 8-9 charge dash (leaning, motion lines baked); 10-11 Pickup Line Charm pose (leaning on nothing, eyebrow raise, hand on chest); 12 recover; 13 hitstun; 14-16 dead. Feet anchor (28,55). Head top y=6 for foe_hats."
+  },
+  {
+   "name": "foe_hats",
+   "file": "foe_hats.png",
+   "w": 24,
+   "h": 16,
+   "frames": 15,
+   "set": "entities",
+   "description": "Per-level reskin accessory drawn at each enemy's head anchor (bottom-centre of this frame on the anchor, dy -1 on walk frames 3 and 5). Frame = (level-1)*3 + archetype (0 grunt, 1 caster, 2 elite). L1: seaweed tangle, sandy hood, sailor captain hat. L2: prison cap, warden's visor, sweatband + whistle. L3: templar chaperone bonnet-helm, choir collar ruff (adult baritone choirboy), inquisitor mitre. L4: stomach polyp nub, bile drip crown, cultist hood with a rose. L5: waiter bowtie headband, sommelier tastevin cup on chain, maitre d' slick hair + monocle. Colours from the level accent + ink outline; never pink, never hero_rim."
+  },
+  {
+   "name": "boss_hillock",
+   "file": "boss_hillock.png",
+   "w": 128,
+   "h": 128,
+   "frames": 16,
+   "set": "entities",
+   "description": "Hillock, 'has waited 300 leagues': hulking stitched brute, original design (not GGG's): lumpy pale-violet hide, mismatched stitches, tiny heart-shaped patch on chest, big club. Lovesick puppy eyes. Frames: 0-3 idle (sways, sighs); 4-5 club windup (0.5 s); 6-7 club swing; 8-9 Hug Lunge tell (arms flung WIDE open, lips puckered, 0.6 s); 10-11 lunge (arms forward); 12 hurt; 13-15 defeated (sits, sniffles, hugs own club). Feet anchor (64,127)."
+  },
+  {
+   "name": "boss_brutus",
+   "file": "boss_brutus.png",
+   "w": 128,
+   "h": 128,
+   "frames": 19,
+   "set": "entities",
+   "description": "Brutus, gym bro in lockdown: enormous V-shaped torso, tiny legs (skipped leg day), headband, tank top, chains worn as gym jewellery, original design. Foe violet skin tone family with ink outline. Frames: 0-3 idle (bounces on toes); 4-6 flex tell (double-bicep, veins, 0.6 s); 7-8 slam (shockwave launch); 9-10 barbell toss windup (0.5 s); 11-12 toss release; 13-14 'Spot me?' shout (cupped hands, sweat flying); 15 hurt; 16-18 defeated (lies on a bench, thumbs up). Feet anchor (64,127)."
+  },
+  {
+   "name": "boss_dominus",
+   "file": "boss_dominus.png",
+   "w": 112,
+   "h": 128,
+   "frames": 16,
+   "set": "entities",
+   "description": "Dominus, the prude: tall gaunt templar in high-collared robes buttoned to the chin, gloves, scandalised expression, floats; carries a ledger of rules. Original design. Robe off-white with gold trim, ink outline. Frames: 0-3 idle (float, tut-tut finger wag); 4-6 Censor Volley cast (flings arm, tiny bars appear in hand); 7-8 Holy Pillar call (points down); 9-11 Purity Nova (arms crossed over chest, eyes shut, P2 only); 12 hurt (clutches pearls); 13-15 defeated (faints primly onto back, ledger falls open). Origin anchor (56,127)."
+  },
+  {
+   "name": "boss_piety",
+   "file": "boss_piety.png",
+   "w": 64,
+   "h": 80,
+   "frames": 14,
+   "set": "entities",
+   "description": "Piety, 'not like other alchemists': adult woman alchemist, tall boots, full-length lab coat over a high-neck dress, goggles on forehead, satchel of flasks, smug pose. Original design. Frames: 0-3 idle (hair flip); 4-5 flask lob windup; 6-7 lob release; 8-9 wink Charm (0.5 s, finger to lips); 10 hurt; 11-13 defeated (dramatically swoons onto a crate, lab coat stays on). Feet anchor (32,79)."
+  },
+  {
+   "name": "boss_heart",
+   "file": "boss_heart.png",
+   "w": 128,
+   "h": 128,
+   "frames": 10,
+   "set": "entities",
+   "description": "The Heart: a giant cartoon anatomical-ish heart (stylised, not gory) hung on fleshy cords, a single big cute-anxious eye in the middle, blush marks. Frames: 0-3 beat loop (doki-doki squash/stretch); 4-5 pulse swell tell (inflates 1.15x, veins glow telegraph orange, 0.6 s); 6 hurt; 7-9 defeated (deflates, flutters to the floor like a valentine). Origin anchor (64,127)."
+  },
+  {
+   "name": "boss_kitava",
+   "file": "boss_kitava.png",
+   "w": 160,
+   "h": 160,
+   "frames": 24,
+   "set": "entities",
+   "description": "Kitava, insatiable dinner date: towering ash-and-ember god (original design), huge jaw, horns, wearing a dinner bib/napkin tucked in, giant fork in one hand, knife in other. Charred grey-violet body with ember-orange cracks (ember accents use telegraph #FF8A3D only during tells). Frames: 0-3 idle (taps fork on table); 4-5 Fork Slam windup (0.7 s); 6-7 slam; 8-9 napkin tuck (Devour tell, 0.6 s); 10-11 Devour inhale (mouth wide, wind lines); 12-13 cheeks puff (Belch tell, 0.8 s); 14-15 belch; 16-18 Feast chomp (holds a tiny cloak/tunic/leggings to mouth, chews; code overlays fx_layer piece); 19 disappointed ('Nothing left to eat?', pouty); 20 hurt; 21-23 defeated (leans back, unbuttons nothing, pats belly, 'I'm stuffed'). Feet anchor (80,159). Strip is 3840 px wide; keep it."
+  },
+  {
+   "name": "proj_spark",
+   "file": "proj_spark.png",
+   "w": 16,
+   "h": 10,
+   "frames": 4,
+   "set": "entities",
+   "description": "Player Spark: crackling zigzag bolt in hero_rim #BDE6EE with a white-ish core (never loot_core), ink-free. Friendly read = hero colour. 4-frame flicker loop 12 fps. Never rotated: the zigzag reads in any direction, so code draws it unrotated and only flips x."
+  },
+  {
+   "name": "proj_bolt",
+   "file": "proj_bolt.png",
+   "w": 12,
+   "h": 12,
+   "frames": 2,
+   "set": "entities",
+   "description": "Enemy elemental bolt: angular DIAMOND (never round, so it never reads as loot), drawn in white/light grey with a 1 px ink outline and a 2-px trailing spike; code multiplies a tint per element: phys #D8D0C0, fire #F0552E, cold #58C6F2, lightning #F2D640. Frames: 0-1 shimmer."
+  },
+  {
+   "name": "proj_kiss",
+   "file": "proj_kiss.png",
+   "w": 14,
+   "h": 12,
+   "frames": 2,
+   "set": "entities",
+   "description": "Blown Kiss Charm projectile: pink #FF5FA2 heart with little cartoon lips in censor_text #2A0E1E, ink outline. 2-frame wobble."
+  },
+  {
+   "name": "proj_censor",
+   "file": "proj_censor.png",
+   "w": 32,
+   "h": 12,
+   "frames": 2,
+   "set": "entities",
+   "description": "Dominus's flying censor bar: perfect hard-edged rectangle, censor pink with a 4 px mosaic texture inside and tiny 'CENSORED' text in censor_text. Frames: 0-1 jitter 1 px."
+  },
+  {
+   "name": "proj_barbell",
+   "file": "proj_barbell.png",
+   "w": 32,
+   "h": 16,
+   "frames": 4,
+   "set": "entities",
+   "description": "Brutus's barbell: bar with two plates, crackling lightning yellow sparks; 4 frames baked rotation (0, 45, 90, 135 degrees) since rotating pixel art is not allowed."
+  },
+  {
+   "name": "proj_flask",
+   "file": "proj_flask.png",
+   "w": 12,
+   "h": 14,
+   "frames": 4,
+   "set": "entities",
+   "description": "Piety's flask lob: round-bottom flask of fire-orange liquid with cork; 4 frames baked rotation 0/90/180/270."
+  },
+  {
+   "name": "proj_shockwave",
+   "file": "proj_shockwave.png",
+   "w": 32,
+   "h": 24,
+   "frames": 3,
+   "set": "entities",
+   "description": "Brutus Flex Shockwave: jagged triangular ground wave of phys-grey dust #D8D0C0 with ink outline, 24 px tall. Frames 0-2 crest roll. Code tiles nothing; one sprite travels."
+  },
+  {
+   "name": "hz_plate",
+   "file": "hz_plate.png",
+   "w": 32,
+   "h": 24,
+   "frames": 4,
+   "set": "entities",
+   "description": "Lightning floor plate (L2+): metal plate in bottom 8 px (ground tones, ground_rim top), zap arcs above. Frames: 0 armed (dull), 1-2 tell (small yellow sparks + telegraph-orange hatched edge, 0.6 s), 3 active (tall lightning-yellow zigzag arcs up to 24 px). Angular, never round."
+  },
+  {
+   "name": "hz_acid",
+   "file": "hz_acid.png",
+   "w": 32,
+   "h": 16,
+   "frames": 4,
+   "set": "entities",
+   "description": "Acid pool tile (L4, deals Fire): bile green #B6D84A surface with jagged toothy edges (angular), dark green depth, popping bubbles that release tiny fire-orange sparks so the Fire link reads. Seamless horizontally. 4-frame bubble loop 8 fps."
+  },
+  {
+   "name": "hz_fire_puddle",
+   "file": "hz_fire_puddle.png",
+   "w": 32,
+   "h": 12,
+   "frames": 3,
+   "set": "entities",
+   "description": "Piety's fire puddle: flat jagged flame decal in fire #F0552E with telegraph-orange tips, 3-frame flicker 10 fps. Seamless horizontally."
+  },
+  {
+   "name": "hz_tell_ground",
+   "file": "hz_tell_ground.png",
+   "w": 32,
+   "h": 8,
+   "frames": 2,
+   "set": "entities",
+   "description": "Generic ground telegraph decal: telegraph #FF8A3D diagonal hatching on transparent with a 1 px pulsing outline; frames 0-1 scroll the hatching 1 px. Code tiles it horizontally to the AoE width. Used under Holy Pillar marks, Fork Slam, Hug Lunge path."
+  },
+  {
+   "name": "hz_pillar",
+   "file": "hz_pillar.png",
+   "w": 24,
+   "h": 112,
+   "frames": 3,
+   "set": "entities",
+   "description": "Dominus Holy Pillar: a column of holy fire (fire #F0552E core, pale gold edges, ink-free), feet anchored to the ground. Frames: 0 thin start, 1 full, 2 fading."
+  },
+  {
+   "name": "checkpoint",
+   "file": "checkpoint.png",
+   "w": 24,
+   "h": 56,
+   "frames": 2,
+   "set": "entities",
+   "description": "Waypoint obelisk: angular stone pillar (ground tones, ground_rim edges) with a rune. Frames: 0 dormant, 1 active (rune glows hero_rim cyan). Feet anchor (12,55)."
+  },
+  {
+   "name": "gate",
+   "file": "gate.png",
+   "w": 24,
+   "h": 96,
+   "frames": 3,
+   "set": "entities",
+   "description": "Arena gate: rusty portcullis column. Frames: 0 locked (bars down, ground_rim highlights, small padlock), 1 half-raised, 2 open (raised mostly off-sprite)."
+  },
+  {
+   "name": "orbs",
+   "file": "orbs.png",
+   "w": 16,
+   "h": 16,
+   "frames": 6,
+   "set": "entities",
+   "description": "World currency drops (original designs, perfect circles, each with one 2x2 loot_core #FFF4D6 highlight, ink outline). Frame order: 0 Chaos (white-gold swirl, loot_chaos #E6E2D8), 1 Tailor's Orb (pink loot_tailor #FF5FA2 orb with a needle-and-thread stitch), 2 Vaal (blood-red loot_vaal #E8423A orb with a hairline crack), 3 Exalted (pale blue loot_exalt #A8D8FF orb with tiny wings), 4 Divine (gold loot_divine #F2C14E orb with a halo), 5 Mirror of Kalandra (silver hand-mirror shape; never dropped, used only for the hideout pedestal)."
+  },
+  {
+   "name": "pickup_tea",
+   "file": "pickup_tea.png",
+   "w": 14,
+   "h": 14,
+   "frames": 2,
+   "set": "entities",
+   "description": "Cup of Tea pickup: round teacup on saucer, warm cream with pink rim, a tea bag tag. Frames: 0 cup, 1 cup with steam curl."
+  },
+  {
+   "name": "pickup_flask",
+   "file": "pickup_flask.png",
+   "w": 12,
+   "h": 16,
+   "frames": 1,
+   "set": "entities",
+   "description": "Flask refill: small life flask (red liquid #E0384F inside glass, cork) on its side; ink outline."
+  },
+  {
+   "name": "prop_sign_dresscode",
+   "file": "prop_sign_dresscode.png",
+   "w": 32,
+   "h": 40,
+   "frames": 1,
+   "set": "entities",
+   "description": "L1 sign on a post: 'LIONEYE'S WATCH - DRESS CODE STRICTLY ENFORCED' with a tiny pictogram of a crossed-out boot. Weathered wood, ink outline."
+  },
+  {
+   "name": "prop_chest_tabula",
+   "file": "prop_chest_tabula.png",
+   "w": 32,
+   "h": 24,
+   "frames": 2,
+   "set": "entities",
+   "description": "L1 beach chest. Frames: 0 closed, 1 open with a folded white sack visible inside."
+  },
+  {
+   "name": "npc_merveil_shell",
+   "file": "npc_merveil_shell.png",
+   "w": 24,
+   "h": 16,
+   "frames": 2,
+   "set": "entities",
+   "description": "L1 tide-pool seashell with a tiny fancy face and lipstick (original gag, not GGG art). Frames: 0 closed, 1 open singing (one music note)."
+  },
+  {
+   "name": "npc_bestel",
+   "file": "npc_bestel.png",
+   "w": 32,
+   "h": 48,
+   "frames": 2,
+   "set": "entities",
+   "description": "L1 bard NPC: friendly round-shouldered sailor with a lute, beard, rounded shapes (friendly = round). Frames: 0 idle, 1 talk."
+  },
+  {
+   "name": "prop_signup",
+   "file": "prop_signup.png",
+   "w": 24,
+   "h": 32,
+   "frames": 1,
+   "set": "entities",
+   "description": "L2 gym sign-up clipboard on a nail: every line reads 'Brutus' (scribble lines are fine at this size, top line legible)."
+  },
+  {
+   "name": "prop_protein",
+   "file": "prop_protein.png",
+   "w": 16,
+   "h": 16,
+   "frames": 2,
+   "set": "entities",
+   "description": "L2 protein tub labelled 'WHEY OF THE EXILE'. Frames: 0 lidded, 1 lid off with a puff."
+  },
+  {
+   "name": "prop_tally",
+   "file": "prop_tally.png",
+   "w": 32,
+   "h": 32,
+   "frames": 1,
+   "set": "entities",
+   "description": "L2 cell-wall tally scratches with 'days since leg day:' and an infinity sign."
+  },
+  {
+   "name": "prop_window",
+   "file": "prop_window.png",
+   "w": 48,
+   "h": 64,
+   "frames": 1,
+   "set": "entities",
+   "description": "L3 stained-glass window drawn entirely as a coarse 4 px block mosaic (the joke: even the window is censored), lead lines in ink."
+  },
+  {
+   "name": "prop_booth",
+   "file": "prop_booth.png",
+   "w": 48,
+   "h": 64,
+   "frames": 2,
+   "set": "entities",
+   "description": "L3 wooden confession booth with a curtain. Frames: 0 curtain closed, 1 curtain twitches."
+  },
+  {
+   "name": "npc_einhar",
+   "file": "npc_einhar.png",
+   "w": 40,
+   "h": 48,
+   "frames": 2,
+   "set": "entities",
+   "description": "L3 beast-hunter cameo (original): wild-bearded hunter in furs with a net, sitting on a pew. Frames: 0 idle, 1 pointing excitedly."
+  },
+  {
+   "name": "npc_pigeon",
+   "file": "npc_pigeon.png",
+   "w": 16,
+   "h": 12,
+   "frames": 2,
+   "set": "entities",
+   "description": "L3 the 'GREAT prize': an ordinary grey pigeon. Frames: 0 idle, 1 head bob."
+  },
+  {
+   "name": "prop_vanity",
+   "file": "prop_vanity.png",
+   "w": 48,
+   "h": 48,
+   "frames": 4,
+   "set": "entities",
+   "description": "L4 swallowed ornate vanity mirror (original design) showing 4 small reflections of the Exile. Frames: 0 idle, 1 shimmer, 2 reflection #3 winks, 3 shimmer."
+  },
+  {
+   "name": "prop_menu",
+   "file": "prop_menu.png",
+   "w": 32,
+   "h": 40,
+   "frames": 1,
+   "set": "entities",
+   "description": "L4 chalk menu board: 'TODAY'S SPECIAL: EXILE'."
+  },
+  {
+   "name": "prop_wetfloor",
+   "file": "prop_wetfloor.png",
+   "w": 16,
+   "h": 24,
+   "frames": 1,
+   "set": "entities",
+   "description": "L4 yellow A-frame 'WET FLOOR' sign (the floor is wet)."
+  },
+  {
+   "name": "prop_reservation",
+   "file": "prop_reservation.png",
+   "w": 24,
+   "h": 16,
+   "frames": 2,
+   "set": "entities",
+   "description": "L5 reservation book on a lectern-top. Frames: 0 closed, 1 open ('Exile, party of 1, every league')."
+  },
+  {
+   "name": "prop_tipjar",
+   "file": "prop_tipjar.png",
+   "w": 16,
+   "h": 20,
+   "frames": 2,
+   "set": "entities",
+   "description": "L5 tip jar. Frames: 0 empty, 1 one coin inside."
+  },
+  {
+   "name": "prop_dessert",
+   "file": "prop_dessert.png",
+   "w": 40,
+   "h": 32,
+   "frames": 2,
+   "set": "entities",
+   "description": "L5 dessert cart with a silver cloche. Frames: 0 cloche down, 1 cloche lifted showing a single Tailor's Orb."
+  },
+  {
+   "name": "tiles_l1",
+   "file": "tiles_l1.png",
+   "w": 16,
+   "h": 16,
+   "frames": 12,
+   "set": "entities",
+   "description": "Level 1 tileset, Twilight Strand: wet dark sand ground, driftwood, kelp, broken hulls; accent dawn teal #2E5E5C. Ground body #33291F family (lum <= 0.06), every walkable top carries a 2 px ground_rim #A08C66 edge. Frame order: 0 top-left, 1 top, 2 top-right, 3 fill-left, 4 fill, 5 fill-right, 6 one-way platform left, 7 platform mid, 8 platform right, 9-11 decoration (no collision, accent colour on <= 10% of pixels)."
+  },
+  {
+   "name": "bg_l1_far",
+   "file": "bg_l1_far.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 1 far parallax (0.25x), Twilight Strand: wet dark sand ground, driftwood, kelp, broken hulls; accent dawn teal #2E5E5C. Sky/far layer from bg_far #0E1719 up to the level accent dark; lum <= 0.06 everywhere, saturation <= 40%, no outlines. Seamless left-right tiling."
+  },
+  {
+   "name": "bg_l1_mid",
+   "file": "bg_l1_mid.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 1 mid parallax (0.5x): silhouettes of set dressing in bg_mid #1C2A2A tinted toward the accent, lum <= 0.06, no outlines, transparent above the skyline, seamless left-right."
+  },
+  {
+   "name": "tiles_l2",
+   "file": "tiles_l2.png",
+   "w": 16,
+   "h": 16,
+   "frames": 12,
+   "set": "entities",
+   "description": "Level 2 tileset, Lower Prison: wet flagstones, rusted grates, chains; accent rust #7A4630. Ground body #33291F family (lum <= 0.06), every walkable top carries a 2 px ground_rim #A08C66 edge. Frame order: 0 top-left, 1 top, 2 top-right, 3 fill-left, 4 fill, 5 fill-right, 6 one-way platform left, 7 platform mid, 8 platform right, 9-11 decoration (no collision, accent colour on <= 10% of pixels)."
+  },
+  {
+   "name": "bg_l2_far",
+   "file": "bg_l2_far.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 2 far parallax (0.25x), Lower Prison: wet flagstones, rusted grates, chains; accent rust #7A4630. Sky/far layer from bg_far #0E1719 up to the level accent dark; lum <= 0.06 everywhere, saturation <= 40%, no outlines. Seamless left-right tiling."
+  },
+  {
+   "name": "bg_l2_mid",
+   "file": "bg_l2_mid.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 2 mid parallax (0.5x): silhouettes of set dressing in bg_mid #1C2A2A tinted toward the accent, lum <= 0.06, no outlines, transparent above the skyline, seamless left-right."
+  },
+  {
+   "name": "tiles_l3",
+   "file": "tiles_l3.png",
+   "w": 16,
+   "h": 16,
+   "frames": 12,
+   "set": "entities",
+   "description": "Level 3 tileset, Templar Cathedral: cracked marble slabs, gold-leaf trim, pews; accent dull marble gold #5A5034. Ground body #33291F family (lum <= 0.06), every walkable top carries a 2 px ground_rim #A08C66 edge. Frame order: 0 top-left, 1 top, 2 top-right, 3 fill-left, 4 fill, 5 fill-right, 6 one-way platform left, 7 platform mid, 8 platform right, 9-11 decoration (no collision, accent colour on <= 10% of pixels)."
+  },
+  {
+   "name": "bg_l3_far",
+   "file": "bg_l3_far.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 3 far parallax (0.25x), Templar Cathedral: cracked marble slabs, gold-leaf trim, pews; accent dull marble gold #5A5034. Sky/far layer from bg_far #0E1719 up to the level accent dark; lum <= 0.06 everywhere, saturation <= 40%, no outlines. Seamless left-right tiling."
+  },
+  {
+   "name": "bg_l3_mid",
+   "file": "bg_l3_mid.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 3 mid parallax (0.5x): silhouettes of set dressing in bg_mid #1C2A2A tinted toward the accent, lum <= 0.06, no outlines, transparent above the skyline, seamless left-right."
+  },
+  {
+   "name": "tiles_l4",
+   "file": "tiles_l4.png",
+   "w": 16,
+   "h": 16,
+   "frames": 12,
+   "set": "entities",
+   "description": "Level 4 tileset, Belly of the Beast: ribbed flesh floor (cartoon, not gory), cartilage ledges, wet sheen; accent flesh mauve #6E3448. Ground body #33291F family (lum <= 0.06), every walkable top carries a 2 px ground_rim #A08C66 edge. Frame order: 0 top-left, 1 top, 2 top-right, 3 fill-left, 4 fill, 5 fill-right, 6 one-way platform left, 7 platform mid, 8 platform right, 9-11 decoration (no collision, accent colour on <= 10% of pixels)."
+  },
+  {
+   "name": "bg_l4_far",
+   "file": "bg_l4_far.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 4 far parallax (0.25x), Belly of the Beast: ribbed flesh floor (cartoon, not gory), cartilage ledges, wet sheen; accent flesh mauve #6E3448. Sky/far layer from bg_far #0E1719 up to the level accent dark; lum <= 0.06 everywhere, saturation <= 40%, no outlines. Seamless left-right tiling."
+  },
+  {
+   "name": "bg_l4_mid",
+   "file": "bg_l4_mid.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 4 mid parallax (0.5x): silhouettes of set dressing in bg_mid #1C2A2A tinted toward the accent, lum <= 0.06, no outlines, transparent above the skyline, seamless left-right."
+  },
+  {
+   "name": "tiles_l5",
+   "file": "tiles_l5.png",
+   "w": 16,
+   "h": 16,
+   "frames": 12,
+   "set": "entities",
+   "description": "Level 5 tileset, Kitava's Feast: long banquet-table planks, candle stubs, tablecloth ledges; accent wine #6A2430. Ground body #33291F family (lum <= 0.06), every walkable top carries a 2 px ground_rim #A08C66 edge. Frame order: 0 top-left, 1 top, 2 top-right, 3 fill-left, 4 fill, 5 fill-right, 6 one-way platform left, 7 platform mid, 8 platform right, 9-11 decoration (no collision, accent colour on <= 10% of pixels)."
+  },
+  {
+   "name": "bg_l5_far",
+   "file": "bg_l5_far.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 5 far parallax (0.25x), Kitava's Feast: long banquet-table planks, candle stubs, tablecloth ledges; accent wine #6A2430. Sky/far layer from bg_far #0E1719 up to the level accent dark; lum <= 0.06 everywhere, saturation <= 40%, no outlines. Seamless left-right tiling."
+  },
+  {
+   "name": "bg_l5_mid",
+   "file": "bg_l5_mid.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Level 5 mid parallax (0.5x): silhouettes of set dressing in bg_mid #1C2A2A tinted toward the accent, lum <= 0.06, no outlines, transparent above the skyline, seamless left-right."
+  },
+  {
+   "name": "bg_hideout",
+   "file": "bg_hideout.png",
+   "w": 640,
+   "h": 360,
+   "frames": 1,
+   "set": "entities",
+   "description": "Hideout (between levels): cosy cave hideout with a crafting bench (left), a stash chest, a 'Standard League' banner and a tiny glass case on a pedestal at right-centre labelled 'MIRROR: 0' (empty). Floor top at y=300. Same lum <= 0.06 rule for the backdrop; furniture may reach 0.10."
+  },
+  {
+   "name": "ui_globe",
+   "file": "ui_globe.png",
+   "w": 48,
+   "h": 48,
+   "frames": 4,
+   "set": "ui",
+   "description": "HUD globe frames (40x40 liquid interior at offset (4,4), drawn by code as a rising fill). Frames: 0 Life globe frame (iron ring, ink), 1 Life frame with red #E0384F border (RES UNCAPPED), 2 Composure globe frame (ring with tiny teacup filigree), 3 glass highlight overlay (white crescent at 40% alpha, drawn last over both globes). Original design, not PoE's."
+  },
+  {
+   "name": "ui_globe_icon",
+   "file": "ui_globe_icon.png",
+   "w": 10,
+   "h": 10,
+   "frames": 2,
+   "set": "ui",
+   "description": "Icons centred in the globes under the number: 0 heart (Life), 1 teacup (Composure). text colour #F3EAD8 with ink outline."
+  },
+  {
+   "name": "ui_pips",
+   "file": "ui_pips.png",
+   "w": 12,
+   "h": 12,
+   "frames": 10,
+   "set": "ui",
+   "description": "Resistance layer pips beside the Life globe. Frames: 0 Fire full (red-orange #F0552E with a flame glyph), 1 Cold full (#58C6F2 with snowflake), 2 Lightning full (#F2D640 with bolt), 3 empty socket (dark, ink ring), 4-9 crack-and-empty animation overlay (white cracks spreading, last frame matches empty). Glyphs make the element readable without colour."
+  },
+  {
+   "name": "ui_flask",
+   "file": "ui_flask.png",
+   "w": 8,
+   "h": 14,
+   "frames": 2,
+   "set": "ui",
+   "description": "Flask charge pip: 0 full (red liquid), 1 empty glass."
+  },
+  {
+   "name": "ui_bossbar",
+   "file": "ui_bossbar.png",
+   "w": 260,
+   "h": 14,
+   "frames": 1,
+   "set": "ui",
+   "description": "Boss bar frame: dark panel #15191B with ground_rim border and notched corners; code fills rect (2,2,256,10) in foe violet #9C7BE8. Boss name above in unique orange #E8913A text."
+  },
+  {
+   "name": "ui_panel",
+   "file": "ui_panel.png",
+   "w": 24,
+   "h": 24,
+   "frames": 1,
+   "set": "ui",
+   "description": "9-slice panel (8 px corners): panel #15191B fill, 1 px ground_rim #A08C66 border, 2 px cut corners. Used for banners, whispers, death post, mod popup, hideout."
+  },
+  {
+   "name": "ui_bubble",
+   "file": "ui_bubble.png",
+   "w": 24,
+   "h": 24,
+   "frames": 1,
+   "set": "ui",
+   "description": "9-slice speech bubble (8 px corners): text-cream #F3EAD8 fill, ink 1 px border, rounded corners."
+  },
+  {
+   "name": "ui_bubble_tail",
+   "file": "ui_bubble_tail.png",
+   "w": 8,
+   "h": 8,
+   "frames": 1,
+   "set": "ui",
+   "description": "Speech bubble tail pointing down-left, same fill/border as ui_bubble; code flips."
+  },
+  {
+   "name": "ui_heart_tell",
+   "file": "ui_heart_tell.png",
+   "w": 12,
+   "h": 12,
+   "frames": 2,
+   "set": "ui",
+   "description": "Charm tell heart above attacker: pink #FF5FA2 heart with ink outline and loot-free white glint. Frames: 0 normal, 1 swollen (pulses 8 fps)."
+  },
+  {
+   "name": "ui_alert",
+   "file": "ui_alert.png",
+   "w": 12,
+   "h": 16,
+   "frames": 2,
+   "set": "ui",
+   "description": "'!' bubble over gag interactables on proximity: 0 normal, 1 bounce."
+  },
+  {
+   "name": "ui_mash",
+   "file": "ui_mash.png",
+   "w": 24,
+   "h": 24,
+   "frames": 4,
+   "set": "ui",
+   "description": "Mash glyph in a bubble over Flustered player: 0 'J' keycap up, 1 'J' pressed, 2 mouse left-button up, 3 pressed. Code alternates 0/1 or 2/3 at 10 fps by last input device."
+  },
+  {
+   "name": "ui_reticle",
+   "file": "ui_reticle.png",
+   "w": 16,
+   "h": 16,
+   "frames": 2,
+   "set": "ui",
+   "description": "Mouse aim reticle for Spark: 0 ready (hero_rim cross with gap), 1 on cooldown (dimmed text_dim)."
+  },
+  {
+   "name": "icon_currency",
+   "file": "icon_currency.png",
+   "w": 12,
+   "h": 12,
+   "frames": 6,
+   "set": "ui",
+   "description": "HUD/hideout currency icons, same order and colours as orbs: 0 Chaos, 1 Tailor, 2 Vaal, 3 Exalted, 4 Divine, 5 Mirror."
+  },
+  {
+   "name": "icon_portal",
+   "file": "icon_portal.png",
+   "w": 10,
+   "h": 14,
+   "frames": 2,
+   "set": "ui",
+   "description": "Portal life icon (oval swirl in hero_rim blue): 0 available, 1 used (grey outline)."
+  },
+  {
+   "name": "ui_card",
+   "file": "ui_card.png",
+   "w": 176,
+   "h": 104,
+   "frames": 2,
+   "set": "ui",
+   "description": "Patch Note card (hideout): parchment-on-panel look, header strip for 'PATCH x.y.z'. Frames: 0 normal, 1 focused (ground_rim border becomes text cream, 1 px lift shadow)."
+  },
+  {
+   "name": "ui_button",
+   "file": "ui_button.png",
+   "w": 96,
+   "h": 20,
+   "frames": 2,
+   "set": "ui",
+   "description": "Menu button: 0 normal, 1 focused. Panel style."
+  },
+  {
+   "name": "ui_weapon",
+   "file": "ui_weapon.png",
+   "w": 32,
+   "h": 32,
+   "frames": 3,
+   "set": "ui",
+   "description": "Hideout weapon icon (a wand): 0 normal, 1 Corrupted (red cracks, red glow), 2 slam highlight (white glint)."
+  },
+  {
+   "name": "ui_stamp",
+   "file": "ui_stamp.png",
+   "w": 64,
+   "h": 24,
+   "frames": 2,
+   "set": "ui",
+   "description": "Rubber stamps: 0 'CORRUPTED' red stamp, 1 'REMOVED' pink stamp (mod popup). Slightly rotated look baked in."
+  },
+  {
+   "name": "ui_upvote",
+   "file": "ui_upvote.png",
+   "w": 10,
+   "h": 10,
+   "frames": 2,
+   "set": "ui",
+   "description": "Fake-forum vote arrows (original, not reddit's logo): 0 up arrow orange, 1 down arrow blue-grey."
+  },
+  {
+   "name": "ui_modshield",
+   "file": "ui_modshield.png",
+   "w": 16,
+   "h": 16,
+   "frames": 1,
+   "set": "ui",
+   "description": "Moderator shield icon for 'This post has been removed by the moderators. Rule 3.' popups: green-free, cream shield with a pink gavel."
+  },
+  {
+   "name": "ui_touch",
+   "file": "ui_touch.png",
+   "w": 56,
+   "h": 56,
+   "frames": 7,
+   "set": "ui",
+   "description": "Touch controls at 40% alpha (only after first touch). Frames: 0 stick base ring, 1 stick knob, 2 Jump, 3 A (melee), 4 B (Spark), 5 R (roll), 6 F (flask)."
+  },
+  {
+   "name": "ui_pause",
+   "file": "ui_pause.png",
+   "w": 24,
+   "h": 24,
+   "frames": 1,
+   "set": "ui",
+   "description": "Pause icon (two bars) for touch, panel style."
+  },
+  {
+   "name": "ui_logo",
+   "file": "ui_logo.png",
+   "w": 320,
+   "h": 80,
+   "frames": 1,
+   "set": "ui",
+   "description": "Title logo 'PATH OF EX-ILES' in original chunky gothic pixel lettering, with a small pink heart replacing the hyphen and a censor bar over the word 'EX' captioned nothing (the bar itself is the joke). Not GGG's logo."
+  },
+  {
+   "name": "cut_door",
+   "file": "cut_door.png",
+   "w": 96,
+   "h": 128,
+   "frames": 3,
+   "set": "ui",
+   "description": "Cutscene door (boss defeat card): heavy wooden door in a stone frame. Frames: 0 ajar with warm light, 1 closing, 2 slammed shut with dust puffs."
+  },
+  {
+   "name": "cut_pair",
+   "file": "cut_pair.png",
+   "w": 112,
+   "h": 96,
+   "frames": 2,
+   "set": "ui",
+   "description": "Cutscene silhouettes in ink #0A0809 with hero_rim/pink rims: the Exile and a generic large boss shape. Frames: 0 standing a polite distance apart, 1 awkwardly shaking hands. Fully clothed silhouettes (hat, cloak)."
+  },
+  {
+   "name": "fx_hit",
+   "file": "fx_hit.png",
+   "w": 16,
+   "h": 16,
+   "frames": 4,
+   "set": "ui",
+   "description": "Melee impact star: white/cream angular burst, 4 frames 20 fps."
+  },
+  {
+   "name": "fx_spark_hit",
+   "file": "fx_spark_hit.png",
+   "w": 12,
+   "h": 12,
+   "frames": 3,
+   "set": "ui",
+   "description": "Spark impact: hero_rim cyan crackle burst, 3 frames."
+  },
+  {
+   "name": "fx_heart",
+   "file": "fx_heart.png",
+   "w": 8,
+   "h": 8,
+   "frames": 2,
+   "set": "ui",
+   "description": "Heart particle for Charm hit bursts and orbiting Flustered hearts: 0 pink heart, 1 small pink heart."
+  },
+  {
+   "name": "fx_sparkle",
+   "file": "fx_sparkle.png",
+   "w": 8,
+   "h": 8,
+   "frames": 4,
+   "set": "ui",
+   "description": "Escape sparkle (4-point star in text cream, hero_rim edge), 4 frames."
+  },
+  {
+   "name": "fx_dust",
+   "file": "fx_dust.png",
+   "w": 16,
+   "h": 8,
+   "frames": 4,
+   "set": "ui",
+   "description": "Jump/land/roll dust puff in ground_rim tan, 4 frames."
+  },
+  {
+   "name": "fx_layer",
+   "file": "fx_layer.png",
+   "w": 24,
+   "h": 24,
+   "frames": 3,
+   "set": "ui",
+   "description": "Flying garment piece after a layer pop (also held by Kitava while eating): 0 Fire Cloak, 1 Cold Tunic, 2 Lightning Leggings, folded/crumpled, element colour + glyph."
+  },
+  {
+   "name": "fx_sweat",
+   "file": "fx_sweat.png",
+   "w": 6,
+   "h": 8,
+   "frames": 2,
+   "set": "ui",
+   "description": "Comedic sweat drop for flustered enemies/bosses, 2 frames."
+  },
+  {
+   "name": "fx_chomp",
+   "file": "fx_chomp.png",
+   "w": 24,
+   "h": 16,
+   "frames": 3,
+   "set": "ui",
+   "description": "Kitava chomp marks 'CHOMP' comic onomatopoeia shape, 3 frames."
+  },
+  {
+   "name": "font_body",
+   "file": "font_body.png",
+   "w": 8,
+   "h": 10,
+   "frames": 107,
+   "set": "ui",
+   "description": "Body bitmap font, 7x9 glyph in an 8x10 cell, white (#FFFFFF) so code tints. Frame i = glyph i of: ASCII 32..126 in order (95 glyphs), then 95 '♥', 96 '★', 97 '☆', 98 '→', 99 '✓', 100 '∞', 101 '…', 102 '×', 103 '←', 104 '↑', 105 '—', 106 'î'."
+  },
+  {
+   "name": "font_small",
+   "file": "font_small.png",
+   "w": 6,
+   "h": 8,
+   "frames": 107,
+   "set": "ui",
+   "description": "Small bitmap font, 5x7 glyph in 6x8 cell, white; same glyph order as font_body. Non-essential labels only."
+  }
+ ],
+ "sfx": [
+  {
+   "name": "jump",
+   "description": "square 50% duty 330->660 Hz over 120 ms, decay 90 ms"
+  },
+  {
+   "name": "land",
+   "description": "noise burst lowpass 800 Hz, 40 ms; rate ±5% seeded"
+  },
+  {
+   "name": "swing",
+   "description": "noise bandpass sweep 2 kHz->600 Hz, 90 ms; rate rises per combo step (rate = 2^(step/12))"
+  },
+  {
+   "name": "hit",
+   "description": "square 900->180 Hz exp slide 20 ms + 110 ms decay, plus 30 ms noise click; rate ±5% seeded"
+  },
+  {
+   "name": "hit_heavy",
+   "description": "hit plus sine an octave down 160 ms; melee 3rd hit and boss hits"
+  },
+  {
+   "name": "spark_cast",
+   "description": "short rising zap: saw 600->1800 Hz 60 ms + noise crackle 80 ms, highpass 1 kHz"
+  },
+  {
+   "name": "spark_hit",
+   "description": "noise crackle 50 ms bandpass 3 kHz + square blip 1400 Hz 20 ms"
+  },
+  {
+   "name": "hurt",
+   "description": "sawtooth 500->120 Hz 160 ms, lowpass 2 kHz"
+  },
+  {
+   "name": "roll",
+   "description": "noise whoosh lowpass sweep 400->1600 Hz 180 ms"
+  },
+  {
+   "name": "flask",
+   "description": "glug-glug: 3 sine bubbles 220/180/240 Hz, 60 ms each with 30 ms gaps, lowpass 900 Hz"
+  },
+  {
+   "name": "charm_tell",
+   "description": "rising 'ooh~': sine 300->520 Hz with 5 Hz vibrato over 400 ms, gain ramps up (the audio telegraph for every Charm)"
+  },
+  {
+   "name": "charm_hit",
+   "description": "cartoon boing: sine 180->420->260 Hz 220 ms with fast vibrato"
+  },
+  {
+   "name": "escape",
+   "description": "sparkle chime: triangle 1318 then 1760 Hz, 70 ms each, 300 ms tail"
+  },
+  {
+   "name": "swoon",
+   "description": "record scratch: saw 1200->200 Hz 80 ms, then 200->900 Hz 60 ms, noise layer"
+  },
+  {
+   "name": "layer_pop",
+   "description": "'thwip': noise bandpass 1.5 kHz->5 kHz in 70 ms + square pluck 880 Hz 30 ms"
+  },
+  {
+   "name": "uncapped",
+   "description": "warning two-tone: square 392/330 Hz, 120 ms each, once on entering 0 layers"
+  },
+  {
+   "name": "censor_slap",
+   "description": "slap: noise 30 ms + sine boing 220->440 Hz 150 ms"
+  },
+  {
+   "name": "censor_squeak",
+   "description": "rubber-duck squeak: square 1600->2200->1700 Hz 120 ms, plays on 20% of bar spawns"
+  },
+  {
+   "name": "loot_drop",
+   "description": "loot-filter chime, sine 2093 Hz ±6 Hz vibrato 600 ms at 0.15 gain; rate per tier: chaos 1.0, tailor 1.12, vaal 0.84, exalted 1.26"
+  },
+  {
+   "name": "divine_ding",
+   "description": "the ding: sine 2637 Hz + 3951 Hz partial, 900 ms bell decay, louder (0.35 gain)"
+  },
+  {
+   "name": "pickup_chaos",
+   "description": "coin: square 1046 Hz then 1568 Hz at 60 ms, decay 250 ms"
+  },
+  {
+   "name": "pickup_tailor",
+   "description": "pickup_chaos at rate 1.12 plus a 2093 Hz stitch blip"
+  },
+  {
+   "name": "pickup_vaal",
+   "description": "low coin: square 523 then 784 Hz, 300 ms decay, slight distortion"
+  },
+  {
+   "name": "pickup_exalted",
+   "description": "pickup_chaos then third note 2093 Hz, 400 ms tail"
+  },
+  {
+   "name": "pickup_divine",
+   "description": "pickup_exalted then 2637 Hz, 600 ms shimmer tail"
+  },
+  {
+   "name": "pickup_tea",
+   "description": "sip: noise lowpass 600 Hz 120 ms + sine 'ahh' 330->294 Hz 200 ms"
+  },
+  {
+   "name": "pickup_flask",
+   "description": "glass clink: sine 2400 Hz + 3600 Hz 150 ms"
+  },
+  {
+   "name": "enemy_windup",
+   "description": "rising sine 200->500 Hz across the wind-up duration, gain ramps up; rate scaled to tell length"
+  },
+  {
+   "name": "enemy_die",
+   "description": "descending square 300->80 Hz 180 ms + noise puff"
+  },
+  {
+   "name": "bolt_fire",
+   "description": "enemy shot: square 440->660 Hz 50 ms + noise 40 ms; rate per element"
+  },
+  {
+   "name": "kiss_blow",
+   "description": "'mwah': sine 600->900 Hz 80 ms with a noise pop at start"
+  },
+  {
+   "name": "boss_intro",
+   "description": "low brass stab: saw 110 Hz + 165 Hz, 500 ms, lowpass sweep open"
+  },
+  {
+   "name": "boss_phase",
+   "description": "saw 60 Hz + noise, lowpass sweep 200->2000 Hz, 700 ms"
+  },
+  {
+   "name": "boss_defeat",
+   "description": "freeze sting: three square notes 523/659/784 Hz 90 ms apart, 600 ms tail"
+  },
+  {
+   "name": "flex",
+   "description": "grunt-y creak: saw 90->140 Hz 300 ms + noise creak bandpass 400 Hz"
+  },
+  {
+   "name": "shockwave",
+   "description": "noise thump lowpass 300 Hz 250 ms + sine 55 Hz"
+  },
+  {
+   "name": "barbell",
+   "description": "heavy whoosh + lightning crackle: noise 200 ms + saw 1200 Hz flutter"
+  },
+  {
+   "name": "pillar",
+   "description": "fire roar: noise lowpass 1200 Hz 500 ms with tremolo 12 Hz"
+  },
+  {
+   "name": "nova",
+   "description": "icy shimmer: triangle 1760->880 Hz 400 ms + noise highpass 4 kHz"
+  },
+  {
+   "name": "heartbeat",
+   "description": "doki: two sine thumps 70 Hz, 80 ms each, 140 ms apart"
+  },
+  {
+   "name": "acid",
+   "description": "sizzle: noise highpass 3 kHz 200 ms with fast gain jitter"
+  },
+  {
+   "name": "plate_zap",
+   "description": "zap: square 1200 Hz with 40 Hz AM 250 ms + noise"
+  },
+  {
+   "name": "chomp",
+   "description": "bite: noise burst 40 ms + square 160->90 Hz 80 ms, played once per eaten layer"
+  },
+  {
+   "name": "belch",
+   "description": "comic belch: saw 90->60 Hz 600 ms with 18 Hz wobble, lowpass 700 Hz"
+  },
+  {
+   "name": "door_slam",
+   "description": "noise thump 120 ms lowpass 500 Hz + sine 80 Hz 200 ms"
+  },
+  {
+   "name": "death",
+   "description": "RIP sting: descending square 440->55 Hz 600 ms, 3 repeats"
+  },
+  {
+   "name": "portal",
+   "description": "resurrect whoosh: sine 330->990 Hz 400 ms + noise shimmer"
+  },
+  {
+   "name": "checkpoint",
+   "description": "soft chime: triangle 784+1175 Hz 300 ms"
+  },
+  {
+   "name": "gate_lock",
+   "description": "metal clank: noise 60 ms bandpass 900 Hz + square 140 Hz 120 ms"
+  },
+  {
+   "name": "gate_open",
+   "description": "rising rattle: noise bandpass 600->1200 Hz 300 ms"
+  },
+  {
+   "name": "whisper",
+   "description": "trade-whisper ping: square 880 Hz 40 ms then 1320 Hz 40 ms"
+  },
+  {
+   "name": "speech",
+   "description": "talk blip: square 520 Hz 25 ms; rate ±8% seeded per speaker"
+  },
+  {
+   "name": "gag",
+   "description": "gag trigger 'ba-dum': two sine thumps 98/73 Hz then noise cymbal 200 ms"
+  },
+  {
+   "name": "tabula",
+   "description": "6-LINK sting: six quick square blips 523..1568 Hz rising, 40 ms each"
+  },
+  {
+   "name": "level_banner",
+   "description": "page flip: noise bandpass 2 kHz 120 ms + square blip 660 Hz"
+  },
+  {
+   "name": "level_clear",
+   "description": "powerup: saw 262->523 Hz rising, 4 repeats 70 ms apart, 500 ms"
+  },
+  {
+   "name": "card_pick",
+   "description": "card flick: noise 50 ms + square 990 Hz 60 ms"
+  },
+  {
+   "name": "craft_chaos",
+   "description": "swirl: sine 400->800->400 Hz 300 ms with chorus"
+  },
+  {
+   "name": "craft_exalt",
+   "description": "slam: noise thump + square 784/1046 Hz 200 ms"
+  },
+  {
+   "name": "vaal_success",
+   "description": "dark choir-ish chord: saw 220+277+330 Hz 500 ms lowpass"
+  },
+  {
+   "name": "vaal_brick",
+   "description": "sad trombone: saw 233->220->208->196 Hz, 4 notes 250 ms each, last with vibrato"
+  },
+  {
+   "name": "mirror_lol",
+   "description": "tiny laugh: square 660-880-660-880 Hz, 40 ms each"
+  },
+  {
+   "name": "ui_select",
+   "description": "blip square 660 Hz 50 ms highpass"
+  },
+  {
+   "name": "ui_back",
+   "description": "blip square 440 Hz 50 ms"
+  },
+  {
+   "name": "ui_confirm",
+   "description": "blip square 660 then 990 Hz, 40 ms each"
+  }
+ ],
+ "palette": {
+  "bg_far": "#0E1719",
+  "bg_mid": "#1C2A2A",
+  "ground": "#33291F",
+  "ground_rim": "#A08C66",
+  "ink": "#0A0809",
+  "hero_rim": "#BDE6EE",
+  "hero_skin": "#F0C8A8",
+  "hero_hat": "#3A2A30",
+  "suit_a": "#E8E4DA",
+  "suit_b": "#2B3F6B",
+  "barrel": "#9A6234",
+  "barrel_band": "#5A3A22",
+  "fire": "#F0552E",
+  "cold": "#58C6F2",
+  "lightning": "#F2D640",
+  "phys": "#D8D0C0",
+  "foe": "#9C7BE8",
+  "foe_dark": "#3E2A6A",
+  "foe_eye": "#F4F7B0",
+  "telegraph": "#FF8A3D",
+  "loot_core": "#FFF4D6",
+  "loot_chaos": "#E6E2D8",
+  "loot_tailor": "#FF5FA2",
+  "loot_vaal": "#E8423A",
+  "loot_exalt": "#A8D8FF",
+  "loot_divine": "#F2C14E",
+  "censor": "#FF5FA2",
+  "censor_text": "#2A0E1E",
+  "charm": "#FF5FA2",
+  "acid": "#B6D84A",
+  "hp": "#E0384F",
+  "composure": "#E06AC0",
+  "panel": "#15191B",
+  "banner_red": "#4A1018",
+  "text": "#F3EAD8",
+  "text_dim": "#A8A090",
+  "unique": "#E8913A",
+  "accent_l1": "#2E5E5C",
+  "accent_l2": "#7A4630",
+  "accent_l3": "#5A5034",
+  "accent_l4": "#6E3448",
+  "accent_l5": "#6A2430"
+ }
+}

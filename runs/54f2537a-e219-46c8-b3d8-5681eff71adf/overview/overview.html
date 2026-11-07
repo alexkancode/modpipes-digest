@@ -1,0 +1,54 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Run dashboard · overview</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="overview.md">Raw markdown</a></p><h1>Run dashboard overview</h1>
+<p>Index URL: <a href="http://localhost:4810/api/runs/54f2537a-e219-46c8-b3d8-5681eff71adf/files/stages/build/outputs/dashboard/index.html">http://localhost:4810/api/runs/54f2537a-e219-46c8-b3d8-5681eff71adf/files/stages/build/outputs/dashboard/index.html</a>
+Dashboard on disk: /home/alex/.modpipes/runs/54f2537a-e219-46c8-b3d8-5681eff71adf/stages/build/outputs/dashboard/</p>
+<h2>The period</h2>
+<ul>
+<li>Label: Today</li>
+<li>From: 2026-11-06T06:00:00.000Z</li>
+<li>To: 2026-11-07T06:00:00.000Z</li>
+<li>Runs: 52</li>
+<li>Questions asked: 101</li>
+<li>Tokens: 398.8M</li>
+</ul>
+<h2>Runs by status and by kind</h2>
+<p>By status:</p>
+<ul>
+<li>Done: 33</li>
+<li>Failed: 2</li>
+<li>Cancelled: 1</li>
+<li>Running: 16</li>
+</ul>
+<p>By kind:</p>
+<ul>
+<li>Test: 20</li>
+<li>Pipeline builder: 12</li>
+<li>This dashboard: 1</li>
+<li>Everything else: 19 (Topic expert forge, Game forge and Game forge v2)</li>
+</ul>
+<h2>Heroes</h2>
+<ul>
+<li>Page: 27</li>
+<li>Image: 0</li>
+<li>Video: 0</li>
+<li>Typographic card: 25</li>
+<li>Fallbacks: 0 (hero-report counts 52 rendered, 0 fallbacks, 0 missing)</li>
+</ul>
+<p>The 25 typographic cards were chosen by the heroes stage, not forced by an error.
+Every hero was rendered by Chrome at 800x500.</p>
+<h2>The check</h2>
+<p>Result: PASS. All 15 checks passed and no check failed.</p>
+<ul>
+<li>Covered: HTTP 200, 52 cards, 52 run pages, 52 heroes, filters, 107 index links, no horizontal scroll at 1280 or 390.</li>
+<li>Covered: both sandboxes, axe (no serious violations), and no console errors.</li>
+</ul>
+<h2>What you saw</h2>
+<p>The dashboard is clean and readable at 1280 and 390 pixels. The stat tiles wrap properly and the filter row works.
+The typographic hero cards are the ugly part.</p>
+<ul>
+<li>Titles are cut off at the right edge of the card (&quot;...style toda&quot;, &quot;Alzheimer&#39;s care resear&quot;).</li>
+<li>The &quot;Running&quot; badge overlaps the faded excerpt text.</li>
+<li>One card shows a bare &quot;---&quot; because it quotes a YAML front-matter marker.
+The run page (Game forge iterate) is a long but tidy single column. The sandboxes screenshot shows both sandboxed renderings matching the page.</li>
+</ul>
+</body></html>

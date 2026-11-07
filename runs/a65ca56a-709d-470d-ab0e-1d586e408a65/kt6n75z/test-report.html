@@ -1,0 +1,79 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>pipeline builder · test-report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="test-report.md">Raw markdown</a></p><h1>Song forge: test report</h1>
+<p>Date: 2026-11-06, 16:04 to 16:50 CST. Pipeline <code>2b6a02f9-4629-44cd-a1f2-b1b938e4a81e</code>, tested at v0 and left at v2.</p>
+<h2>What ran</h2>
+<p>Test copy &quot;Song forge (test)&quot; (<code>cd97737c-b8ee-4e88-87e9-7a3fbd202342</code>), loop cap 2, prompts and models unchanged. Both runs started at 16:05:11. The copy is deleted, and both runs stay in history.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Time</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>ded9f511-3a82-42d3-a4a2-588e018149a4</code></td>
+<td>indie folk; two friends meet at a bus stop after twenty years; motifs: timetable, rain on the shelter roof, rising fourth on the title; 1.5 min; no key</td>
+<td>29.1 min</td>
+<td>shipped round 2 (68, then 70); page-check ok</td>
+</tr>
+<tr>
+<td>Stress <code>53fa4c7f-1492-41bf-a31e-ca546b898584</code></td>
+<td>Portuguese; &quot;90s trip hop crossed with fado&quot;; nurse in Lisbon; ten motifs including 6/8 verses against 4/4 chorus; second person countertenor; three references; 1 min; invalid Gemini key</td>
+<td>40.6 min</td>
+<td>shipped round 2 (63, then 69); page-check failed 3 of 11 checks</td>
+</tr>
+</tbody></table>
+<p>Stage times: research 1-2 min. Toolkit 11.5 and 15.5 min, the long pole. Writers 6-8 min. Judge about 4 min. Polish rounds 3-5 min each. Assets, page and overview about 1 min.</p>
+<h2>What worked</h2>
+<p>Each item below was checked against files and transcripts, not stage summaries.</p>
+<ul>
+<li>Every writer ran <code>check-abc.mjs</code> on its own song, and all six songs passed (writer transcripts). The loop spent rounds on craft only.</li>
+<li>The stress writers wrote Portuguese lyrics and inline meter changes, <code>M:6/8</code> to <code>M:4/4</code>. The checker accepted both: 29 bars, 66.7 s.</li>
+<li>The two gates disagreed usefully. In stress round 1 the checker passed, but fresh-eyes said agree false, because the reader missed the nurse. The critic made that a brief-fit blocker. In round 2 the reader named &quot;a nurse working the night shift&quot; and agreed.</li>
+<li>The critic was not lenient. It blocked round 1 in both runs with quoted lines, and <code>history</code> carried both rounds.</li>
+<li>The judge&#39;s <code>pick.json</code> names a winner and a concrete borrow list.</li>
+<li>The invalid key degraded cleanly. Render returned HTTP 400 API_KEY_INVALID, <code>render-failed.md</code> was written, and the page and overview showed the reason. A grep for the key in render-status.json, index.html and overview.md found zero hits. The Interactions endpoint answered 400, not 404, so the URL exists.</li>
+<li>No artist name from the references reached <code>lyria-prompt.txt</code>.</li>
+<li>The happy page passed all 11 checks. The synth started with no remote requests, and axe was clean (<code>page-check/outputs/report.json</code>, <code>shots/page-390.png</code>).</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li>Stress page has no scorecard.<ul>
+<li>Evidence: <code>runs/53fa4c7f-.../stages/page-check/outputs/report.json</code> reports still-frame scorecard table false.</li>
+<li>Cause: that run&#39;s toolkit invented a <code>criteria</code> array in <code>fixtures/sample-scores.json</code>. Its build-page reads only arrays (<code>toolkit/outputs/toolkit/build-page.mjs:117</code>), so the critic&#39;s object keyed by criterion rendered &quot;No scorecard was supplied&quot;. Rounds showed no totals either.</li>
+<li>Fix v2: the toolkit prompt pins the scores.json and history shape in the scorecard bullet. The fixture bullet now points at that shape. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>Stress demo playback fails.<ul>
+<li>Evidence: the same report shows running-frame <code>Can&#39;t load sound at sf/voice_oohs-mp3/D4.mp3 status=404</code>, plus console errors.</li>
+<li>Cause: the song sets <code>%%MIDI program 53</code>, and only the piano soundfont is vendored. The happy toolkit happened to rewrite programs to 0. The stress toolkit did not.</li>
+<li>Fix v2: the build-page spec now rewrites every <code>%%MIDI program</code>, <code>chordprog</code> and <code>bassprog</code> number to 0 in the demo ABC. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>Overview names the wrong gate.<ul>
+<li>Evidence: both overviews say &quot;The cap of 4 was not reached&quot; on a cap-2 copy (<code>stages/overview/outputs/overview.md</code>). The prompt hard-coded &quot;the cap of 4&quot;.</li>
+<li>Fix v1: the overview infers the gate from the last round&#39;s three flags. <strong>Unconfirmed.</strong></li>
+</ul>
+</li>
+<li>Toolkit is slow and lost time to a hung probe.<ul>
+<li>Evidence: the stress toolkit transcript at 22:11:59. A hand-written fake server never closed on its 500 branch, and the Bash call timed out at 120 s. Both runs also wrote scratch under fixed /tmp paths: /tmp/tk, /tmp/ck, /tmp/ly and /tmp/st.</li>
+<li>Fix v1: keep scratch in the stage work directory and wrap probe servers in <code>timeout 60</code>. <strong>Unconfirmed.</strong> This fix trims the hang only, not the 11-15 min rebuild.</li>
+</ul>
+</li>
+</ol>
+<p>Versions are saved under <code>pipeline-versions/</code>, with <code>notes.md</code> beside them. After each update, <code>pipeline show</code> matched the generated file, the voice audit found 0 sentences over 25 words, and validate returned ok.</p>
+<h2>Not resolved</h2>
+<ul>
+<li>The toolkit rebuilds the same five scripts every run, in 11-15 min. Each run therefore carries a different checker and page builder. Defects 1 and 2 hit one run and not the other because of this drift.</li>
+<li>A toolkit cache would remove both the time and the drift. The cache would be a script stage that reuses a toolkit whose selftest passes. That is a design change, so it is logged in <code>lessons__pipeline_builder_todos</code> as row 19.</li>
+<li>The 390 px scorecard table squeezes long quotes into a narrow column (happy <code>shots/page-390.png</code>). The table stays readable, but it is long.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Run a cap-2 copy of v2 with the stress inputs above. Read <code>page-check/outputs/report.json</code> for a scorecard table and a running synth. Read <code>overview.md</code> for the gate sentence.</li>
+<li>Read <code>toolkit/outputs/toolkit/build-page.mjs</code> for the MIDI program rewrite and the <code>scores</code> object read.</li>
+<li>Decide on the toolkit cache, per todo row 19.</li>
+</ol>
+</body></html>

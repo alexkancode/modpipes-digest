@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en" class="nojs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bookrender · ChatGPT ads plan</title>
+<meta name="color-scheme" content="dark light">
+<script>document.documentElement.className = 'js';</script>
+<style>
+:root {
+  --bg: #1a1d24; --surface: #222731; --line: #323846;
+  --text: #e8e4da; --muted: #a3a9b4; --accent: #cdb98a; --on-accent: #1a1d24;
+  --warn: #e08c8c; --glow: rgba(205, 185, 138, .14);
+  --radius: 14px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f3ec; --surface: #ffffff; --line: #e2ddd1;
+    --text: #1e2229; --muted: #565c67; --accent: #6e5b26; --on-accent: #ffffff;
+    --warn: #a0403f; --glow: rgba(110, 91, 38, .10);
+    color-scheme: light;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 clamp(1rem, .96rem + .2vw, 1.0625rem)/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-image: radial-gradient(60rem 28rem at 50% -10rem, var(--glow), transparent 70%);
+  background-repeat: no-repeat;
+  overflow-wrap: anywhere;
+}
+main { max-width: 42rem; margin: 0 auto; padding: clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 4vw, 1.5rem) 4rem; }
+h1 { font-size: clamp(.8rem, .75rem + .2vw, .875rem); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 1rem; }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem); line-height: 1.2; margin: .25rem 0 1rem; letter-spacing: -.01em; outline: none; }
+h3 { font-size: clamp(1.1rem, 1rem + .4vw, 1.3rem); line-height: 1.3; margin: 0 0 .35rem; }
+h4 { font-size: 1rem; margin: 1.5rem 0 .5rem; color: var(--muted); font-weight: 600; }
+p { margin: 0 0 1rem; }
+a { color: var(--accent); text-underline-offset: .2em; }
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; }
+pre { white-space: pre-wrap; word-break: break-all; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .75rem .9rem; margin: 0 0 .5rem; }
+img { max-width: 100%; height: auto; display: block; }
+ul, ol { padding-left: 1.25rem; margin: 0 0 1rem; }
+li { margin: .2rem 0; }
+.kicker { color: var(--accent); font-size: .85rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin: 0; }
+.lead { font-size: clamp(1.1rem, 1rem + .5vw, 1.3rem); line-height: 1.45; }
+.muted { color: var(--muted); }
+.small { font-size: .875rem; }
+.num, .money { font-variant-numeric: tabular-nums; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; margin: 0 0 1rem; }
+.callout { border-left: 3px solid var(--warn); }
+.callout strong:first-child { color: var(--warn); }
+.task { border-left: 3px solid var(--accent); }
+
+/* sources */
+.src { white-space: normal; }
+.dom { font-size: .78rem; color: var(--muted); margin-left: .3rem; white-space: nowrap; }
+.dom::before { content: "("; } .dom::after { content: ")"; }
+a.source[data-kind="official"] + .dom { color: var(--accent); }
+
+/* buttons */
+button, .btn {
+  font: inherit; font-size: .875rem; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .35rem; min-height: 2.5rem;
+  padding: .45rem .9rem; border-radius: 999px; text-decoration: none;
+  border: 1px solid var(--line); background: transparent; color: var(--text);
+}
+button:hover, .btn:hover { border-color: var(--accent); }
+button.primary, .btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.row { display: flex; flex-wrap: wrap; gap: .5rem; margin: .5rem 0 1rem; }
+
+/* checklist */
+.checks { list-style: none; padding: 0; }
+.checks li { display: flex; gap: .75rem; align-items: flex-start; padding: .65rem 0; border-top: 1px solid var(--line); }
+.checks li:first-child { border-top: 0; }
+.checks input { width: 1.25rem; height: 1.25rem; margin: .2rem 0 0; flex: none; accent-color: var(--accent); }
+.checks label { cursor: pointer; }
+.checks input:checked + label { color: var(--muted); }
+
+/* key/value lists */
+dl.kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .55rem 1rem; margin: 0; }
+dl.kv dt { color: var(--muted); }
+dl.kv dd { margin: 0; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+dl.kv .note { grid-column: 1 / -1; margin-top: -.35rem; font-size: .8rem; color: var(--muted); text-align: left; font-weight: 400; }
+
+/* creatives */
+article.creative { padding: 0; overflow: hidden; }
+article.creative img { width: min(100%, 18rem); margin: 1.1rem auto 0; border-radius: 10px; }
+article.creative .body { padding: 1rem 1.1rem 1.1rem; }
+.tag { display: inline-block; font-size: .75rem; font-weight: 600; padding: .1rem .55rem; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); margin-bottom: .5rem; }
+.tag.on { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
+.count { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hints { font-size: .9rem; color: var(--muted); }
+
+/* rules */
+.rule { display: grid; gap: .2rem; }
+.rule .when { font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.rule .what { font-weight: 600; }
+
+input[type="date"] { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .45rem .6rem; }
+details summary { cursor: pointer; color: var(--accent); font-weight: 600; margin-bottom: .5rem; }
+
+/* status lines */
+#status { position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%); margin: 0; max-width: calc(100% - 2rem);
+  background: var(--accent); color: var(--on-accent); font-weight: 600; font-size: .875rem; padding: .5rem 1rem; border-radius: 999px; }
+#status:empty { display: none; }
+.quiet { font-size: .85rem; color: var(--muted); margin: 0 0 1rem; }
+
+/* progress rail: a numbered table of contents without scripts, a quiet bar with them */
+.rail ol { list-style: none; padding: 0; margin: 0 0 2rem; }
+.rail a { color: var(--muted); text-decoration: none; }
+.nojs .rail ol { counter-reset: s; columns: 2; font-size: .9rem; }
+.nojs .rail li { counter-increment: s; }
+.nojs .rail li::before { content: counter(s) ". "; color: var(--muted); }
+.js .rail ol { display: grid; grid-template-columns: repeat(7, 1fr); gap: .35rem; margin-bottom: .6rem; }
+.js .rail a { display: block; height: 1.5rem; position: relative; }
+.js .rail a::after { content: ""; position: absolute; left: 0; right: 0; top: .6rem; height: 4px; border-radius: 4px; background: var(--line); }
+.js .rail a.done::after { background: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.js .rail a[aria-current="step"]::after { background: var(--accent); box-shadow: 0 0 12px var(--glow); }
+.js .rail .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.where { font-size: .85rem; color: var(--muted); margin: 0 0 1.75rem; font-variant-numeric: tabular-nums; }
+.nojs .where { display: none; }
+
+/* screens */
+section.step { padding-top: 1rem; }
+.nojs section.step + section.step { border-top: 1px solid var(--line); margin-top: 2.5rem; padding-top: 2.5rem; }
+.js section.step:not(.current) { display: none; }
+.pager { display: flex; justify-content: space-between; gap: .75rem; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.pager .spacer { flex: 1; }
+.nojs .pager { display: none; }
+.keys { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 1rem; }
+.nojs .keys { display: none; }
+footer { margin-top: 3rem; font-size: .8rem; color: var(--muted); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .js section.step.current { animation: rise .35s ease-out; }
+  @keyframes rise { from { transform: translateY(6px); } to { transform: none; } }
+  .js .rail a::after { transition: background-color .3s ease; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+</style>
+</head>
+<body>
+<main>
+<h1>bookrender · ChatGPT ads plan</h1>
+
+<nav class="rail" aria-label="Progress">
+  <ol>
+    <li><a href="#step-1"><span class="lbl">Product read</span></a></li>
+    <li><a href="#step-2"><span class="lbl">Audience and conversations</span></a></li>
+    <li><a href="#step-3"><span class="lbl">Creatives</span></a></li>
+    <li><a href="#step-4"><span class="lbl">Budget and bidding</span></a></li>
+    <li><a href="#step-5"><span class="lbl">Setup at ads.openai.com</span></a></li>
+    <li><a href="#step-6"><span class="lbl">Tracking</span></a></li>
+    <li><a href="#step-7"><span class="lbl">Kill criteria and review date</span></a></li>
+  </ol>
+</nav>
+<p class="where" id="where">Step 1 of 7</p>
+<p class="quiet" id="storage-note" hidden>Open in new tab to save progress and follow links.</p>
+
+<!-- 1 -->
+<section class="step" id="step-1" data-screen="product" aria-labelledby="h-1">
+  <p class="kicker">Product read</p>
+  <h2 id="h-1" tabindex="-1">bookrender: hold the ads until the product ships</h2>
+  <p class="lead">“Turn any long PDF into a narrated audiobook you can play offline.”</p>
+  <p>The plan is written for people with long PDFs who would rather listen than read. Only adult Free and Go users see ChatGPT ads. Plus and Pro users never do <span class="src"><a class="source" data-kind="official" href="https://openai.com/index/testing-ads-in-chatgpt/" target="_blank" rel="noopener">Testing ads in ChatGPT</a><span class="dom">openai.com · official</span></span>.</p>
+
+  <div class="card callout">
+    <p><strong>Verdict: do not advertise yet.</strong> Spend nothing until these three blockers are cleared.</p>
+    <ol>
+      <li><strong>The promise is not in the code.</strong> The repo ships a 3D book-club app with signup and clubs. Nothing reads PDFs, makes speech or plays audio offline (repo-derived: no such code in <code>web/src</code>, <code>api/src</code> or <code>shared/src</code>). Every ad is policy-reviewed before it serves <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/campaign-management" target="_blank" rel="noopener">Campaign management</a><span class="dom">developers.openai.com · official</span></span>.</li>
+      <li><strong>There is no live URL.</strong> OpenAI's crawlers must reach the landing page for review <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener">Ads docs</a><span class="dom">developers.openai.com · official</span></span>.</li>
+      <li><strong>120 USD buys about 40 clicks.</strong> That predicts 0.1 to 0.2 signups at a 0.37% conversion rate <span class="src"><a class="source" data-kind="third-party" href="https://searchengineland.com/chatgpt-ads-generate-less-revenue-per-visit-than-google-search-study-500160" target="_blank" rel="noopener">1,900-site study</a><span class="dom">searchengineland.com · third-party</span></span>.</li>
+    </ol>
+    <p class="small muted" style="margin:0">Until then, organic citation is the better spend. ChatGPT answers “PDF to audiobook offline” from public pages such as <span class="src"><a class="source" data-kind="third-party" href="https://alternativeto.net/software/ebook2audiobook" target="_blank" rel="noopener">AlternativeTo listings</a><span class="dom">alternativeto.net · third-party</span></span>.</p>
+  </div>
+
+  <div class="card task">
+    <p><strong>If the read is wrong, rerun with a corrected positioning.</strong> To advertise what the repo ships today:</p>
+    <pre id="rerun">/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start b9afa7ec-8375-40a9-bb31-cd7aefffa6cf --var repo-path=/home/alex/Desktop/dev/bookrender --var positioning="A 3D book-club app where you browse, join and start reading clubs with friends."</pre>
+    <div class="row"><button type="button" data-copy="/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start b9afa7ec-8375-40a9-bb31-cd7aefffa6cf --var repo-path=/home/alex/Desktop/dev/bookrender --var positioning=&quot;A 3D book-club app where you browse, join and start reading clubs with friends.&quot;">Copy command</button></div>
+    <p class="small muted" style="margin:0">If the PDF-to-audiobook product lives in another repo, run the same command with <code>--var repo-path=&lt;that repo&gt;</code> and keep the positioning: <code>--var positioning="Turn any long PDF into a narrated audiobook you can play offline."</code></p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="step-2" data-screen="audience" aria-labelledby="h-2">
+  <p class="kicker">Audience and conversations</p>
+  <h2 id="h-2" tabindex="-1">Run two ad groups: A and C</h2>
+  <p>Ads target the conversation, not the person. Context hints are free-text situations, up to 2,000 per ad group. They guide relevance but never guarantee placement <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/campaign-targeting" target="_blank" rel="noopener">Campaign targeting</a><span class="dom">developers.openai.com · official</span></span>.</p>
+  <p class="muted small">About 40 clicks cannot be split further. Copy that matches the user's situation beat search-style copy in six months of agency tests <span class="src"><a class="source" data-kind="third-party" href="https://www.dept.global/insight/what-weve-learned-from-6-months-of-chatgpt-ads/" target="_blank" rel="noopener">DEPT</a><span class="dom">dept.global · third-party</span></span>.</p>
+
+  <div class="card">
+    <h3>A · I have a PDF and want to hear it</h3>
+    <ul class="hints">
+      <li>turn a 300-page PDF I downloaded into an audiobook for my phone</li>
+      <li>convert a PDF ebook that has no audiobook edition into audio</li>
+      <li>make an MP3 or M4B from a PDF I own so I can play it in any player</li>
+      <li>I want chapters in the audio file so I can skip around, not one giant track</li>
+      <li>hear a long PDF read aloud instead of staring at the screen</li>
+      <li>my publisher only sent a PDF and I would rather listen to it</li>
+      <li>free ways to read a PDF aloud, and what I give up with free tools</li>
+      <li>save a PDF as audio so I can listen on a plane</li>
+    </ul>
+    <button type="button" data-copy="turn a 300-page PDF I downloaded into an audiobook for my phone&#10;convert a PDF ebook that has no audiobook edition into audio&#10;make an MP3 or M4B from a PDF I own so I can play it in any player&#10;I want chapters in the audio file so I can skip around, not one giant track&#10;hear a long PDF read aloud instead of staring at the screen&#10;my publisher only sent a PDF and I would rather listen to it&#10;free ways to read a PDF aloud, and what I give up with free tools&#10;save a PDF as audio so I can listen on a plane">Copy group A hints</button>
+  </div>
+
+  <div class="card">
+    <h3>C · Offline playback</h3>
+    <ul class="hints">
+      <li>read-aloud that keeps working in airplane mode</li>
+      <li>download audio of my documents before a flight</li>
+      <li>no signal in the subway tunnel but I still want to listen</li>
+      <li>I am on a limited data plan and do not want to stream voices</li>
+      <li>audio that stays on my phone after I cancel a subscription</li>
+      <li>text to speech that does not need an internet connection</li>
+      <li>trip with patchy connectivity, need my study material as audio</li>
+    </ul>
+    <button type="button" data-copy="read-aloud that keeps working in airplane mode&#10;download audio of my documents before a flight&#10;no signal in the subway tunnel but I still want to listen&#10;I am on a limited data plan and do not want to stream voices&#10;audio that stays on my phone after I cancel a subscription&#10;text to speech that does not need an internet connection&#10;trip with patchy connectivity, need my study material as audio">Copy group C hints</button>
+  </div>
+
+  <details>
+    <summary>Parked groups B, D, E and F</summary>
+    <ul class="small muted">
+      <li><strong>B · Listening while doing something else.</strong> Parked until the budget reaches 350 USD.</li>
+      <li><strong>D · Accessibility and study.</strong> Parked: scanned-PDF and column handling are not built.</li>
+      <li><strong>E · Comparing tools and prices.</strong> Parked: there is no pricing to compare yet.</li>
+      <li><strong>F · Privacy and rights.</strong> Parked: rights-sensitive, so get a policy check first.</li>
+    </ul>
+    <p class="small muted">Ads sometimes appear on unrelated topics <span class="src"><a class="source" data-kind="third-party" href="https://www.mediapost.com/publications/article/417172/chatgpt-serves-ads-in-results-on-irrelevant-topics.html" target="_blank" rel="noopener">MediaPost</a><span class="dom">mediapost.com · third-party</span></span>. The hints come from third-party how-to and review pages, not from real user quotes.</p>
+  </details>
+</section>
+
+<!-- 3 -->
+<section class="step" id="step-3" data-screen="creatives" aria-labelledby="h-3">
+  <p class="kicker">Creatives</p>
+  <h2 id="h-3" tabindex="-1">Use c1 and c3 for the test</h2>
+  <p>One ad per active group. Limits from facts.json, as of 2026-11-06: title up to <span class="num">50</span> characters, aim for <span class="num">16–24</span>; body up to <span class="num">100</span>, aim for <span class="num">32–48</span>. Square image <span class="num">1024</span> px, allowed <span class="num">640–1200</span> <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener">Ads docs</a><span class="dom">developers.openai.com · official</span></span>.</p>
+  <p class="muted small">Copy must describe only what the deployed site does. Every ad is reviewed before it serves <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/campaign-management" target="_blank" rel="noopener">Campaign management</a><span class="dom">developers.openai.com · official</span></span>.</p>
+
+  <article class="creative card" data-id="c1">
+    <img src="c1.png" width="1024" height="1024" alt="Ad card c1: Your PDF, read aloud">
+    <div class="body">
+      <span class="tag on">Group A · run in test</span>
+      <h3 data-field="headline">Your PDF, read aloud</h3>
+      <p data-field="body">Turn a 300-page PDF into one audiobook file.</p>
+      <p class="count">Title <span class="num">20/50</span> · Body <span class="num">44/100</span> · both in target</p>
+      <ul class="hints">
+        <li>turn a 300-page PDF I downloaded into an audiobook for my phone</li>
+        <li>convert a PDF ebook that has no audiobook edition into audio</li>
+        <li>hear a long PDF read aloud instead of staring at the screen</li>
+        <li>my publisher only sent a PDF and I would rather listen to it</li>
+        <li>save a PDF as audio so I can listen on a plane</li>
+      </ul>
+      <div class="row">
+        <button type="button" data-copy="Your PDF, read aloud">Copy headline</button>
+        <button type="button" data-copy="Turn a 300-page PDF into one audiobook file.">Copy body</button>
+        <button type="button" data-copy="turn a 300-page PDF I downloaded into an audiobook for my phone&#10;convert a PDF ebook that has no audiobook edition into audio&#10;hear a long PDF read aloud instead of staring at the screen&#10;my publisher only sent a PDF and I would rather listen to it&#10;save a PDF as audio so I can listen on a plane">Copy hints</button>
+        <a class="btn" href="c1.png" download="c1.png">Download PNG</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="creative card" data-id="c3">
+    <img src="c3.png" width="1024" height="1024" alt="Ad card c3: PDF audio, no wifi">
+    <div class="body">
+      <span class="tag on">Group C · run in test</span>
+      <h3 data-field="headline">PDF audio, no wifi</h3>
+      <p data-field="body">Download narrated PDFs for flights and tunnels.</p>
+      <p class="count">Title <span class="num">18/50</span> · Body <span class="num">47/100</span> · both in target</p>
+      <ul class="hints">
+        <li>read-aloud that keeps working in airplane mode</li>
+        <li>download audio of my documents before a flight</li>
+        <li>no signal in the subway tunnel but I still want to listen</li>
+        <li>I am on a limited data plan and do not want to stream voices</li>
+        <li>text to speech that does not need an internet connection</li>
+      </ul>
+      <div class="row">
+        <button type="button" data-copy="PDF audio, no wifi">Copy headline</button>
+        <button type="button" data-copy="Download narrated PDFs for flights and tunnels.">Copy body</button>
+        <button type="button" data-copy="read-aloud that keeps working in airplane mode&#10;download audio of my documents before a flight&#10;no signal in the subway tunnel but I still want to listen&#10;I am on a limited data plan and do not want to stream voices&#10;text to speech that does not need an internet connection">Copy hints</button>
+        <a class="btn" href="c3.png" download="c3.png">Download PNG</a>
+      </div>
+    </div>
+  </article>
+
+  <h4>Parked until the budget reaches 350 USD</h4>
+
+  <article class="creative card" data-id="c2">
+    <img src="c2.png" width="1024" height="1024" alt="Ad card c2: Read on your commute">
+    <div class="body">
+      <span class="tag">Group B · parked</span>
+      <h3 data-field="headline">Read on your commute</h3>
+      <p data-field="body">Hear long papers and reports with hands busy.</p>
+      <p class="count">Title <span class="num">20/50</span> · Body <span class="num">45/100</span> · both in target</p>
+      <ul class="hints">
+        <li>listen to a journal article on the drive to work</li>
+        <li>I spend an hour a day on the train and want to use it for reading</li>
+        <li>a long report my boss sent that I will not have time to sit and read</li>
+        <li>audio for a technical manual I have to learn before Monday</li>
+        <li>turn a pile of PDFs I never get to into something I can play while cooking</li>
+      </ul>
+      <div class="row">
+        <button type="button" data-copy="Read on your commute">Copy headline</button>
+        <button type="button" data-copy="Hear long papers and reports with hands busy.">Copy body</button>
+        <button type="button" data-copy="listen to a journal article on the drive to work&#10;I spend an hour a day on the train and want to use it for reading&#10;a long report my boss sent that I will not have time to sit and read&#10;audio for a technical manual I have to learn before Monday&#10;turn a pile of PDFs I never get to into something I can play while cooking">Copy hints</button>
+        <a class="btn" href="c2.png" download="c2.png">Download PNG</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="creative card" data-id="c4">
+    <img src="c4.png" width="1024" height="1024" alt="Ad card c4: Rest your eyes, keep up">
+    <div class="body">
+      <span class="tag">Group D · parked</span>
+      <h3 data-field="headline">Rest your eyes, keep up</h3>
+      <p data-field="body">Listen to your study PDFs as narrated audio.</p>
+      <p class="count">Title <span class="num">23/50</span> · Body <span class="num">44/100</span> · both in target</p>
+      <ul class="hints">
+        <li>student with dyslexia who needs course readings as audio</li>
+        <li>my eyes get tired after a few hours of reading</li>
+        <li>reduce screen time while still getting through my reading list</li>
+        <li>study for an exam by listening to my notes and papers</li>
+        <li>read a thesis draft aloud to catch mistakes</li>
+      </ul>
+      <div class="row">
+        <button type="button" data-copy="Rest your eyes, keep up">Copy headline</button>
+        <button type="button" data-copy="Listen to your study PDFs as narrated audio.">Copy body</button>
+        <button type="button" data-copy="student with dyslexia who needs course readings as audio&#10;my eyes get tired after a few hours of reading&#10;reduce screen time while still getting through my reading list&#10;study for an exam by listening to my notes and papers&#10;read a thesis draft aloud to catch mistakes">Copy hints</button>
+        <a class="btn" href="c4.png" download="c4.png">Download PNG</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="creative card" data-id="c5">
+    <img src="c5.png" width="1024" height="1024" alt="Ad card c5: Long PDFs, as audiobooks">
+    <div class="body">
+      <span class="tag">Group E · parked</span>
+      <h3 data-field="headline">Long PDFs, as audiobooks</h3>
+      <p data-field="body">An offline audiobook option for your own PDFs.</p>
+      <p class="count">Title <span class="num">24/50</span> · Body <span class="num">46/100</span> · both in target</p>
+      <ul class="hints">
+        <li>comparing read-aloud apps for PDF fidelity and offline use</li>
+        <li>weighing a yearly subscription for a text-to-speech reader and looking for alternatives</li>
+        <li>I only need to convert a few PDFs a month, not pay for a full year</li>
+        <li>cancelled a reader app and want something cheaper</li>
+      </ul>
+      <div class="row">
+        <button type="button" data-copy="Long PDFs, as audiobooks">Copy headline</button>
+        <button type="button" data-copy="An offline audiobook option for your own PDFs.">Copy body</button>
+        <button type="button" data-copy="comparing read-aloud apps for PDF fidelity and offline use&#10;weighing a yearly subscription for a text-to-speech reader and looking for alternatives&#10;I only need to convert a few PDFs a month, not pay for a full year&#10;cancelled a reader app and want something cheaper">Copy hints</button>
+        <a class="btn" href="c5.png" download="c5.png">Download PNG</a>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- 4 -->
+<section class="step" id="step-4" data-screen="budget" aria-labelledby="h-4">
+  <p class="kicker">Budget and bidding</p>
+  <h2 id="h-4" tabindex="-1">Bid on clicks, capped at 3 USD</h2>
+
+  <div class="card">
+    <dl class="kv money">
+      <dt>Monthly budget</dt><dd>120 USD</dd>
+      <dt>Daily budget, the platform minimum</dt><dd>25 USD</dd>
+      <dd class="note"><span class="src"><a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001413-daily-budgets" target="_blank" rel="noopener">Daily budgets</a><span class="dom">help.openai.com · official</span></span></dd>
+      <dt>Days of spend</dt><dd>4</dd>
+      <dd class="note">120 ÷ 25 = 4.8 days, so plan 4 days and about 100 USD.</dd>
+      <dt>Pause by hand at</dt><dd>110 USD</dd>
+      <dd class="note">The daily budget is a 7-day average. One day can reach 2 × 25 = 50 USD (same source).</dd>
+      <dt>Max bid per click</dt><dd>3.00 USD</dd>
+    </dl>
+  </div>
+
+  <p>Set <code>bidding_type</code> to clicks with a fixed <code>max_bid_micros</code>. Bids can be on impressions, clicks or conversions, each fixed or Maximize <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/bidding-and-budgets" target="_blank" rel="noopener">Bidding and budgets</a><span class="dom">developers.openai.com · official</span></span>.</p>
+  <div class="row"><button type="button" data-copy="3000000">Copy max_bid_micros 3000000</button></div>
+  <ul class="small">
+    <li>Conversion bidding needs one active standard conversion event and has nothing to learn from at about 0.15 conversions <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/conversion-optimized-campaigns" target="_blank" rel="noopener">Conversion-optimized campaigns</a><span class="dom">developers.openai.com · official</span></span>.</li>
+    <li>The cap keeps the budget out of the 8 to 13 USD-per-click tail <span class="src"><a class="source" data-kind="third-party" href="https://www.localogy.com/2026/08/chatgpt-ads-high-potential-low-performance/" target="_blank" rel="noopener">Localogy</a><span class="dom">localogy.com · third-party</span></span>.</li>
+    <li>3 USD is the low end of the reported 3 to 5 USD starting bid <span class="src"><a class="source" data-kind="third-party" href="https://trylapis.com/resources/chatgpt-ads-expected-results" target="_blank" rel="noopener">Lapis</a><span class="dom">trylapis.com · third-party</span></span>. If impressions stay under 300 a day, raise it once to 4 USD.</li>
+  </ul>
+
+  <details>
+    <summary>What 120 USD buys at reported rates</summary>
+    <dl class="kv money small">
+      <dt>At 0.10 USD a click, the best reported</dt><dd>~1,200 clicks · ~4 signups</dd>
+      <dd class="note"><span class="src"><a class="source" data-kind="third-party" href="https://successfulsoftware.net/tag/advertising/" target="_blank" rel="noopener">Successful Software</a><span class="dom">successfulsoftware.net · third-party</span></span></dd>
+      <dt>At 3 USD, our cap</dt><dd>~40 clicks · ~0.15 signups</dd>
+      <dd class="note"><span class="src"><a class="source" data-kind="third-party" href="https://adlibrary.com/posts/we-tested-chatgpt-ads" target="_blank" rel="noopener">adlibrary test</a><span class="dom">adlibrary.com · third-party</span></span></dd>
+      <dt>At 5 USD</dt><dd>~24 clicks · ~0.09 signups</dd>
+      <dd class="note"><span class="src"><a class="source" data-kind="third-party" href="https://www.interteammarketing.com/case-study/chatgpt-ads-case-study" target="_blank" rel="noopener">Interteam</a><span class="dom">interteammarketing.com · third-party</span></span></dd>
+      <dt>At 13 USD, blocked by the cap</dt><dd>~9 clicks · ~0 signups</dd>
+      <dd class="note"><span class="src"><a class="source" data-kind="third-party" href="https://growmyads.com/chatgpt-ads-review/" target="_blank" rel="noopener">Grow My Ads</a><span class="dom">growmyads.com · third-party</span></span></dd>
+    </dl>
+    <p class="small muted" style="margin-top:1rem">Signups assume 0.37% conversion <span class="src"><a class="source" data-kind="third-party" href="https://searchengineland.com/chatgpt-ads-generate-less-revenue-per-visit-than-google-search-study-500160" target="_blank" rel="noopener">1,900-site study</a><span class="dom">searchengineland.com · third-party</span></span>. This test can measure CTR, CPC and tracking. It cannot measure conversion. A two-week test at the minimum costs 350 USD.</p>
+  </details>
+</section>
+
+<!-- 5 -->
+<section class="step" id="step-5" data-screen="setup" aria-labelledby="h-5">
+  <p class="kicker">Setup at ads.openai.com</p>
+  <h2 id="h-5" tabindex="-1">Set up the campaign, in this order</h2>
+  <p class="muted small tally">Tick each step as you finish it.</p>
+  <ul class="checks">
+    <li><input type="checkbox" id="k-deploy" data-check="deploy"><label for="k-deploy"><strong>Deploy first.</strong> A public HTTPS domain serves the site, <code>/listen</code> resolves and PDF-to-audio works. Crawlers must reach it for review <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/llms-full.txt" target="_blank" rel="noopener">Ads docs</a><span class="dom">developers.openai.com · official</span></span>.</label></li>
+    <li><input type="checkbox" id="k-account" data-check="account"><label for="k-account"><strong>Account and verification.</strong> Sign up as the business that owns the domain and discard the auto-drafted campaign. Verification is reported at 5 to 15 business days <span class="src"><a class="source" data-kind="third-party" href="https://www.airops.com/blog/how-to-advertise-on-chatgpt" target="_blank" rel="noopener">AirOps</a><span class="dom">airops.com · third-party</span></span>.</label></li>
+    <li><input type="checkbox" id="k-pixel" data-check="pixel"><label for="k-pixel"><strong>Pixel.</strong> Install the oaiq SDK on every page and fire the standard sign-up event with your own <code>event_id</code> <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/measurement-pixel" target="_blank" rel="noopener">Measurement pixel</a><span class="dom">developers.openai.com · official</span></span>.</label></li>
+    <li><input type="checkbox" id="k-template" data-check="template"><label for="k-template"><strong>Query string template.</strong> Paste the UTM template from step 6 at campaign level.</label></li>
+    <li><input type="checkbox" id="k-campaign" data-check="campaign"><label for="k-campaign"><strong>Campaign.</strong> Objective clicks, 25 USD a day, 4 days from the day after approval, home country only. Ads run in 89 eligible countries <span class="src"><a class="source" data-kind="official" href="https://openai.com/index/chatgpt-ads-expands-26-new-countries/" target="_blank" rel="noopener">26 new countries</a><span class="dom">openai.com · official</span></span>.</label></li>
+    <li><input type="checkbox" id="k-groups" data-check="groups"><label for="k-groups"><strong>Ad groups.</strong> <code>A-pdf-to-audio</code> and <code>C-offline</code>, clicks, <code>max_bid_micros</code> 3000000, hints from step 2.</label></li>
+    <li><input type="checkbox" id="k-ads" data-check="ads"><label for="k-ads"><strong>Ads.</strong> c1 in group A and c3 in group C. Target URL <code>https://&lt;your-domain&gt;/listen</code>.</label></li>
+    <li><input type="checkbox" id="k-review" data-check="review"><label for="k-review"><strong>Review and self-click.</strong> Submit and wait for policy review. Click your own ad, confirm UTMs and the <code>__oppref</code> cookie arrive, and that a test signup fires once. Record the approval date in step 7.</label></li>
+  </ul>
+  <p class="small muted">Help centre guide: <span class="src"><a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001210-creating-campaigns-for-chatgpt-ads" target="_blank" rel="noopener">Creating campaigns</a><span class="dom">help.openai.com · official</span></span>.</p>
+</section>
+
+<!-- 6 -->
+<section class="step" id="step-6" data-screen="tracking" aria-labelledby="h-6">
+  <p class="kicker">Tracking</p>
+  <h2 id="h-6" tabindex="-1">Count ad traffic by UTM, never by referrer</h2>
+  <p>Set this as <code>query_string_template</code>. The lowest level wins <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/measurement-pixel" target="_blank" rel="noopener">Measurement pixel</a><span class="dom">developers.openai.com · official</span></span>.</p>
+  <pre>utm_source=chatgpt&amp;utm_medium=paid&amp;utm_campaign=bookrender-pdf-audio-test&amp;utm_id={campaign_id}&amp;utm_content={ad_id}</pre>
+  <div class="row"><button type="button" data-copy="utm_source=chatgpt&amp;utm_medium=paid&amp;utm_campaign=bookrender-pdf-audio-test&amp;utm_id={campaign_id}&amp;utm_content={ad_id}">Copy UTM template</button></div>
+
+  <p class="muted small tally">Tick each item as you finish it.</p>
+  <ul class="checks">
+    <li><input type="checkbox" id="k-listen" data-check="listen"><label for="k-listen"><strong>Landing path <code>/listen</code>.</strong> Only ad traffic goes there. It states the promise and shows a “convert your first PDF” button. No promo code: the repo has no checkout.</label></li>
+    <li><input type="checkbox" id="k-utm" data-check="utm-store"><label for="k-utm"><strong>Store UTMs with the signup.</strong> bookrender has no analytics today, so record UTMs on landing and save them with the signup row.</label></li>
+    <li><input type="checkbox" id="k-capi" data-check="capi"><label for="k-capi"><strong>Conversions API.</strong> On signup and on the Google callback, read <code>__oppref</code> and post the same <code>event_name</code> and <code>event_id</code> as the Pixel so they deduplicate <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/conversions-api" target="_blank" rel="noopener">Conversions API</a><span class="dom">developers.openai.com · official</span></span>.</label></li>
+    <li><input type="checkbox" id="k-oppref" data-check="oppref"><label for="k-oppref"><strong>Check <code>oppref</code>.</strong> The platform appends it and keeps a 30-day <code>__oppref</code> cookie. If the self-click shows none, add <code>&amp;oppref={oppref}</code> to the template.</label></li>
+  </ul>
+  <p class="small muted">ChatGPT ad clicks often lose the referrer and look like direct traffic. One test saw paid clicks and none in analytics <span class="src"><a class="source" data-kind="third-party" href="https://www.outoftheboxadvisors.com/post/we-spent-real-money-on-chatgpt-ads-for-small-business-here-s-the-honest-truth" target="_blank" rel="noopener">Out of the Box Advisors</a><span class="dom">outoftheboxadvisors.com · third-party</span></span> <span class="src"><a class="source" data-kind="third-party" href="https://stape.io/blog/chatgpt-ads-tracking" target="_blank" rel="noopener">Stape</a><span class="dom">stape.io · third-party</span></span>.</p>
+</section>
+
+<!-- 7 -->
+<section class="step" id="step-7" data-screen="review" aria-labelledby="h-7">
+  <p class="kicker">Kill criteria and review date</p>
+  <h2 id="h-7" tabindex="-1">Review on day 14 after approval</h2>
+  <p>The clock starts at ad approval, day 0. Spend runs on days 1 to 4. Day 14 gives late signups time to attribute within the fixed 30-day window <span class="src"><a class="source" data-kind="official" href="https://developers.openai.com/ads/conversion-optimized-campaigns" target="_blank" rel="noopener">Conversion-optimized campaigns</a><span class="dom">developers.openai.com · official</span></span>.</p>
+
+  <div class="card task">
+    <label for="approval"><strong>Approval date</strong></label>
+    <div class="row"><input type="date" id="approval" data-date="approval"></div>
+    <p class="money" id="dates" style="margin:0" aria-live="polite">Example: approval on 2026-12-01 means the review is on 2026-12-15.</p>
+  </div>
+
+  <div class="card rule"><span class="when">Day 2 · tracking gate</span><span class="what">Pause if tracked <code>/listen</code> sessions are under 50% of platform clicks.</span><span class="small muted">Fix tracking before spending more <span class="src"><a class="source" data-kind="third-party" href="https://www.outoftheboxadvisors.com/post/we-spent-real-money-on-chatgpt-ads-for-small-business-here-s-the-honest-truth" target="_blank" rel="noopener">Out of the Box</a><span class="dom">outoftheboxadvisors.com · third-party</span></span></span></div>
+  <div class="card rule"><span class="when">Daily · spend cap</span><span class="what money">Pause at 110 to 120 USD cumulative, whatever the results.</span><span class="small muted">One day can spend double <span class="src"><a class="source" data-kind="official" href="https://help.openai.com/en/articles/20001413-daily-budgets" target="_blank" rel="noopener">Daily budgets</a><span class="dom">help.openai.com · official</span></span></span></div>
+  <div class="card rule"><span class="when">Day 14 · kill</span><span class="what money">CTR under 0.3% after 1,000 impressions, or average CPC over 8 USD with fewer than 2 signups, or under 10% of visitors start a conversion.</span><span class="small muted"><span class="src"><a class="source" data-kind="third-party" href="https://trylapis.com/resources/chatgpt-ads-expected-results" target="_blank" rel="noopener">Lapis</a><span class="dom">trylapis.com · third-party</span></span> <span class="src"><a class="source" data-kind="third-party" href="https://www.localogy.com/2026/08/chatgpt-ads-high-potential-low-performance/" target="_blank" rel="noopener">Localogy</a><span class="dom">localogy.com · third-party</span></span> <span class="src"><a class="source" data-kind="third-party" href="https://caseyrb.com/blog/advertising-on-chatgpt/" target="_blank" rel="noopener">caseyrb</a><span class="dom">caseyrb.com · third-party</span></span></span></div>
+  <div class="card rule"><span class="when">Day 14 · continue</span><span class="what money">CTR at least 0.7%, CPC at most 5 USD, tracked sessions at least 80% of clicks, 10% start a conversion.</span><span class="small muted">Then fund a 14-day test at 25 USD a day, 350 USD, and kill at 0 signups after 100 tracked clicks <span class="src"><a class="source" data-kind="third-party" href="https://stubgroup.com/case-study/chatgpt-ads-case-study/" target="_blank" rel="noopener">Stubgroup</a><span class="dom">stubgroup.com · third-party</span></span>.</span></div>
+
+  <p class="small muted">Zero signups from about 40 clicks is not a kill signal on its own: 0.15 is the expected count. Zero was the most common outcome in small tests <span class="src"><a class="source" data-kind="third-party" href="https://adlibrary.com/posts/we-tested-chatgpt-ads" target="_blank" rel="noopener">adlibrary</a><span class="dom">adlibrary.com · third-party</span></span>. Change one thing, the <code>/listen</code> copy or the hints, before the next test.</p>
+
+  <ul class="checks">
+    <li><input type="checkbox" id="k-booked" data-check="review-booked"><label for="k-booked">Day 14 review is in my calendar.</label></li>
+  </ul>
+</section>
+
+<nav class="pager" aria-label="Step navigation">
+  <button type="button" id="back" data-back>Back</button>
+  <span class="spacer"></span>
+  <button type="button" id="next" class="primary" data-next>Next</button>
+</nav>
+<p class="keys">Use ← and → to move between steps.</p>
+<footer>Plan dated 2026-11-06 for a 120 USD monthly budget. Sources marked official are on openai.com domains; all others are third-party and mostly self-reported.</footer>
+<p id="status" role="status" aria-live="polite"></p>
+</main>
+
+<script>
+(function () {
+  var KEY = 'f59b67ea-54db-4cfe-a8ba-a6397fd472ee:page';
+  var steps = [].slice.call(document.querySelectorAll('section.step'));
+  var rail = [].slice.call(document.querySelectorAll('.rail a'));
+  var where = document.getElementById('where');
+  var back = document.getElementById('back'), next = document.getElementById('next');
+  var status = document.getElementById('status');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var current = -1, timer;
+
+  /* storage: localStorage when allowed, memory when the sandbox throws */
+  var mem = {}, sandboxed = false;
+  try { localStorage.setItem(KEY + ':probe', '1'); localStorage.removeItem(KEY + ':probe'); }
+  catch (e) { sandboxed = true; document.getElementById('storage-note').hidden = false; }
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return mem; } }
+  function save(state) { mem = state; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function say(msg) {
+    status.textContent = msg;
+    clearTimeout(timer);
+    timer = setTimeout(function () { status.textContent = ''; }, 2400);
+  }
+
+  /* copy: clipboard API, then a selected textarea, then a prompt */
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea'), ok = false;
+    ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    ta.remove();
+    if (!ok) { try { window.prompt('Copy this text:', text); } catch (e) {} }
+    return ok;
+  }
+  /* a framed page skips the clipboard API: the sandbox blocks it and logs an error */
+  var framed = sandboxed || window.self !== window.top;
+  function copy(text, msg, btn) {
+    var settled = false;
+    var done = function () {
+      say(msg);
+      if (!btn) return;
+      if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+      btn.textContent = 'Copied';
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function () { btn.textContent = btn.dataset.label; }, 1800);
+    };
+    var fallback = function () { if (settled) return; settled = true; if (fallbackCopy(text)) done(); };
+    if (framed || !navigator.clipboard || !window.isSecureContext) return fallback();
+    navigator.clipboard.writeText(text).then(function () { if (!settled) { settled = true; done(); } }, fallback);
+    setTimeout(fallback, 800); /* a clipboard call that never settles still falls back */
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-copy]');
+    if (b) return copy(b.getAttribute('data-copy'), 'Copied', b);
+    var a = e.target.closest('a.source');
+    if (a && sandboxed) { e.preventDefault(); copy(a.href, 'Link copied, paste in a new tab'); }
+  });
+
+  /* checklist and approval date */
+  var state = load();
+  [].forEach.call(document.querySelectorAll('input[data-check]'), function (box) {
+    box.checked = !!state[box.getAttribute('data-check')];
+    box.addEventListener('change', function () {
+      state[box.getAttribute('data-check')] = box.checked; save(state); tally();
+    });
+  });
+  /* "3 of 8 done" above each longer checklist */
+  function tally() {
+    [].forEach.call(document.querySelectorAll('.tally'), function (p) {
+      var boxes = p.nextElementSibling.querySelectorAll('input[data-check]');
+      var n = [].filter.call(boxes, function (b) { return b.checked; }).length;
+      p.textContent = n + ' of ' + boxes.length + ' done';
+    });
+  }
+  tally();
+  var approval = document.getElementById('approval'), dates = document.getElementById('dates');
+  function plus(iso, days) {
+    var d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + days);
+    return d.toISOString().slice(0, 10);
+  }
+  function showDates() {
+    var v = approval.value; if (!v) return;
+    dates.textContent = 'Tracking gate ' + plus(v, 2) + ' · spend ends ' + plus(v, 4) + ' · review ' + plus(v, 14);
+  }
+  approval.value = state.approval || '';
+  showDates();
+  approval.addEventListener('change', function () { state.approval = approval.value; save(state); showDates(); });
+
+  /* one screen at a time */
+  function indexFromHash() {
+    var m = /^#step-(\d+)$/.exec(location.hash);
+    var i = m ? +m[1] - 1 : 0;
+    return i >= 0 && i < steps.length ? i : 0;
+  }
+  function render(i) {
+    steps.forEach(function (s, j) { s.classList.toggle('current', j === i); });
+    rail.forEach(function (a, j) {
+      if (j === i) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current');
+      a.classList.toggle('done', j < i);
+    });
+    where.textContent = 'Step ' + (i + 1) + ' of ' + steps.length + ' · ' + rail[i].textContent;
+    back.style.visibility = i ? 'visible' : 'hidden';
+    next.hidden = i === steps.length - 1;
+    if (!next.hidden) next.textContent = 'Next: ' + rail[i + 1].textContent.toLowerCase();
+  }
+  /* animate: wrap the change in a view transition (it applies a frame later) */
+  function show(i, focus, animate) {
+    if (i === current) return;
+    current = i;
+    var apply = function () {
+      render(i);
+      if (!focus) return;
+      window.scrollTo(0, 0);
+      steps[i].querySelector('h2').focus({ preventScroll: true });
+    };
+    if (!(animate && document.startViewTransition && !reduce)) return apply();
+    var t = document.startViewTransition(apply);
+    var quiet = function () {}; /* a skipped transition rejects; that is not an error */
+    t.ready.catch(quiet); t.finished.catch(quiet); t.updateCallbackDone.catch(quiet);
+  }
+  /* rail links, arrow keys and history arrive here and animate */
+  window.addEventListener('hashchange', function () { show(indexFromHash(), true, true); });
+  function go(n) { if (n >= 0 && n < steps.length) location.hash = 'step-' + (n + 1); }
+  /* Back and Next switch at once, so the new screen is ready the moment the click returns */
+  function step(d) {
+    var n = current + d;
+    if (n < 0 || n >= steps.length) return;
+    try { history.pushState(null, '', '#step-' + (n + 1)); } catch (e) {}
+    show(n, true, false);
+  }
+  back.addEventListener('click', function () { step(-1); });
+  next.addEventListener('click', function () { step(1); });
+  document.addEventListener('keydown', function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+    var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!d) return;
+    e.preventDefault();
+    go(current + d);
+  });
+  show(indexFromHash(), false);
+  /* a #step-n deep link should open at the top, rail in view */
+  window.addEventListener('load', function () { window.scrollTo(0, 0); });
+})();
+</script>
+</body>
+</html>

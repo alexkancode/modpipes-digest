@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>pipeline builder · Fri 6 Nov, 10:44</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">pipeline builder</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>pipeline builder</h1>
+  <p class="caption">The Stripe billing desk pipeline, built and tested</p>
+  <p class="summary">The user asked the pipeline builder for a team of Stripe billing experts that analyzes the billing of a local repo. The result is Stripe billing desk, tested and left at version 2.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T16:44:55.789Z">Fri 6 Nov, 10:44</time></span><span>Finished <time datetime="2026-11-06T17:40:12.034Z">Fri 6 Nov, 11:40</time></span><span>55 min 16 s</span><span>14.4M tokens</span><span class="id">507afde0-5b3a-4f2a-8fa4-e51a430d6a86</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/run.json">http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/507afde0-5b3a-4f2a-8fa4-e51a430d6a86.jpg" width="800" height="500" alt="Render of the primary output of pipeline builder"><figcaption>Hero from http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/k8n7vfc/outputs/lessons-learned-site.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Test budget in minutes</dt><dd>45</dd></div><div><dt>What do you want from this pipeline?</dt><dd>Please develop a pipeline that functions as a team of Stripe billing experts that can take a repo on this machine and analyze it&#39;s associated billing with real information, with the latest research on stripe documentation baked in wherever it would be needed with instructions on how to get the latest if theirs turns out to be outdated. It should be able to answer questions from the user like &quot;for this  repo &lt;repo path&gt;, what kinds of billing are set up and are they production ready or stuck in staging?&quot; and provide detaile instructions on how to accomplish the desired tasks with gorgeous future-tech style static site output as its final product with explainations and instructions displayed in a low cognitive load way backed by information theory and UX research</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><details open><summary><h3>Test the pipeline · test-report<span class="type">md</span></h3><p class="desc">What ran and how long, what worked, each defect with its evidence, each fix marked confirmed or unconfirmed, what to look at next</p></summary><div class="md"><h1>Stripe billing desk: test report</h1>
+<p>Date: 2026-11-06, 11:08 to 11:30 CST. Pipeline <code>1f4d4bee-e2df-4df7-b616-43a64d0f630a</code>, tested at v1, left at v2.</p>
+<h2>What ran</h2>
+<p>Both runs used a throwaway copy, &quot;Stripe billing desk (test)&quot; (<code>7df05be5-7767-4436-9bc5-f65dce6580c6</code>). The polish loop was cut from 3 rounds to 2. Prompts and models were unchanged. The copy is deleted, and its runs stay in history.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Inputs</th>
+<th>Answers given</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy <code>da8b00ba-5fb4-4b35-b602-0386a1bd635c</code></td>
+<td>repo-path <code>/home/alex/Desktop/dev/dirslides-correct</code>, default question</td>
+<td>preflight &quot;Done, retry&quot;; checkpoint &quot;Required tasks only&quot;. Neither answer registered, see defect 3.</td>
+<td>17:08:46 to 17:27:52 UTC, 19.1 min</td>
+</tr>
+<tr>
+<td>Stress <code>3b113848-0685-4c30-a040-d9bd42dafcf4</code></td>
+<td>repo-path <code>/tmp/sbd-stress-repo</code>, question &quot;Which steps remain before real customers can pay, and in what order?&quot;</td>
+<td>preflight &quot;Continue without account access&quot;; checkpoint &quot;Pick from the list&quot;, then t1+t3, t8, t9</td>
+<td>17:08:47 to 17:27:51 UTC, 19.1 min</td>
+</tr>
+</tbody></table>
+<p>The stress repo holds one commit with these files:</p>
+<ul>
+<li>A README that claims &quot;Stripe billing is live in production&quot;.</li>
+<li>An <code>.env.example</code> with a fake <code>sk_live_</code> value and an empty <code>PAYPAL_CLIENT_ID</code>.</li>
+<li><code>src/app.js</code> saying payments are planned.</li>
+<li>No Stripe code at all.</li>
+</ul>
+<p>The Stripe CLI login had expired in both modes, so the account-inspector stage was skipped in both runs, as the condition intends.</p>
+<p>Both runs ran into a site-check defect (defect 1). The tester fixed the command in the real pipeline and verified the fix offline. The tester then patched the two test runs&#39; stored definition in <code>~/.modpipes/modpipes.sqlite</code> with the fixed command and restarted site-check. Every stage after site-check therefore ran on a patched snapshot.</p>
+<p>Timing per group, from the stress run:</p>
+<ul>
+<li>Intake: under 1 min plus the question wait.</li>
+<li>Dossier: 1 min.</li>
+<li>Experts: 1.5 min.</li>
+<li>Lead: 1.2 min.</li>
+<li>Checkpoint: 1 min across four questions.</li>
+<li>Writer: 2 min.</li>
+<li>Site round 1: 2 min.</li>
+<li>Critics: 1 min.</li>
+<li>Site and critics in round 2: 1.5 min.</li>
+<li>Handoff: 0.5 min.</li>
+</ul>
+<h2>What worked</h2>
+<p>Each item below was checked against files or transcripts, not stage summaries.</p>
+<ul>
+<li><strong>Dossier.</strong> <code>facts.json</code> set <code>newestApiVersion</code> to <code>2026-10-28.endive</code>, a GA version, not the preview. It lists three 2026-09-30.endive breaking changes with changelog URLs. The <code>docsRead</code> list has fetch dates.</li>
+<li><strong>Happy verdict.</strong> <code>da8b00ba…/stages/lead/outputs/verdict.md</code> matches the known answer:<ul>
+<li>Checkout, subscriptions, webhooks, portal, entitlements and revenue recovery are each cited to file and line.</li>
+<li><code>price_1UGiKT…B3S5</code> is cited from <code>wrangler.toml:30</code>.</li>
+<li>The repo&#39;s live-mode claims are named and correctly not trusted.</li>
+<li>Every state is <code>not-verifiable</code> because the login expired, never <code>missing</code>, as the shared rules require.</li>
+<li>It also caught that the only account id in the repo is the sandbox account.</li>
+</ul>
+</li>
+<li><strong>Stress verdict.</strong> <code>3b113848…/stages/lead/outputs/verdict.md</code> judged integration <code>missing</code> despite <code>README.md:3</code>. It flagged the committed <code>sk_live_</code> value as <code>sk_live_…AbCd</code>. It noted that rotating does not remove the key from git history. It warned that a hidden billing service could double-charge.</li>
+<li><strong>Redaction.</strong> Zero unredacted key-like strings appear across all outputs of both runs, by regex over <code>stages/*/outputs</code>.</li>
+<li><strong>Read-only Stripe.</strong> The transcripts show 80 <code>stripe</code> mentions inside Bash commands. Every write verb among them (<code>login</code>, <code>listen</code>, <code>config</code>) sits in prose inside heredoc file writes. Not one was run as a command.</li>
+<li><strong>Checkpoint pick flow.</strong> The stress checkpoint asked one question per tool call, which avoids the parallel-ask server crash. It asked four questions: mode, t1-t4, t5-t8, t9. It wrote <code>{&quot;chosen&quot;:[&quot;t1&quot;,&quot;t3&quot;,&quot;t8&quot;,&quot;t9&quot;],&quot;mode&quot;:&quot;pick&quot;}</code>. It warned that five required tasks had been skipped. The t9 answer was not sent by the tester; someone in the app may have answered it.</li>
+<li><strong>Polish loop.</strong> The loop ran both rounds in both runs:<ul>
+<li>In round 1, the UX critic raised one blocker in each run (border contrast, and on stress also task grouping).</li>
+<li>The site rerendered from its script in round 2 and cleared both blockers.</li>
+<li>In round 2 both critics passed, with UX scores of 86 and 84.</li>
+<li>Stress site-check ended <code>ok: true</code> with 3 screenshots.</li>
+</ul>
+</li>
+<li><strong>Handoff.</strong> Both runs wrote <code>handoff.md</code>. The stress handoff has a &quot;Not verifiable in this run&quot; section and a &quot;Quality gate&quot; section.</li>
+</ul>
+<h2>Defects</h2>
+<ol>
+<li><strong>site-check failed in 0.2 s in every run.</strong> Confirmed fix, offline.<ul>
+<li>Evidence: <code>~/.modpipes/runs/da8b00ba-5fb4-4b35-b602-0386a1bd635c/stages/site-check/status.json</code> failureReason reads &quot;here-document at line 1 delimited by end-of-file (wanted `PY&#39;)&quot;, followed by a python SyntaxError.</li>
+<li>Cause: the closing line read <code>PY 2&gt;check.err; code=$?; ...</code>. A heredoc only ends on a line that is exactly <code>PY</code>.</li>
+<li>Fix in v2: <code>2&gt;check.err</code> moves to the opening line, and <code>code=$?</code> gets its own line.</li>
+<li>Verification: the v2 command, run with bash against both sites, exited 0 with 3 screenshots. The patched runs then completed both loop rounds. The fix ran in both runs through the patched snapshot, but no run started from v2.</li>
+</ul>
+</li>
+<li><strong>site-check rejected hyphenated badges and repo sources.</strong> Unconfirmed in a run, confirmed offline.<ul>
+<li>Evidence: the offline report on the round-1 sites failed &quot;badge words state&quot; on every <code>not-verifiable</code> card. It also failed &quot;steps well formed&quot; on <code>file:///…/DOCS.md</code> sources.</li>
+<li>Cause, badges: the checker turned <code>not-verifiable</code> into &quot;not verifiable&quot; and then looked for those words in the badge text &quot;? not-verifiable&quot;.</li>
+<li>Cause, sources: the writer prompt asks for repo-file sources, but the checker allowed only <code>http</code> and <code>../</code> hrefs.</li>
+<li>Fix in v2: the checker compares with hyphens normalised on both sides and accepts <code>file://</code> hrefs whose text equals the href. The page contract now says a repo source uses <code>file://</code> plus the absolute path.</li>
+<li>Verification: the stress site went from 2 failed checks to <code>ok: true</code>.</li>
+</ul>
+</li>
+<li><strong>An unanswered checkpoint gave <code>chosen: []</code>, and the writer ignored that list.</strong> Unconfirmed.<ul>
+<li>Evidence: <code>da8b00ba…/stages/checkpoint/transcript.jsonl</code> shows the tool result &quot;The user did not answer the questions.&quot; The output <code>tasks.json</code> has <code>chosen []</code>, while <code>writer/outputs/steps.json</code> holds t1 to t9.</li>
+<li>Root cause: the question text held <code>=</code>, and the CLI answer verb splits on the first <code>=</code>, so the answer was dropped with exit 0. The preflight answer was lost the same way, so the &quot;Done, retry&quot; path never ran.</li>
+<li>Fixes in v2:<ul>
+<li>The checkpoint picks every task when the dialog comes back unanswered and says so in the note.</li>
+<li>The writer writes steps only for chosen ids.</li>
+<li>Preflight and checkpoint keep <code>=</code> out of question text.</li>
+</ul>
+</li>
+<li>The happy site kept t1 to t9 against the empty list, so its site-check stayed red through both rounds. The billing critic passed the page anyway and called the mismatch deliberate.</li>
+</ul>
+</li>
+</ol>
+<p>The voice audit on v2 reports 0 sentences over 25 words. After <code>pipeline update</code>, <code>pipeline show</code> matches the file exactly.</p>
+<h2>Versions</h2>
+<ul>
+<li><code>pipeline-versions/v1.json</code>: as built by the plan stage, before testing.</li>
+<li><code>pipeline-versions/v2.json</code>: fixes defects 1 to 3 above.</li>
+</ul>
+<h2>Lessons and todos written</h2>
+<ul>
+<li>Pipeline tables: <code>checkpoint</code> (= in question text, the unanswered fallback) and <code>site-check</code> (heredoc delimiter, test the stored command string with bash).</li>
+<li>Tester table: rescuing a run by patching <code>runs.definition</code>, and the <code>=</code> answer trap.</li>
+<li><code>lessons__pipeline_builder_todos</code>: &quot;stripe billing desk v2 unconfirmed, account inspector never ran&quot; and &quot;modpipes answer verb splits on =&quot;.</li>
+</ul>
+<h2>What the next tester should look at first</h2>
+<ol>
+<li>Run <code>stripe login</code> first. The account inspector has never run. Its read-only behaviour and the live versus sandbox-only verdict are the core of the ask, and both are untested.</li>
+<li>Answer the questions in the app, or check each question text for <code>=</code> before answering from the CLI.</li>
+<li>Start one v2 run on dirslides-correct. Confirm that site-check passes and that <code>tasks.json</code> and the site&#39;s task sections agree.</li>
+<li>Watch whether the billing critic still passes a page that contradicts <code>tasks.json</code>. Round 2 showed the critic accepting a page that site-check failed.</li>
+</ol>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/kt6n75z/outputs/test-report.md">http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/kt6n75z/outputs/test-report.md</a></p></figure>
+<figure class="out"><h3>Analyse the test · lessons-learned-site<span class="type">html</span></h3><p class="desc">A static site: which changes improved the pipeline, why, and the evidence behind each claim</p><iframe src="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/k8n7vfc/outputs/lessons-learned-site.html" title="Analyse the test lessons-learned-site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/k8n7vfc/outputs/lessons-learned-site.html">http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/k8n7vfc/outputs/lessons-learned-site.html</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:46:52.965Z">Fri 6 Nov, 10:46</time></p>
+    <div class="q"><p class="question">Which repo should the pipeline be tested against first? I scanned ~/Desktop/dev: dirslides-correct is the only repo with a real Stripe integration (Checkout session, one subscription price, webhook verification, Cloudflare Worker, live mode at instideck.com, plus a launch runbook of remaining steps). The other hits (instaorga, test, modpipes) only mention Stripe in data files or notes.</p><p class="options">Options: dirslides-correct (Recommended) · Another local repo · Clone a public sample</p><p class="answer">dirslides-correct (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:47:38.743Z">Fri 6 Nov, 10:47</time></p>
+    <div class="q"><p class="question">How should the pipeline get real account information from Stripe? On this machine the Stripe CLI is logged into account Alexkancode but its live key has expired (stripe login needed), wrangler is logged out, and dirslides-correct/server/.dev.vars holds a test-mode secret key. The pipeline only ever reads; it never creates or changes Stripe objects.</p><p class="options">Options: Restricted read key variable (Recommended) · Run stripe login before each run · Repo-local keys only · Code and config only</p><p class="answer">Run stripe login before each run</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:50:11.491Z">Fri 6 Nov, 10:50</time></p>
+    <div class="q"><p class="question">How does the user hand the pipeline its job? The ask shapes like &#39;for this repo, what billing is set up and is it production ready?&#39;, and each run needs a repo path. A run can take both as variables at start, or a first stage can hold a short conversation in the app before the experts begin.</p><p class="options">Options: Two variables at start (Recommended) · Concierge conversation first · Variables plus one checkpoint</p><p class="answer">Variables plus one checkpoint</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:50:55.875Z">Fri 6 Nov, 10:50</time></p>
+    <div class="q"><p class="question">How should the latest Stripe knowledge be baked in and kept fresh? Found today: Stripe&#39;s docs serve any page as Markdown by appending .md (docs.stripe.com/billing/....md), the changelog at docs.stripe.com/changelog has reached API version 2026-10-28.endive, a hosted MCP server at mcp.stripe.com answers doc searches, and docs.stripe.com/llms.txt indexes the rest.</p><p class="options">Options: Dossier in a topic table, refreshed every run (Recommended) · Dossier refreshed only when stale · Fetch fresh every run, no stored dossier</p><p class="answer">Dossier in a topic table, refreshed every run (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:52:15.690Z">Fri 6 Nov, 10:52</time></p>
+    <div class="q"><p class="question">What quality gate should the final site pass before the run ends? The site is a static dir output that renders in modpipes (index.html plus relative files). It leads with the verdict, then one card per billing capability (state: live, sandbox only, missing), then step-by-step instructions with copyable commands, each claim linked to its source. A critic loop costs two to four extra stage rounds per run.</p><p class="options">Options: Two critics in a loop, three rounds max (Recommended) · One combined critic, two rounds max · Single pass, no critic</p><p class="answer">Two critics in a loop, three rounds max (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:52:46.791Z">Fri 6 Nov, 10:52</time></p>
+    <div class="q"><p class="question">For the future-tech look, is there a reference to anchor the design stage? dirslides-correct ships a launch runbook page in a dark navy palette (background #0a0d16, indigo accent #6d7cff, mint accent #3ee6c0, step cards with copyable commands). The designer can match a reference or invent within rules.</p><p class="options">Options: Design rules only, no reference (Recommended) · Match the dirslides runbook page · I will name a reference</p><p class="answer">Design rules only, no reference (Recommended)</p></div>
+  </li><li>
+    <p class="who">Confirm with the user asked · answered · <time datetime="2026-11-06T16:53:22.682Z">Fri 6 Nov, 10:53</time></p>
+    <div class="q"><p class="question">Here is the picture. Pipeline &#39;Stripe billing desk&#39;: variables repo-path (required) and question (optional). Group 1 in parallel: a preflight that checks the repo path and the Stripe CLI login (asks you in the app to run stripe login if the live key has expired), and a knowledge refresh that reads the Stripe changelog and the .md doc pages for the features the repo uses, amending the topic table lessons__stripe_billing (seeded once with a dossier: go-live checklist, sandboxes vs live, webhooks, Checkout, subscriptions, meters, Customer Portal, API versions, with every URL and fetch date). Group 2, the expert team in parallel: a code auditor (SDK calls, API version, webhook handling, idempotency, entitlement logic), an account inspector (stripe CLI read-only in live and sandbox: products, prices, webhook endpoints, portal config, matched to the ids in the repo), a deploy inspector (env names, secrets map, wrangler or railway or docker config, which side holds live keys), and a docs reader (README, runbooks, CLAUDE.md claims vs reality). Group 3: a lead expert writes the verdict (per capability: live, sandbox only, missing, plus evidence) and a task list, then one checkpoint asks you which tasks the instructions should cover. Group 4: a writer turns the chosen tasks into exact steps with commands, dashboard paths and source links. Groups 5 and 6 loop up to three rounds: a designer and builder make a static site (dark theme, one accent, no external fonts or scripts, AA contrast, one idea per section, disclosures for detail), then a billing critic and a UX critic score; stop when both pass. Final starred outputs: the site and a markdown handoff. Read-only on Stripe always; keys redacted everywhere. First test on dirslides-correct within 45 minutes. Shall I write this down?</p><p class="options">Options: Yes, write it · Yes, with changes</p><p class="answer">Yes, write it</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/k73m6ng/outputs/hammered-out-understanding.md">Confirm with the user · hammered-out-understanding.md</a> <span class="type">10KB</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/k73m6ng/outputs/scope.md">Confirm with the user · scope.md</a> <span class="type">389B</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/research-topic/outputs/topic.md">Research the topic · topic.md</a> <span class="type">9.6KB</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/research-frontend/outputs/frontend.md">Research front-end approaches · frontend.md</a> <span class="type">9.3KB</span></li><li><span class="absent">Research back-end approaches · backend.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/research-stack/outputs/stack.md">Research the stack · stack.md</a> <span class="type">7.9KB</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/research-modpipes/outputs/modpipes.md">Research modpipes · modpipes.md</a> <span class="type">9.7KB</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/plan/outputs/pipeline-plan.md">Plan and build the pipeline · pipeline-plan.md</a> <span class="type">6.9KB</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/plan/outputs/built-pipeline.md">Plan and build the pipeline · built-pipeline.md</a> <span class="type">4.0KB</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/kt6n75z/outputs/pipeline-versions">Test the pipeline · pipeline-versions.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/507afde0-5b3a-4f2a-8fa4-e51a430d6a86/files/stages/k8n7vfc/outputs/cli-tools-optional.md">Analyse the test · cli-tools-optional.md</a> <span class="type">9.4KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Confirm with the user</td><td>kwwtgqp</td><td>done</td><td>fable</td><td>9 min 54 s</td><td>1.1M</td></tr>
+<tr><td>Research the topic</td><td>research</td><td>done</td><td>default</td><td>1 min 33 s</td><td>420K</td></tr>
+<tr><td>Research front-end approaches</td><td>research</td><td>done</td><td>default</td><td>1 min 16 s</td><td>268K</td></tr>
+<tr><td>Research back-end approaches</td><td>research</td><td>skipped</td><td>default</td><td>0 s</td><td>0</td></tr>
+<tr><td>Research the stack</td><td>research</td><td>done</td><td>default</td><td>1 min 13 s</td><td>227K</td></tr>
+<tr><td>Research modpipes</td><td>research</td><td>done</td><td>default</td><td>1 min 46 s</td><td>626K</td></tr>
+<tr><td>Plan and build the pipeline</td><td>plan</td><td>done</td><td>fable</td><td>11 min 30 s</td><td>2.3M</td></tr>
+<tr><td>Test the pipeline</td><td>kz3ofpv</td><td>done</td><td>default</td><td>21 min 48 s</td><td>3.7M</td></tr>
+<tr><td>Analyse the test</td><td>kwn1sne</td><td>done</td><td>default</td><td>10 min 18 s</td><td>5.8M</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 23:22 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

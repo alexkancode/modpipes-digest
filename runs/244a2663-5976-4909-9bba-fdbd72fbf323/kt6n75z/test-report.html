@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>pipeline builder · test-report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="test-report.md">Raw markdown</a></p><h1>Pinterest board capture: test report</h1>
+<p>Date: 2026-11-06, 11:42 to 12:02 CST. Pipeline <code>fb507aed-2822-46a2-ad81-0a4d2be7df05</code>, tested on v0. The real pipeline now stands at v3.</p>
+<h2>What ran</h2>
+<p>The test copy was &quot;Pinterest board capture (test)&quot; (<code>e56c362a-439d-4829-b0b9-9391ceb200c7</code>). It is now deleted, and its runs stay in history. The pipeline has no loops, so there were no caps to cut.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Path</th>
+<th>Inputs</th>
+<th>Wall time</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0</code></td>
+<td>happy</td>
+<td><code>pinterest-username=alexandrakancewick</code>, defaults (2 boards, 3 pins)</td>
+<td>13 min 41 s, of which 10 min waited for the ClamAV install</td>
+<td>done, every stage ran</td>
+</tr>
+<tr>
+<td><code>1286b6e0-a445-4069-b04a-4018e3063de7</code></td>
+<td>stress</td>
+<td>same user, <code>max-boards=0</code>, <code>max-pins-per-board=1</code></td>
+<td>1 min 43 s</td>
+<td>done, stopped at preflight</td>
+</tr>
+</tbody></table>
+<p>ClamAV was not installed when the runs started. I sent a push notification, and the user installed ClamAV with the signatures at about 11:53. Only after that did I answer the happy preflight with &quot;Done, check again&quot;. To test the three-round cap, I answered &quot;Done, check again&quot; on the stress run three times while ClamAV was still missing.</p>
+<p>The username came from Firefox history. The built-pipeline note&#39;s example <code>alexandrab</code> is not the real profile.</p>
+<h2>What worked (counted from transcripts and files)</h2>
+<ul>
+<li>Toolkit: 17 unit tests ran and passed in 1 s (<code>stages/toolkit/transcript.jsonl</code>).</li>
+<li>Preflight, stress: 4 checks and 3 AskUserQuestion calls, one call per round and none in parallel. Preflight then stopped as designed, and <code>status.json</code> kept <code>ok: false</code>. It never ran <code>--relaunch-firefox</code>. The driver, fetch-clean, describe and catalogue stages were skipped, and the report said &quot;Stopped at preflight&quot; with both fixes.</li>
+<li>Preflight, happy: the check found Firefox on the AT-SPI bus without a relaunch, and <code>ok</code> turned true once ClamAV landed.</li>
+<li>Driver: 7 tool calls, 2 min 41 s. The accessibility tree exposed board and pin URIs on the first try (<code>via: tree</code>), so the view-source fallback for board pages was not needed. The run listed about 120 boards and resolved 5 of 6 pins through Firefox view-source. One pin fell back to requests and was skipped with a note.</li>
+<li>Fetch-clean: 20 s. It ran a clamscan file list over 5 <code>.part</code> files. It re-encoded 4 images and checked 1 mp4 with 3 frames. It published <code>~/Documents/Pinterest/clay/</code> (3 files) and <code>diy-gift/</code> (2 files), and <code>file</code> confirms each one as real PNG, JPEG or MP4. <code>deletions.csv</code> holds 4 rows, all <code>.incoming/*.part</code> paths inside the Pinterest folder. No <code>.part</code> files are left.</li>
+<li>Describe: 31 s. It made 8 Read calls: clean.json, 4 images and 3 video frames. It opened nothing else.</li>
+<li>Catalogue: 5 rows in <code>lessons__pinterest_media</code>, ids 1 to 5. <code>lessons find lessons__pinterest_media ceramic buttons</code> returns them. A regex for <code>http|pinimg|pinterest.com</code> over every phrase and blurb finds 0 hits, and a grep over the stage outputs and the Pinterest folder finds no links.</li>
+<li>These 5 files and 5 rows are real product, so I left them in place.</li>
+</ul>
+<h2>Defects and fixes</h2>
+<ol>
+<li>The report scrubbed its own Limits line. The line read &quot;No Pinterest or [removed] link&quot;, because <code>scrub()</code> matched the word pinimg.<ul>
+<li>Evidence: <code>~/.modpipes/runs/1286b6e0-a445-4069-b04a-4018e3063de7/stages/report/outputs/report.md</code> and <code>~/.modpipes/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/stages/report/outputs/report.md</code>.</li>
+<li>Fix (v1): the line now names &quot;its image host&quot; instead of the domain word, and a unit test asserts the clean line.</li>
+<li>Status: unconfirmed in a run. A replay of v1 and v3 <code>report.py</code> on both runs&#39; inputs prints the clean line (<code>work/replay-v3-report.md</code>).</li>
+</ul>
+</li>
+<li>Nothing stopped two runs from driving one Firefox. <code>drive.py</code> had no lock, and my two parallel runs would have interleaved keystrokes if both had passed preflight.<ul>
+<li>Evidence: no lock or flock appears in v0 <code>drive.py</code>.</li>
+<li>Fix (v2): <code>claim()</code> writes <code>~/.modpipes/pinterest-driver.owner</code> with the run id under flock before every keystroke. A claim from another run is honoured for 10 minutes. The driver prompt now says to stop with an empty manifest on that refusal and never to bypass it with xdotool.</li>
+<li>Status: unconfirmed. Only a unit test covers it.</li>
+</ul>
+</li>
+<li>Helper labels carried profile chrome. <code>drive.py boards</code> returned names such as &quot;Edit Clay , 38 Pins , 3h&quot; and &quot;Private board icon Edit Gardigan , 80 Pins , 3d&quot;. Pin titles ended in &quot;pin page&quot;. The driver model cleaned these by hand this time, so the manifest was right, but only through judgment.<ul>
+<li>Evidence: the first <code>drive.py boards</code> and <code>board</code> results in <code>~/.modpipes/runs/0b0b529d-c8bc-4b0e-beee-ed212ceb5ff0/stages/driver/transcript.jsonl</code>.</li>
+<li>Fix (v3): <code>board_name()</code> and <code>pins_in()</code> strip that chrome. A replay over all 120 real labels gives clean names, and 2 unit tests cover it.</li>
+<li>Status: unconfirmed in a run.</li>
+</ul>
+</li>
+<li>A skipped pin was not replaced. diy-gift yielded 2 pins against a cap of 3, although the board helper had returned 16.<ul>
+<li>Evidence: the notes in <code>stages/driver/outputs/manifest.json</code> of the happy run. Do not copy that file anywhere, because it holds the links.</li>
+<li>Fix (v3): driver step 4 now says to resolve the next unknown pin from the same board.</li>
+<li>Status: unconfirmed.</li>
+</ul>
+</li>
+<li>The report summary said &quot;Deleted: 4&quot;, while its Deleted section said &quot;(none)&quot;. All 4 rows were staging copies.<ul>
+<li>Evidence: the happy report.</li>
+<li>Fix (v3): the summary now reads &quot;Rejected and deleted&quot; and counts only rejected files.</li>
+<li>Status: confirmed offline by replay, unconfirmed in a run.</li>
+</ul>
+</li>
+</ol>
+<p>Every version passed the voice audit (0 sentences over 25 words), <code>pipeline validate</code>, and the toolkit tests (19 pass at v3). Each was re-read with <code>pipeline show</code> after its update. The versions are in <code>pipeline-versions/v1.json</code> to <code>v3.json</code>, each with a <code>versionNote</code>.</p>
+<p>For transparency: I cleared a <code>__pycache__</code> directory in my own work copy (<code>kt6n75z/work/build/toolkit</code>) with <code>rm -rf</code>. Nothing under <code>~/Documents/Pinterest</code> was touched by anything except the pipeline&#39;s own guard.</p>
+<h2>What the next tester should look at first</h2>
+<ul>
+<li>Run v3 with <code>max-boards=3</code>. Check that the board names in the <code>drive.py boards</code> output in the driver transcript are clean before the model touches them.</li>
+<li>Start the same inputs a second time. Pins already in the table must be skipped, and no sha256 duplicate may be published.</li>
+<li>Start a second run while the first driver is going. Expect &quot;another run drives Firefox&quot; and an empty manifest.</li>
+<li>Still untested:<ul>
+<li><code>max-boards=0</code>, which means about 120 boards and hours of driving</li>
+<li>the login wall, captcha and Stop paths</li>
+<li>a file rejected by ClamAV, Pillow or GStreamer, which is the only path that deletes a published-candidate file</li>
+</ul>
+</li>
+<li>The builder todo row &quot;pinterest board capture v2 v3 unconfirmed&quot; in <code>lessons__pipeline_builder_todos</code> holds this list.</li>
+</ul>
+</body></html>

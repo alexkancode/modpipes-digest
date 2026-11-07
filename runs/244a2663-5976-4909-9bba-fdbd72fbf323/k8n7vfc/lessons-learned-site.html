@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pinterest board capture: what the test changes did</title>
+<style>
+  :root { --ink:#1d2329; --mute:#5b6670; --line:#d9dee3; --bg:#fbfbfa; --card:#fff;
+          --ok:#1f7a4d; --okbg:#e6f4ec; --warn:#8a5a00; --warnbg:#fdf3dc; --bad:#a1262b; --badbg:#fbe7e7; --info:#2b5b9a; --infobg:#e8eff9; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink:#e4e8ec; --mute:#9aa5af; --line:#333b43; --bg:#14181c; --card:#1b2026;
+            --ok:#6fd3a0; --okbg:#173126; --warn:#f0c46a; --warnbg:#33290f; --bad:#f19a9e; --badbg:#3a1a1c; --info:#9cc2f2; --infobg:#18263a; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:920px; margin:0 auto; padding:40px 22px 80px; }
+  h1 { font-size:1.9rem; line-height:1.2; margin:0 0 6px; }
+  h2 { font-size:1.3rem; margin:44px 0 12px; padding-top:12px; border-top:1px solid var(--line); }
+  h3 { font-size:1.08rem; margin:0 0 6px; }
+  p, li { max-width:72ch; }
+  .sub { color:var(--mute); margin:0 0 24px; }
+  nav { display:flex; flex-wrap:wrap; gap:6px 14px; font-size:.92rem; margin:0 0 8px; }
+  nav a { color:var(--info); text-decoration:none; }
+  code { font:0.88em ui-monospace, SFMono-Regular, Menlo, monospace; background:var(--line); padding:1px 5px; border-radius:4px; overflow-wrap:anywhere; }
+  .tldr { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 20px; }
+  .tldr li { margin:4px 0; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 20px; margin:14px 0; }
+  .tag { display:inline-block; font-size:.78rem; font-weight:600; padding:2px 9px; border-radius:99px; margin-right:6px; vertical-align:2px; }
+  .ok { color:var(--ok); background:var(--okbg); }
+  .warn { color:var(--warn); background:var(--warnbg); }
+  .bad { color:var(--bad); background:var(--badbg); }
+  .info { color:var(--info); background:var(--infobg); }
+  dl { display:grid; grid-template-columns:7.5em 1fr; gap:4px 12px; margin:10px 0 0; }
+  dt { color:var(--mute); font-size:.9rem; }
+  dd { margin:0; }
+  table { border-collapse:collapse; width:100%; font-size:.93rem; margin:8px 0; }
+  th, td { text-align:left; padding:7px 9px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mute); font-weight:600; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .bar { height:10px; background:var(--info); border-radius:3px; display:inline-block; vertical-align:middle; }
+  .bar.stall { background:var(--line); }
+  footer { margin-top:50px; color:var(--mute); font-size:.88rem; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Pinterest board capture: what the test changes did</h1>
+<p class="sub">Analysis of tester stage <code>kt6n75z</code> in run <code>244a2663</code>, written 2026-11-06. Pipeline <code>fb507aed-2822-46a2-ad81-0a4d2be7df05</code>, v0 to v3.</p>
+
+<nav>
+  <a href="#tldr">Summary</a><a href="#runs">The runs</a><a href="#v0">What v0 got right</a>
+  <a href="#changes">Each change</a><a href="#tester">Tester claims checked</a><a href="#routed">Where the lessons went</a>
+  <a href="#todos">Todos</a><a href="#method">Method</a>
+</nav>
+
+<section id="tldr" class="tldr">
+  <h3>Summary</h3>
+  <ul>
+    <li>Only v0 ever ran. Both test runs started before the first edit, so no change from v1 to v3 has run evidence.</li>
+    <li>v0 captured 5 files end to end on its first real run. The design choices that made that happen are the real result of this test.</li>
+    <li>Offline replay on the happy run's own data now confirms three of the five fixes: the v1 Limits line, the v3 label cleaning and the v3 deletion count.</li>
+    <li>The v2 driver lock does nothing. The driver is a model stage, and modpipes gives <code>MODPIPES_RUN_ID</code> to script stages only. Every run claims as <code>manual</code> and matches itself.</li>
+    <li>Two new defects surfaced. The lock has no release, and the report hides the driver's own skipped pins.</li>
+    <li>Todo 16 is replaced by todo 17. Todo 16's second-run step expected a refusal that the v2 lock cannot give.</li>
+  </ul>
+</section>
+
+<h2 id="runs">The runs</h2>
+<p>Both runs used the test copy <code>e56c362a</code> on v0. The copy is deleted, and both runs stay in history.</p>
+<table>
+  <tr><th>Run</th><th>Inputs</th><th>Wall</th><th>Result</th></tr>
+  <tr><td><code>0b0b529d</code> happy</td><td>alexandrakancewick, 2 boards, 3 pins</td><td class="num">13 min 41 s</td><td>Every stage done. 5 files, 5 catalogue rows, no links.</td></tr>
+  <tr><td><code>1286b6e0</code> stress</td><td>max-boards=0, 1 pin per board</td><td class="num">1 min 43 s</td><td>Stopped at preflight after 3 question rounds, as designed.</td></tr>
+</table>
+
+<h3>Where the happy run's time went</h3>
+<p>Times come from each stage's <code>status.json</code> and the file times under <code>/var/lib/clamav</code>.</p>
+<table>
+  <tr><th>Span</th><th class="num">Time</th><th></th></tr>
+  <tr><td>Preflight waiting for the ClamAV install</td><td class="num">9 min 43 s</td><td><span class="bar stall" style="width:292px"></span></td></tr>
+  <tr><td>Signatures complete (11:53:17) to the tester's answer (11:53:31)</td><td class="num">14 s</td><td><span class="bar stall" style="width:7px"></span></td></tr>
+  <tr><td>Driver, including about 25 s for the Go answer</td><td class="num">2 min 41 s</td><td><span class="bar" style="width:81px"></span></td></tr>
+  <tr><td>Fetch-clean, with ClamAV over 5 files</td><td class="num">20 s</td><td><span class="bar" style="width:10px"></span></td></tr>
+  <tr><td>Describe, 8 Read calls</td><td class="num">31 s</td><td><span class="bar" style="width:15px"></span></td></tr>
+  <tr><td>Catalogue and report</td><td class="num">about 1 s</td><td><span class="bar" style="width:2px"></span></td></tr>
+</table>
+<p>The pipeline's own work took about 3.7 minutes. The tester reacted to the finished ClamAV install within 14 s, so the report's "10 min waiting for ClamAV" holds.</p>
+
+<h2 id="v0">What v0 got right, and why</h2>
+<p>The builder's v0 design produced a clean first run. These choices carry over to the next desktop or file-deleting pipeline.</p>
+<div class="card">
+  <h3><span class="tag ok">Worked in a run</span>Preflight that asks once per blocker, then stops</h3>
+  <p>The stress run made 4 checks and 3 AskUserQuestion calls, one per round and none in parallel. It never ran <code>--relaunch-firefox</code>, kept <code>ok: false</code> and skipped every later stage. The report then named both ClamAV fixes.</p>
+  <p>Why the design worked: the preflight script owns the facts in <code>status.json</code>, and the model only relays blockers. The model cannot talk itself past a missing scanner.</p>
+</div>
+<div class="card">
+  <h3><span class="tag ok">Worked in a run</span>Deletion only through one guarded call</h3>
+  <p><code>deletions.csv</code> holds 4 rows, all <code>.incoming/*.part</code> paths inside the Pinterest folder. No <code>.part</code> files were left behind.</p>
+  <p>Why the design worked: the toolkit is a script stage, so <code>guard.safe_remove</code> is the same code every run. A unit test greps every other module for <code>os.remove</code>, <code>rmtree</code>, <code>glob</code> and <code>shell=True</code>.</p>
+</div>
+<div class="card">
+  <h3><span class="tag ok">Worked in a run</span>Links stay out by construction</h3>
+  <p>A regex for <code>http|pinimg|pinterest.com</code> over all 5 catalogue rows found 0 hits. A grep over the outputs and the Pinterest folder found no links.</p>
+  <p>Why the design worked: only the fetch script reads the manifest, and the report scrubs every line. The same scrub caused defect 1, described below.</p>
+</div>
+<div class="card">
+  <h3><span class="tag ok">Worked in a run</span>The accessibility tree was enough</h3>
+  <p>The driver read board and pin links on the first try (<code>via: tree</code>). The view-source fallback for board pages was not needed. Firefox view-source resolved 5 of 6 pins.</p>
+</div>
+
+<h2 id="changes">Each change, with its evidence</h2>
+
+<div class="card">
+  <h3><span class="tag ok">Confirmed offline</span>v1: the Limits line no longer scrubs itself</h3>
+  <dl>
+    <dt>Defect</dt><dd>v0 printed "No Pinterest or [removed] link". <code>scrub()</code> removes any word that holds <code>pinimg</code>, and the fixed text named that domain word.</dd>
+    <dt>Change</dt><dd>The line now says "its image host". A unit test asserts the clean line.</dd>
+    <dt>Evidence</dt><dd>The tester replayed v1 and v3 <code>report.py</code> on both runs' inputs. <code>replay-v3-report.md</code> holds 0 <code>[removed]</code>.</dd>
+    <dt>Why it works</dt><dd>When a scrubber runs over every line, fixed text has to avoid the scrub words. The change moves the text, and the scrub stays strict.</dd>
+  </dl>
+</div>
+
+<div class="card">
+  <h3><span class="tag bad">No effect in a run</span>v2: the driver lock never refuses</h3>
+  <dl>
+    <dt>Defect</dt><dd>Two runs could type into one Firefox at the same time.</dd>
+    <dt>Change</dt><dd><code>claim()</code> writes <code>~/.modpipes/pinterest-driver.owner</code> under flock before each keystroke. The claim reads the run id from <code>MODPIPES_RUN_ID</code>.</dd>
+    <dt>Evidence</dt><dd>
+      <ul>
+        <li><code>server/src/engine/scriptEnv.ts</code> sets <code>MODPIPES_RUN_ID</code> for script stages only.</li>
+        <li>In v3 the driver's <code>run.kind</code> is model. This analysis stage is also a model stage, and <code>env | grep MODPIPES</code> here shows no run id.</li>
+        <li>A replay with the variable unset let run A and then run B claim. Both wrote <code>{"run": "manual"}</code>. File: <code>k8n7vfc/work/replay/claim-replay.txt</code>.</li>
+        <li>The tester's unit test patched <code>MODPIPES_RUN_ID</code> in, so the test passed.</li>
+      </ul>
+    </dd>
+    <dt>Second gap</dt><dd>No call releases the claim. Once the run id works, a rerun within 10 minutes of a finished run would be refused.</dd>
+    <dt>Next</dt><dd>Pass the run id to <code>drive.py</code> as an argument, read from the manifest output path. Add <code>drive.py release</code> as the driver's last step.</dd>
+  </dl>
+</div>
+
+<div class="card">
+  <h3><span class="tag ok">Confirmed offline</span>v3: board and pin labels lose their profile chrome</h3>
+  <dl>
+    <dt>Defect</dt><dd>Board names read like "Edit Clay , 38 Pins , 3h", and pin titles ended in "pin page". The driver model cleaned the names by hand.</dd>
+    <dt>Change</dt><dd><code>board_name()</code> and <code>pins_in()</code> strip the chrome, with 2 unit tests.</dd>
+    <dt>Evidence</dt><dd>
+      <ul>
+        <li>All 120 board labels in the driver transcript carried chrome before v3. None carried chrome after v3.</li>
+        <li>"Private board icon Edit Gardigan , 80 Pins , 3d" becomes "Gardigan".</li>
+        <li>All 31 pin titles ended in "pin page" before v3. None ended in "pin page" after v3.</li>
+        <li>File: <code>k8n7vfc/work/replay/labels-replay.txt</code>.</li>
+      </ul>
+    </dd>
+    <dt>Why it works</dt><dd>The helper now returns names the model can copy, so the manifest no longer depends on model judgment.</dd>
+  </dl>
+</div>
+
+<div class="card">
+  <h3><span class="tag warn">Partial</span>v3: a skipped pin is replaced from the same board</h3>
+  <dl>
+    <dt>Defect</dt><dd>diy-gift yielded 2 pins against a cap of 3.</dd>
+    <dt>Change</dt><dd>Driver step 4 now resolves the next unknown pin from the same board's list.</dd>
+    <dt>Evidence</dt><dd>On 2026-11-06 the board helper returned 16 pins for a cap of 3, so spares existed. <code>cmd_board</code> stops scrolling once <code>max_new</code> new pins are found, so spares are luck, not design.</dd>
+    <dt>Next</dt><dd>Call <code>drive.py board</code> with <code>--max</code> two above <code>max-pins-per-board</code>.</dd>
+  </dl>
+</div>
+
+<div class="card">
+  <h3><span class="tag ok">Confirmed offline</span>v3: the summary counts only rejected deletions</h3>
+  <dl>
+    <dt>Defect</dt><dd>The summary said "Deleted: 4" while the Deleted section said "(none)". All 4 rows were staging copies.</dd>
+    <dt>Change</dt><dd>The summary reads "Rejected and deleted" and skips reasons that start with "staging copy".</dd>
+    <dt>Evidence</dt><dd><code>fetch_clean.py</code> line 119 is the only writer of that reason prefix. Every rejection reason differs. The replay prints "Rejected and deleted: 0".</dd>
+  </dl>
+</div>
+
+<div class="card">
+  <h3><span class="tag info">New defect</span>The report hides the driver's own skips</h3>
+  <dl>
+    <dt>Evidence</dt><dd>The driver skipped pin 1064749537426523828 and said so in the manifest notes. The happy report and the v3 replay both say "Skipped: 0". <code>clean.json</code> counts only fetch-clean skips.</dd>
+    <dt>Why</dt><dd>The report never reads the manifest, because the manifest holds links.</dd>
+    <dt>Next</dt><dd><code>fetch_clean.py</code> copies the scrubbed manifest notes into <code>clean.json</code>, and <code>report.py</code> prints them under Driver notes.</dd>
+  </dl>
+</div>
+
+<h2 id="tester">Tester claims checked</h2>
+<table>
+  <tr><th>Claim</th><th>Check</th><th>Verdict</th></tr>
+  <tr><td>Stress preflight used 3 questions, one per round</td><td>Tool-use list in the stress preflight transcript</td><td><span class="tag ok">Holds</span></td></tr>
+  <tr><td>About 10 min waited for ClamAV</td><td>Signature file times against the answer time</td><td><span class="tag ok">Holds</span>14 s stall after the install</td></tr>
+  <tr><td>Each version passed voice audit, validate and tests</td><td>Transcript results at 17:46, 17:47 and 17:58</td><td><span class="tag ok">Holds</span></td></tr>
+  <tr><td>v2 lock stops a second run</td><td>Replay with the stage's real environment</td><td><span class="tag bad">Fails</span>Only the mocked test passes</td></tr>
+  <tr><td>v3 label fix replays clean on 120 labels</td><td>Own replay over the driver transcript</td><td><span class="tag ok">Holds</span>Also 31 of 31 pin titles</td></tr>
+  <tr><td>Next tester: a second run gets "another run drives Firefox"</td><td>Same replay</td><td><span class="tag bad">Would fail</span>Corrected in todo 17</td></tr>
+  <tr><td>Example username <code>alexandrab</code> is wrong</td><td>Firefox <code>places.sqlite</code> query in the transcript</td><td><span class="tag ok">Holds</span>The profile is alexandrakancewick</td></tr>
+</table>
+<p>One process note: the tester's push notification was never delivered ("Remote Control inactive"). The user installed ClamAV anyway, through the open preflight question in the app.</p>
+
+<h2 id="routed">Where the lessons went</h2>
+<p>Each finding went to the table of the stage that acts on it.</p>
+<table>
+  <tr><th>Table</th><th>Id</th><th>Lesson</th></tr>
+  <tr><td>Pinterest <code>driver</code></td><td class="num">2</td><td>The lock never refuses under a model stage, and it has no release</td></tr>
+  <tr><td>Pinterest <code>driver</code></td><td class="num">3</td><td>Pin replacement needs a larger <code>--max</code></td></tr>
+  <tr><td>Pinterest <code>driver</code></td><td class="num">4</td><td>Label cleaning confirmed on 120 labels and 31 titles</td></tr>
+  <tr><td>Pinterest <code>report</code></td><td class="num">1</td><td>The driver's skips are missing from the report</td></tr>
+  <tr><td>Pinterest <code>report</code></td><td class="num">2</td><td>Scrub words in fixed text, and the rejected-deletion count</td></tr>
+  <tr><td>Pinterest <code>preflight</code></td><td class="num">1</td><td>The real username, and ClamAV signature timing</td></tr>
+  <tr><td>Builder <code>plan</code></td><td class="num">22</td><td>Model stages get no <code>MODPIPES_*</code> variables</td></tr>
+  <tr><td>Builder <code>plan</code></td><td class="num">23</td><td>Read the account name from a local source, never guess it</td></tr>
+  <tr><td>Tester <code>kt6n75z</code></td><td class="num">48</td><td>A mocked environment test can pass while the stage never sets the variable</td></tr>
+  <tr><td>Tester <code>kt6n75z</code></td><td class="num">49</td><td>Push may not deliver, so the run's own question is the channel</td></tr>
+  <tr><td>Analysis <code>k8n7vfc</code></td><td class="num">26</td><td>Check an env-based fix from inside a model stage</td></tr>
+  <tr><td>Analysis <code>k8n7vfc</code></td><td class="num">27</td><td>Replay a helper over escaped transcript JSON with regex</td></tr>
+</table>
+
+<h2 id="todos">Todos</h2>
+<ul>
+  <li>Removed row 16, "pinterest board capture v2 v3 unconfirmed". Its second-run step expected a refusal that the v2 lock cannot give.</li>
+  <li>Added row 17, "pinterest board capture v4, driver lock never refuses". Row 17 carries the v4 edits, the offline confirmations not to redo, and the run checks still open.</li>
+</ul>
+
+<h2 id="method">Method</h2>
+<ul>
+  <li>Read the test report, the three version notes and all 301 lines of the tester transcript digest.</li>
+  <li>Diffed v0 (<code>kt6n75z/work/real-v0.json</code>) against v1, v2 and v3, field by field.</li>
+  <li>For each change, checked every consumer of the changed field: the reason prefix writer, the environment source and the board helper's stop rule.</li>
+  <li>Replayed the v3 toolkit from <code>kt6n75z/work/build/toolkit</code> on the happy run's own transcript and files.</li>
+  <li>Applied earlier analysis lessons: 18 (check every consumer), 20 and 25 (no run on the new version), 21 (grep before crediting) and 23 (subtract the stall).</li>
+</ul>
+
+<footer>Stage k8n7vfc, run 244a2663-5976-4909-9bba-fdbd72fbf323. No Pinterest link appears on this page.</footer>
+</main>
+</body>
+</html>

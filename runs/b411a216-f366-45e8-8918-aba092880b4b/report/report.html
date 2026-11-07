@@ -1,0 +1,304 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Stage splitter (test) · report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="report.md">Raw markdown</a></p><h1>Stage splitter report for Credit repair interview, run 02e98ac7-8b9f-4734-a22f-0cc8c970cce7</h1>
+<p>One stage is worth splitting: <code>playbook</code>. The skeptic passed it. A new pipeline was saved.</p>
+<h2>The run in numbers</h2>
+<table>
+<thead>
+<tr>
+<th>measure</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Wall-clock</td>
+<td>1433 s</td>
+</tr>
+<tr>
+<td>Sum of group wall-clocks</td>
+<td>858 s</td>
+</tr>
+<tr>
+<td>Median cold start</td>
+<td>2.5 s and 47,225 cache-creation tokens</td>
+</tr>
+<tr>
+<td>Floor</td>
+<td>10 s and 3% of 858 s, so 25.7 s binds</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>group</th>
+<th>wall (s)</th>
+<th>slowest stage</th>
+<th>stages</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>intake</td>
+<td>364</td>
+<td>playbook</td>
+<td>extract, playbook</td>
+</tr>
+<tr>
+<td>interview</td>
+<td>51</td>
+<td>interviewer</td>
+<td>interviewer</td>
+</tr>
+<tr>
+<td>check</td>
+<td>25</td>
+<td>critic</td>
+<td>critic</td>
+</tr>
+<tr>
+<td>analyze</td>
+<td>207</td>
+<td>building</td>
+<td>diagnosis, disputes, negotiation, building</td>
+</tr>
+<tr>
+<td>compose</td>
+<td>169</td>
+<td>plan</td>
+<td>letters, plan</td>
+</tr>
+<tr>
+<td>deliver</td>
+<td>42</td>
+<td>dossier</td>
+<td>dossier</td>
+</tr>
+</tbody></table>
+<p>Wall-clock is larger than the group sum because the person&#39;s wait time and gaps sit outside the group figures.</p>
+<h2>The ranking</h2>
+<p>Saving is the judge&#39;s figure. The percent is of 858 s.</p>
+<table>
+<thead>
+<tr>
+<th>rank</th>
+<th>stage</th>
+<th>verdict</th>
+<th>saving (s)</th>
+<th>% of 858</th>
+<th>extra tokens</th>
+<th>reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>playbook</td>
+<td><strong>split</strong></td>
+<td>110 (skeptic: about 55)</td>
+<td>12.8 (skeptic: 6.4)</td>
+<td>94,450</td>
+<td>Independent research topics, no file joins them, and it leads intake by 350 s.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>plan</td>
+<td>keep</td>
+<td>23.7</td>
+<td>2.8</td>
+<td>0</td>
+<td>Saving is below the 25.7 s floor. One 130.8 s generation feeds the month sections.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>dossier</td>
+<td>keep</td>
+<td>0.5</td>
+<td>0.1</td>
+<td>0</td>
+<td>Below the floor. Shared <code>/tmp/build</code> path forces a merge.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>building</td>
+<td>keep</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>One serial chain, no independent cluster.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>interviewer</td>
+<td>keep</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Serial human wait. One open question per stage. Looped 4 times.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>critic</td>
+<td>keep</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>About 17 s of model time per round. No positive saving. Looped 4 times.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>extract</td>
+<td>keep</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Slack: 350 s behind playbook.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>diagnosis</td>
+<td>keep</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Slack: 108 s behind building.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>disputes</td>
+<td>keep</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Slack: 97 s behind building.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>negotiation</td>
+<td>keep</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Slack: 84 s behind building.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>letters</td>
+<td>keep</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Slack: 102 s behind plan.</td>
+</tr>
+</tbody></table>
+<h2>Endorsed split: playbook</h2>
+<p>Group: intake. The stage ran 363 s. Next slowest sibling is extract at 13 s, so the lead is 350 s.</p>
+<h3>New stages</h3>
+<p>All three use sonnet, take no inputs and write one md output. They run in intake beside extract.</p>
+<table>
+<thead>
+<tr>
+<th>new stage</th>
+<th>output</th>
+<th>sections</th>
+<th>job</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>playbook-scoring</td>
+<td>playbook-scoring</td>
+<td>1, 9 to 15</td>
+<td>FICO weights, utilization, limit increases, authorized users, secured cards, Boost and rent reporting, inquiries, rapid rescore</td>
+</tr>
+<tr>
+<td>playbook-disputes</td>
+<td>playbook-disputes</td>
+<td>2 to 6, 16</td>
+<td>FCRA 611 and 623 disputes, 605B blocks, seven-year limit and re-aging, FDCPA 809(b) and Reg F, medical debt, bureau addresses</td>
+</tr>
+<tr>
+<td>playbook-collections</td>
+<td>playbook-collections</td>
+<td>7, 8</td>
+<td>State statute-of-limitations table with revival rules, goodwill letters, pay-for-delete</td>
+</tr>
+</tbody></table>
+<h3>Seam</h3>
+<p>A section list. The original section numbers are kept. Each prompt names the sections it owns and forbids the others. Each file ends with its own &quot;What could not be verified&quot; and &quot;Sources actually read&quot;.</p>
+<h3>Join</h3>
+<p>Consumers read the halves in place. No merge stage was added. A merge would bring back about 147 s of serial work.</p>
+<table>
+<thead>
+<tr>
+<th>consumer</th>
+<th>reads</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>interviewer</td>
+<td>scoring, disputes, collections</td>
+</tr>
+<tr>
+<td>diagnosis</td>
+<td>scoring, disputes</td>
+</tr>
+<tr>
+<td>disputes</td>
+<td>disputes, collections</td>
+</tr>
+<tr>
+<td>negotiation</td>
+<td>collections, disputes</td>
+</tr>
+<tr>
+<td>building</td>
+<td>scoring</td>
+</tr>
+<tr>
+<td>letters</td>
+<td>disputes, collections</td>
+</tr>
+</tbody></table>
+<h3>Risks</h3>
+<ul>
+<li>A consumer prompt may expect a section that now lives in a file it was not given. Inputs were widened to cover this.</li>
+<li>Three voices and three source lists replace one. Cross-references by section number still resolve.</li>
+<li>The halves may fetch the same CFPB and myfico pages twice. That costs tokens, not wall time.</li>
+<li>Extra cache-creation tokens: 94,450 per run, plus the duplicate fetches.</li>
+<li>Shared state: none found.</li>
+</ul>
+<h3>Skeptic&#39;s findings</h3>
+<ul>
+<li>Halves reading each other&#39;s files: holds. No cluster reads a path another wrote.</li>
+<li>Shared state: holds. No <code>/tmp</code> use in the transcript.</li>
+<li>Consumers, input wiring, new keys and permission mode: all hold.</li>
+<li>The saving survives, but the judge&#39;s arithmetic was wrong. It left out c14 (58 s, the 605B and re-aging wave), which belongs to the disputes half. The skeptic puts the longest half near 295 s. That gives about 55 s saved, 6.4% of 858 s. This still clears the floor. The split stops paying only if the longest half passes 325 s.</li>
+<li>Suggested, not a blocker: tell the disputes half to run all its research in one parallel wave.</li>
+<li>The three original <code>links</code> were not in the endorsed stages. The build stage copied them to each new stage.</li>
+<li>The merge kind could not be checked by the skeptic. The build stage validated it: <code>{&quot;ok&quot;:true}</code>.</li>
+<li>The build stage renamed output names from underscores to hyphens, because the validator allows only lowercase letters, digits and hyphens. The seam text in the prompts was updated to match.</li>
+</ul>
+<h2>The saved pipeline</h2>
+<ul>
+<li>Id: <code>ca9e8735-86ea-4053-9446-13a8bc560f31</code></li>
+<li>Name: Credit repair interview (split)</li>
+<li>Source: pipeline 46bea631-a1da-48d4-8eef-1b2c42e783c9, unchanged.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>split</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>playbook</td>
+<td>became playbook-scoring, playbook-disputes, playbook-collections in intake. Six consumers rewired. No prompt edits.</td>
+</tr>
+</tbody></table>
+<p>13 lesson rows were copied from the source pipeline&#39;s stages.</p>
+<p>Start command. The run had one pipeline variable, <code>reports-dir</code>.</p>
+<pre><code>/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start ca9e8735-86ea-4053-9446-13a8bc560f31 --var reports-dir=/home/alex/.modpipes/runs/845a166c-8c00-47be-ba99-4ec60a2e2665/stages/kt6n75z/work/fixtures/reports-empty
+</code></pre>
+<p>The original run used an empty reports folder. Point <code>reports-dir</code> at real reports for a real run.</p>
+<h2>Skeptic&#39;s last verdict</h2>
+<p><strong>SKEPTIC-PASS</strong>, in round 1. No objection is left open. The loop did not reach its cap.</p>
+<h2>Note</h2>
+<p>One run is one sample. Timing varies from run to run. To firm a verdict, analyse a second run of the same pipeline.</p>
+</body></html>

@@ -1,0 +1,51 @@
+{
+  "sprites": [
+    {"name": "frog", "file": "frog.png", "w": 32, "h": 32, "frames": 7, "description": "Frames in order: 0 idle, 1 puff, 2 crouch, 3 air, 4 tongue, 5 frozen, 6 dive. Front-facing 3/4 top-down frog, round bean body ~22 px wide, two eye domes, splayed back legs, frog #B4E070 with frogBelly #F3EFC8 throat/belly/eye whites, 1 px ink #0B1620 outline always. Feet on row 28; mouth anchor (16,19) for the tongue. puff = throat balloon; crouch = lower and wider, legs tucked; air = legs trailing; tongue = mouth open with a #E06A7A nub; frozen = curled, ice #E4F4F9 / iceEdge #7FB3C8 frost over the back, eyes half-shut; dive = seen from behind, head down, legs up. Never rotated or flipped; squash/stretch is a code transform."},
+    {"name": "pad", "file": "pad.png", "w": 48, "h": 48, "frames": 3, "description": "Frames in order: 0 open, 1 frosting, 2 frozen. Lily pad circle, radius 22 centred at (24,24), one notch wedge pointing right. open = pad #3F9150 fill, padShadow #24603A veins and notch edge, padLight #78C266 rim on the upper-left. frosting = same circle with the rim in iceEdge #7FB3C8 and a few ice #E4F4F9 specks (code crossfades it over open). frozen = angular hex-ish rim, notch filled in, padFrozen #CFE6EE fill, 2-3 straight iceEdge cracks, full 1 px ink outline. Code orients each pad by a seeded 0/90/180/270 deg rotation plus flipX."},
+    {"name": "firefly", "file": "firefly.png", "w": 8, "h": 8, "frames": 2, "description": "Frames in order: 0 lit, 1 dim. Core centred at (4,4): 4x4 round body with a 2 px dark head/wing tick. lit = firefly #FFF4C2 core with a fireflyGlow #FFC23A rim pixel; dim = fireflyDim #8A7A3A core. Code draws dim always, lit and the procedural glow at alpha = blink level."},
+    {"name": "golden", "file": "golden.png", "w": 12, "h": 12, "frames": 2, "description": "Frames in order: 0 a, 1 b. Golden firefly centred at (6,6): round golden #FFE45C core, 4 short diagonal sparkle rays. b has longer rays and a core one step lighter (#FFF4C2 centre). Swapped at 4 Hz by code; always lit."},
+    {"name": "jar", "file": "jar.png", "w": 20, "h": 28, "frames": 1, "description": "HUD jar, top-left. Rounded glass jar with a cork, 1 px ink outline, glass highlight in iceShadow #9CC6D6. Interior rect x 4, y 9, 12x16 left fully transparent: code fills it from the bottom with fireflyGlow #FFC23A by caught/40."},
+    {"name": "snowflake", "file": "snowflake.png", "w": 12, "h": 12, "frames": 2, "description": "Frames in order: 0 whole, 1 cracked. Six-arm snowflake icon for the warmth meter, iceEdge #7FB3C8 with ink outline. cracked = one straight ink crack across it and one arm missing; shown when R < 0.30."},
+    {"name": "chevron", "file": "chevron.png", "w": 8, "h": 8, "frames": 4, "description": "Frames in order: 0 up, 1 right, 2 down, 3 left. Keyboard-hop candidate marker: 2 px-thick fireflyGlow #FFC23A chevron with 1 px ink outline, pointing in the arrow's direction."},
+    {"name": "mute", "file": "mute.png", "w": 12, "h": 12, "frames": 2, "description": "Frames in order: 0 sound on, 1 muted. Speaker with waves / speaker with an x, text #F4F1E4 with ink outline. Bottom-right of the HUD."},
+    {"name": "reeds", "file": "reeds.png", "w": 24, "h": 40, "frames": 2, "description": "Frames in order: 0 sway left, 1 sway right. Shore decoration clump: 4-5 reed #2C4630 stems with one ripple #24506A cattail head. Low contrast on shore #142219; placed along the bottom and side shore, never under the HUD."}
+  ],
+  "sfx": [
+    {"name": "hop", "description": "On the hop input frame. Square blended to sine, 520->780 Hz over 90 ms, decay 90 ms, gain 0.25."},
+    {"name": "land", "description": "Frog lands on a pad. Sine 160->90 Hz over 70 ms plus 20 ms of noise lowpassed at 600 Hz, gain 0.3. Soft plop, no click."},
+    {"name": "tongue", "description": "Tongue fires. Short sine thwip 900->1500 Hz over 50 ms, gain 0.15."},
+    {"name": "catch", "description": "Firefly caught. Triangle E6 1319 Hz 50 ms then B6 1976 Hz 120 ms, exponential decay, gain 0.25. play('catch', {step}) shifts both notes up by step semitones (0-8, the streak)."},
+    {"name": "golden", "description": "Golden firefly caught, and its forced first spawn. Sine chime C6-E6-G6, 70 ms apart, 400 ms tails, gain 0.3."},
+    {"name": "miss", "description": "Tongue returns empty. Soft wet plop: sine 300->120 Hz over 80 ms plus 30 ms noise bandpassed at 800 Hz, gain 0.2."},
+    {"name": "crack", "description": "A pad enters frosting. Three 15 ms noise clicks highpassed at 3 kHz, 40 ms apart, gain 0.18."},
+    {"name": "thaw", "description": "Ice pushed back by a catch. Loudest cue: warm rising sine swell G4->C5 over 250 ms with two voices detuned +/-6 cents, plus 200 ms bandpassed noise crackle falling 2 kHz->800 Hz, gain 0.4."},
+    {"name": "gust", "description": "Gust onset. White noise through a bandpass sweeping 400->1400->600 Hz over 1.2 s, gain 0.3."},
+    {"name": "freeze", "description": "Lose. Three high clicks, a 2093 Hz sine ting with 300 ms decay, then triangle G5->E5->C5->G4 at 150 ms each, gain 0.25."},
+    {"name": "win", "description": "Hibernate. Rising pentatonic C5->E5->G5->C6, 90 ms each, last held 400 ms, then a croak: 110 Hz square through a 400 Hz lowpass with 3 amplitude pulses over 200 ms, gain 0.3."},
+    {"name": "ui", "description": "Start, pause, resume, mute toggle, and a keyboard hop with no candidate. Square blip 660 Hz for 40 ms, gain 0.15."}
+  ],
+  "palette": {
+    "deepWater": "#0C1A27",
+    "water": "#123047",
+    "ripple": "#24506A",
+    "shore": "#142219",
+    "reed": "#2C4630",
+    "padShadow": "#24603A",
+    "pad": "#3F9150",
+    "padLight": "#78C266",
+    "frog": "#B4E070",
+    "frogBelly": "#F3EFC8",
+    "ink": "#0B1620",
+    "tongue": "#E06A7A",
+    "firefly": "#FFF4C2",
+    "fireflyGlow": "#FFC23A",
+    "fireflyDim": "#8A7A3A",
+    "golden": "#FFE45C",
+    "iceEdge": "#7FB3C8",
+    "iceShadow": "#9CC6D6",
+    "padFrozen": "#CFE6EE",
+    "ice": "#E4F4F9",
+    "danger": "#FF8A5C",
+    "text": "#F4F1E4"
+  }
+}

@@ -1,0 +1,89 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pinterest board capture (test) · report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="report.md">Raw markdown</a></p><h1>Pinterest capture report</h1>
+<h2>Summary</h2>
+<ul>
+<li>Account: alexandrakancewick</li>
+<li>Pins in the manifest: 5</li>
+<li>Captured: 5</li>
+<li>Skipped: 0</li>
+<li>Deleted: 4</li>
+<li>Boards complete: no, the board cap or pin cap cut the run short</li>
+<li>Folder: /home/alex/Documents/Pinterest</li>
+</ul>
+<h2>Boards</h2>
+<ul>
+<li>Clay (clay)</li>
+<li>Diy gift (diy-gift)</li>
+</ul>
+<h2>Captured</h2>
+<table>
+<thead>
+<tr>
+<th>Board</th>
+<th>Pin</th>
+<th>Kind</th>
+<th>Path</th>
+<th>Tags</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Clay</td>
+<td>1064749537426523875</td>
+<td>image</td>
+<td>/home/alex/Documents/Pinterest/clay/1064749537426523875.png</td>
+<td>ceramic, brush holder, blue and white, porcelain, face sculpture, paintbrushes, pink, artist desk, handmade, Clay, the c</td>
+</tr>
+<tr>
+<td>Clay</td>
+<td>1064749537426523843</td>
+<td>image</td>
+<td>/home/alex/Documents/Pinterest/clay/1064749537426523843.jpg</td>
+<td>ceramic, phone stand, amplifier, horn, rust red, glazed, cozy living room, wood table, handmade, Clay, a cell phone is p</td>
+</tr>
+<tr>
+<td>Clay</td>
+<td>1064749537426523809</td>
+<td>video</td>
+<td>/home/alex/Documents/Pinterest/clay/1064749537426523809.mp4</td>
+<td>polymer clay, switch plate, light switch cover, blue and white, floral, scalloped, diy tutorial, home decor, handmade, v</td>
+</tr>
+<tr>
+<td>Diy gift</td>
+<td>1064749537426523794</td>
+<td>image</td>
+<td>/home/alex/Documents/Pinterest/diy-gift/1064749537426523794.png</td>
+<td>clay, sunglasses holder, flower, sage green, wearable, lapel, black denim, mustard knit, diy gift, accessory, Diy gift,</td>
+</tr>
+<tr>
+<td>Diy gift</td>
+<td>1064749537426523784</td>
+<td>image</td>
+<td>/home/alex/Documents/Pinterest/diy-gift/1064749537426523784.jpg</td>
+<td>ceramic buttons, wearable ceramics, fruit, fig, apple, pomegranate, white linen shirt, handmade, red and cream, typewrit</td>
+</tr>
+</tbody></table>
+<h2>Skipped</h2>
+<p>(none)</p>
+<h2>Deleted</h2>
+<p>Rejected files, each removed by one guarded os.remove inside the Pinterest folder:</p>
+<p>(none)</p>
+<p>Staging copies replaced by their clean re-encode: 4</p>
+<h2>Driver notes</h2>
+<ul>
+<li>Skipped pin 1064749537426523828 (diy-gift): helper resolved it via requests and reported &#39;page source did not mention the pin id&#39;, so the media source may belong to another pin.</li>
+<li>Boards stopped at the 3-pin limit (max 3) and did not reach their end, so complete is false. Helper returned 16 pins per board; only the first 3 of each were used.</li>
+</ul>
+<h2>Catalogue</h2>
+<ul>
+<li>Table: lessons__pinterest_media</li>
+<li>Rows added: 5</li>
+<li>Rows failed: 0</li>
+<li>Search: lessons find lessons__pinterest_media <words></li>
+</ul>
+<h2>Limits</h2>
+<ul>
+<li>Images were decoded and re-encoded, so no foreign bytes survive.</li>
+<li>Videos were scanned by ClamAV and checked by GStreamer, not re-encoded.</li>
+<li>No Pinterest or [removed] link is stored in the folder, the table or this report.</li>
+</ul>
+</body></html>

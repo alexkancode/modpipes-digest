@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Stripe billing desk (test) · Fri 6 Nov, 11:08</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top run">
+  <p class="back"><a href="../index.html">All runs</a></p>
+  <p class="eyebrow"><span class="tag">test run</span><span class="badge s-done"><span class="dot" aria-hidden="true"></span>done</span></p>
+  <h1>Stripe billing desk (test)</h1>
+  <p class="caption">A Stripe audit of a stress repo with no billing code</p>
+  <p class="summary">The Stripe billing desk test was asked which steps remain before real customers can pay in /tmp/sbd-stress-repo. It found no Stripe integration and a leaked live key, and it ordered the fixes from key rotation to live-mode setup.</p>
+  <p class="meta"><span>Started <time datetime="2026-11-06T17:08:47.484Z">Fri 6 Nov, 11:08</time></span><span>Finished <time datetime="2026-11-06T17:27:51.280Z">Fri 6 Nov, 11:27</time></span><span>19 min 04 s</span><span>4.6M tokens</span><span class="id">3b113848-0685-4c30-a040-d9bd42dafcf4</span></p>
+  <p class="open">Open in a browser tab: <a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/run.json">http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/run.json</a> (the run record)</p>
+</header>
+<main class="run">
+  <figure class="hero-wrap"><img src="../heroes/3b113848-0685-4c30-a040-d9bd42dafcf4.jpg" width="800" height="500" alt="Render of the primary output of Stripe billing desk (test)"><figcaption>Hero from http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/site/outputs/site/index.html</figcaption></figure>
+  <section><h2>Inputs</h2><dl class="inputs"><div><dt>Repo path</dt><dd>/tmp/sbd-stress-repo</dd></div><div><dt>Question</dt><dd>Which steps remain before real customers can pay, and in what order?</dd></div></dl></section>
+  <section><h2>Starred outputs</h2><figure class="out"><h3>Site · site<span class="type">dir</span></h3><p class="desc">The static site: index.html with the verdict, capability cards, steps and sources</p><iframe src="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/site/outputs/site/index.html" title="Site site" loading="lazy"></iframe><p class="link"><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/site/outputs/site/index.html">http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/site/outputs/site/index.html</a></p></figure>
+<figure class="out"><details open><summary><h3>Handoff · handoff<span class="type">md</span></h3><p class="desc">The verdict, chosen tasks with steps, open risks, what was not verifiable, the quality gate, the rerun command</p></summary><div class="md"><h1>Handoff: Stripe billing audit of /tmp/sbd-stress-repo</h1>
+<p>Date: 2026-11-06</p>
+<h2>Answer</h2>
+<p>Real customers cannot pay yet: the repo has no Stripe integration at all, despite README.md:3, so the order is to rotate the leaked live key, confirm the Stripe account is activated, build and test Checkout plus webhooks in a sandbox, then recreate products, prices and the webhook endpoint in live mode and set the live key and ids in production.</p>
+<p>Order of all tasks: t1 rotate key, t2 confirm account activation, t3 choose provider and add SDK, t4 build sandbox checkout, t5 verified webhook handler, t6 sandbox tests, t7 live objects and production config, t8 fix README, t9 customer portal. You chose t1, t3, t8 and t9. The pipeline explains and instructs; it performs none of them.</p>
+<h2>Capabilities</h2>
+<ul>
+<li><strong>Stripe integration</strong>: missing. Strongest evidence: <code>src/app.js:1</code> says &quot;Payments are planned. Today the app only tracks invoices locally.&quot;; <code>package.json:1</code> has <code>&quot;dependencies&quot;:{}</code> and no scripts.</li>
+<li><strong>Account activation</strong>: not-verifiable. Strongest evidence: readiness.json (2026-11-06) shows live false, sandbox false, account null because the live CLI key expired.</li>
+</ul>
+<h2>Chosen tasks</h2>
+<h3>t1. Rotate the committed live key and replace it with a placeholder</h3>
+<p>Why: A sk_live_ value is committed in .env.example:1; if real, anyone with the repo can move money.</p>
+<ol>
+<li><p><strong>Do:</strong> In the Stripe Dashboard in live mode, open Developers &gt; API keys, find the secret key ending …AbCd, open its overflow menu (⋯) and select View request logs.</p>
+<ul>
+<li><strong>Expect:</strong> Workbench opens the request log for that key. No requests means nothing uses it; any requests show which servers you must move to the new key.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/keys.md#view-request-logs">https://docs.stripe.com/keys.md#view-request-logs</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> The key is committed at .env.example:1 in commit 801e6c5. Treat it as compromised whatever the logs show.</li>
+</ul>
+</li>
+<li><p><strong>Do:</strong> On the same API keys page, open the overflow menu (⋯) for the key ending …AbCd, select Rotate key, set Expiration to Now, and click Rotate API key.</p>
+<ul>
+<li><strong>Expect:</strong> The old key is revoked and Stripe shows the replacement secret key once. Copy it straight into a password manager or your host&#39;s secret store.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/keys.md#rolling-keys">https://docs.stripe.com/keys.md#rolling-keys</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> Choose Now unless the request logs showed live traffic. If they did, pick a short expiry and finish step 3 first. Both keys then work for up to 7 days. Never paste the new key into any file in the repo.</li>
+</ul>
+</li>
+<li><p><strong>Do:</strong> Store the replacement key as STRIPE_SECRET_KEY in your hosting platform&#39;s secret store. The repo does not name a host, so use your host&#39;s secret command, which prompts for the value.</p>
+<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">npx wrangler secret put STRIPE_SECRET_KEY
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> The host lists STRIPE_SECRET_KEY as a secret, for example in npx wrangler secret list, and the value never appears in the repo.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/keys.md#protect-your-keys">https://docs.stripe.com/keys.md#protect-your-keys</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> The command shown is for Cloudflare Workers. Railway, Fly and Vercel each have their own secrets command. Keys.md recommends a restricted key (rk_live_) over a full secret key.</li>
+</ul>
+<ol start="4">
+<li><strong>Do:</strong> Check that the leaked key is dead. Run one read-only request with it and paste the old key only at the prompt.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">read -rs OLD_KEY &amp;&amp; curl -s https://api.stripe.com/v1/balance -u &quot;$OLD_KEY:&quot;; unset OLD_KEY
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> Stripe returns an authentication error, or invalid_request_error if the key was never valid. No balance object is returned.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/keys.md">https://docs.stripe.com/keys.md</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> If a balance object comes back, the key still works. Go back to step 2 and set Expiration to Now.</li>
+</ul>
+<ol start="5">
+<li><strong>Do:</strong> Replace the committed value in .env.example with a placeholder that holds no key material.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">sed -i &#39;s/^STRIPE_SECRET_KEY=.*/STRIPE_SECRET_KEY=&lt;sandbox sk_test_ or rk_test_ key, set outside git&gt;/&#39; .env.example
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> Running grep -c sk_live_ .env.example prints 0.</li>
+<li><strong>Source:</strong> .env.example:1 (fetched 2026-11-06)</li>
+</ul>
+<ol start="6">
+<li><strong>Do:</strong> Add ignore rules so real env files can never be committed.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">printf &#39;.env\n.env.*\n!.env.example\n.dev.vars\n&#39; &gt;&gt; .gitignore
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> Running git check-ignore .env prints .env.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/keys.md#protect-your-keys">https://docs.stripe.com/keys.md#protect-your-keys</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> Keys.md says not to put keys in configuration files checked into version control.</li>
+</ul>
+<ol start="7">
+<li><strong>Do:</strong> Commit the placeholder and the ignore rules.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">git add .env.example .gitignore &amp;&amp; git commit -m &quot;Remove committed Stripe key; ignore env files&quot;
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> git show --stat HEAD lists .env.example and .gitignore.</li>
+<li><strong>Source:</strong> .env.example:1 (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> The old key stays in commit 801e6c5. Rotation makes it useless, so rewriting history is optional. Run git log --all -S sk_live_ --oneline to list the commits that contain it, without printing the value.</li>
+</ul>
+<h3>t3. Choose the payment provider and add the Stripe SDK</h3>
+<p>Why: No stripe package or start script exists, and PAYPAL_CLIENT_ID conflicts with the Stripe-only README.</p>
+<ol>
+<li><strong>Do:</strong> Choose Stripe as the only payment provider and delete the unused PayPal variable from the env template.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">sed -i &#39;/^PAYPAL_CLIENT_ID=/d&#39; .env.example
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> Running grep -c PAYPAL .env.example prints 0.</li>
+<li><strong>Source:</strong> .env.example:2 (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> README.md:3 describes Stripe-only billing. If you do want PayPal, keep the line and update the README in task t8 instead.</li>
+</ul>
+<ol start="2">
+<li><strong>Do:</strong> Check the Node.js version. The Stripe Node SDK needs Node 18 or newer.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">node --version
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> The output shows v18 or higher.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/get-started/development-environment.md?lang=node">https://docs.stripe.com/get-started/development-environment.md?lang=node</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> The Node quickstart names stripe-node v23.0.0 as the latest release.</li>
+</ul>
+<ol start="3">
+<li><strong>Do:</strong> Install the Stripe Node SDK in the repo root.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">npm install stripe --save
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> package.json lists stripe under dependencies, and package-lock.json is created.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/get-started/development-environment.md?lang=node">https://docs.stripe.com/get-started/development-environment.md?lang=node</a> (fetched 2026-11-06)</li>
+</ul>
+<ol start="4">
+<li><strong>Do:</strong> Mark the package as an ES module so that the export syntax in src/app.js loads.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">npm pkg set type=module
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> package.json contains &quot;type&quot;: &quot;module&quot;.</li>
+<li><strong>Source:</strong> src/app.js:2 (fetched 2026-11-06)</li>
+</ul>
+<ol start="5">
+<li><strong>Do:</strong> Add the start script that README.md:7 tells deployers to run.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">npm pkg set scripts.start=&quot;node src/server.js&quot;
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> npm pkg get scripts.start prints &quot;node src/server.js&quot;.</li>
+<li><strong>Source:</strong> README.md:7 (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> src/server.js does not exist yet. You create it when you build checkout (task t4). Until then npm start fails with a missing-module error.</li>
+</ul>
+<ol start="6">
+<li><strong>Do:</strong> Create one shared Stripe client that reads the key from the environment and pins the API version explicitly.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">cat &gt; src/stripe.js &lt;&lt;&#39;EOF&#39;
+import Stripe from &#39;stripe&#39;;
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: &#39;2026-10-28.endive&#39;,
+});
+EOF
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> src/stripe.js exists, contains no key, and pins apiVersion &#39;2026-10-28.endive&#39;.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/upgrades.md">https://docs.stripe.com/upgrades.md</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> 2026-10-28.endive is the newest version in facts.json (2026-11-06). Without apiVersion, stripe-node uses the version that was newest when the SDK shipped.</li>
+</ul>
+<ol start="7">
+<li><strong>Do:</strong> Load a sandbox secret key into your shell only, without writing it to any file. Copy it from the Dashboard&#39;s API keys page while a sandbox is selected.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">read -rs STRIPE_SECRET_KEY &amp;&amp; export STRIPE_SECRET_KEY
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> Running echo ${STRIPE_SECRET_KEY:0:8} prints sk_test_ or rk_test_.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/keys.md">https://docs.stripe.com/keys.md</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> Use sandbox keys while you build and test. Live keys go only into the host secret store (task t1 step 3).</li>
+</ul>
+<ol start="8">
+<li><strong>Do:</strong> Make one read-only call through the new client to prove the SDK, key and version work together.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">node --input-type=module -e &quot;import { stripe } from &#39;./src/stripe.js&#39;; const b = await stripe.balance.retrieve(); console.log(&#39;livemode&#39;, b.livemode)&quot;
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> The output is livemode false.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/get-started/development-environment.md?lang=node">https://docs.stripe.com/get-started/development-environment.md?lang=node</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> An authentication error means the shell variable is missing or holds the wrong key. Repeat step 7.</li>
+</ul>
+<h3>t8. Correct README.md and the deploy instructions</h3>
+<p>Why: README.md:3 claims live billing that does not exist, and README.md:7 points to a start script that does not exist.</p>
+<ol>
+<li><strong>Do:</strong> Replace the false claim on README.md line 3 with the real status.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">sed -i &#39;3s/.*/Tallyho is a small invoicing app. Stripe billing is in development and not live yet; customers cannot pay today./&#39; README.md
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> Running grep -c &#39;live in production&#39; README.md prints 0.</li>
+<li><strong>Source:</strong> README.md:3 (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> src/app.js:1 says payments are planned, and the audit found no Stripe code.</li>
+</ul>
+<ol start="2">
+<li><strong>Do:</strong> Replace the Deploy section (README.md lines 5 to 7) with the full list of production settings that live billing needs.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">sed -i &#39;5,$d&#39; README.md &amp;&amp; cat &gt;&gt; README.md &lt;&lt;&#39;EOF&#39;
+## Deploy
+
+Set these in the host&#39;s secret store, never in a committed file:
+
+- `STRIPE_SECRET_KEY`: live restricted (`rk_live_`) or secret (`sk_live_`) key.
+- `STRIPE_WEBHOOK_SECRET`: the `whsec_` signing secret of the live webhook endpoint (each endpoint has its own).
+- `STRIPE_PRICE_ID`: the live monthly price id. Sandbox price ids do not exist in live mode.
+
+Then run `npm install` and `npm start`.
+EOF
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> README.md ends with a Deploy section that names STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and STRIPE_PRICE_ID.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/get-started/checklist/go-live.md">https://docs.stripe.com/get-started/checklist/go-live.md</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> Before task t3 step 5 is done, npm start has no script to run (package.json:1).</li>
+</ul>
+<ol start="3">
+<li><strong>Do:</strong> Add a short go-live section so nobody marks billing live again before the checklist is done.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">cat &gt;&gt; README.md &lt;&lt;&#39;EOF&#39;
+
+## Going live
+
+Billing counts as live only when the live price, the live webhook endpoint and its secret, and the live key are all set in production. Follow https://docs.stripe.com/get-started/checklist/go-live before changing the status line above.
+EOF
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> README.md has a Going live section that links the go-live checklist.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/get-started/checklist/go-live.md">https://docs.stripe.com/get-started/checklist/go-live.md</a> (fetched 2026-11-06)</li>
+</ul>
+<ol start="4">
+<li><strong>Do:</strong> Commit the README changes.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">git add README.md &amp;&amp; git commit -m &quot;README: state real billing status and deploy settings&quot;
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> git show --stat HEAD lists README.md only.</li>
+<li><strong>Source:</strong> README.md:3 (fetched 2026-11-06)</li>
+</ul>
+<h3>t9. Add a customer portal for cancel and payment-method updates</h3>
+<p>Why: Monthly customers need a self-serve way to cancel or update their card.</p>
+<ol>
+<li><p><strong>Do:</strong> In the Dashboard with a sandbox selected, open Settings &gt; Billing &gt; Customer portal. Turn on Cancel subscription, Cancellation reason, Payment methods and Invoice history, then click Save.</p>
+<ul>
+<li><strong>Expect:</strong> The page confirms that the settings are saved, and Preview shows the cancel and payment-method options.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/customer-management/configure-portal.md">https://docs.stripe.com/customer-management/configure-portal.md</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> Sandboxes and live mode keep separate portal configurations (see step 6).</li>
+</ul>
+</li>
+<li><p><strong>Do:</strong> Confirm the sandbox portal configuration with a read-only CLI call.</p>
+<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">stripe billing_portal configurations list --limit 3
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> The output holds one configuration with &quot;is_default&quot;: true and &quot;livemode&quot;: false.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/customer-management/integrate-customer-portal.md">https://docs.stripe.com/customer-management/integrate-customer-portal.md</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> The error &quot;no config for that project was found&quot; means the CLI has no sandbox key. Run stripe login in your own terminal first.</li>
+</ul>
+<ol start="3">
+<li><strong>Do:</strong> Add the server code that creates a portal session for a signed-in customer.<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">cat &gt; src/portal.js &lt;&lt;&#39;EOF&#39;
+import { stripe } from &#39;./stripe.js&#39;;
+
+// Call only after you authenticate the user. customerId is the cus_ id stored for that user.
+export async function createPortalSession(customerId, returnUrl) {
+  const session = await stripe.billingPortal.sessions.create({
+    customer: customerId,
+    return_url: returnUrl,
+  });
+  return session.url;
+}
+EOF
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> src/portal.js exists and imports the shared client from src/stripe.js (task t3 step 6).</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/customer-management/integrate-customer-portal.md">https://docs.stripe.com/customer-management/integrate-customer-portal.md</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> Mount a POST /create-customer-portal-session route in src/server.js (built in task t4) that calls this function and redirects to the URL. Each portal session URL is short-lived.</li>
+</ul>
+<ol start="4">
+<li><p><strong>Do:</strong> Subscribe the sandbox webhook endpoint to the portal events: customer.subscription.updated, customer.subscription.deleted, customer.subscription.paused, customer.subscription.resumed and customer.updated. In the Dashboard, open Workbench &gt; Webhooks, choose the endpoint and edit its events.</p>
+<ul>
+<li><strong>Expect:</strong> The endpoint&#39;s event list includes all five events.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/customer-management/integrate-customer-portal.md#listen-to-webhooks">https://docs.stripe.com/customer-management/integrate-customer-portal.md#listen-to-webhooks</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> The handler from task t5 must revoke access on customer.subscription.deleted and paused, and restore access on resumed.</li>
+</ul>
+</li>
+<li><p><strong>Do:</strong> Test the portal on a sandbox customer that has a subscription: open the customer&#39;s page in the Dashboard, then click Actions &gt; Open customer portal.</p>
+<ul>
+<li><strong>Expect:</strong> The portal opens and shows the subscription, a Cancel option and an Update payment method option.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/customer-management/integrate-customer-portal.md#preview-and-test">https://docs.stripe.com/customer-management/integrate-customer-portal.md#preview-and-test</a> (fetched 2026-11-06)</li>
+</ul>
+</li>
+<li><p><strong>Do:</strong> Turn off View test data, open Settings &gt; Billing &gt; Customer portal in live mode, apply the same settings as step 1, and click Save.</p>
+<ul>
+<li><strong>Expect:</strong> The live portal settings are saved.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/customer-management/integrate-customer-portal.md#launch-the-portal">https://docs.stripe.com/customer-management/integrate-customer-portal.md#launch-the-portal</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> Do this only after the live account, price and webhook endpoint exist (tasks t2 and t7).</li>
+</ul>
+</li>
+<li><p><strong>Do:</strong> Confirm the live portal configuration with a read-only CLI call.</p>
+<ul>
+<li><strong>Command:</strong></li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-sh">stripe billing_portal configurations list --live --limit 3
+</code></pre>
+<ul>
+<li><strong>Expect:</strong> The output holds one configuration with &quot;is_default&quot;: true and &quot;livemode&quot;: true.</li>
+<li><strong>Source:</strong> <a href="https://docs.stripe.com/customer-management/integrate-customer-portal.md#launch-the-portal">https://docs.stripe.com/customer-management/integrate-customer-portal.md#launch-the-portal</a> (fetched 2026-11-06)</li>
+<li><strong>Note:</strong> The error &quot;your live mode API key needs to be re-configured&quot; means the CLI login expired. Run stripe login in your own terminal.</li>
+</ul>
+<h2>Open risks</h2>
+<ul>
+<li><strong>Hidden billing service.</strong> README.md:3 may describe billing that runs outside this repo. If a live account already has customers and subscriptions, building t4 to t7 could charge customers twice. Confirm the account (t2) and run <code>stripe subscriptions list --live</code> before building anything.</li>
+<li><strong>Key in git history.</strong> Rotating the key (t1) does not remove the value from commit <code>801e6c5</code>. Any clone or fork still holds it, so treat the old key as permanently exposed.</li>
+<li><strong>Unknown host.</strong> No deploy config exists (no wrangler.toml, Dockerfile or CI), so production secrets cannot be checked. Webhook raw-body handling depends on the runtime (<code>constructEventAsync</code> on Workers).</li>
+<li><strong>Tax, receipts and invoicing.</strong> Local invoices (<code>src/app.js:2</code>) are not tied to Stripe invoices. Sales tax and Stripe-hosted invoicing are out of scope here (unverified).</li>
+<li><strong>API version drift.</strong> A future SDK upgrade crosses majors listed in facts.json, such as the billing_cycle_anchor change in 2026-09-30.endive.</li>
+</ul>
+<h2>Not verifiable in this run</h2>
+<ul>
+<li><strong>Live account state (activation, existing customers and subscriptions).</strong> The live CLI key expired: &quot;your live mode API key needs to be re-configured&quot;. Fix: <code>stripe login</code>, then <code>stripe get /v1/account</code> and check charges_enabled and details_submitted.</li>
+<li><strong>Sandbox state (products, prices, webhook endpoints, portal configuration).</strong> No sandbox profile: &quot;no config for that project was found&quot;. Fix: <code>stripe login --project-name=live</code> as the CLI message states, or add a sandbox profile, then rerun the preflight reads such as <code>stripe billing_portal configurations list --limit 3</code>.</li>
+<li><strong>Account activation capability</strong> (not-verifiable): the same <code>stripe login</code> fix, then <code>stripe get /v1/account</code>.</li>
+<li><strong>Production host and secrets.</strong> No deploy config in the repo; check the host&#39;s own secret list (for example <code>npx wrangler secret list</code> if it is Cloudflare Workers; the host is unconfirmed).</li>
+<li><strong>Whether the committed key is real or active.</strong> Step t1.4 tests it without printing it: <code>read -rs OLD_KEY &amp;&amp; curl -s https://api.stripe.com/v1/balance -u &quot;$OLD_KEY:&quot;; unset OLD_KEY</code>.</li>
+</ul>
+<h2>Quality gate</h2>
+<ul>
+<li>Site report (site-check): ok = true, all 20 checks passed.</li>
+<li>Billing critic: pass = true, blockers none (round 2).</li>
+<li>UX critic: pass = true, score 84, blockers none.</li>
+<li>Blockers left after the last round: none.</li>
+<li>Style notes left open: the verdict sentence is long (about 60 words); task sections have no &quot;N steps&quot; line; repo sources render as file:/// URLs.</li>
+</ul>
+<h2>Rerun</h2>
+<pre><code class="language-sh">/usr/bin/node --no-warnings=ExperimentalWarning /home/alex/Desktop/dev/modpipes/dist/cli/src/main.js start 1f4d4bee-e2df-4df7-b616-43a64d0f630a --var repo-path=/tmp/sbd-stress-repo --var question=&quot;Which steps remain before real customers can pay, and in what order?&quot;
+</code></pre>
+</div></details><p class="link"><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/handoff/outputs/handoff.md">http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/handoff/outputs/handoff.md</a></p></figure></section>
+  <section><h2>Questions and answers</h2><ol class="qa"><li>
+    <p class="who">Preflight asked · answered · <time datetime="2026-11-06T17:08:56.626Z">Fri 6 Nov, 11:08</time></p>
+    <div class="q"><p class="question">Both Stripe modes failed. Sandbox: &quot;no config for that project was found&quot; (the CLI holds no sandbox key). Live: &quot;your live mode API key needs to be re-configured. Run `stripe login` to re-authenticate&quot;. Please run `stripe login` in a terminal, then choose an option.</p><p class="options">Options: Done, retry · Continue without account access</p><p class="answer">Continue without account access</p></div>
+  </li><li>
+    <p class="who">Checkpoint asked · answered · <time datetime="2026-11-06T17:12:15.921Z">Fri 6 Nov, 11:12</time></p>
+    <div class="q"><p class="question">Answer: Real customers cannot pay yet: the repo has no Stripe integration at all, despite README.md:3, so rotate the leaked live key, confirm account activation, build and test Checkout plus webhooks in a sandbox, then recreate billing objects in live mode. See lead.verdict beside the options.
+
+Tasks:
+t1 Rotate the committed live key and replace it with a placeholder (required)
+t2 Restore read access to the Stripe account and confirm activation (required)
+t3 Choose the payment provider and add the Stripe SDK (required)
+t4 Build monthly subscription checkout in a sandbox (required)
+t5 Add a verified webhook handler that grants and revokes access (required)
+t6 Test the full flow in the sandbox (required)
+t7 Recreate the billing objects in live mode and configure production (required)
+t8 Correct README.md and the deploy instructions
+t9 Add a customer portal for cancel and payment-method updates
+
+Which tasks should the instructions cover?</p><p class="options">Options: All tasks · Required tasks only · Pick from the list</p><p class="answer">Pick from the list</p></div>
+  </li><li>
+    <p class="who">Checkpoint asked · answered · <time datetime="2026-11-06T17:12:30.746Z">Fri 6 Nov, 11:12</time></p>
+    <div class="q"><p class="question">Which of t1 to t4 should the instructions cover?</p><p class="options">Options: t1 · t2 · t3 · t4</p><p class="answer">t1, t3</p></div>
+  </li><li>
+    <p class="who">Checkpoint asked · answered · <time datetime="2026-11-06T17:12:46.645Z">Fri 6 Nov, 11:12</time></p>
+    <div class="q"><p class="question">Which of t5 to t8 should the instructions cover?</p><p class="options">Options: t5 · t6 · t7 · t8</p><p class="answer">t8</p></div>
+  </li><li>
+    <p class="who">Checkpoint asked · answered · <time datetime="2026-11-06T17:13:00.628Z">Fri 6 Nov, 11:13</time></p>
+    <div class="q"><p class="question">Should the instructions cover t9?</p><p class="options">Options: t9 · None</p><p class="answer">t9</p></div>
+  </li></ol></section>
+  <section><h2>Other outputs</h2><ul class="others"><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/preflight/outputs/readiness.json">Preflight · readiness.json</a> <span class="type">536B</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/scan/outputs/scan.json">Repo scan · scan.json</a> <span class="type">560B</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/fetch-docs/outputs/pages">Fetch docs · pages.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/dossier/outputs/dossier.md">Dossier · dossier.md</a> <span class="type">6.8KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/dossier/outputs/facts.json">Dossier · facts.json</a> <span class="type">3.7KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/code-auditor/outputs/findings.md">Code auditor · findings.md</a> <span class="type">5.5KB</span></li><li><span class="absent">Account inspector · findings.md (absent)</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/deploy-inspector/outputs/findings.md">Deploy inspector · findings.md</a> <span class="type">3.5KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/docs-reader/outputs/findings.md">Docs reader · findings.md</a> <span class="type">2.5KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/lead/outputs/verdict.md">Lead expert · verdict.md</a> <span class="type">6.9KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/lead/outputs/assessment.json">Lead expert · assessment.json</a> <span class="type">4.4KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/checkpoint/outputs/tasks.json">Checkpoint · tasks.json</a> <span class="type">57B</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/writer/outputs/steps.json">Writer · steps.json</a> <span class="type">18KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/site-check/outputs/report.json">Site check · report.json</a> <span class="type">3.4KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/site-check/outputs/shots">Site check · shots.dir</a> <span class="type">4.1KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/billing-critic/outputs/verdict.json">Billing critic · verdict.json</a> <span class="type">1.7KB</span></li><li><a href="http://localhost:4810/api/runs/3b113848-0685-4c30-a040-d9bd42dafcf4/files/stages/ux-critic/outputs/verdict.json">UX critic · verdict.json</a> <span class="type">1.4KB</span></li></ul></section>
+  <section><table class="stages"><caption>Stages</caption><thead><tr><th>Stage</th><th>Group</th><th>Status</th><th>Model</th><th>Duration</th><th>Tokens</th></tr></thead><tbody>
+<tr><td>Preflight</td><td>intake</td><td>done</td><td>sonnet</td><td>38 s</td><td>189K</td></tr>
+<tr><td>Repo scan</td><td>intake</td><td>done</td><td>script</td><td>0 s</td><td>0</td></tr>
+<tr><td>Fetch docs</td><td>intake</td><td>done</td><td>script</td><td>5 s</td><td>0</td></tr>
+<tr><td>Dossier</td><td>knowledge</td><td>done</td><td>sonnet</td><td>51 s</td><td>306K</td></tr>
+<tr><td>Code auditor</td><td>experts</td><td>done</td><td>sonnet</td><td>40 s</td><td>179K</td></tr>
+<tr><td>Account inspector</td><td>experts</td><td>skipped</td><td>sonnet</td><td>0 s</td><td>0</td></tr>
+<tr><td>Deploy inspector</td><td>experts</td><td>done</td><td>sonnet</td><td>36 s</td><td>232K</td></tr>
+<tr><td>Docs reader</td><td>experts</td><td>done</td><td>sonnet</td><td>29 s</td><td>157K</td></tr>
+<tr><td>Lead expert</td><td>verdict</td><td>done</td><td>opus</td><td>1 min 11 s</td><td>352K</td></tr>
+<tr><td>Checkpoint</td><td>choose</td><td>done</td><td>sonnet</td><td>1 min 02 s</td><td>249K</td></tr>
+<tr><td>Writer</td><td>steps</td><td>done</td><td>opus</td><td>1 min 59 s</td><td>510K</td></tr>
+<tr><td>Site</td><td>build</td><td>done</td><td>opus</td><td>57 s</td><td>954K</td></tr>
+<tr><td>Site check</td><td>check</td><td>done</td><td>script</td><td>4 s</td><td>0</td></tr>
+<tr><td>Billing critic</td><td>review</td><td>done</td><td>sonnet</td><td>34 s</td><td>827K</td></tr>
+<tr><td>UX critic</td><td>review</td><td>done</td><td>sonnet</td><td>18 s</td><td>359K</td></tr>
+<tr><td>Handoff</td><td>deliver</td><td>done</td><td>sonnet</td><td>31 s</td><td>246K</td></tr>
+</tbody></table></section>
+</main>
+<footer><p>Built Fri 6 Nov, 17:09 by the Run dashboard pipeline. Links point at http://localhost:4810.</p></footer>
+
+</body>
+</html>

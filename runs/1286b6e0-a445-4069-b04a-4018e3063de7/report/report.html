@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pinterest board capture (test) · report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="report.md">Raw markdown</a></p><h1>Pinterest capture report</h1>
+<h2>Stopped at preflight</h2>
+<ul>
+<li>clamscan missing. Fix: sudo apt install clamav</li>
+<li>ClamAV signatures missing in /var/lib/clamav. Fix: Wait for the clamav-freshclam service to finish its first download, then check again.</li>
+</ul>
+<p>No media was fetched in this run.</p>
+<h2>Catalogue</h2>
+<ul>
+<li>No rows were added in this run.</li>
+<li>Search: lessons find lessons__pinterest_media <words></li>
+</ul>
+<h2>Limits</h2>
+<ul>
+<li>Images were decoded and re-encoded, so no foreign bytes survive.</li>
+<li>Videos were scanned by ClamAV and checked by GStreamer, not re-encoded.</li>
+<li>No Pinterest or [removed] link is stored in the folder, the table or this report.</li>
+</ul>
+</body></html>

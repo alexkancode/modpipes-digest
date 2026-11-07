@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Topic expert forge · handoff</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="handoff.md">Raw markdown</a></p><h1>Handoff: steam-budget-viral-games</h1>
+<p>Topic: trending and viral Steam games under $5 over the last 4 years.</p>
+<h2>Result</h2>
+<p><strong>PASSED</strong> with 93/100 (pass mark 80) in 1 round. Installed 2026-11-06.</p>
+<h2>The agent</h2>
+<ul>
+<li>Name: <code>steam-budget-viral-games</code></li>
+<li>File: <code>/home/alex/.claude/agents/steam-budget-viral-games.md</code></li>
+</ul>
+<h3>How to use it</h3>
+<ul>
+<li>In Claude Code: say &quot;use the steam-budget-viral-games subagent to ...&quot;</li>
+<li>For a whole session: <code>claude --agent steam-budget-viral-games</code></li>
+<li>On a modpipes stage: set <code>&quot;agent&quot;: &quot;steam-budget-viral-games&quot;</code></li>
+</ul>
+<h2>Images</h2>
+<ul>
+<li>16 reference images in <code>/home/alex/.claude/agents/steam-budget-viral-games-images/</code></li>
+<li>Gallery: <a href="file:///home/alex/.claude/agents/steam-budget-viral-games-images/index.html">index.html</a></li>
+<li>Index with source page and direct URLs: <a href="file:///home/alex/.claude/agents/steam-budget-viral-games-images/index.md">index.md</a></li>
+</ul>
+<h2>Scores (examiner)</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expert</td>
+<td>38/40</td>
+</tr>
+<tr>
+<td>Critique</td>
+<td>18/20</td>
+</tr>
+<tr>
+<td>Making</td>
+<td>17/20</td>
+</tr>
+<tr>
+<td>Usable</td>
+<td>20/20</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>93/100</strong></td>
+</tr>
+</tbody></table>
+<p>Details: lint ok. The agent scored 6/6 on the quiz, with both contested items hedged and each side named. The bare-sonnet control scored about 2/6.</p>
+<ul>
+<li>Report: <a href="../../examiner/outputs/report.md">report.md</a></li>
+<li>Scores: <a href="../../examiner/outputs/scores.json">scores.json</a></li>
+<li>Quiz: <a href="../../examiner/outputs/exam/quiz.md">quiz.md</a></li>
+</ul>
+<h2>Drawing from the exam</h2>
+<p><a href="../../examiner/outputs/exam/drawing.png">SOFA SO GOOD capsule (460x215)</a></p>
+<p><img src="../../examiner/outputs/exam/drawing.png" alt="drawing"></p>
+<h2>What the examiner still wants</h2>
+<p>The agent passed, so these are optional improvements for a hand edit or a rerun:</p>
+<ol>
+<li><strong>Expert (-2):</strong> The knowledge rests almost wholly on Wikipedia, and press outlets are known by headline only. Add two or three fetched non-Wikipedia sources with dated facts: a developer interview or postmortem (poncle, Klubnika, Zeekerss), a Steam sale-event effect, and one SteamDB price history read by hand. Keep the fetched-vs-headline labels.</li>
+<li><strong>Critique (-2):</strong> The agent skipped its own 184x69 thumbnail test. Make the shrink test mandatory in Method 1 step 4 whenever readability is judged. Put a one-line Pillow command there (open, resize to (184,69), save to <code>/tmp/steam-budget-viral-games/thumb.png</code>, Read).</li>
+<li><strong>Making (-3):</strong> In the drawing the movers are cropped at the bottom edge and the staircase nearly vanishes. Add a self-check to Method 4B. After the thumbnail test, fix and re-render once if a named subject touches the canvas edge or a premise element has under 15% luminance difference from the background. Suggest a 10 px safe margin.</li>
+</ol>
+</body></html>

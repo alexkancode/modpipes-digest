@@ -1,0 +1,309 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Game forge v2 · report</title><link rel="icon" href="data:,">
+<style>:root{color-scheme:light dark}body{max-width:860px;margin:0 auto;padding:24px 20px;font:16px/1.6 system-ui,sans-serif}img,video{max-width:100%;height:auto}pre{overflow:auto;padding:12px;background:rgba(127,127,127,.12);border-radius:8px}code{font-size:.95em}table{border-collapse:collapse}td,th{border:1px solid rgba(127,127,127,.4);padding:4px 8px}a{color:#1f62b5}@media(prefers-color-scheme:dark){a{color:#8fb8f0}}.list li{margin:6px 0}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}.thumbs figure{margin:0}.thumbs figcaption{font-size:13px;overflow-wrap:anywhere}</style></head><body><p><a href="report.md">Raw markdown</a></p><h1>Path of Ex-iles: delivery report</h1>
+<h2>Concept</h2>
+<p>A PG-13 parody action-platformer in the genre of Scarlet Maiden, written for the r/pathofexile crowd. The Exile (the Witch, an adult in her 30s) runs through five well-known PoE story beats, and each one is turned into an awkward rom-com. Her elemental resistances are her outfit. Flirting is an attack that drains her Composure. Every censor bar is a pink mosaic covering something that was already harmless.</p>
+<p><strong>One-line pitch:</strong> <em>Cap your res, keep your composure, and survive five Path of Exile bosses who are very, very into you, with censor bars that hide absolutely nothing.</em></p>
+<h2>What was built</h2>
+<ul>
+<li><strong>A static HTML5 Canvas 2D game</strong> with no build step and no CDN dependency. The brief proposed Phaser, but the tech stage chose plain Canvas, so the folder is fully self-contained (≈1 MB). It renders at 640×360 internally, integer-scaled with nearest-neighbour filtering, on a fixed 60 Hz timestep.</li>
+<li><strong>Five levels and six bosses:</strong><ul>
+<li><strong>Twilight Strand:</strong> Hillock, who has waited 300 leagues for you.</li>
+<li><strong>Lower Prison:</strong> Brutus, a gym bro looking for a spotter.</li>
+<li><strong>Templar Cathedral:</strong> Dominus, the prude. The censor bars are canonically his doing.</li>
+<li><strong>Belly of the Beast:</strong> Piety, then the Heart (&quot;you&#39;ll have to <em>take</em> my heart&quot;).</li>
+<li><strong>Kitava&#39;s Feast:</strong> Kitava eats a resistance layer at 66% and 33% HP.</li>
+</ul>
+</li>
+<li><strong>The Hideout between levels:</strong><ul>
+<li><strong>Patch Notes:</strong> pick 1 of 3 buff-plus-nerf cards.</li>
+<li><strong>Crafting:</strong> Chaos, Exalted and Vaal orbs (the Vaal can brick your weapon).</li>
+<li><strong>Trade whispers:</strong> &quot;wtb ur outfit 1c&quot;.</li>
+<li><strong>Mirror of Kalandra:</strong> the count is always 0, and clicking it says &quot;lol&quot;.</li>
+</ul>
+</li>
+<li><strong>Signature systems:</strong><ul>
+<li><strong>Resistance Wardrobe:</strong> 3 layers. Each pop flies off with a &quot;[removed by moderator]&quot; bar. At 0 layers you are &quot;RES UNCAPPED&quot; in a one-piece and a barrel.</li>
+<li><strong>Composure/Charm:</strong> a wink, blown kiss or pickup line makes her Flustered, and you mash J to escape (&quot;Not until I cap my res!&quot;).</li>
+<li><strong>Censored &quot;cutscenes&quot;:</strong> door slam, then &quot;[Rule 3: No Lewds]&quot;, then &quot;...and that&#39;s how they became friends.&quot;</li>
+</ul>
+</li>
+<li><strong>Audio:</strong> 64 synthesised WebAudio cues, a music loop per level and for the hideout, and a faster boss variant for each level. Audio stays silent until the first gesture.</li>
+<li><strong>Machine interface:</strong> <code>window.__game</code> with <code>start()</code>, <code>state</code>, <code>score</code>, <code>perf</code> and <code>probe()</code>, plus seeded RNG through <code>?seed=N</code>.</li>
+</ul>
+<h2>How to play</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Keyboard + mouse</th>
+<th>Touch (basic)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Move</td>
+<td>A / D or ← / →</td>
+<td>left half: virtual stick</td>
+</tr>
+<tr>
+<td>Jump</td>
+<td>W, Space or ↑</td>
+<td>Jump button</td>
+</tr>
+<tr>
+<td>Melee combo (and mash to escape a Charm)</td>
+<td>Left click or J</td>
+<td>A</td>
+</tr>
+<tr>
+<td>Spark (aimed)</td>
+<td>Right click (aims at cursor) or K (aims facing)</td>
+<td>B</td>
+</tr>
+<tr>
+<td>Dodge roll (i-frames)</td>
+<td>Shift or L</td>
+<td>R</td>
+</tr>
+<tr>
+<td>Life flask</td>
+<td>Q or 1</td>
+<td>F</td>
+</tr>
+<tr>
+<td>Pause</td>
+<td>Esc or P</td>
+<td>pause icon</td>
+</tr>
+<tr>
+<td>Confirm</td>
+<td>Enter, Space or click</td>
+<td>tap</td>
+</tr>
+</tbody></table>
+<p><strong>How to play well:</strong></p>
+<ul>
+<li>Clear the locked arenas and beat the boss at the end of each level.</li>
+<li>Roll through anything with a pink ♥ tell.</li>
+<li>Keep your layers: a Tailor&#39;s Orb restores one, and the Hideout restores all of them.</li>
+</ul>
+<p><strong>Lives and losing:</strong> you get 3 portals per level. A death respawns you at the last checkpoint and costs a portal plus 10% of your currency. Losing every portal ends the run (&quot;RIP. Should&#39;ve played softcore&quot;), and one key starts a new one.</p>
+<h2>How to host</h2>
+<p>The <code>game/</code> folder is complete: it has <code>index.html</code> at the root and uses only relative paths.</p>
+<ul>
+<li><strong>Locally:</strong> open <code>game/index.html</code> directly from disk (file:// works), or run <code>python3 -m http.server</code> inside <code>game/</code>.</li>
+<li><strong>Online:</strong> copy the folder to any static host (GitHub Pages, Netlify, S3, itch.io as an HTML game).</li>
+</ul>
+<p><strong>Delivery check:</strong> I loaded <code>game/index.html?seed=1</code> once in headless Chromium from file://.</p>
+<ul>
+<li>It reached <code>title</code> and then <code>play</code> after <code>__game.start()</code>.</li>
+<li>There were 0 console errors and 0 failed requests.</li>
+<li>It ran at 59.9 fps with a worst frame of 16.8 ms. The probe read hp 70 (from the 80 start), 3 layers, 3 portals and 5 enemies alive.</li>
+</ul>
+<h2>The science applied</h2>
+<p>The fun brief (<code>stages/fun/outputs/fun-brief.md</code>) set principles P1–P15 from MDA, Self-Determination Theory, Lazzaro, Juul, Hopson, Swink, Cook and flow theory. The GDD resolved conflicts between those principles and the concept brief in its §0 table. The main mappings:</p>
+<table>
+<thead>
+<tr>
+<th>GDD decision</th>
+<th>Principle and source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Charm, Flustered and mash-escape replace the genre&#39;s &quot;grab&quot;; flirting is mutual and absurd</td>
+<td>P2, consent reframe (content gate)</td>
+</tr>
+<tr>
+<td>Every censor bar covers something already harmless (&quot;remove the bar and the frame is still PG&quot;); no bar ever sits on the hero</td>
+<td>P1, &quot;the joke lives in the gap&quot;</td>
+</tr>
+<tr>
+<td>Escape mercy after a Charm (1.5 s of i-frames, 3 s re-charm lockout); a faster mash below 30 Composure; Swoon resets Composure to 60; Tea converts to Chaos at full Composure (&quot;Composure taxed&quot;)</td>
+<td>P6, MDA&#39;s Monopoly fix (subsidy and tax against death spirals)</td>
+</tr>
+<tr>
+<td>Every attack has a tell of at least 400 ms; respawn at a checkpoint within 3 s; L3 is tuned for a median of 1 death</td>
+<td>P7, Juul&#39;s <em>Fear of Failing</em> (fail-then-complete is rated highest, and failure should feel self-inflicted)</td>
+</tr>
+<tr>
+<td>Six action verbs; one action is reused for the escape-mash; same-frame input response</td>
+<td>P8, Ryan/Rigby/Przybylski (competence predicts replay, and intuitive controls work through competence)</td>
+</tr>
+<tr>
+<td>Patch Notes as a fast 3-card pick; crafting is optional</td>
+<td>P9, autonomy through build choice without menu drag</td>
+</tr>
+<tr>
+<td>Parody fantasy, boss challenge, gag discovery and crafting expression</td>
+<td>P10, Lazzaro (hit at least three of the four keys) and the MDA aesthetic order</td>
+</tr>
+<tr>
+<td>Hitstop, white flash, shake, particles, damage numbers and pitch-jittered cues</td>
+<td>P11, Swink (response, context and polish)</td>
+</tr>
+<tr>
+<td>Chaos 35%, Exalted 8% and a 0.5% Divine &quot;ding&quot;, with a 90 s Exalted pity; currency steps between levels stay ≤ 1.2×</td>
+<td>P12–P13, Hopson (variable ratio, no sharp drops in reward rate)</td>
+</tr>
+<tr>
+<td>One new skill atom per level: melee and close Charm, then layers, then ranged, then terrain, then the mix. In-world first-date prompts (&quot;Take it slow. Press J.&quot;)</td>
+<td>P5 and P14, flow channel and Cook&#39;s skill atoms</td>
+</tr>
+<tr>
+<td>A sawtooth level shape (rising waves, breather, boss); L2&#39;s first wave is easier than Hillock</td>
+<td>P5, escalate and then teach</td>
+</tr>
+<tr>
+<td>A death card with &quot;Run it back&quot; one key away; a Standard League stash with a capped meta edge</td>
+<td>P15, the next run starts one key and 3 s away</td>
+</tr>
+<tr>
+<td>Boss HP raised above the brief&#39;s numbers so the fights last 25–64 s</td>
+<td>GDD §5.4 arithmetic check against the fight-time targets</td>
+</tr>
+</tbody></table>
+<h2>Content check (PG-13 gate): items for you</h2>
+<p>The concept asks that any content concern go to you for a redirect. No stage shipped anything past PG-13. Four redirects were made during the build, each with a default already applied. Please confirm them or pick the alternative:</p>
+<ol>
+<li><strong>Tabula Rasa &quot;naked start&quot;</strong> (fun brief idea). <em>Applied:</em> an optional beach-chest gag. Equipping it gives her a shapeless linen sack over her outfit for 10 s, and the bar covers the chest&#39;s price tag (&quot;[price fixing removed]&quot;). <em>Alternative:</em> the bar covers Bestel&#39;s sales pitch instead (&quot;it&#39;s basically nothing, which is why it&#39;s 1c&quot;).</li>
+<li><strong>The genre&#39;s &quot;grab&quot; loop.</strong> <em>Applied:</em> Charm, Flustered and a mash escape. <em>Alternative:</em> Charm only costs Composure and never stuns.</li>
+<li><strong>Layer-pop shoulder bar.</strong> <em>Applied:</em> the garment flies off and the &quot;[removed by moderator]&quot; bar lands on the flying garment, not on her. <em>Alternative:</em> the bar lands on the HUD pip.</li>
+<li><strong>The Prison level as a warden/captive scenario</strong> (redirected at the brief stage). <em>Applied:</em> Brutus is a needy gym bro looking for a spotter.</li>
+</ol>
+<p>If any joke in the build still feels off to you, every player-visible string is in <code>game/js/content.js</code>, so a redirect is a one-file text edit.</p>
+<h2>Play-test scores per round</h2>
+<p>Each round scored eight criteria. The scores came from <code>stages/verdict/rounds/&lt;n&gt;/scores.json</code>, and the final round from <code>stages/verdict/outputs/scores.json</code>. The ship threshold is 80.</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>R1</th>
+<th>R2</th>
+<th>R3</th>
+<th>R4 (final)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reads as concept</td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Core loop and flow</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Game feel</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Onboarding</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Art readability</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Audio feedback</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Acceptance checklist</td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>68</strong></td>
+<td><strong>71</strong></td>
+<td><strong>71</strong></td>
+<td><strong>76</strong></td>
+</tr>
+</tbody></table>
+<p><strong>What changed between rounds:</strong></p>
+<ul>
+<li><strong>R1 → R2:</strong><ul>
+<li>Censor-bar set dressing in every level, plus mid-fight trade whispers.</li>
+<li>Second waves in the arenas.</li>
+<li>HUD plates.</li>
+<li>A music bed and pitch jitter on the sound cues.</li>
+</ul>
+</li>
+<li><strong>R3:</strong> the build was unchanged. The polish run ended before it made any edit, so R3 re-sampled the R2 build and the scores held.</li>
+<li><strong>R3 → R4:</strong><ul>
+<li>L1 grew to 4 arenas and Hillock&#39;s HP to 600.</li>
+<li>Censor bars float above the play lane, so they no longer cover the hero.</li>
+<li>Fixed a bug that stopped Charm escapes from being counted.</li>
+<li>&quot;[pickup line]&quot; bars now pop on Charm tells.</li>
+<li>An attack-token cap of 2 attackers in L1–L2.</li>
+<li>A boss-music switch.</li>
+<li>Level-switch warmup to remove the 33 ms hitch.</li>
+<li>Respawning at 0 layers now restores one layer (anti death-spiral).</li>
+</ul>
+</li>
+</ul>
+<p><strong>Final-round measurements:</strong></p>
+<ul>
+<li>6 bots × 120 s with 0 errors, at 59.9 fps, p95 16.8 ms and worst frame 16.8 ms.</li>
+<li>The polish stage&#39;s own bot cleared all 5 levels in 756 s with a flat heap.</li>
+</ul>
+<h2>Final verdict</h2>
+<p><strong>ITERATE: 76/100, no blockers.</strong> The game is below the 80-point ship bar, but it is complete and playable from start to finish:</p>
+<ul>
+<li>All five levels and Kitava are clearable.</li>
+<li>There are no errors and the frame rate holds a stable 60 fps.</li>
+<li>The parody reads clearly in every frame.</li>
+</ul>
+<p>The missing points are mostly about evidence and polish, not broken systems:</p>
+<ul>
+<li>The 120 s harness samples never get past L1, so the later levels, the hideout, Kitava and the game-over card were verified only by the polish stage&#39;s bot.</li>
+<li>The hero is still small on screen.</li>
+</ul>
+<h2>Next iteration should tackle</h2>
+<ol>
+<li><strong>Bot coverage.</strong> Add a 5–10 min skilled run and an idle run that captures <code>over</code>. Then L2–L5, the hideout, Kitava and the death card get independent screenshots, and acceptance items 7, 9, 10, 12, 13 and 14 no longer depend on the changelog.</li>
+<li><strong>Speech bubbles.</strong> Use smaller text and pin each bubble above the speaker&#39;s head with a short lifetime and a clamp, so a bubble never covers the hero or nearby foes.</li>
+<li><strong>Hero presence.</strong> Raise the camera zoom about 1.25× (or redraw the hero larger) and add more flustered and charmed poses, so she carries the Scarlet Maiden character, not just the props.</li>
+<li><strong>Novice opening and run length.</strong><ul>
+<li>Start L1 with 2–3 foes and only 1 attacker at a time in the first arena, to move toward the 85% first-run clear target.</li>
+<li>Add about 10–15% to L1–L2 length or boss HP, so a competent full clear lands at 16–18 min. It is about 12.6 min for the bot now.</li>
+</ul>
+</li>
+<li><strong>Combat gags.</strong> Add a mosaic pop on more hit types and clamp edge bars 16 px inside the viewport.</li>
+<li><strong>Tutorial sequencing.</strong> Show the jump and attack hints when the first foe comes into range, not only at spawn.</li>
+<li><strong>Load time.</strong> Defer non-title art so load stays under 1 s on the skilled profile, which measured about 1.09 s.</li>
+<li><strong>Touch.</strong> Give the basic touch controls a real device pass.</li>
+</ol>
+<h2>Outputs</h2>
+<ul>
+<li><code>game/</code>: the finished game. Open <code>index.html</code>.</li>
+<li><code>screenshots/</code>: 36 frames from the final play-test round (skilled, casual and novice bots × 2 seeds, each at title, 5 s, 30 s, 60 s, 120 s and the final frame).</li>
+<li><code>report.md</code>: this file.</li>
+</ul>
+</body></html>
